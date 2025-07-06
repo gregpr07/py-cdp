@@ -1,9 +1,7 @@
 import asyncio
-import json
 import logging
 
 import httpx
-import websockets
 
 from src.client import CDPClient
 

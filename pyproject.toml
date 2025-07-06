@@ -6,6 +6,10 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "httpx>=0.28.1",
-    "playwright>=1.53.0",
     "websockets>=15.0.1",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.2",
 ]

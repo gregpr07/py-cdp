@@ -1,12 +1,12 @@
 import asyncio
 import json
 import logging
-from typing import TYPE_CHECKING, Any, Callable, Dict, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 import websockets
 
 if TYPE_CHECKING:
-    from .cdp.library import CDPLibrary
+    from src.cdp.library import CDPLibrary
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -22,7 +22,7 @@ class CDPClient:
         # self.event_handlers: Dict[str, Callable] = {}
 
         # Initialize the type-safe CDP library
-        from .cdp.library import CDPLibrary
+        from src.cdp.library import CDPLibrary
 
         self.send: "CDPLibrary" = CDPLibrary(self)
 
@@ -97,7 +97,7 @@ class CDPClient:
                 # Handle event messages (without id, but with method)
                 elif "method" in data:
                     method = data["method"]
-                    params = data.get("params", {})
+                    data.get("params", {})
                     session_id = data.get("sessionId")
 
                     logger.debug(f"Received event: {method} (session: {session_id})")
