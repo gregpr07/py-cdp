@@ -3,7 +3,7 @@ import logging
 
 import httpx
 
-from src.client import CDPClient
+from cdp_use.client import CDPClient
 
 # Configure logging to see what's happening
 logging.basicConfig(
@@ -19,12 +19,12 @@ async def main():
         browser_ws_url = version_info.json()["webSocketDebuggerUrl"]
     # browser_ws_url = "ws://localhost:3000"
 
-    # Connect to browser WebSocket
+    # Connect to Chrome DevTools with type-safe CDP client
     async with CDPClient(browser_ws_url) as cdp:
-        cdp: CDPClient
-        # List all targets (tabs, extensions, etc.)
+        # List all targets (tabs, extensions, etc.) - fully type-safe!
         targets_result = await cdp.send.Target.getTargets()
         page_targets = [t for t in targets_result["targetInfos"] if t["type"] == "page"]
+
         if not page_targets:
             raise RuntimeError("No page targets found.")
 
@@ -48,7 +48,7 @@ async def main():
 
         print("Root node ID:", dom_result["root"]["nodeId"])
 
-        # spam 10 concurrent requests
+        # Execute 10 concurrent CDP requests with full type safety
         tasks = [
             cdp.send.DOM.getDocument(
                 params={"depth": -1, "pierce": True}, session_id=session_id

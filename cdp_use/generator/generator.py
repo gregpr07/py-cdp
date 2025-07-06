@@ -8,7 +8,7 @@ Generates Python type-safe bindings for Chrome DevTools Protocol.
 import json
 import subprocess
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from .command_generator import CommandGenerator
 from .event_generator import EventGenerator
@@ -17,7 +17,7 @@ from .type_generator import TypeGenerator
 
 
 class CDPGenerator:
-    def __init__(self, output_dir: str = "src/cdp"):
+    def __init__(self, output_dir: str = "cdp_use/cdp"):
         self.output_dir = Path(output_dir)
         self.type_generator = TypeGenerator()
         self.command_generator = CommandGenerator()
@@ -32,14 +32,16 @@ class CDPGenerator:
 
 """
 
-    def load_protocols(self) -> Dict[str, Any]:
+    def load_protocols(
+        self, protocol_files: Optional[List[str]] = None
+    ) -> Dict[str, Any]:
         """Load and merge multiple protocol JSON files."""
-        import sys
+        if protocol_files is None:
+            import sys
 
-        if len(sys.argv) < 2:
-            raise ValueError("Please provide at least one protocol JSON file path")
-
-        protocol_files = sys.argv[1:]
+            if len(sys.argv) < 2:
+                raise ValueError("Please provide at least one protocol JSON file path")
+            protocol_files = sys.argv[1:]
         merged_protocol = {"version": {"major": "1", "minor": "0"}, "domains": []}
         seen_domains = set()
 
@@ -89,9 +91,9 @@ class CDPGenerator:
         except Exception as e:
             print(f"Error running ruff: {e}")
 
-    def generate_all(self) -> None:
+    def generate_all(self, protocol_files: Optional[List[str]] = None) -> None:
         """Generate all types, commands, events, and protocol classes."""
-        protocol = self.load_protocols()
+        protocol = self.load_protocols(protocol_files)
         domains = protocol.get("domains", [])
 
         print(f"Generating CDP types for {len(domains)} domains...")

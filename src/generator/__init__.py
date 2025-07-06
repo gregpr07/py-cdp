@@ -1,1 +1,0 @@
-# CDP Protocol Generator Package

@@ -1,5 +1,5 @@
 [project]
-name = "py-cdp"
+name = "cdp-use"
 version = "0.1.0"
 description = "Type safe generator/client library for CDP"
 readme = "README.md"

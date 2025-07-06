@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Any, Dict, Optional
 import websockets
 
 if TYPE_CHECKING:
-    from src.cdp.library import CDPLibrary
+    from cdp_use.cdp.library import CDPLibrary
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -22,7 +22,7 @@ class CDPClient:
         # self.event_handlers: Dict[str, Callable] = {}
 
         # Initialize the type-safe CDP library
-        from src.cdp.library import CDPLibrary
+        from cdp_use.cdp.library import CDPLibrary
 
         self.send: "CDPLibrary" = CDPLibrary(self)
 
