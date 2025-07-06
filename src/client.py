@@ -1,8 +1,12 @@
 import asyncio
 import json
-from typing import Dict, Optional
+import logging
+from typing import Any, Callable, Dict, Optional
 
 import websockets
+
+# Set up logging
+logger = logging.getLogger(__name__)
 
 
 class CDPClient:
@@ -12,6 +16,7 @@ class CDPClient:
         self.msg_id: int = 0
         self.pending_requests: Dict[int, asyncio.Future] = {}
         self._message_handler_task = None
+        # self.event_handlers: Dict[str, Callable] = {}
 
     async def __aenter__(self):
         """Async context manager entry"""
@@ -22,12 +27,20 @@ class CDPClient:
         """Async context manager exit"""
         await self.stop()
 
+    # def on_event(self, method: str, handler: Callable):
+    #     """Register an event handler for CDP events"""
+    #     self.event_handlers[method] = handler
+
     async def start(self):
         """Start the WebSocket connection and message handler task"""
         if self.ws is not None:
             raise RuntimeError("Client is already started")
 
-        self.ws = await websockets.connect(self.url)
+        logger.info(f"Connecting to {self.url}")
+        self.ws = await websockets.connect(
+            self.url,
+            max_size=100 * 1024 * 1024,  # 100MB limit instead of default 1MB
+        )
         self._message_handler_task = asyncio.create_task(self._handle_messages())
 
     async def stop(self):
@@ -62,19 +75,46 @@ class CDPClient:
                 raw = await self.ws.recv()
                 data = json.loads(raw)
 
+                # Handle response messages (with id)
                 if "id" in data and data["id"] in self.pending_requests:
                     future = self.pending_requests.pop(data["id"])
                     if "error" in data:
+                        logger.error(
+                            f"CDP Error for request {data['id']}: {data['error']}"
+                        )
                         future.set_exception(RuntimeError(data["error"]))
                     else:
                         future.set_result(data["result"])
-        except websockets.exceptions.ConnectionClosed:
+
+                # Handle event messages (without id, but with method)
+                elif "method" in data:
+                    method = data["method"]
+                    params = data.get("params", {})
+                    session_id = data.get("sessionId")
+
+                    logger.debug(f"Received event: {method} (session: {session_id})")
+
+                    # TODO: find a nice way to register type safe event handlers (IGNORE this for now)
+                    # # Call registered event handler if available
+                    # if method in self.event_handlers:
+                    #     try:
+                    #         self.event_handlers[method](params, session_id)
+                    #     except Exception as e:
+                    #         logger.error(f"Error in event handler for {method}: {e}")
+
+                # Handle unexpected messages
+                else:
+                    logger.warning(f"Received unexpected message: {data}")
+
+        except websockets.exceptions.ConnectionClosed as e:
+            logger.warning(f"WebSocket connection closed: {e}")
             # Connection closed, resolve all pending futures with an exception
             for future in self.pending_requests.values():
                 if not future.done():
                     future.set_exception(ConnectionError("WebSocket connection closed"))
             self.pending_requests.clear()
         except Exception as e:
+            logger.error(f"Error in message handler: {e}")
             # Handle other exceptions
             for future in self.pending_requests.values():
                 if not future.done():
@@ -103,6 +143,7 @@ class CDPClient:
         future = asyncio.Future()
         self.pending_requests[self.msg_id] = future
 
+        logger.debug(f"Sending: {method} (id: {self.msg_id}, session: {session_id})")
         await self.ws.send(json.dumps(msg))
 
         # Wait for the response

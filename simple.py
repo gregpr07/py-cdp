@@ -1,10 +1,17 @@
 import asyncio
 import json
+import logging
 
 import httpx
 import websockets
 
 from src.client import CDPClient
+
+# Configure logging to see what's happening
+logging.basicConfig(
+    level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 
 async def main():
@@ -51,6 +58,8 @@ async def main():
         ]
         results = await asyncio.gather(*tasks)
         print(len(results))
+
+        # print(results[-1])
 
 
 asyncio.run(main())
