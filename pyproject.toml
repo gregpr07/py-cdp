@@ -5,5 +5,7 @@ description = "Type safe generator/client library for CDP"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "httpx>=0.28.1",
     "playwright>=1.53.0",
+    "websockets>=15.0.1",
 ]
