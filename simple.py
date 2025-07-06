@@ -23,6 +23,7 @@ async def main():
 
     # Connect to browser WebSocket
     async with CDPClient(browser_ws_url) as cdp:
+        cdp: CDPClient
         # List all targets (tabs, extensions, etc.)
         targets_result = await cdp.send("Target.getTargets")
         page_targets = [t for t in targets_result["targetInfos"] if t["type"] == "page"]

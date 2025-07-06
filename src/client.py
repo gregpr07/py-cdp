@@ -1,9 +1,11 @@
 import asyncio
 import json
 import logging
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Dict, Optional, Union
 
 import websockets
+
+# from .cdp.protocol import CDPClientProtocol
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -122,8 +124,11 @@ class CDPClient:
             self.pending_requests.clear()
 
     async def send(
-        self, method: str, params: dict | None = None, session_id: str | None = None
-    ) -> dict:
+        self,
+        method: str,
+        params: Optional[Any] = None,
+        session_id: Optional[str] = None,
+    ) -> Any:
         if not self.ws:
             raise RuntimeError(
                 "Client is not started. Call start() first or use as async context manager."
