@@ -12,7 +12,7 @@ from typing import Any, Dict, List, Set
 
 from .command_generator import CommandGenerator
 from .event_generator import EventGenerator
-from .protocol_generator import ProtocolGenerator
+from .library_generator import LibraryGenerator
 from .type_generator import TypeGenerator
 
 
@@ -22,7 +22,7 @@ class CDPGenerator:
         self.type_generator = TypeGenerator()
         self.command_generator = CommandGenerator()
         self.event_generator = EventGenerator()
-        self.protocol_generator = ProtocolGenerator()
+        self.library_generator = LibraryGenerator()
 
     def load_protocols(self) -> Dict[str, Any]:
         """Load and merge multiple protocol JSON files."""
@@ -73,8 +73,12 @@ class CDPGenerator:
         for domain in domains:
             self.generate_domain(domain)
 
-        # Generate main protocol file
-        self.generate_protocol_file(domains)
+        # Generate domain library files
+        for domain in domains:
+            self.generate_domain_library_file(domain)
+
+        # Generate main library file
+        self.generate_main_library_file(domains)
 
         # Generate main __init__.py
         self.generate_main_init(domains)
@@ -106,10 +110,17 @@ class CDPGenerator:
         init_content = self.generate_domain_init(domain)
         self.write_file(domain_dir / "__init__.py", init_content)
 
-    def generate_protocol_file(self, domains: List[Dict[str, Any]]) -> None:
-        """Generate the main protocol file."""
-        content = self.protocol_generator.generate_protocol(domains)
-        self.write_file(self.output_dir / "protocol.pyi", content)
+    def generate_domain_library_file(self, domain: Dict[str, Any]) -> None:
+        """Generate a domain-specific library file."""
+        domain_name = domain["domain"].lower()
+        domain_dir = self.output_dir / domain_name
+        content = self.library_generator.generate_domain_library(domain)
+        self.write_file(domain_dir / "library.py", content)
+
+    def generate_main_library_file(self, domains: List[Dict[str, Any]]) -> None:
+        """Generate the main library file."""
+        content = self.library_generator.generate_main_library(domains)
+        self.write_file(self.output_dir / "library.py", content)
 
     def generate_domain_init(self, domain: Dict[str, Any]) -> str:
         """Generate __init__.py for a domain."""
@@ -133,14 +144,14 @@ class CDPGenerator:
             domain_name = domain["domain"].lower()
             content += f"from . import {domain_name}\n"
 
-        content += "\nfrom .protocol import CDPClientProtocol\n"
+        content += "\nfrom .library import CDPLibrary\n"
 
         # List all domains for easy access
         content += "\n__all__ = [\n"
         for domain in domains:
             domain_name = domain["domain"].lower()
             content += f'    "{domain_name}",\n'
-        content += '    "CDPClientProtocol",\n'
+        content += '    "CDPLibrary",\n'
         content += "]\n"
 
         self.write_file(self.output_dir / "__init__.py", content)

@@ -25,7 +25,7 @@ async def main():
     async with CDPClient(browser_ws_url) as cdp:
         cdp: CDPClient
         # List all targets (tabs, extensions, etc.)
-        targets_result = await cdp.send("Target.getTargets")
+        targets_result = await cdp.send.Target.getTargets()
         page_targets = [t for t in targets_result["targetInfos"] if t["type"] == "page"]
         if not page_targets:
             raise RuntimeError("No page targets found.")
@@ -35,25 +35,25 @@ async def main():
         print(target_id, targets_result)
 
         # Attach to selected tab
-        attach_result = await cdp.send(
-            "Target.attachToTarget", {"targetId": target_id, "flatten": True}
+        attach_result = await cdp.send.Target.attachToTarget(
+            params={"targetId": target_id, "flatten": True}
         )
         session_id = attach_result["sessionId"]
 
         # Enable DOM domain
-        await cdp.send("DOM.enable", session_id=session_id)
+        await cdp.send.DOM.enable(session_id=session_id)
 
         # Get full DOM tree
-        dom_result = await cdp.send(
-            "DOM.getDocument", {"depth": -1, "pierce": True}, session_id=session_id
+        dom_result = await cdp.send.DOM.getDocument(
+            params={"depth": -1, "pierce": True}, session_id=session_id
         )
 
         print("Root node ID:", dom_result["root"]["nodeId"])
 
         # spam 10 concurrent requests
         tasks = [
-            cdp.send(
-                "DOM.getDocument", {"depth": -1, "pierce": True}, session_id=session_id
+            cdp.send.DOM.getDocument(
+                params={"depth": -1, "pierce": True}, session_id=session_id
             )
             for _ in range(10)
         ]

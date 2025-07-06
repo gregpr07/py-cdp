@@ -1,11 +1,12 @@
 import asyncio
 import json
 import logging
-from typing import Any, Callable, Dict, Optional, Union
+from typing import TYPE_CHECKING, Any, Callable, Dict, Optional, Union
 
 import websockets
 
-# from .cdp.protocol import CDPClientProtocol
+if TYPE_CHECKING:
+    from .cdp.library import CDPLibrary
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -19,6 +20,11 @@ class CDPClient:
         self.pending_requests: Dict[int, asyncio.Future] = {}
         self._message_handler_task = None
         # self.event_handlers: Dict[str, Callable] = {}
+
+        # Initialize the type-safe CDP library
+        from .cdp.library import CDPLibrary
+
+        self.send: "CDPLibrary" = CDPLibrary(self)
 
     async def __aenter__(self):
         """Async context manager entry"""
@@ -123,12 +129,12 @@ class CDPClient:
                     future.set_exception(e)
             self.pending_requests.clear()
 
-    async def send(
+    async def send_raw(
         self,
         method: str,
         params: Optional[Any] = None,
         session_id: Optional[str] = None,
-    ) -> Any:
+    ) -> dict[str, Any]:
         if not self.ws:
             raise RuntimeError(
                 "Client is not started. Call start() first or use as async context manager."
