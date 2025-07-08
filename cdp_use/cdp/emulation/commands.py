@@ -4,8 +4,8 @@
 
 """CDP Emulation Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -85,28 +85,28 @@ class SetDeviceMetricsOverrideParameters(TypedDict):
     mobile: "bool"
     """Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text
 autosizing and more."""
-    scale: "Optional[float]"
+    scale: "NotRequired[float]"
     """Scale to apply to resulting view image."""
-    screenWidth: "Optional[int]"
+    screenWidth: "NotRequired[int]"
     """Overriding screen width value in pixels (minimum 0, maximum 10000000)."""
-    screenHeight: "Optional[int]"
+    screenHeight: "NotRequired[int]"
     """Overriding screen height value in pixels (minimum 0, maximum 10000000)."""
-    positionX: "Optional[int]"
+    positionX: "NotRequired[int]"
     """Overriding view X position on screen in pixels (minimum 0, maximum 10000000)."""
-    positionY: "Optional[int]"
+    positionY: "NotRequired[int]"
     """Overriding view Y position on screen in pixels (minimum 0, maximum 10000000)."""
-    dontSetVisibleSize: "Optional[bool]"
+    dontSetVisibleSize: "NotRequired[bool]"
     """Do not set visible view size, rely upon explicit setVisibleSize call."""
-    screenOrientation: "Optional[ScreenOrientation]"
+    screenOrientation: "NotRequired[ScreenOrientation]"
     """Screen orientation override."""
-    viewport: "Optional[Viewport]"
+    viewport: "NotRequired[Viewport]"
     """If set, the visible area of the page will be overridden to this viewport. This viewport
 change is not observed by the page, e.g. viewport-relative elements do not change positions."""
-    displayFeature: "Optional[DisplayFeature]"
+    displayFeature: "NotRequired[DisplayFeature]"
     """If set, the display feature of a multi-segment screen. If not set, multi-segment support
 is turned-off.
 Deprecated, use Emulation.setDisplayFeaturesOverride."""
-    devicePosture: "Optional[DevicePosture]"
+    devicePosture: "NotRequired[DevicePosture]"
     """If set, the posture of a foldable device. If not set the posture is set
 to continuous.
 Deprecated, use Emulation.setDevicePostureOverride."""
@@ -148,7 +148,7 @@ class SetDocumentCookieDisabledParameters(TypedDict):
 class SetEmitTouchEventsForMouseParameters(TypedDict):
     enabled: "bool"
     """Whether touch emulation based on mouse input should be enabled."""
-    configuration: "Optional[str]"
+    configuration: "NotRequired[str]"
     """Touch/gesture events configuration. Default: current platform."""
 
 
@@ -213,7 +213,7 @@ class GetOverriddenSensorInformationReturns(TypedDict):
 class SetSensorOverrideEnabledParameters(TypedDict):
     enabled: "bool"
     type: "SensorType"
-    metadata: "Optional[SensorMetadata]"
+    metadata: "NotRequired[SensorMetadata]"
 
 
 
@@ -230,7 +230,7 @@ class SetSensorOverrideReadingsParameters(TypedDict):
 class SetPressureSourceOverrideEnabledParameters(TypedDict):
     enabled: "bool"
     source: "PressureSource"
-    metadata: "Optional[PressureMetadata]"
+    metadata: "NotRequired[PressureMetadata]"
 
 
 
@@ -247,7 +247,7 @@ class SetPressureStateOverrideParameters(TypedDict):
 class SetPressureDataOverrideParameters(TypedDict):
     source: "PressureSource"
     state: "PressureState"
-    ownContributionEstimate: "Optional[float]"
+    ownContributionEstimate: "NotRequired[float]"
 
 
 
@@ -290,7 +290,7 @@ class SetScriptExecutionDisabledParameters(TypedDict):
 class SetTouchEmulationEnabledParameters(TypedDict):
     enabled: "bool"
     """Whether the touch event emulation should be enabled."""
-    maxTouchPoints: "Optional[int]"
+    maxTouchPoints: "NotRequired[int]"
     """Maximum touch points supported. Defaults to one."""
 
 
@@ -299,13 +299,13 @@ class SetTouchEmulationEnabledParameters(TypedDict):
 
 class SetVirtualTimePolicyParameters(TypedDict):
     policy: "VirtualTimePolicy"
-    budget: "Optional[float]"
+    budget: "NotRequired[float]"
     """If set, after this many virtual milliseconds have elapsed virtual time will be paused and a
 virtualTimeBudgetExpired event is sent."""
-    maxVirtualTimeTaskStarvationCount: "Optional[int]"
+    maxVirtualTimeTaskStarvationCount: "NotRequired[int]"
     """If set this specifies the maximum number of tasks that can be run before virtual is forced
 forwards to prevent deadlock."""
-    initialVirtualTime: "Optional[TimeSinceEpoch]"
+    initialVirtualTime: "NotRequired[TimeSinceEpoch]"
     """If set, base::Time::Now will be overridden to initially return this value."""
 
 
@@ -352,6 +352,14 @@ class SetDisabledImageTypesParameters(TypedDict):
 
 
 
+class SetDataSaverOverrideParameters(TypedDict, total=False):
+    dataSaverEnabled: "bool"
+    """Override value. Omitting the parameter disables the override."""
+
+
+
+
+
 class SetHardwareConcurrencyOverrideParameters(TypedDict):
     hardwareConcurrency: "int"
     """Hardware concurrency to report"""
@@ -363,11 +371,11 @@ class SetHardwareConcurrencyOverrideParameters(TypedDict):
 class SetUserAgentOverrideParameters(TypedDict):
     userAgent: "str"
     """User agent to use."""
-    acceptLanguage: "Optional[str]"
+    acceptLanguage: "NotRequired[str]"
     """Browser language to emulate."""
-    platform: "Optional[str]"
+    platform: "NotRequired[str]"
     """The platform navigator.platform should return."""
-    userAgentMetadata: "Optional[UserAgentMetadata]"
+    userAgentMetadata: "NotRequired[UserAgentMetadata]"
     """To be sent in Sec-CH-UA-* headers and returned in navigator.userAgentData"""
 
 

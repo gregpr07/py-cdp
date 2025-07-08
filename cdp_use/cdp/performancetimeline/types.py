@@ -4,8 +4,8 @@
 
 """CDP PerformanceTimeline Domain Types"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -21,18 +21,18 @@ class LargestContentfulPaint(TypedDict):
     loadTime: "TimeSinceEpoch"
     size: "float"
     """The number of pixels being painted."""
-    elementId: "Optional[str]"
+    elementId: "NotRequired[str]"
     """The id attribute of the element, if available."""
-    url: "Optional[str]"
+    url: "NotRequired[str]"
     """The URL of the image (may be trimmed)."""
-    nodeId: "Optional[BackendNodeId]"
+    nodeId: "NotRequired[BackendNodeId]"
 
 
 
 class LayoutShiftAttribution(TypedDict):
     previousRect: "Rect"
     currentRect: "Rect"
-    nodeId: "Optional[BackendNodeId]"
+    nodeId: "NotRequired[BackendNodeId]"
 
 
 
@@ -56,7 +56,7 @@ This determines which of the optional \"details\" fields is present."""
     """Name may be empty depending on the type."""
     time: "TimeSinceEpoch"
     """Time in seconds since Epoch, monotonically increasing within document lifetime."""
-    duration: "Optional[float]"
+    duration: "NotRequired[float]"
     """Event duration, if applicable."""
-    lcpDetails: "Optional[LargestContentfulPaint]"
-    layoutShiftDetails: "Optional[LayoutShift]"
+    lcpDetails: "NotRequired[LargestContentfulPaint]"
+    layoutShiftDetails: "NotRequired[LayoutShift]"

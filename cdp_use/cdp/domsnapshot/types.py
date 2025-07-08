@@ -4,8 +4,8 @@
 
 """CDP DOMSnapshot Domain Types"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -25,61 +25,61 @@ class DOMNode(TypedDict):
     """`Node`'s nodeName."""
     nodeValue: "str"
     """`Node`'s nodeValue."""
-    textValue: "Optional[str]"
+    textValue: "NotRequired[str]"
     """Only set for textarea elements, contains the text value."""
-    inputValue: "Optional[str]"
+    inputValue: "NotRequired[str]"
     """Only set for input elements, contains the input's associated text value."""
-    inputChecked: "Optional[bool]"
+    inputChecked: "NotRequired[bool]"
     """Only set for radio and checkbox input elements, indicates if the element has been checked"""
-    optionSelected: "Optional[bool]"
+    optionSelected: "NotRequired[bool]"
     """Only set for option elements, indicates if the element has been selected"""
     backendNodeId: "BackendNodeId"
     """`Node`'s id, corresponds to DOM.Node.backendNodeId."""
-    childNodeIndexes: "Optional[List[int]]"
+    childNodeIndexes: "NotRequired[List[int]]"
     """The indexes of the node's child nodes in the `domNodes` array returned by `getSnapshot`, if
 any."""
-    attributes: "Optional[List[NameValue]]"
+    attributes: "NotRequired[List[NameValue]]"
     """Attributes of an `Element` node."""
-    pseudoElementIndexes: "Optional[List[int]]"
+    pseudoElementIndexes: "NotRequired[List[int]]"
     """Indexes of pseudo elements associated with this node in the `domNodes` array returned by
 `getSnapshot`, if any."""
-    layoutNodeIndex: "Optional[int]"
+    layoutNodeIndex: "NotRequired[int]"
     """The index of the node's related layout tree node in the `layoutTreeNodes` array returned by
 `getSnapshot`, if any."""
-    documentURL: "Optional[str]"
+    documentURL: "NotRequired[str]"
     """Document URL that `Document` or `FrameOwner` node points to."""
-    baseURL: "Optional[str]"
+    baseURL: "NotRequired[str]"
     """Base URL that `Document` or `FrameOwner` node uses for URL completion."""
-    contentLanguage: "Optional[str]"
+    contentLanguage: "NotRequired[str]"
     """Only set for documents, contains the document's content language."""
-    documentEncoding: "Optional[str]"
+    documentEncoding: "NotRequired[str]"
     """Only set for documents, contains the document's character set encoding."""
-    publicId: "Optional[str]"
+    publicId: "NotRequired[str]"
     """`DocumentType` node's publicId."""
-    systemId: "Optional[str]"
+    systemId: "NotRequired[str]"
     """`DocumentType` node's systemId."""
-    frameId: "Optional[FrameId]"
+    frameId: "NotRequired[FrameId]"
     """Frame ID for frame owner elements and also for the document node."""
-    contentDocumentIndex: "Optional[int]"
+    contentDocumentIndex: "NotRequired[int]"
     """The index of a frame owner element's content document in the `domNodes` array returned by
 `getSnapshot`, if any."""
-    pseudoType: "Optional[PseudoType]"
+    pseudoType: "NotRequired[PseudoType]"
     """Type of a pseudo element node."""
-    shadowRootType: "Optional[ShadowRootType]"
+    shadowRootType: "NotRequired[ShadowRootType]"
     """Shadow root type."""
-    isClickable: "Optional[bool]"
+    isClickable: "NotRequired[bool]"
     """Whether this DOM node responds to mouse clicks. This includes nodes that have had click
 event listeners attached via JavaScript as well as anchor tags that naturally navigate when
 clicked."""
-    eventListeners: "Optional[List[EventListener]]"
+    eventListeners: "NotRequired[List[EventListener]]"
     """Details of the node's event listeners, if any."""
-    currentSourceURL: "Optional[str]"
+    currentSourceURL: "NotRequired[str]"
     """The selected url for nodes with a srcset attribute."""
-    originURL: "Optional[str]"
+    originURL: "NotRequired[str]"
     """The url of the script (if any) that generates this node."""
-    scrollOffsetX: "Optional[float]"
+    scrollOffsetX: "NotRequired[float]"
     """Scroll offsets, set when this node is a Document."""
-    scrollOffsetY: "Optional[float]"
+    scrollOffsetY: "NotRequired[float]"
 
 
 
@@ -103,17 +103,17 @@ class LayoutTreeNode(TypedDict):
     """The index of the related DOM node in the `domNodes` array returned by `getSnapshot`."""
     boundingBox: "Rect"
     """The bounding box in document coordinates. Note that scroll offset of the document is ignored."""
-    layoutText: "Optional[str]"
+    layoutText: "NotRequired[str]"
     """Contents of the LayoutText, if any."""
-    inlineTextNodes: "Optional[List[InlineTextBox]]"
+    inlineTextNodes: "NotRequired[List[InlineTextBox]]"
     """The post-layout inline text nodes, if any."""
-    styleIndex: "Optional[int]"
+    styleIndex: "NotRequired[int]"
     """Index into the `computedStyles` array returned by `getSnapshot`."""
-    paintOrder: "Optional[int]"
+    paintOrder: "NotRequired[int]"
     """Global paint order index, which is determined by the stacking order of the nodes. Nodes
 that are painted together will have the same index. Only provided if includePaintOrder in
 getSnapshot was true."""
-    isStackingContext: "Optional[bool]"
+    isStackingContext: "NotRequired[bool]"
     """Set to true to indicate the element begins a new stacking context."""
 
 
@@ -190,13 +190,13 @@ class DocumentSnapshot(TypedDict):
     """The nodes in the layout tree."""
     textBoxes: "TextBoxSnapshot"
     """The post-layout inline text nodes."""
-    scrollOffsetX: "Optional[float]"
+    scrollOffsetX: "NotRequired[float]"
     """Horizontal scroll offset."""
-    scrollOffsetY: "Optional[float]"
+    scrollOffsetY: "NotRequired[float]"
     """Vertical scroll offset."""
-    contentWidth: "Optional[float]"
+    contentWidth: "NotRequired[float]"
     """Document content width."""
-    contentHeight: "Optional[float]"
+    contentHeight: "NotRequired[float]"
     """Document content height."""
 
 
@@ -255,19 +255,19 @@ class LayoutTreeSnapshot(TypedDict):
     """Contents of the LayoutText, if any."""
     stackingContexts: "RareBooleanData"
     """Stacking context information."""
-    paintOrders: "Optional[List[int]]"
+    paintOrders: "NotRequired[List[int]]"
     """Global paint order index, which is determined by the stacking order of the nodes. Nodes
 that are painted together will have the same index. Only provided if includePaintOrder in
 captureSnapshot was true."""
-    offsetRects: "Optional[List[Rectangle]]"
+    offsetRects: "NotRequired[List[Rectangle]]"
     """The offset rect of nodes. Only available when includeDOMRects is set to true"""
-    scrollRects: "Optional[List[Rectangle]]"
+    scrollRects: "NotRequired[List[Rectangle]]"
     """The scroll rect of nodes. Only available when includeDOMRects is set to true"""
-    clientRects: "Optional[List[Rectangle]]"
+    clientRects: "NotRequired[List[Rectangle]]"
     """The client rect of nodes. Only available when includeDOMRects is set to true"""
-    blendedBackgroundColors: "Optional[List[StringIndex]]"
+    blendedBackgroundColors: "NotRequired[List[StringIndex]]"
     """The list of background colors that are blended with colors of overlapping elements."""
-    textColorOpacities: "Optional[List[float]]"
+    textColorOpacities: "NotRequired[List[float]]"
     """The list of computed text opacities."""
 
 

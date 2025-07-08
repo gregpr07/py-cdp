@@ -5,8 +5,8 @@
 """CDP SystemInfo Domain Types"""
 
 from enum import Enum
-from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, Dict, List
+from typing_extensions import NotRequired, TypedDict
 
 """Describes a single graphics processor (GPU)."""
 class GPUDevice(TypedDict):
@@ -14,9 +14,9 @@ class GPUDevice(TypedDict):
     """PCI ID of the GPU vendor, if available; 0 otherwise."""
     deviceId: "float"
     """PCI ID of the GPU device, if available; 0 otherwise."""
-    subSysId: "Optional[float]"
+    subSysId: "NotRequired[float]"
     """Sub sys ID of the GPU, only available on Windows."""
-    revision: "Optional[float]"
+    revision: "NotRequired[float]"
     """Revision of the GPU, only available on Windows."""
     vendorString: "str"
     """String description of the GPU vendor, if the PCI ID is not available."""
@@ -99,9 +99,9 @@ class ImageDecodeAcceleratorCapability(TypedDict):
 class GPUInfo(TypedDict):
     devices: "List[GPUDevice]"
     """The graphics devices on the system. Element 0 is the primary GPU."""
-    auxAttributes: "Optional[Dict[str, Any]]"
+    auxAttributes: "NotRequired[Dict[str, Any]]"
     """An optional dictionary of additional GPU related attributes."""
-    featureStatus: "Optional[Dict[str, Any]]"
+    featureStatus: "NotRequired[Dict[str, Any]]"
     """An optional dictionary of graphics features and their status."""
     driverBugWorkarounds: "List[str]"
     """An optional array of GPU driver bug workarounds."""

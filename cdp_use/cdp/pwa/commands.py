@@ -4,8 +4,8 @@
 
 """CDP PWA Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -29,7 +29,7 @@ class GetOsAppStateReturns(TypedDict):
 
 class InstallParameters(TypedDict):
     manifestId: "str"
-    installUrlOrBundleUrl: "Optional[str]"
+    installUrlOrBundleUrl: "NotRequired[str]"
     """The location of the app or bundle overriding the one derived from the
 manifestId."""
 
@@ -46,7 +46,7 @@ class UninstallParameters(TypedDict):
 
 class LaunchParameters(TypedDict):
     manifestId: "str"
-    url: "Optional[str]"
+    url: "NotRequired[str]"
 
 
 class LaunchReturns(TypedDict):
@@ -75,7 +75,7 @@ class OpenCurrentPageInAppParameters(TypedDict):
 
 class ChangeAppUserSettingsParameters(TypedDict):
     manifestId: "str"
-    linkCapturing: "Optional[bool]"
+    linkCapturing: "NotRequired[bool]"
     """If user allows the links clicked on by the user in the app's scope, or
 extended scope if the manifest has scope extensions and the flags
 `DesktopPWAsLinkCapturingWithScopeExtensions` and
@@ -87,6 +87,6 @@ it.
 
 TODO(crbug.com/339453269): Setting this value on ChromeOS is not
 supported yet."""
-    displayMode: "Optional[DisplayMode]"
+    displayMode: "NotRequired[DisplayMode]"
 
 

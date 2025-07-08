@@ -4,8 +4,8 @@
 
 """CDP Audits Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -18,9 +18,9 @@ class GetEncodedResponseParameters(TypedDict):
     """Identifier of the network request to get content for."""
     encoding: "str"
     """The encoding to use."""
-    quality: "Optional[float]"
+    quality: "NotRequired[float]"
     """The quality of the encoding (0-1). (defaults to 1)"""
-    sizeOnly: "Optional[bool]"
+    sizeOnly: "NotRequired[bool]"
     """Whether to only return the size information (defaults to false)."""
 
 

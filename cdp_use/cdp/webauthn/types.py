@@ -5,8 +5,7 @@
 """CDP WebAuthn Domain Types"""
 
 from enum import Enum
-from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 AuthenticatorId = str
 
@@ -35,40 +34,40 @@ class AuthenticatorTransport(Enum):
 
 class VirtualAuthenticatorOptions(TypedDict):
     protocol: "AuthenticatorProtocol"
-    ctap2Version: "Optional[Ctap2Version]"
+    ctap2Version: "NotRequired[Ctap2Version]"
     """Defaults to ctap2_0. Ignored if |protocol| == u2f."""
     transport: "AuthenticatorTransport"
-    hasResidentKey: "Optional[bool]"
+    hasResidentKey: "NotRequired[bool]"
     """Defaults to false."""
-    hasUserVerification: "Optional[bool]"
+    hasUserVerification: "NotRequired[bool]"
     """Defaults to false."""
-    hasLargeBlob: "Optional[bool]"
+    hasLargeBlob: "NotRequired[bool]"
     """If set to true, the authenticator will support the largeBlob extension.
 https://w3c.github.io/webauthn#largeBlob
 Defaults to false."""
-    hasCredBlob: "Optional[bool]"
+    hasCredBlob: "NotRequired[bool]"
     """If set to true, the authenticator will support the credBlob extension.
 https://fidoalliance.org/specs/fido-v2.1-rd-20201208/fido-client-to-authenticator-protocol-v2.1-rd-20201208.html#sctn-credBlob-extension
 Defaults to false."""
-    hasMinPinLength: "Optional[bool]"
+    hasMinPinLength: "NotRequired[bool]"
     """If set to true, the authenticator will support the minPinLength extension.
 https://fidoalliance.org/specs/fido-v2.1-ps-20210615/fido-client-to-authenticator-protocol-v2.1-ps-20210615.html#sctn-minpinlength-extension
 Defaults to false."""
-    hasPrf: "Optional[bool]"
+    hasPrf: "NotRequired[bool]"
     """If set to true, the authenticator will support the prf extension.
 https://w3c.github.io/webauthn/#prf-extension
 Defaults to false."""
-    automaticPresenceSimulation: "Optional[bool]"
+    automaticPresenceSimulation: "NotRequired[bool]"
     """If set to true, tests of user presence will succeed immediately.
 Otherwise, they will not be resolved. Defaults to true."""
-    isUserVerified: "Optional[bool]"
+    isUserVerified: "NotRequired[bool]"
     """Sets whether User Verification succeeds or fails for an authenticator.
 Defaults to false."""
-    defaultBackupEligibility: "Optional[bool]"
+    defaultBackupEligibility: "NotRequired[bool]"
     """Credentials created by this authenticator will have the backup
 eligibility (BE) flag set to this value. Defaults to false.
 https://w3c.github.io/webauthn/#sctn-credential-backup"""
-    defaultBackupState: "Optional[bool]"
+    defaultBackupState: "NotRequired[bool]"
     """Credentials created by this authenticator will have the backup state
 (BS) flag set to this value. Defaults to false.
 https://w3c.github.io/webauthn/#sctn-credential-backup"""
@@ -78,33 +77,33 @@ https://w3c.github.io/webauthn/#sctn-credential-backup"""
 class Credential(TypedDict):
     credentialId: "str"
     isResidentCredential: "bool"
-    rpId: "Optional[str]"
+    rpId: "NotRequired[str]"
     """Relying Party ID the credential is scoped to. Must be set when adding a
 credential."""
     privateKey: "str"
     """The ECDSA P-256 private key in PKCS#8 format. (Encoded as a base64 string when passed over JSON)"""
-    userHandle: "Optional[str]"
+    userHandle: "NotRequired[str]"
     """An opaque byte sequence with a maximum size of 64 bytes mapping the
 credential to a specific user. (Encoded as a base64 string when passed over JSON)"""
     signCount: "int"
     """Signature counter. This is incremented by one for each successful
 assertion.
 See https://w3c.github.io/webauthn/#signature-counter"""
-    largeBlob: "Optional[str]"
+    largeBlob: "NotRequired[str]"
     """The large blob associated with the credential.
 See https://w3c.github.io/webauthn/#sctn-large-blob-extension (Encoded as a base64 string when passed over JSON)"""
-    backupEligibility: "Optional[bool]"
+    backupEligibility: "NotRequired[bool]"
     """Assertions returned by this credential will have the backup eligibility
 (BE) flag set to this value. Defaults to the authenticator's
 defaultBackupEligibility value."""
-    backupState: "Optional[bool]"
+    backupState: "NotRequired[bool]"
     """Assertions returned by this credential will have the backup state (BS)
 flag set to this value. Defaults to the authenticator's
 defaultBackupState value."""
-    userName: "Optional[str]"
+    userName: "NotRequired[str]"
     """The credential's user.name property. Equivalent to empty if not set.
 https://w3c.github.io/webauthn/#dom-publickeycredentialentity-name"""
-    userDisplayName: "Optional[str]"
+    userDisplayName: "NotRequired[str]"
     """The credential's user.displayName property. Equivalent to empty if
 not set.
 https://w3c.github.io/webauthn/#dom-publickeycredentialuserentity-displayname"""

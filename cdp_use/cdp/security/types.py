@@ -5,8 +5,8 @@
 """CDP Security Domain Types"""
 
 from enum import Enum
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -44,11 +44,11 @@ class CertificateSecurityState(TypedDict):
     """Protocol name (e.g. \"TLS 1.2\" or \"QUIC\")."""
     keyExchange: "str"
     """Key Exchange used by the connection, or the empty string if not applicable."""
-    keyExchangeGroup: "Optional[str]"
+    keyExchangeGroup: "NotRequired[str]"
     """(EC)DH group used by the connection, if applicable."""
     cipher: "str"
     """Cipher name."""
-    mac: "Optional[str]"
+    mac: "NotRequired[str]"
     """TLS MAC. Note that AEAD ciphers do not have separate MACs."""
     certificate: "List[str]"
     """Page certificate."""
@@ -60,7 +60,7 @@ class CertificateSecurityState(TypedDict):
     """Certificate valid from date."""
     validTo: "TimeSinceEpoch"
     """Certificate valid to (expiration) date"""
-    certificateNetworkError: "Optional[str]"
+    certificateNetworkError: "NotRequired[str]"
     """The highest priority network error code, if the certificate has an error."""
     certificateHasWeakSignature: "bool"
     """True if the certificate uses a weak signature algorithm."""
@@ -88,7 +88,7 @@ class SafetyTipStatus(Enum):
 class SafetyTipInfo(TypedDict):
     safetyTipStatus: "SafetyTipStatus"
     """Describes whether the page triggers any safety tips or reputation warnings. Default is unknown."""
-    safeUrl: "Optional[str]"
+    safeUrl: "NotRequired[str]"
     """The URL the safety tip suggested (\"Did you mean?\"). Only filled in for lookalike matches."""
 
 
@@ -97,9 +97,9 @@ class SafetyTipInfo(TypedDict):
 class VisibleSecurityState(TypedDict):
     securityState: "SecurityState"
     """The security level of the page."""
-    certificateSecurityState: "Optional[CertificateSecurityState]"
+    certificateSecurityState: "NotRequired[CertificateSecurityState]"
     """Security state details about the page certificate."""
-    safetyTipInfo: "Optional[SafetyTipInfo]"
+    safetyTipInfo: "NotRequired[SafetyTipInfo]"
     """The type of Safety Tip triggered on the page. Note that this field will be set even if the Safety Tip UI was not actually shown."""
     securityStateIssueIds: "List[str]"
     """Array of security state issues ids."""
@@ -120,7 +120,7 @@ class SecurityStateExplanation(TypedDict):
     """The type of mixed content described by the explanation."""
     certificate: "List[str]"
     """Page certificate."""
-    recommendations: "Optional[List[str]]"
+    recommendations: "NotRequired[List[str]]"
     """Recommendations to fix any issues."""
 
 

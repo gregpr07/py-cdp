@@ -4,8 +4,8 @@
 
 """CDP FedCm Domain Events"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -20,7 +20,7 @@ class DialogShownEvent(TypedDict):
     title: "str"
     """These exist primarily so that the caller can verify the
 RP context was used appropriately."""
-    subtitle: "Optional[str]"
+    subtitle: "NotRequired[str]"
 
 
 

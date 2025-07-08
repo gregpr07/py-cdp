@@ -4,8 +4,8 @@
 
 """CDP Network Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -61,25 +61,25 @@ class CanEmulateNetworkConditionsReturns(TypedDict):
 
 class ContinueInterceptedRequestParameters(TypedDict):
     interceptionId: "InterceptionId"
-    errorReason: "Optional[ErrorReason]"
+    errorReason: "NotRequired[ErrorReason]"
     """If set this causes the request to fail with the given reason. Passing `Aborted` for requests
 marked with `isNavigationRequest` also cancels the navigation. Must not be set in response
 to an authChallenge."""
-    rawResponse: "Optional[str]"
+    rawResponse: "NotRequired[str]"
     """If set the requests completes using with the provided base64 encoded raw response, including
 HTTP status line and headers etc... Must not be set in response to an authChallenge. (Encoded as a base64 string when passed over JSON)"""
-    url: "Optional[str]"
+    url: "NotRequired[str]"
     """If set the request url will be modified in a way that's not observable by page. Must not be
 set in response to an authChallenge."""
-    method: "Optional[str]"
+    method: "NotRequired[str]"
     """If set this allows the request method to be overridden. Must not be set in response to an
 authChallenge."""
-    postData: "Optional[str]"
+    postData: "NotRequired[str]"
     """If set this allows postData to be set. Must not be set in response to an authChallenge."""
-    headers: "Optional[Headers]"
+    headers: "NotRequired[Headers]"
     """If set this allows the request headers to be changed. Must not be set in response to an
 authChallenge."""
-    authChallengeResponse: "Optional[AuthChallengeResponse]"
+    authChallengeResponse: "NotRequired[AuthChallengeResponse]"
     """Response to a requestIntercepted with an authChallenge. Must not be set otherwise."""
 
 
@@ -89,14 +89,14 @@ authChallenge."""
 class DeleteCookiesParameters(TypedDict):
     name: "str"
     """Name of the cookies to remove."""
-    url: "Optional[str]"
+    url: "NotRequired[str]"
     """If specified, deletes all the cookies with the given name where domain and path match
 provided URL."""
-    domain: "Optional[str]"
+    domain: "NotRequired[str]"
     """If specified, deletes only cookies with the exact domain."""
-    path: "Optional[str]"
+    path: "NotRequired[str]"
     """If specified, deletes only cookies with the exact path."""
-    partitionKey: "Optional[CookiePartitionKey]"
+    partitionKey: "NotRequired[CookiePartitionKey]"
     """If specified, deletes only cookies with the the given name and partitionKey where
 all partition key attributes match the cookie partition key attribute."""
 
@@ -113,13 +113,13 @@ class EmulateNetworkConditionsParameters(TypedDict):
     """Maximal aggregated download throughput (bytes/sec). -1 disables download throttling."""
     uploadThroughput: "float"
     """Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling."""
-    connectionType: "Optional[ConnectionType]"
+    connectionType: "NotRequired[ConnectionType]"
     """Connection type if known."""
-    packetLoss: "Optional[float]"
+    packetLoss: "NotRequired[float]"
     """WebRTC packet loss (percent, 0-100). 0 disables packet loss emulation, 100 drops all the packets."""
-    packetQueueLength: "Optional[int]"
+    packetQueueLength: "NotRequired[int]"
     """WebRTC packet queue length (packet). 0 removes any queue length limitations."""
-    packetReordering: "Optional[bool]"
+    packetReordering: "NotRequired[bool]"
     """WebRTC packetReordering feature."""
 
 
@@ -228,9 +228,9 @@ class SearchInResponseBodyParameters(TypedDict):
     """Identifier of the network response to search."""
     query: "str"
     """String to search for."""
-    caseSensitive: "Optional[bool]"
+    caseSensitive: "NotRequired[bool]"
     """If true, search is case sensitive."""
-    isRegex: "Optional[bool]"
+    isRegex: "NotRequired[bool]"
     """If true, treats string parameter as regex."""
 
 
@@ -269,32 +269,32 @@ class SetCookieParameters(TypedDict):
     """Cookie name."""
     value: "str"
     """Cookie value."""
-    url: "Optional[str]"
+    url: "NotRequired[str]"
     """The request-URI to associate with the setting of the cookie. This value can affect the
 default domain, path, source port, and source scheme values of the created cookie."""
-    domain: "Optional[str]"
+    domain: "NotRequired[str]"
     """Cookie domain."""
-    path: "Optional[str]"
+    path: "NotRequired[str]"
     """Cookie path."""
-    secure: "Optional[bool]"
+    secure: "NotRequired[bool]"
     """True if cookie is secure."""
-    httpOnly: "Optional[bool]"
+    httpOnly: "NotRequired[bool]"
     """True if cookie is http-only."""
-    sameSite: "Optional[CookieSameSite]"
+    sameSite: "NotRequired[CookieSameSite]"
     """Cookie SameSite type."""
-    expires: "Optional[TimeSinceEpoch]"
+    expires: "NotRequired[TimeSinceEpoch]"
     """Cookie expiration date, session cookie if not set"""
-    priority: "Optional[CookiePriority]"
+    priority: "NotRequired[CookiePriority]"
     """Cookie Priority type."""
-    sameParty: "Optional[bool]"
+    sameParty: "NotRequired[bool]"
     """True if cookie is SameParty."""
-    sourceScheme: "Optional[CookieSourceScheme]"
+    sourceScheme: "NotRequired[CookieSourceScheme]"
     """Cookie source scheme type."""
-    sourcePort: "Optional[int]"
+    sourcePort: "NotRequired[int]"
     """Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port.
 An unspecified port value allows protocol clients to emulate legacy cookie scope for the port.
 This is a temporary ability and it will be removed in the future."""
-    partitionKey: "Optional[CookiePartitionKey]"
+    partitionKey: "NotRequired[CookiePartitionKey]"
     """Cookie partition key. If not set, the cookie will be set as not partitioned."""
 
 
@@ -340,11 +340,11 @@ continueInterceptedRequest call."""
 class SetUserAgentOverrideParameters(TypedDict):
     userAgent: "str"
     """User agent to use."""
-    acceptLanguage: "Optional[str]"
+    acceptLanguage: "NotRequired[str]"
     """Browser language to emulate."""
-    platform: "Optional[str]"
+    platform: "NotRequired[str]"
     """The platform navigator.platform should return."""
-    userAgentMetadata: "Optional[UserAgentMetadata]"
+    userAgentMetadata: "NotRequired[UserAgentMetadata]"
     """To be sent in Sec-CH-UA-* headers and returned in navigator.userAgentData"""
 
 
@@ -381,7 +381,7 @@ class EnableReportingApiParameters(TypedDict):
 
 
 class LoadNetworkResourceParameters(TypedDict):
-    frameId: "Optional[FrameId]"
+    frameId: "NotRequired[FrameId]"
     """Frame id to get the resource for. Mandatory for frame targets, and
 should be omitted for worker targets."""
     url: "str"

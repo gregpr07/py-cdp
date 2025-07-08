@@ -5,8 +5,7 @@
 """CDP FedCm Domain Types"""
 
 from enum import Enum
-from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 """Whether this is a sign-up or sign-in action for this account, i.e.
 whether this account has ever been used to sign in to this RP before."""
@@ -50,6 +49,6 @@ class Account(TypedDict):
     idpConfigUrl: "str"
     idpLoginUrl: "str"
     loginState: "LoginState"
-    termsOfServiceUrl: "Optional[str]"
+    termsOfServiceUrl: "NotRequired[str]"
     """These two are only set if the loginState is signUp"""
-    privacyPolicyUrl: "Optional[str]"
+    privacyPolicyUrl: "NotRequired[str]"

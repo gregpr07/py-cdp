@@ -4,8 +4,8 @@
 
 """CDP Profiler Domain Events"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -19,7 +19,7 @@ class ConsoleProfileFinishedEvent(TypedDict):
     location: "Location"
     """Location of console.profileEnd()."""
     profile: "Profile"
-    title: "Optional[str]"
+    title: "NotRequired[str]"
     """Profile title passed as an argument to console.profile()."""
 
 
@@ -29,7 +29,7 @@ class ConsoleProfileStartedEvent(TypedDict):
     id: "str"
     location: "Location"
     """Location of console.profile()."""
-    title: "Optional[str]"
+    title: "NotRequired[str]"
     """Profile title passed as an argument to console.profile()."""
 
 

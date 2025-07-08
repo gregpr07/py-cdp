@@ -4,8 +4,8 @@
 
 """CDP Runtime Domain Events"""
 
-from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, Dict, List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -36,11 +36,11 @@ class ConsoleAPICalledEvent(TypedDict):
     """Identifier of the context where the call was made."""
     timestamp: "Timestamp"
     """Call timestamp."""
-    stackTrace: "Optional[StackTrace]"
+    stackTrace: "NotRequired[StackTrace]"
     """Stack trace captured when the call was made. The async stack chain is automatically reported for
 the following call types: `assert`, `error`, `trace`, `warning`. For other types the async call
 chain can be retrieved using `Debugger.getStackTrace` and `stackTrace.parentId` field."""
-    context: "Optional[str]"
+    context: "NotRequired[str]"
     """Console context descriptor for calls on non-default console context (not console.*):
 'anonymous#unique-logger-id' for call on unnamed context, 'name#unique-logger-id' for call
 on named context."""
@@ -91,5 +91,5 @@ call)."""
 class InspectRequestedEvent(TypedDict):
     object: "RemoteObject"
     hints: "Dict[str, Any]"
-    executionContextId: "Optional[ExecutionContextId]"
+    executionContextId: "NotRequired[ExecutionContextId]"
     """Identifier of the context where the call was made."""

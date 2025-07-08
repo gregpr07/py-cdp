@@ -5,8 +5,8 @@
 """CDP Storage Domain Types"""
 
 from enum import Enum
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -144,13 +144,13 @@ storage."""
 """Represents a dictionary object passed in as privateAggregationConfig to
 run or selectURL."""
 class SharedStoragePrivateAggregationConfig(TypedDict):
-    aggregationCoordinatorOrigin: "Optional[str]"
+    aggregationCoordinatorOrigin: "NotRequired[str]"
     """The chosen aggregation service deployment."""
-    contextId: "Optional[str]"
+    contextId: "NotRequired[str]"
     """The context ID provided."""
     filteringIdMaxBytes: "int"
     """Configures the maximum size allowed for filtering IDs."""
-    maxContributions: "Optional[int]"
+    maxContributions: "NotRequired[int]"
     """The limit on the number of contributions in the final report."""
 
 
@@ -249,7 +249,7 @@ class StorageBucketsDurability(Enum):
 
 class StorageBucket(TypedDict):
     storageKey: "SerializedStorageKey"
-    name: "Optional[str]"
+    name: "NotRequired[str]"
     """If not specified, it is the default bucket of the storageKey."""
 
 
@@ -291,7 +291,7 @@ class AttributionReportingFilterDataEntry(TypedDict):
 
 class AttributionReportingFilterConfig(TypedDict):
     filterValues: "List[AttributionReportingFilterDataEntry]"
-    lookbackWindow: "Optional[int]"
+    lookbackWindow: "NotRequired[int]"
     """duration in seconds"""
 
 
@@ -332,12 +332,12 @@ int"""
 
 
 class AttributionReportingAggregatableDebugReportingConfig(TypedDict):
-    budget: "Optional[float]"
+    budget: "NotRequired[float]"
     """number instead of integer because not all uint32 can be represented by
 int, only present for source registrations"""
     keyPiece: "UnsignedInt128AsBase16"
     debugData: "List[AttributionReportingAggregatableDebugReportingData]"
-    aggregationCoordinatorOrigin: "Optional[str]"
+    aggregationCoordinatorOrigin: "NotRequired[str]"
 
 
 
@@ -374,11 +374,11 @@ int"""
     priority: "SignedInt64AsBase10"
     filterData: "List[AttributionReportingFilterDataEntry]"
     aggregationKeys: "List[AttributionReportingAggregationKeysEntry]"
-    debugKey: "Optional[UnsignedInt64AsBase10]"
+    debugKey: "NotRequired[UnsignedInt64AsBase10]"
     triggerDataMatching: "AttributionReportingTriggerDataMatching"
     destinationLimitPriority: "SignedInt64AsBase10"
     aggregatableDebugReportingConfig: "AttributionReportingAggregatableDebugReportingConfig"
-    scopesData: "Optional[AttributionScopesData]"
+    scopesData: "NotRequired[AttributionScopesData]"
     maxEventLevelReports: "int"
     namedBudgets: "List[AttributionReportingNamedBudgetDef]"
     debugReporting: "bool"
@@ -430,7 +430,7 @@ class AttributionReportingAggregatableValueEntry(TypedDict):
 class AttributionReportingEventTriggerData(TypedDict):
     data: "UnsignedInt64AsBase10"
     priority: "SignedInt64AsBase10"
-    dedupKey: "Optional[UnsignedInt64AsBase10]"
+    dedupKey: "NotRequired[UnsignedInt64AsBase10]"
     filters: "AttributionReportingFilterPair"
 
 
@@ -443,29 +443,29 @@ class AttributionReportingAggregatableTriggerData(TypedDict):
 
 
 class AttributionReportingAggregatableDedupKey(TypedDict):
-    dedupKey: "Optional[UnsignedInt64AsBase10]"
+    dedupKey: "NotRequired[UnsignedInt64AsBase10]"
     filters: "AttributionReportingFilterPair"
 
 
 
 class AttributionReportingNamedBudgetCandidate(TypedDict):
-    name: "Optional[str]"
+    name: "NotRequired[str]"
     filters: "AttributionReportingFilterPair"
 
 
 
 class AttributionReportingTriggerRegistration(TypedDict):
     filters: "AttributionReportingFilterPair"
-    debugKey: "Optional[UnsignedInt64AsBase10]"
+    debugKey: "NotRequired[UnsignedInt64AsBase10]"
     aggregatableDedupKeys: "List[AttributionReportingAggregatableDedupKey]"
     eventTriggerData: "List[AttributionReportingEventTriggerData]"
     aggregatableTriggerData: "List[AttributionReportingAggregatableTriggerData]"
     aggregatableValues: "List[AttributionReportingAggregatableValueEntry]"
     aggregatableFilteringIdMaxBytes: "int"
     debugReporting: "bool"
-    aggregationCoordinatorOrigin: "Optional[str]"
+    aggregationCoordinatorOrigin: "NotRequired[str]"
     sourceRegistrationTimeConfig: "AttributionReportingSourceRegistrationTimeConfig"
-    triggerContextId: "Optional[str]"
+    triggerContextId: "NotRequired[str]"
     aggregatableDebugReportingConfig: "AttributionReportingAggregatableDebugReportingConfig"
     scopes: "List[str]"
     namedBudgets: "List[AttributionReportingNamedBudgetCandidate]"

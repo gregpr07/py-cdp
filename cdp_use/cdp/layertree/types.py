@@ -4,8 +4,8 @@
 
 """CDP LayerTree Domain Types"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -38,9 +38,9 @@ class StickyPositionConstraint(TypedDict):
     """Layout rectangle of the sticky element before being shifted"""
     containingBlockRect: "Rect"
     """Layout rectangle of the containing block of the sticky element"""
-    nearestLayerShiftingStickyBox: "Optional[LayerId]"
+    nearestLayerShiftingStickyBox: "NotRequired[LayerId]"
     """The nearest sticky layer that shifts the sticky box"""
-    nearestLayerShiftingContainingBlock: "Optional[LayerId]"
+    nearestLayerShiftingContainingBlock: "NotRequired[LayerId]"
     """The nearest sticky layer that shifts the containing block"""
 
 
@@ -60,9 +60,9 @@ class PictureTile(TypedDict):
 class Layer(TypedDict):
     layerId: "LayerId"
     """The unique id for this layer."""
-    parentLayerId: "Optional[LayerId]"
+    parentLayerId: "NotRequired[LayerId]"
     """The id of parent (not present for root)."""
-    backendNodeId: "Optional[BackendNodeId]"
+    backendNodeId: "NotRequired[BackendNodeId]"
     """The backend id for the node associated with this layer."""
     offsetX: "float"
     """Offset from parent layer, X coordinate."""
@@ -72,24 +72,24 @@ class Layer(TypedDict):
     """Layer width."""
     height: "float"
     """Layer height."""
-    transform: "Optional[List[float]]"
+    transform: "NotRequired[List[float]]"
     """Transformation matrix for layer, default is identity matrix"""
-    anchorX: "Optional[float]"
+    anchorX: "NotRequired[float]"
     """Transform anchor point X, absent if no transform specified"""
-    anchorY: "Optional[float]"
+    anchorY: "NotRequired[float]"
     """Transform anchor point Y, absent if no transform specified"""
-    anchorZ: "Optional[float]"
+    anchorZ: "NotRequired[float]"
     """Transform anchor point Z, absent if no transform specified"""
     paintCount: "int"
     """Indicates how many time this layer has painted."""
     drawsContent: "bool"
     """Indicates whether this layer hosts any content, rather than being used for
 transform/scrolling purposes only."""
-    invisible: "Optional[bool]"
+    invisible: "NotRequired[bool]"
     """Set if layer is not visible."""
-    scrollRects: "Optional[List[ScrollRect]]"
+    scrollRects: "NotRequired[List[ScrollRect]]"
     """Rectangles scrolling on main thread only."""
-    stickyPositionConstraint: "Optional[StickyPositionConstraint]"
+    stickyPositionConstraint: "NotRequired[StickyPositionConstraint]"
     """Sticky position constraint information"""
 
 

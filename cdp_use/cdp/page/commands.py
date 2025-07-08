@@ -4,8 +4,8 @@
 
 """CDP Page Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -50,14 +50,14 @@ class AddScriptToEvaluateOnLoadReturns(TypedDict):
 
 class AddScriptToEvaluateOnNewDocumentParameters(TypedDict):
     source: "str"
-    worldName: "Optional[str]"
+    worldName: "NotRequired[str]"
     """If specified, creates an isolated world with the given name and evaluates given script in it.
 This world name will be used as the ExecutionContextDescription::name when the corresponding
 event is emitted."""
-    includeCommandLineAPI: "Optional[bool]"
+    includeCommandLineAPI: "NotRequired[bool]"
     """Specifies whether command line API should be available to the script, defaults
 to false."""
-    runImmediately: "Optional[bool]"
+    runImmediately: "NotRequired[bool]"
     """If true, runs the script immediately on existing execution contexts or worlds.
 Default: false."""
 
@@ -103,9 +103,9 @@ class CaptureSnapshotReturns(TypedDict):
 class CreateIsolatedWorldParameters(TypedDict):
     frameId: "FrameId"
     """Id of the frame in which the isolated world should be created."""
-    worldName: "Optional[str]"
+    worldName: "NotRequired[str]"
     """An optional name which is reported in the Execution Context."""
-    grantUniveralAccess: "Optional[bool]"
+    grantUniveralAccess: "NotRequired[bool]"
     """Whether or not universal access should be granted to the isolated world. This is a powerful
 option, use with caution."""
 
@@ -237,7 +237,7 @@ class GetResourceTreeReturns(TypedDict):
 class HandleJavaScriptDialogParameters(TypedDict):
     accept: "bool"
     """Whether to accept or dismiss the dialog."""
-    promptText: "Optional[str]"
+    promptText: "NotRequired[str]"
     """The text to enter into the dialog prompt before accepting. Used only if this is a prompt
 dialog."""
 
@@ -248,13 +248,13 @@ dialog."""
 class NavigateParameters(TypedDict):
     url: "str"
     """URL to navigate the page to."""
-    referrer: "Optional[str]"
+    referrer: "NotRequired[str]"
     """Referrer URL."""
-    transitionType: "Optional[TransitionType]"
+    transitionType: "NotRequired[TransitionType]"
     """Intended transition type."""
-    frameId: "Optional[FrameId]"
+    frameId: "NotRequired[FrameId]"
     """Frame id to navigate, if not specified navigates the top frame."""
-    referrerPolicy: "Optional[ReferrerPolicy]"
+    referrerPolicy: "NotRequired[ReferrerPolicy]"
     """Referrer-policy used for the navigation."""
 
 
@@ -382,9 +382,9 @@ class SearchInResourceParameters(TypedDict):
     """URL of the resource to search in."""
     query: "str"
     """String to search for."""
-    caseSensitive: "Optional[bool]"
+    caseSensitive: "NotRequired[bool]"
     """If true, search is case sensitive."""
-    isRegex: "Optional[bool]"
+    isRegex: "NotRequired[bool]"
     """If true, treats string parameter as regex."""
 
 
@@ -438,21 +438,21 @@ class SetDeviceMetricsOverrideParameters(TypedDict):
     mobile: "bool"
     """Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text
 autosizing and more."""
-    scale: "Optional[float]"
+    scale: "NotRequired[float]"
     """Scale to apply to resulting view image."""
-    screenWidth: "Optional[int]"
+    screenWidth: "NotRequired[int]"
     """Overriding screen width value in pixels (minimum 0, maximum 10000000)."""
-    screenHeight: "Optional[int]"
+    screenHeight: "NotRequired[int]"
     """Overriding screen height value in pixels (minimum 0, maximum 10000000)."""
-    positionX: "Optional[int]"
+    positionX: "NotRequired[int]"
     """Overriding view X position on screen in pixels (minimum 0, maximum 10000000)."""
-    positionY: "Optional[int]"
+    positionY: "NotRequired[int]"
     """Overriding view Y position on screen in pixels (minimum 0, maximum 10000000)."""
-    dontSetVisibleSize: "Optional[bool]"
+    dontSetVisibleSize: "NotRequired[bool]"
     """Do not set visible view size, rely upon explicit setVisibleSize call."""
-    screenOrientation: "Optional[ScreenOrientation]"
+    screenOrientation: "NotRequired[ScreenOrientation]"
     """Screen orientation override."""
-    viewport: "Optional[Viewport]"
+    viewport: "NotRequired[Viewport]"
     """The viewport dimensions and scale. If not set, the override is cleared."""
 
 
@@ -474,7 +474,7 @@ class SetDeviceOrientationOverrideParameters(TypedDict):
 class SetFontFamiliesParameters(TypedDict):
     fontFamilies: "FontFamilies"
     """Specifies font families to set. If a font family is not specified, it won't be changed."""
-    forScripts: "Optional[List[ScriptFontFamilies]]"
+    forScripts: "NotRequired[List[ScriptFontFamilies]]"
     """Specifies font families to set for individual scripts."""
 
 
@@ -503,7 +503,7 @@ class SetDownloadBehaviorParameters(TypedDict):
     behavior: "str"
     """Whether to allow all or deny all download requests, or use default Chrome behavior if
 available (otherwise deny)."""
-    downloadPath: "Optional[str]"
+    downloadPath: "NotRequired[str]"
     """The default path to save downloaded files to. This is required if behavior is set to 'allow'"""
 
 
@@ -533,7 +533,7 @@ class SetLifecycleEventsEnabledParameters(TypedDict):
 class SetTouchEmulationEnabledParameters(TypedDict):
     enabled: "bool"
     """Whether the touch event emulation should be enabled."""
-    configuration: "Optional[str]"
+    configuration: "NotRequired[str]"
     """Touch/gesture events configuration. Default: current platform."""
 
 
@@ -597,7 +597,7 @@ class SetRPHRegistrationModeParameters(TypedDict):
 class GenerateTestReportParameters(TypedDict):
     message: "str"
     """Message to be displayed in the report."""
-    group: "Optional[str]"
+    group: "NotRequired[str]"
     """Specifies the endpoint group to deliver the report to."""
 
 
@@ -606,7 +606,7 @@ class GenerateTestReportParameters(TypedDict):
 
 class SetInterceptFileChooserDialogParameters(TypedDict):
     enabled: "bool"
-    cancel: "Optional[bool]"
+    cancel: "NotRequired[bool]"
     """If true, cancels the dialog by emitting relevant events (if any)
 in addition to not showing it if the interception is enabled
 (default: false)."""

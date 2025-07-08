@@ -4,8 +4,8 @@
 
 """CDP Network Domain Events"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -54,7 +54,7 @@ class DataReceivedEvent(TypedDict):
     """Data chunk length."""
     encodedDataLength: "int"
     """Actual bytes received (might be less than dataLength for compressed encodings)."""
-    data: "Optional[str]"
+    data: "NotRequired[str]"
     """Data that was received. (Encoded as a base64 string when passed over JSON)"""
 
 
@@ -84,11 +84,11 @@ class LoadingFailedEvent(TypedDict):
     """Resource type."""
     errorText: "str"
     """Error message. List of network errors: https://cs.chromium.org/chromium/src/net/base/net_error_list.h"""
-    canceled: "Optional[bool]"
+    canceled: "NotRequired[bool]"
     """True if loading was canceled."""
-    blockedReason: "Optional[BlockedReason]"
+    blockedReason: "NotRequired[BlockedReason]"
     """The reason why loading was blocked, if any."""
-    corsErrorStatus: "Optional[CorsErrorStatus]"
+    corsErrorStatus: "NotRequired[CorsErrorStatus]"
     """The reason why loading was blocked by CORS, if any."""
 
 
@@ -119,24 +119,24 @@ Likewise if HTTP authentication is needed then the same fetch id will be used.""
     """How the requested resource will be used."""
     isNavigationRequest: "bool"
     """Whether this is a navigation request, which can abort the navigation completely."""
-    isDownload: "Optional[bool]"
+    isDownload: "NotRequired[bool]"
     """Set if the request is a navigation that will result in a download.
 Only present after response is received from the server (i.e. HeadersReceived stage)."""
-    redirectUrl: "Optional[str]"
+    redirectUrl: "NotRequired[str]"
     """Redirect location, only sent if a redirect was intercepted."""
-    authChallenge: "Optional[AuthChallenge]"
+    authChallenge: "NotRequired[AuthChallenge]"
     """Details of the Authorization Challenge encountered. If this is set then
 continueInterceptedRequest must contain an authChallengeResponse."""
-    responseErrorReason: "Optional[ErrorReason]"
+    responseErrorReason: "NotRequired[ErrorReason]"
     """Response error if intercepted at response stage or if redirect occurred while intercepting
 request."""
-    responseStatusCode: "Optional[int]"
+    responseStatusCode: "NotRequired[int]"
     """Response code if intercepted at response stage or if redirect occurred while intercepting
 request or auth retry occurred."""
-    responseHeaders: "Optional[Headers]"
+    responseHeaders: "NotRequired[Headers]"
     """Response headers if intercepted at the response stage or if redirect occurred while
 intercepting request or auth retry occurred."""
-    requestId: "Optional[RequestId]"
+    requestId: "NotRequired[RequestId]"
     """If the intercepted request had a corresponding requestWillBeSent event fired for it, then
 this requestId will be the same as the requestId present in the requestWillBeSent event."""
 
@@ -169,13 +169,13 @@ class RequestWillBeSentEvent(TypedDict):
     """In the case that redirectResponse is populated, this flag indicates whether
 requestWillBeSentExtraInfo and responseReceivedExtraInfo events will be or were emitted
 for the request which was just redirected."""
-    redirectResponse: "Optional[Response]"
+    redirectResponse: "NotRequired[Response]"
     """Redirect response data."""
-    type: "Optional[ResourceType]"
+    type: "NotRequired[ResourceType]"
     """Type of this resource."""
-    frameId: "Optional[FrameId]"
+    frameId: "NotRequired[FrameId]"
     """Frame identifier."""
-    hasUserGesture: "Optional[bool]"
+    hasUserGesture: "NotRequired[bool]"
     """Whether the request is initiated by a user gesture. Defaults to false."""
 
 
@@ -215,7 +215,7 @@ class ResponseReceivedEvent(TypedDict):
     hasExtraInfo: "bool"
     """Indicates whether requestWillBeSentExtraInfo and responseReceivedExtraInfo events will be
 or were emitted for this request."""
-    frameId: "Optional[FrameId]"
+    frameId: "NotRequired[FrameId]"
     """Frame identifier."""
 
 
@@ -235,7 +235,7 @@ class WebSocketCreatedEvent(TypedDict):
     """Request identifier."""
     url: "str"
     """WebSocket request URL."""
-    initiator: "Optional[Initiator]"
+    initiator: "NotRequired[Initiator]"
     """Request initiator."""
 
 
@@ -305,7 +305,7 @@ class WebTransportCreatedEvent(TypedDict):
     """WebTransport request URL."""
     timestamp: "MonotonicTime"
     """Timestamp."""
-    initiator: "Optional[Initiator]"
+    initiator: "NotRequired[Initiator]"
     """Request initiator."""
 
 
@@ -336,7 +336,7 @@ class DirectTCPSocketCreatedEvent(TypedDict):
     """Unsigned int 16."""
     options: "DirectTCPSocketOptions"
     timestamp: "MonotonicTime"
-    initiator: "Optional[Initiator]"
+    initiator: "NotRequired[Initiator]"
 
 
 
@@ -347,8 +347,8 @@ class DirectTCPSocketOpenedEvent(TypedDict):
     remotePort: "int"
     """Expected to be unsigned integer."""
     timestamp: "MonotonicTime"
-    localAddr: "Optional[str]"
-    localPort: "Optional[int]"
+    localAddr: "NotRequired[str]"
+    localPort: "NotRequired[int]"
     """Expected to be unsigned integer."""
 
 
@@ -389,7 +389,7 @@ class DirectUDPSocketCreatedEvent(TypedDict):
     identifier: "RequestId"
     options: "DirectUDPSocketOptions"
     timestamp: "MonotonicTime"
-    initiator: "Optional[Initiator]"
+    initiator: "NotRequired[Initiator]"
 
 
 
@@ -400,8 +400,8 @@ class DirectUDPSocketOpenedEvent(TypedDict):
     localPort: "int"
     """Expected to be unsigned integer."""
     timestamp: "MonotonicTime"
-    remoteAddr: "Optional[str]"
-    remotePort: "Optional[int]"
+    remoteAddr: "NotRequired[str]"
+    remotePort: "NotRequired[int]"
     """Expected to be unsigned integer."""
 
 
@@ -451,9 +451,9 @@ the request and the ones not sent; the latter are distinguished by having blocke
     """Raw request headers as they will be sent over the wire."""
     connectTiming: "ConnectTiming"
     """Connection timing information for the request."""
-    clientSecurityState: "Optional[ClientSecurityState]"
+    clientSecurityState: "NotRequired[ClientSecurityState]"
     """The client security state set for the request."""
-    siteHasCookieInOtherPartition: "Optional[bool]"
+    siteHasCookieInOtherPartition: "NotRequired[bool]"
     """Whether the site has partitioned cookies stored in a partition different than the current one."""
 
 
@@ -480,15 +480,15 @@ established the connection, so we can't send it in `requestWillBeSentExtraInfo`.
     """The status code of the response. This is useful in cases the request failed and no responseReceived
 event is triggered, which is the case for, e.g., CORS errors. This is also the correct status code
 for cached requests, where the status in responseReceived is a 200 and this will be 304."""
-    headersText: "Optional[str]"
+    headersText: "NotRequired[str]"
     """Raw response header text as it was received over the wire. The raw text may not always be
 available, such as in the case of HTTP/2 or QUIC."""
-    cookiePartitionKey: "Optional[CookiePartitionKey]"
+    cookiePartitionKey: "NotRequired[CookiePartitionKey]"
     """The cookie partition key that will be used to store partitioned cookies set in this response.
 Only sent when partitioned cookies are enabled."""
-    cookiePartitionKeyOpaque: "Optional[bool]"
+    cookiePartitionKeyOpaque: "NotRequired[bool]"
     """True if partitioned cookies are enabled, but the partition key is not serializable to string."""
-    exemptedCookies: "Optional[List[ExemptedSetCookieWithReason]]"
+    exemptedCookies: "NotRequired[List[ExemptedSetCookieWithReason]]"
     """A list of cookies which should have been blocked by 3PCD but are exempted and stored from
 the response with the corresponding reason."""
 
@@ -520,11 +520,11 @@ of the operation already exists und thus, the operation was abort
 preemptively (e.g. a cache hit)."""
     type: "TrustTokenOperationType"
     requestId: "RequestId"
-    topLevelOrigin: "Optional[str]"
+    topLevelOrigin: "NotRequired[str]"
     """Top level origin. The context in which the operation was attempted."""
-    issuerOrigin: "Optional[str]"
+    issuerOrigin: "NotRequired[str]"
     """Origin of the issuer in case of a \"Issuance\" or \"Redemption\" operation."""
-    issuedTokenCount: "Optional[int]"
+    issuedTokenCount: "NotRequired[int]"
     """The number of obtained Trust Tokens on a successful \"Issuance\" operation."""
 
 
@@ -561,7 +561,7 @@ class SubresourceWebBundleInnerResponseParsedEvent(TypedDict):
     """Request identifier of the subresource request"""
     innerRequestURL: "str"
     """URL of the subresource resource."""
-    bundleRequestId: "Optional[RequestId]"
+    bundleRequestId: "NotRequired[RequestId]"
     """Bundle request identifier. Used to match this information to another event.
 This made be absent in case when the instrumentation was enabled only
 after webbundle was parsed."""
@@ -576,7 +576,7 @@ class SubresourceWebBundleInnerResponseErrorEvent(TypedDict):
     """URL of the subresource resource."""
     errorMessage: "str"
     """Error message"""
-    bundleRequestId: "Optional[RequestId]"
+    bundleRequestId: "NotRequired[RequestId]"
     """Bundle request identifier. Used to match this information to another event.
 This made be absent in case when the instrumentation was enabled only
 after webbundle was parsed."""

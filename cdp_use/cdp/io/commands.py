@@ -4,8 +4,7 @@
 
 """CDP IO Domain Commands"""
 
-from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -24,10 +23,10 @@ class CloseParameters(TypedDict):
 class ReadParameters(TypedDict):
     handle: "StreamHandle"
     """Handle of the stream to read."""
-    offset: "Optional[int]"
+    offset: "NotRequired[int]"
     """Seek to the specified offset before reading (if not specified, proceed with offset
 following the last read). Some types of streams may only support sequential reads."""
-    size: "Optional[int]"
+    size: "NotRequired[int]"
     """Maximum number of bytes to read (left upon the agent discretion if not specified)."""
 
 

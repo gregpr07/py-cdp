@@ -4,8 +4,8 @@
 
 """CDP Autofill Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 class TriggerParameters(TypedDict):
     fieldId: "BackendNodeId"
     """Identifies a field that serves as an anchor for autofill."""
-    frameId: "Optional[FrameId]"
+    frameId: "NotRequired[FrameId]"
     """Identifies the frame that field belongs to."""
     card: "CreditCard"
     """Credit card information to fill out the form. Credit card data is not saved."""

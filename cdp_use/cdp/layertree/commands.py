@@ -4,8 +4,8 @@
 
 """CDP LayerTree Domain Commands"""
 
-from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, Dict, List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -54,11 +54,11 @@ class MakeSnapshotReturns(TypedDict):
 class ProfileSnapshotParameters(TypedDict):
     snapshotId: "SnapshotId"
     """The id of the layer snapshot."""
-    minRepeatCount: "Optional[int]"
+    minRepeatCount: "NotRequired[int]"
     """The maximum number of times to replay the snapshot (1, if not specified)."""
-    minDuration: "Optional[float]"
+    minDuration: "NotRequired[float]"
     """The minimum duration (in seconds) to replay the snapshot."""
-    clipRect: "Optional[Rect]"
+    clipRect: "NotRequired[Rect]"
     """The clip rectangle to apply when replaying the snapshot."""
 
 
@@ -79,11 +79,11 @@ class ReleaseSnapshotParameters(TypedDict):
 class ReplaySnapshotParameters(TypedDict):
     snapshotId: "SnapshotId"
     """The id of the layer snapshot."""
-    fromStep: "Optional[int]"
+    fromStep: "NotRequired[int]"
     """The first step to replay from (replay from the very start if not specified)."""
-    toStep: "Optional[int]"
+    toStep: "NotRequired[int]"
     """The last step to replay to (replay till the end if not specified)."""
-    scale: "Optional[float]"
+    scale: "NotRequired[float]"
     """The scale to apply while replaying (defaults to 1)."""
 
 

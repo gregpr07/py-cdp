@@ -5,8 +5,8 @@
 """CDP Debugger Domain Types"""
 
 from enum import Enum
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -30,7 +30,7 @@ class Location(TypedDict):
     """Script identifier as reported in the `Debugger.scriptParsed`."""
     lineNumber: "int"
     """Line number in the script (0-based)."""
-    columnNumber: "Optional[int]"
+    columnNumber: "NotRequired[int]"
     """Column number in the script (0-based)."""
 
 
@@ -56,7 +56,7 @@ class CallFrame(TypedDict):
     """Call frame identifier. This identifier is only valid while the virtual machine is paused."""
     functionName: "str"
     """Name of the JavaScript function called on this call frame."""
-    functionLocation: "Optional[Location]"
+    functionLocation: "NotRequired[Location]"
     """Location in the source code."""
     location: "Location"
     """Location in the source code."""
@@ -68,9 +68,9 @@ sent `Debugger.scriptParsed` event."""
     """Scope chain for this call frame."""
     this: "RemoteObject"
     """`this` object for this call frame."""
-    returnValue: "Optional[RemoteObject]"
+    returnValue: "NotRequired[RemoteObject]"
     """The value being returned, if the function is at return point."""
-    canBeRestarted: "Optional[bool]"
+    canBeRestarted: "NotRequired[bool]"
     """Valid only while the VM is paused and indicates whether this frame
 can be restarted or not. Note that a `true` value here does not
 guarantee that Debugger#restartFrame with this CallFrameId will be
@@ -86,10 +86,10 @@ class Scope(TypedDict):
     """Object representing the scope. For `global` and `with` scopes it represents the actual
 object; for the rest of the scopes, it is artificial transient object enumerating scope
 variables as its properties."""
-    name: "Optional[str]"
-    startLocation: "Optional[Location]"
+    name: "NotRequired[str]"
+    startLocation: "NotRequired[Location]"
     """Location in the source code where scope starts"""
-    endLocation: "Optional[Location]"
+    endLocation: "NotRequired[Location]"
     """Location in the source code where scope ends"""
 
 
@@ -108,9 +108,9 @@ class BreakLocation(TypedDict):
     """Script identifier as reported in the `Debugger.scriptParsed`."""
     lineNumber: "int"
     """Line number in the script (0-based)."""
-    columnNumber: "Optional[int]"
+    columnNumber: "NotRequired[int]"
     """Column number in the script (0-based)."""
-    type: "Optional[str]"
+    type: "NotRequired[str]"
 
 
 
@@ -133,7 +133,7 @@ class ScriptLanguage(Enum):
 class DebugSymbols(TypedDict):
     type: "str"
     """Type of the debug symbols."""
-    externalURL: "Optional[str]"
+    externalURL: "NotRequired[str]"
     """URL of the external symbol source."""
 
 

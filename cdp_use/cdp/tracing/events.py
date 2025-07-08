@@ -4,8 +4,8 @@
 
 """CDP Tracing Domain Events"""
 
-from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, Dict, List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -39,9 +39,9 @@ class TracingCompleteEvent(TypedDict):
     dataLossOccurred: "bool"
     """Indicates whether some trace data is known to have been lost, e.g. because the trace ring
 buffer wrapped around."""
-    stream: "Optional[StreamHandle]"
+    stream: "NotRequired[StreamHandle]"
     """A handle of the stream that holds resulting trace data."""
-    traceFormat: "Optional[StreamFormat]"
+    traceFormat: "NotRequired[StreamFormat]"
     """Trace data format of returned stream."""
-    streamCompression: "Optional[StreamCompression]"
+    streamCompression: "NotRequired[StreamCompression]"
     """Compression format of returned stream."""

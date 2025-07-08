@@ -5,8 +5,8 @@
 """CDP Page Domain Types"""
 
 from enum import Enum
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -40,7 +40,7 @@ class AdFrameExplanation(Enum):
 """Indicates whether a frame has been identified as an ad and why."""
 class AdFrameStatus(TypedDict):
     adFrameType: "AdFrameType"
-    explanations: "Optional[List[AdFrameExplanation]]"
+    explanations: "NotRequired[List[AdFrameExplanation]]"
 
 
 
@@ -64,7 +64,7 @@ class AdScriptAncestry(TypedDict):
 led to the creation of a frame. The chain is ordered from the script
 itself (lower level) up to its root ancestor that was flagged by
 filterlist."""
-    rootScriptFilterlistRule: "Optional[str]"
+    rootScriptFilterlistRule: "NotRequired[str]"
     """The filterlist rule that caused the root (last) script in
 `ancestryChain` to be ad-tagged. Only populated if the rule is
 available."""
@@ -226,7 +226,7 @@ class PermissionsPolicyBlockLocator(TypedDict):
 class PermissionsPolicyFeatureState(TypedDict):
     feature: "PermissionsPolicyFeature"
     allowed: "bool"
-    locator: "Optional[PermissionsPolicyBlockLocator]"
+    locator: "NotRequired[PermissionsPolicyBlockLocator]"
 
 
 
@@ -275,7 +275,7 @@ class OriginTrialToken(TypedDict):
 
 class OriginTrialTokenWithStatus(TypedDict):
     rawTokenText: "str"
-    parsedToken: "Optional[OriginTrialToken]"
+    parsedToken: "NotRequired[OriginTrialToken]"
     """`parsedToken` is present only when the token is extractable and
 parsable."""
     status: "OriginTrialTokenStatus"
@@ -302,15 +302,15 @@ of the local hostnames (e.g. \"localhost\") or IP addresses (IPv4
 class Frame(TypedDict):
     id: "FrameId"
     """Frame unique identifier."""
-    parentId: "Optional[FrameId]"
+    parentId: "NotRequired[FrameId]"
     """Parent frame identifier."""
     loaderId: "LoaderId"
     """Identifier of the loader associated with this frame."""
-    name: "Optional[str]"
+    name: "NotRequired[str]"
     """Frame's name as specified in the tag."""
     url: "str"
     """Frame document's URL without fragment."""
-    urlFragment: "Optional[str]"
+    urlFragment: "NotRequired[str]"
     """Frame document's URL fragment including the '#'."""
     domainAndRegistry: "str"
     """Frame document's registered domain, taking the public suffixes list into account.
@@ -319,13 +319,13 @@ Example URLs: http://www.google.com/file.html -> \"google.com\"
               http://a.b.co.uk/file.html      -> \"b.co.uk\""""
     securityOrigin: "str"
     """Frame document's security origin."""
-    securityOriginDetails: "Optional[SecurityOriginDetails]"
+    securityOriginDetails: "NotRequired[SecurityOriginDetails]"
     """Additional details about the frame document's security origin."""
     mimeType: "str"
     """Frame document's mimeType as determined by the browser."""
-    unreachableUrl: "Optional[str]"
+    unreachableUrl: "NotRequired[str]"
     """If the frame failed to load, this contains the URL that could not be loaded. Note that unlike url above, this URL may contain a fragment."""
-    adFrameStatus: "Optional[AdFrameStatus]"
+    adFrameStatus: "NotRequired[AdFrameStatus]"
     """Indicates whether this frame was tagged as an ad and why."""
     secureContextType: "SecureContextType"
     """Indicates whether the main document is a secure context and explains why that is the case."""
@@ -344,13 +344,13 @@ class FrameResource(TypedDict):
     """Type of this resource."""
     mimeType: "str"
     """Resource mimeType as determined by the browser."""
-    lastModified: "Optional[TimeSinceEpoch]"
+    lastModified: "NotRequired[TimeSinceEpoch]"
     """last-modified timestamp as reported by server."""
-    contentSize: "Optional[float]"
+    contentSize: "NotRequired[float]"
     """Resource content size."""
-    failed: "Optional[bool]"
+    failed: "NotRequired[bool]"
     """True if the resource failed to load."""
-    canceled: "Optional[bool]"
+    canceled: "NotRequired[bool]"
     """True if the resource was canceled during loading."""
 
 
@@ -359,7 +359,7 @@ class FrameResource(TypedDict):
 class FrameResourceTree(TypedDict):
     frame: "Frame"
     """Frame information for this tree item."""
-    childFrames: "Optional[List[FrameResourceTree]]"
+    childFrames: "NotRequired[List[FrameResourceTree]]"
     """Child frames."""
     resources: "List[FrameResource]"
     """Information about frame resources."""
@@ -370,7 +370,7 @@ class FrameResourceTree(TypedDict):
 class FrameTree(TypedDict):
     frame: "Frame"
     """Frame information for this tree item."""
-    childFrames: "Optional[List[FrameTree]]"
+    childFrames: "NotRequired[List[FrameTree]]"
     """Child frames."""
 
 
@@ -427,7 +427,7 @@ class ScreencastFrameMetadata(TypedDict):
     """Position of horizontal scroll in CSS pixels."""
     scrollOffsetY: "float"
     """Position of vertical scroll in CSS pixels."""
-    timestamp: "Optional[TimeSinceEpoch]"
+    timestamp: "NotRequired[TimeSinceEpoch]"
     """Frame swap timestamp."""
 
 
@@ -490,7 +490,7 @@ class VisualViewport(TypedDict):
     """Height (CSS pixels), excludes scrollbar if present."""
     scale: "float"
     """Scale relative to the ideal viewport (size at width=device-width)."""
-    zoom: "Optional[float]"
+    zoom: "NotRequired[float]"
     """Page zoom factor (CSS to device independent pixels ratio)."""
 
 
@@ -603,7 +603,7 @@ class ReferrerPolicy(Enum):
 class CompilationCacheParams(TypedDict):
     url: "str"
     """The URL of the script to produce a compilation cache entry for."""
-    eager: "Optional[bool]"
+    eager: "NotRequired[bool]"
     """A hint to the backend whether eager compilation is recommended.
 (the actual compilation mode used is upon backend discretion)."""
 
@@ -618,8 +618,8 @@ class FileFilter(TypedDict, total=False):
 class FileHandler(TypedDict):
     action: "str"
     name: "str"
-    icons: "Optional[List[ImageResource]]"
-    accepts: "Optional[List[FileFilter]]"
+    icons: "NotRequired[List[ImageResource]]"
+    accepts: "NotRequired[List[FileFilter]]"
     """Mimic a map, name is the key, accepts is the value."""
     launchType: "str"
     """Won't repeat the enums, using string for easy comparison. Same as the
@@ -632,8 +632,8 @@ class ImageResource(TypedDict):
     url: "str"
     """The src field in the definition, but changing to url in favor of
 consistency."""
-    sizes: "Optional[str]"
-    type: "Optional[str]"
+    sizes: "NotRequired[str]"
+    type: "NotRequired[str]"
 
 
 
@@ -649,7 +649,7 @@ class ProtocolHandler(TypedDict):
 
 
 class RelatedApplication(TypedDict):
-    id: "Optional[str]"
+    id: "NotRequired[str]"
     url: "str"
 
 
@@ -665,7 +665,7 @@ for easy understanding and comparison."""
 class Screenshot(TypedDict):
     image: "ImageResource"
     formFactor: "str"
-    label: "Optional[str]"
+    label: "NotRequired[str]"
 
 
 
@@ -673,11 +673,11 @@ class ShareTarget(TypedDict):
     action: "str"
     method: "str"
     enctype: "str"
-    title: "Optional[str]"
+    title: "NotRequired[str]"
     """Embed the ShareTargetParams"""
-    text: "Optional[str]"
-    url: "Optional[str]"
-    files: "Optional[List[FileFilter]]"
+    text: "NotRequired[str]"
+    url: "NotRequired[str]"
+    files: "NotRequired[List[FileFilter]]"
 
 
 
@@ -888,9 +888,9 @@ class BackForwardCacheNotRestoredReasonType(Enum):
 
 
 class BackForwardCacheBlockingDetails(TypedDict):
-    url: "Optional[str]"
+    url: "NotRequired[str]"
     """Url of the file where blockage happened. Optional because of tests."""
-    function: "Optional[str]"
+    function: "NotRequired[str]"
     """Function name where blockage happened. Optional because of anonymous functions and tests."""
     lineNumber: "int"
     """Line number in the script (0-based)."""
@@ -904,11 +904,11 @@ class BackForwardCacheNotRestoredExplanation(TypedDict):
     """Type of the reason"""
     reason: "BackForwardCacheNotRestoredReason"
     """Not restored reason"""
-    context: "Optional[str]"
+    context: "NotRequired[str]"
     """Context associated with the reason. The meaning of this context is
 dependent on the reason:
 - EmbedderExtensionSentMessageToCachedFrame: the extension ID."""
-    details: "Optional[List[BackForwardCacheBlockingDetails]]"
+    details: "NotRequired[List[BackForwardCacheBlockingDetails]]"
 
 
 

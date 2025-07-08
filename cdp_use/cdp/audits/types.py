@@ -5,8 +5,8 @@
 """CDP Audits Domain Types"""
 
 from enum import Enum
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -31,7 +31,7 @@ class AffectedCookie(TypedDict):
 
 """Information about a request that is affected by an inspector issue."""
 class AffectedRequest(TypedDict):
-    requestId: "Optional[RequestId]"
+    requestId: "NotRequired[RequestId]"
     """The unique request id."""
     url: "str"
 
@@ -93,7 +93,7 @@ class InsightType(Enum):
 """Information about the suggested solution to a cookie issue."""
 class CookieIssueInsight(TypedDict):
     type: "InsightType"
-    tableEntryUrl: "Optional[str]"
+    tableEntryUrl: "NotRequired[str]"
     """Link to table entry in third-party cookie migration readiness list."""
 
 
@@ -102,21 +102,21 @@ class CookieIssueInsight(TypedDict):
 time finding a specific cookie. With this, we can convey specific error
 information without the cookie."""
 class CookieIssueDetails(TypedDict):
-    cookie: "Optional[AffectedCookie]"
+    cookie: "NotRequired[AffectedCookie]"
     """If AffectedCookie is not set then rawCookieLine contains the raw
 Set-Cookie header string. This hints at a problem where the
 cookie line is syntactically or semantically malformed in a way
 that no valid cookie could be created."""
-    rawCookieLine: "Optional[str]"
+    rawCookieLine: "NotRequired[str]"
     cookieWarningReasons: "List[CookieWarningReason]"
     cookieExclusionReasons: "List[CookieExclusionReason]"
     operation: "CookieOperation"
     """Optionally identifies the site-for-cookies and the cookie url, which
 may be used by the front-end as additional context."""
-    siteForCookies: "Optional[str]"
-    cookieUrl: "Optional[str]"
-    request: "Optional[AffectedRequest]"
-    insight: "Optional[CookieIssueInsight]"
+    siteForCookies: "NotRequired[str]"
+    cookieUrl: "NotRequired[str]"
+    request: "NotRequired[AffectedRequest]"
+    insight: "NotRequired[CookieIssueInsight]"
     """The recommended solution to the issue."""
 
 
@@ -162,7 +162,7 @@ class MixedContentResourceType(Enum):
 
 
 class MixedContentIssueDetails(TypedDict):
-    resourceType: "Optional[MixedContentResourceType]"
+    resourceType: "NotRequired[MixedContentResourceType]"
     """The type of resource causing the mixed content issue (css, js, iframe,
 form,...). Marked as optional because it is mapped to from
 blink::mojom::RequestContextType, which will be replaced
@@ -173,10 +173,10 @@ by network::mojom::RequestDestination"""
     """The unsafe http url causing the mixed content issue."""
     mainResourceURL: "str"
     """The url responsible for the call to an unsafe url."""
-    request: "Optional[AffectedRequest]"
+    request: "NotRequired[AffectedRequest]"
     """The mixed content request.
 Does not always exist (e.g. for unsafe form submission urls)."""
-    frame: "Optional[AffectedFrame]"
+    frame: "NotRequired[AffectedFrame]"
     """Optional because not every mixed content issue is necessarily linked to a frame."""
 
 
@@ -200,8 +200,8 @@ code. Currently only used for COEP/COOP, but may be extended to include
 some CSP errors in the future."""
 class BlockedByResponseIssueDetails(TypedDict):
     request: "AffectedRequest"
-    parentFrame: "Optional[AffectedFrame]"
-    blockedFrame: "Optional[AffectedFrame]"
+    parentFrame: "NotRequired[AffectedFrame]"
+    blockedFrame: "NotRequired[AffectedFrame]"
     reason: "BlockedByResponseReason"
 
 
@@ -241,7 +241,7 @@ class ContentSecurityPolicyViolationType(Enum):
 
 
 class SourceCodeLocation(TypedDict):
-    scriptId: "Optional[ScriptId]"
+    scriptId: "NotRequired[ScriptId]"
     url: "str"
     lineNumber: "int"
     columnNumber: "int"
@@ -249,15 +249,15 @@ class SourceCodeLocation(TypedDict):
 
 
 class ContentSecurityPolicyIssueDetails(TypedDict):
-    blockedURL: "Optional[str]"
+    blockedURL: "NotRequired[str]"
     """The url not included in allowed sources."""
     violatedDirective: "str"
     """Specific directive that is violated, causing the CSP issue."""
     isReportOnly: "bool"
     contentSecurityPolicyViolationType: "ContentSecurityPolicyViolationType"
-    frameAncestor: "Optional[AffectedFrame]"
-    sourceCodeLocation: "Optional[SourceCodeLocation]"
-    violatingNodeId: "Optional[BackendNodeId]"
+    frameAncestor: "NotRequired[AffectedFrame]"
+    sourceCodeLocation: "NotRequired[SourceCodeLocation]"
+    violatingNodeId: "NotRequired[BackendNodeId]"
 
 
 
@@ -293,10 +293,10 @@ class CorsIssueDetails(TypedDict):
     corsErrorStatus: "CorsErrorStatus"
     isWarning: "bool"
     request: "AffectedRequest"
-    location: "Optional[SourceCodeLocation]"
-    initiatorOrigin: "Optional[str]"
-    resourceIPAddressSpace: "Optional[IPAddressSpace]"
-    clientSecurityState: "Optional[ClientSecurityState]"
+    location: "NotRequired[SourceCodeLocation]"
+    initiatorOrigin: "NotRequired[str]"
+    resourceIPAddressSpace: "NotRequired[IPAddressSpace]"
+    clientSecurityState: "NotRequired[ClientSecurityState]"
 
 
 
@@ -381,9 +381,9 @@ class SRIMessageSignatureError(Enum):
 Explainer: https://github.com/WICG/attribution-reporting-api"""
 class AttributionReportingIssueDetails(TypedDict):
     violationType: "AttributionReportingIssueType"
-    request: "Optional[AffectedRequest]"
-    violatingNodeId: "Optional[BackendNodeId]"
-    invalidParameter: "Optional[str]"
+    request: "NotRequired[AffectedRequest]"
+    violatingNodeId: "NotRequired[BackendNodeId]"
+    invalidParameter: "NotRequired[str]"
 
 
 
@@ -402,7 +402,7 @@ instead of \"limited-quirks\"."""
 
 class NavigatorUserAgentIssueDetails(TypedDict):
     url: "str"
-    location: "Optional[SourceCodeLocation]"
+    location: "NotRequired[SourceCodeLocation]"
 
 
 
@@ -439,17 +439,17 @@ class GenericIssueErrorType(Enum):
 class GenericIssueDetails(TypedDict):
     errorType: "GenericIssueErrorType"
     """Issues with the same errorType are aggregated in the frontend."""
-    frameId: "Optional[FrameId]"
-    violatingNodeId: "Optional[BackendNodeId]"
-    violatingNodeAttribute: "Optional[str]"
-    request: "Optional[AffectedRequest]"
+    frameId: "NotRequired[FrameId]"
+    violatingNodeId: "NotRequired[BackendNodeId]"
+    violatingNodeAttribute: "NotRequired[str]"
+    request: "NotRequired[AffectedRequest]"
 
 
 
 """This issue tracks information needed to print a deprecation message.
 https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/core/frame/third_party/blink/renderer/core/frame/deprecation/README.md"""
 class DeprecationIssueDetails(TypedDict):
-    affectedFrame: "Optional[AffectedFrame]"
+    affectedFrame: "NotRequired[AffectedFrame]"
     sourceCodeLocation: "SourceCodeLocation"
     type: "str"
     """One of the deprecation names from third_party/blink/renderer/core/frame/deprecation/deprecation.json5"""
@@ -580,7 +580,7 @@ class FailedRequestInfo(TypedDict):
     """The URL that failed to load."""
     failureMessage: "str"
     """The failure message for the failed request."""
-    requestId: "Optional[RequestId]"
+    requestId: "NotRequired[RequestId]"
 
 
 
@@ -628,7 +628,7 @@ class StylesheetLoadingIssueDetails(TypedDict):
     """Source code position that referenced the failing stylesheet."""
     styleSheetLoadingIssueReason: "StyleSheetLoadingIssueReason"
     """Reason why the stylesheet couldn't be loaded."""
-    failedRequestInfo: "Optional[FailedRequestInfo]"
+    failedRequestInfo: "NotRequired[FailedRequestInfo]"
     """Contains additional info when the failure was due to a request."""
 
 
@@ -648,7 +648,7 @@ class PropertyRuleIssueDetails(TypedDict):
     """Source code position of the property rule."""
     propertyRuleIssueReason: "PropertyRuleIssueReason"
     """Reason why the property rule was discarded."""
-    propertyValue: "Optional[str]"
+    propertyValue: "NotRequired[str]"
     """The value of the property rule property that failed to parse"""
 
 
@@ -663,7 +663,7 @@ class UserReidentificationIssueType(Enum):
 re-identify users."""
 class UserReidentificationIssueDetails(TypedDict):
     type: "UserReidentificationIssueType"
-    request: "Optional[AffectedRequest]"
+    request: "NotRequired[AffectedRequest]"
     """Applies to BlockedFrameNavigation and BlockedSubresource issue types."""
 
 
@@ -742,6 +742,6 @@ IssueId = str
 class InspectorIssue(TypedDict):
     code: "InspectorIssueCode"
     details: "InspectorIssueDetails"
-    issueId: "Optional[IssueId]"
+    issueId: "NotRequired[IssueId]"
     """A unique id for this issue. May be omitted if no other entity (e.g.
 exception, CDP message, etc.) is referencing this issue."""

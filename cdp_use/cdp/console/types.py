@@ -4,8 +4,7 @@
 
 """CDP Console Domain Types"""
 
-from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 """Console message."""
 class ConsoleMessage(TypedDict):
@@ -15,9 +14,9 @@ class ConsoleMessage(TypedDict):
     """Message severity."""
     text: "str"
     """Message text."""
-    url: "Optional[str]"
+    url: "NotRequired[str]"
     """URL of the message origin."""
-    line: "Optional[int]"
+    line: "NotRequired[int]"
     """Line number in the resource that generated this message (1-based)."""
-    column: "Optional[int]"
+    column: "NotRequired[int]"
     """Column number in the resource that generated this message (1-based)."""

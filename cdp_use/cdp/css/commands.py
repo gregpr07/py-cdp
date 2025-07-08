@@ -4,8 +4,8 @@
 
 """CDP CSS Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -49,7 +49,7 @@ class AddRuleParameters(TypedDict):
     """The text of a new rule."""
     location: "SourceRange"
     """Text position of a new rule in the target style sheet."""
-    nodeForPropertySyntaxValidation: "Optional[NodeId]"
+    nodeForPropertySyntaxValidation: "NotRequired[NodeId]"
     """NodeId for the DOM node in whose context custom property declarations for registered properties should be
 validated. If omitted, declarations in the new rule text can only be validated statically, which may produce
 incorrect results if the declaration contains a var() for example."""
@@ -74,7 +74,7 @@ class CollectClassNamesReturns(TypedDict):
 class CreateStyleSheetParameters(TypedDict):
     frameId: "FrameId"
     """Identifier of the frame where \"via-inspector\" stylesheet should be created."""
-    force: "Optional[bool]"
+    force: "NotRequired[bool]"
     """If true, creates a new stylesheet for every call. If false,
 returns a stylesheet previously created by a call with force=false
 for the frame's document if it exists or creates a new stylesheet
@@ -143,12 +143,12 @@ class ResolveValuesParameters(TypedDict):
 keywords (revert/revert-layer) do not work."""
     nodeId: "NodeId"
     """Id of the node in whose context the expression is evaluated"""
-    propertyName: "Optional[str]"
+    propertyName: "NotRequired[str]"
     """Only longhands and custom property names are accepted."""
-    pseudoType: "Optional[PseudoType]"
+    pseudoType: "NotRequired[PseudoType]"
     """Pseudo element type, only works for pseudo elements that generate
 elements in the tree, such as ::before and ::after."""
-    pseudoIdentifier: "Optional[str]"
+    pseudoIdentifier: "NotRequired[str]"
     """Pseudo element custom ident."""
 
 
@@ -402,7 +402,7 @@ class SetStyleSheetTextReturns(TypedDict):
 
 class SetStyleTextsParameters(TypedDict):
     edits: "List[StyleDeclarationEdit]"
-    nodeForPropertySyntaxValidation: "Optional[NodeId]"
+    nodeForPropertySyntaxValidation: "NotRequired[NodeId]"
     """NodeId for the DOM node in whose context custom property declarations for registered properties should be
 validated. If omitted, declarations in the new rule text can only be validated statically, which may produce
 incorrect results if the declaration contains a var() for example."""

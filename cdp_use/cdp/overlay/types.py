@@ -5,8 +5,7 @@
 """CDP Overlay Domain Types"""
 
 from enum import Enum
-from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -218,9 +217,9 @@ class ScrollSnapHighlightConfig(TypedDict):
 class HingeConfig(TypedDict):
     rect: "Rect"
     """A rectangle represent hinge"""
-    contentColor: "Optional[RGBA]"
+    contentColor: "NotRequired[RGBA]"
     """The content box highlight fill color (default: a dark color)."""
-    outlineColor: "Optional[RGBA]"
+    outlineColor: "NotRequired[RGBA]"
     """The content box highlight outline color (default: transparent)."""
 
 

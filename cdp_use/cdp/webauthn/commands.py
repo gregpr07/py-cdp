@@ -4,8 +4,8 @@
 
 """CDP WebAuthn Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -37,13 +37,13 @@ class AddVirtualAuthenticatorReturns(TypedDict):
 
 class SetResponseOverrideBitsParameters(TypedDict):
     authenticatorId: "AuthenticatorId"
-    isBogusSignature: "Optional[bool]"
+    isBogusSignature: "NotRequired[bool]"
     """If isBogusSignature is set, overrides the signature in the authenticator response to be zero.
 Defaults to false."""
-    isBadUV: "Optional[bool]"
+    isBadUV: "NotRequired[bool]"
     """If isBadUV is set, overrides the UV bit in the flags in the authenticator response to
 be zero. Defaults to false."""
-    isBadUP: "Optional[bool]"
+    isBadUP: "NotRequired[bool]"
     """If isBadUP is set, overrides the UP bit in the flags in the authenticator response to
 be zero. Defaults to false."""
 
@@ -119,7 +119,7 @@ class SetAutomaticPresenceSimulationParameters(TypedDict):
 class SetCredentialPropertiesParameters(TypedDict):
     authenticatorId: "AuthenticatorId"
     credentialId: "str"
-    backupEligibility: "Optional[bool]"
-    backupState: "Optional[bool]"
+    backupEligibility: "NotRequired[bool]"
+    backupState: "NotRequired[bool]"
 
 

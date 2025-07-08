@@ -4,8 +4,8 @@
 
 """CDP Storage Domain Commands"""
 
-from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, Dict, List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -65,7 +65,7 @@ class GetCookiesReturns(TypedDict):
 class SetCookiesParameters(TypedDict):
     cookies: "List[CookieParam]"
     """Cookies to be set."""
-    browserContextId: "Optional[BrowserContextID]"
+    browserContextId: "NotRequired[BrowserContextID]"
     """Browser context to use when called on the browser endpoint."""
 
 
@@ -100,7 +100,7 @@ class GetUsageAndQuotaReturns(TypedDict):
 class OverrideQuotaForOriginParameters(TypedDict):
     origin: "str"
     """Security origin."""
-    quotaSize: "Optional[float]"
+    quotaSize: "NotRequired[float]"
     """The quota size (in bytes) to override the original quota with.
 If this is called multiple times, the overridden quota will be equal to
 the quotaSize provided in the final call. If this is called without
@@ -242,7 +242,7 @@ class SetSharedStorageEntryParameters(TypedDict):
     ownerOrigin: "str"
     key: "str"
     value: "str"
-    ignoreIfPresent: "Optional[bool]"
+    ignoreIfPresent: "NotRequired[bool]"
     """If `ignoreIfPresent` is included and true, then only sets the entry if
 `key` doesn't already exist."""
 

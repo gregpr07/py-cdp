@@ -4,8 +4,8 @@
 
 """CDP Profiler Domain Types"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -19,14 +19,14 @@ class ProfileNode(TypedDict):
     """Unique id of the node."""
     callFrame: "CallFrame"
     """Function location."""
-    hitCount: "Optional[int]"
+    hitCount: "NotRequired[int]"
     """Number of samples where this node was on top of the call stack."""
-    children: "Optional[List[int]]"
+    children: "NotRequired[List[int]]"
     """Child node ids."""
-    deoptReason: "Optional[str]"
+    deoptReason: "NotRequired[str]"
     """The reason of being not optimized. The function may be deoptimized or marked as don't
 optimize."""
-    positionTicks: "Optional[List[PositionTickInfo]]"
+    positionTicks: "NotRequired[List[PositionTickInfo]]"
     """An array of source position ticks."""
 
 
@@ -39,9 +39,9 @@ class Profile(TypedDict):
     """Profiling start timestamp in microseconds."""
     endTime: "float"
     """Profiling end timestamp in microseconds."""
-    samples: "Optional[List[int]]"
+    samples: "NotRequired[List[int]]"
     """Ids of samples top nodes."""
-    timeDeltas: "Optional[List[int]]"
+    timeDeltas: "NotRequired[List[int]]"
     """Time intervals between adjacent samples in microseconds. The first delta is relative to the
 profile startTime."""
 

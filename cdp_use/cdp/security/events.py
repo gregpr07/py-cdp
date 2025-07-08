@@ -4,8 +4,8 @@
 
 """CDP Security Domain Events"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -47,5 +47,5 @@ class SecurityStateChangedEvent(TypedDict):
 empty."""
     insecureContentStatus: "InsecureContentStatus"
     """Information about insecure content on the page."""
-    summary: "Optional[str]"
+    summary: "NotRequired[str]"
     """Overrides user-visible description of the state. Always omitted."""

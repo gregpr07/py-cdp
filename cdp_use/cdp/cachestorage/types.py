@@ -5,8 +5,8 @@
 """CDP CacheStorage Domain Types"""
 
 from enum import Enum
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -58,7 +58,7 @@ class Cache(TypedDict):
     """Security origin of the cache."""
     storageKey: "str"
     """Storage key of the cache."""
-    storageBucket: "Optional[StorageBucket]"
+    storageBucket: "NotRequired[StorageBucket]"
     """Storage bucket of the cache."""
     cacheName: "str"
     """The name of the cache."""

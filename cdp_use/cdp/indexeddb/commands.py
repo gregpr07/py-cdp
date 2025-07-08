@@ -4,8 +4,8 @@
 
 """CDP IndexedDB Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -16,12 +16,12 @@ if TYPE_CHECKING:
     from .types import KeyRange
 
 class ClearObjectStoreParameters(TypedDict):
-    securityOrigin: "Optional[str]"
+    securityOrigin: "NotRequired[str]"
     """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
 Security origin."""
-    storageKey: "Optional[str]"
+    storageKey: "NotRequired[str]"
     """Storage key."""
-    storageBucket: "Optional[StorageBucket]"
+    storageBucket: "NotRequired[StorageBucket]"
     """Storage bucket. If not specified, it uses the default bucket."""
     databaseName: "str"
     """Database name."""
@@ -33,12 +33,12 @@ Security origin."""
 
 
 class DeleteDatabaseParameters(TypedDict):
-    securityOrigin: "Optional[str]"
+    securityOrigin: "NotRequired[str]"
     """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
 Security origin."""
-    storageKey: "Optional[str]"
+    storageKey: "NotRequired[str]"
     """Storage key."""
-    storageBucket: "Optional[StorageBucket]"
+    storageBucket: "NotRequired[StorageBucket]"
     """Storage bucket. If not specified, it uses the default bucket."""
     databaseName: "str"
     """Database name."""
@@ -48,12 +48,12 @@ Security origin."""
 
 
 class DeleteObjectStoreEntriesParameters(TypedDict):
-    securityOrigin: "Optional[str]"
+    securityOrigin: "NotRequired[str]"
     """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
 Security origin."""
-    storageKey: "Optional[str]"
+    storageKey: "NotRequired[str]"
     """Storage key."""
-    storageBucket: "Optional[StorageBucket]"
+    storageBucket: "NotRequired[StorageBucket]"
     """Storage bucket. If not specified, it uses the default bucket."""
     databaseName: "str"
     objectStoreName: "str"
@@ -65,12 +65,12 @@ Security origin."""
 
 
 class RequestDataParameters(TypedDict):
-    securityOrigin: "Optional[str]"
+    securityOrigin: "NotRequired[str]"
     """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
 Security origin."""
-    storageKey: "Optional[str]"
+    storageKey: "NotRequired[str]"
     """Storage key."""
-    storageBucket: "Optional[StorageBucket]"
+    storageBucket: "NotRequired[StorageBucket]"
     """Storage bucket. If not specified, it uses the default bucket."""
     databaseName: "str"
     """Database name."""
@@ -82,7 +82,7 @@ Security origin."""
     """Number of records to skip."""
     pageSize: "int"
     """Number of records to fetch."""
-    keyRange: "Optional[KeyRange]"
+    keyRange: "NotRequired[KeyRange]"
     """Key range."""
 
 
@@ -95,12 +95,12 @@ class RequestDataReturns(TypedDict):
 
 
 class GetMetadataParameters(TypedDict):
-    securityOrigin: "Optional[str]"
+    securityOrigin: "NotRequired[str]"
     """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
 Security origin."""
-    storageKey: "Optional[str]"
+    storageKey: "NotRequired[str]"
     """Storage key."""
-    storageBucket: "Optional[StorageBucket]"
+    storageBucket: "NotRequired[StorageBucket]"
     """Storage bucket. If not specified, it uses the default bucket."""
     databaseName: "str"
     """Database name."""
@@ -119,12 +119,12 @@ is true."""
 
 
 class RequestDatabaseParameters(TypedDict):
-    securityOrigin: "Optional[str]"
+    securityOrigin: "NotRequired[str]"
     """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
 Security origin."""
-    storageKey: "Optional[str]"
+    storageKey: "NotRequired[str]"
     """Storage key."""
-    storageBucket: "Optional[StorageBucket]"
+    storageBucket: "NotRequired[StorageBucket]"
     """Storage bucket. If not specified, it uses the default bucket."""
     databaseName: "str"
     """Database name."""

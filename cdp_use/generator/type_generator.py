@@ -27,7 +27,7 @@ class TypeGenerator:
 
         # Always add basic imports
         self.imports.add("from typing import Any, Dict, List, Optional, Union")
-        self.imports.add("from typing_extensions import TypedDict")
+        self.imports.add("from typing_extensions import NotRequired, TypedDict")
         self.imports.add("from enum import Enum")
 
         # First pass: collect all type names that will be defined in this domain
@@ -186,7 +186,7 @@ class TypeGenerator:
 
                 # Handle optional properties
                 if prop.get("optional", False) and required_props:
-                    prop_type = f"Optional[{prop_type}]"
+                    prop_type = f"NotRequired[{prop_type}]"
 
                 content += f'    {prop_name}: "{prop_type}"\n'
 

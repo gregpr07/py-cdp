@@ -4,8 +4,8 @@
 
 """CDP Runtime Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -25,9 +25,9 @@ if TYPE_CHECKING:
 class AwaitPromiseParameters(TypedDict):
     promiseObjectId: "RemoteObjectId"
     """Identifier of the promise."""
-    returnByValue: "Optional[bool]"
+    returnByValue: "NotRequired[bool]"
     """Whether the result is expected to be a JSON object that should be sent by value."""
-    generatePreview: "Optional[bool]"
+    generatePreview: "NotRequired[bool]"
     """Whether preview should be generated for the result."""
 
 
@@ -42,41 +42,41 @@ class AwaitPromiseReturns(TypedDict):
 class CallFunctionOnParameters(TypedDict):
     functionDeclaration: "str"
     """Declaration of the function to call."""
-    objectId: "Optional[RemoteObjectId]"
+    objectId: "NotRequired[RemoteObjectId]"
     """Identifier of the object to call function on. Either objectId or executionContextId should
 be specified."""
-    arguments: "Optional[List[CallArgument]]"
+    arguments: "NotRequired[List[CallArgument]]"
     """Call arguments. All call arguments must belong to the same JavaScript world as the target
 object."""
-    silent: "Optional[bool]"
+    silent: "NotRequired[bool]"
     """In silent mode exceptions thrown during evaluation are not reported and do not pause
 execution. Overrides `setPauseOnException` state."""
-    returnByValue: "Optional[bool]"
+    returnByValue: "NotRequired[bool]"
     """Whether the result is expected to be a JSON object which should be sent by value.
 Can be overriden by `serializationOptions`."""
-    generatePreview: "Optional[bool]"
+    generatePreview: "NotRequired[bool]"
     """Whether preview should be generated for the result."""
-    userGesture: "Optional[bool]"
+    userGesture: "NotRequired[bool]"
     """Whether execution should be treated as initiated by user in the UI."""
-    awaitPromise: "Optional[bool]"
+    awaitPromise: "NotRequired[bool]"
     """Whether execution should `await` for resulting value and return once awaited promise is
 resolved."""
-    executionContextId: "Optional[ExecutionContextId]"
+    executionContextId: "NotRequired[ExecutionContextId]"
     """Specifies execution context which global object will be used to call function on. Either
 executionContextId or objectId should be specified."""
-    objectGroup: "Optional[str]"
+    objectGroup: "NotRequired[str]"
     """Symbolic group name that can be used to release multiple objects. If objectGroup is not
 specified and objectId is, objectGroup will be inherited from object."""
-    throwOnSideEffect: "Optional[bool]"
+    throwOnSideEffect: "NotRequired[bool]"
     """Whether to throw an exception if side effect cannot be ruled out during evaluation."""
-    uniqueContextId: "Optional[str]"
+    uniqueContextId: "NotRequired[str]"
     """An alternative way to specify the execution context to call function on.
 Compared to contextId that may be reused across processes, this is guaranteed to be
 system-unique, so it can be used to prevent accidental function call
 in context different than intended (e.g. as a result of navigation across process
 boundaries).
 This is mutually exclusive with `executionContextId`."""
-    serializationOptions: "Optional[SerializationOptions]"
+    serializationOptions: "NotRequired[SerializationOptions]"
     """Specifies the result serialization. If provided, overrides
 `generatePreview` and `returnByValue`."""
 
@@ -96,7 +96,7 @@ class CompileScriptParameters(TypedDict):
     """Source url to be set for the script."""
     persistScript: "bool"
     """Specifies whether the compiled script should be persisted."""
-    executionContextId: "Optional[ExecutionContextId]"
+    executionContextId: "NotRequired[ExecutionContextId]"
     """Specifies in which execution context to perform script run. If the parameter is omitted the
 evaluation will be performed in the context of the inspected page."""
 
@@ -112,52 +112,52 @@ class CompileScriptReturns(TypedDict):
 class EvaluateParameters(TypedDict):
     expression: "str"
     """Expression to evaluate."""
-    objectGroup: "Optional[str]"
+    objectGroup: "NotRequired[str]"
     """Symbolic group name that can be used to release multiple objects."""
-    includeCommandLineAPI: "Optional[bool]"
+    includeCommandLineAPI: "NotRequired[bool]"
     """Determines whether Command Line API should be available during the evaluation."""
-    silent: "Optional[bool]"
+    silent: "NotRequired[bool]"
     """In silent mode exceptions thrown during evaluation are not reported and do not pause
 execution. Overrides `setPauseOnException` state."""
-    contextId: "Optional[ExecutionContextId]"
+    contextId: "NotRequired[ExecutionContextId]"
     """Specifies in which execution context to perform evaluation. If the parameter is omitted the
 evaluation will be performed in the context of the inspected page.
 This is mutually exclusive with `uniqueContextId`, which offers an
 alternative way to identify the execution context that is more reliable
 in a multi-process environment."""
-    returnByValue: "Optional[bool]"
+    returnByValue: "NotRequired[bool]"
     """Whether the result is expected to be a JSON object that should be sent by value."""
-    generatePreview: "Optional[bool]"
+    generatePreview: "NotRequired[bool]"
     """Whether preview should be generated for the result."""
-    userGesture: "Optional[bool]"
+    userGesture: "NotRequired[bool]"
     """Whether execution should be treated as initiated by user in the UI."""
-    awaitPromise: "Optional[bool]"
+    awaitPromise: "NotRequired[bool]"
     """Whether execution should `await` for resulting value and return once awaited promise is
 resolved."""
-    throwOnSideEffect: "Optional[bool]"
+    throwOnSideEffect: "NotRequired[bool]"
     """Whether to throw an exception if side effect cannot be ruled out during evaluation.
 This implies `disableBreaks` below."""
-    timeout: "Optional[TimeDelta]"
+    timeout: "NotRequired[TimeDelta]"
     """Terminate execution after timing out (number of milliseconds)."""
-    disableBreaks: "Optional[bool]"
+    disableBreaks: "NotRequired[bool]"
     """Disable breakpoints during execution."""
-    replMode: "Optional[bool]"
+    replMode: "NotRequired[bool]"
     """Setting this flag to true enables `let` re-declaration and top-level `await`.
 Note that `let` variables can only be re-declared if they originate from
 `replMode` themselves."""
-    allowUnsafeEvalBlockedByCSP: "Optional[bool]"
+    allowUnsafeEvalBlockedByCSP: "NotRequired[bool]"
     """The Content Security Policy (CSP) for the target might block 'unsafe-eval'
 which includes eval(), Function(), setTimeout() and setInterval()
 when called with non-callable arguments. This flag bypasses CSP for this
 evaluation and allows unsafe-eval. Defaults to true."""
-    uniqueContextId: "Optional[str]"
+    uniqueContextId: "NotRequired[str]"
     """An alternative way to specify the execution context to evaluate in.
 Compared to contextId that may be reused across processes, this is guaranteed to be
 system-unique, so it can be used to prevent accidental evaluation of the expression
 in context different than intended (e.g. as a result of navigation across process
 boundaries).
 This is mutually exclusive with `contextId`."""
-    serializationOptions: "Optional[SerializationOptions]"
+    serializationOptions: "NotRequired[SerializationOptions]"
     """Specifies the result serialization. If provided, overrides
 `generatePreview` and `returnByValue`."""
 
@@ -191,15 +191,15 @@ class GetHeapUsageReturns(TypedDict):
 class GetPropertiesParameters(TypedDict):
     objectId: "RemoteObjectId"
     """Identifier of the object to return properties for."""
-    ownProperties: "Optional[bool]"
+    ownProperties: "NotRequired[bool]"
     """If true, returns properties belonging only to the element itself, not to its prototype
 chain."""
-    accessorPropertiesOnly: "Optional[bool]"
+    accessorPropertiesOnly: "NotRequired[bool]"
     """If true, returns accessor properties (with getter/setter) only; internal properties are not
 returned either."""
-    generatePreview: "Optional[bool]"
+    generatePreview: "NotRequired[bool]"
     """Whether preview should be generated for the results."""
-    nonIndexedPropertiesOnly: "Optional[bool]"
+    nonIndexedPropertiesOnly: "NotRequired[bool]"
     """If true, returns non-indexed properties only."""
 
 
@@ -228,7 +228,7 @@ class GlobalLexicalScopeNamesReturns(TypedDict):
 class QueryObjectsParameters(TypedDict):
     prototypeObjectId: "RemoteObjectId"
     """Identifier of the prototype to return objects for."""
-    objectGroup: "Optional[str]"
+    objectGroup: "NotRequired[str]"
     """Symbolic group name that can be used to release the results."""
 
 
@@ -257,21 +257,21 @@ class ReleaseObjectGroupParameters(TypedDict):
 class RunScriptParameters(TypedDict):
     scriptId: "ScriptId"
     """Id of the script to run."""
-    executionContextId: "Optional[ExecutionContextId]"
+    executionContextId: "NotRequired[ExecutionContextId]"
     """Specifies in which execution context to perform script run. If the parameter is omitted the
 evaluation will be performed in the context of the inspected page."""
-    objectGroup: "Optional[str]"
+    objectGroup: "NotRequired[str]"
     """Symbolic group name that can be used to release multiple objects."""
-    silent: "Optional[bool]"
+    silent: "NotRequired[bool]"
     """In silent mode exceptions thrown during evaluation are not reported and do not pause
 execution. Overrides `setPauseOnException` state."""
-    includeCommandLineAPI: "Optional[bool]"
+    includeCommandLineAPI: "NotRequired[bool]"
     """Determines whether Command Line API should be available during the evaluation."""
-    returnByValue: "Optional[bool]"
+    returnByValue: "NotRequired[bool]"
     """Whether the result is expected to be a JSON object which should be sent by value."""
-    generatePreview: "Optional[bool]"
+    generatePreview: "NotRequired[bool]"
     """Whether preview should be generated for the result."""
-    awaitPromise: "Optional[bool]"
+    awaitPromise: "NotRequired[bool]"
     """Whether execution should `await` for resulting value and return once awaited promise is
 resolved."""
 
@@ -309,7 +309,7 @@ class SetMaxCallStackSizeToCaptureParameters(TypedDict):
 
 class AddBindingParameters(TypedDict):
     name: "str"
-    executionContextId: "Optional[ExecutionContextId]"
+    executionContextId: "NotRequired[ExecutionContextId]"
     """If specified, the binding would only be exposed to the specified
 execution context. If omitted and `executionContextName` is not set,
 the binding is exposed to all execution contexts of the target.
@@ -317,7 +317,7 @@ This parameter is mutually exclusive with `executionContextName`.
 Deprecated in favor of `executionContextName` due to an unclear use case
 and bugs in implementation (crbug.com/1169639). `executionContextId` will be
 removed in the future."""
-    executionContextName: "Optional[str]"
+    executionContextName: "NotRequired[str]"
     """If specified, the binding is exposed to the executionContext with
 matching name, even for contexts created after the binding is added.
 See also `ExecutionContext.name` and `worldName` parameter to

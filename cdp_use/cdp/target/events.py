@@ -4,8 +4,7 @@
 
 """CDP Target Domain Events"""
 
-from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -28,7 +27,7 @@ issued multiple times per target if multiple sessions have been attached to it."
 class DetachedFromTargetEvent(TypedDict):
     sessionId: "SessionID"
     """Detached session identifier."""
-    targetId: "Optional[TargetID]"
+    targetId: "NotRequired[TargetID]"
     """Deprecated."""
 
 
@@ -39,7 +38,7 @@ class ReceivedMessageFromTargetEvent(TypedDict):
     sessionId: "SessionID"
     """Identifier of a session which sends a message."""
     message: "str"
-    targetId: "Optional[TargetID]"
+    targetId: "NotRequired[TargetID]"
     """Deprecated."""
 
 

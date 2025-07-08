@@ -5,8 +5,8 @@
 """CDP Target Domain Types"""
 
 from enum import Enum
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -31,14 +31,14 @@ class TargetInfo(TypedDict):
     url: "str"
     attached: "bool"
     """Whether the target has an attached client."""
-    openerId: "Optional[TargetID]"
+    openerId: "NotRequired[TargetID]"
     """Opener target Id"""
     canAccessOpener: "bool"
     """Whether the target has access to the originating window."""
-    openerFrameId: "Optional[FrameId]"
+    openerFrameId: "NotRequired[FrameId]"
     """Frame id of originating window (is only set if target has an opener)."""
-    browserContextId: "Optional[BrowserContextID]"
-    subtype: "Optional[str]"
+    browserContextId: "NotRequired[BrowserContextID]"
+    subtype: "NotRequired[str]"
     """Provides additional details for specific target types. For example, for
 the type of \"page\", this may be set to \"prerender\"."""
 

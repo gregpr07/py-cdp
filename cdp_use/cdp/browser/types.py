@@ -5,8 +5,8 @@
 """CDP Browser Domain Types"""
 
 from enum import Enum
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 BrowserContextID = str
 
@@ -94,16 +94,16 @@ class PermissionDescriptor(TypedDict):
     name: "str"
     """Name of permission.
 See https://cs.chromium.org/chromium/src/third_party/blink/renderer/modules/permissions/permission_descriptor.idl for valid permission names."""
-    sysex: "Optional[bool]"
+    sysex: "NotRequired[bool]"
     """For \"midi\" permission, may also specify sysex control."""
-    userVisibleOnly: "Optional[bool]"
+    userVisibleOnly: "NotRequired[bool]"
     """For \"push\" permission, may specify userVisibleOnly.
 Note that userVisibleOnly = true is the only currently supported type."""
-    allowWithoutSanitization: "Optional[bool]"
+    allowWithoutSanitization: "NotRequired[bool]"
     """For \"clipboard\" permission, may specify allowWithoutSanitization."""
-    allowWithoutGesture: "Optional[bool]"
+    allowWithoutGesture: "NotRequired[bool]"
     """For \"fullscreen\" permission, must specify allowWithoutGesture:true."""
-    panTiltZoom: "Optional[bool]"
+    panTiltZoom: "NotRequired[bool]"
     """For \"camera\" permission, may specify panTiltZoom."""
 
 

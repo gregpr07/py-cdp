@@ -4,8 +4,8 @@
 
 """CDP Extensions Domain Commands"""
 
-from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, Dict, List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -36,7 +36,7 @@ class GetStorageItemsParameters(TypedDict):
     """ID of extension."""
     storageArea: "StorageArea"
     """StorageArea to retrieve data from."""
-    keys: "Optional[List[str]]"
+    keys: "NotRequired[List[str]]"
     """Keys to retrieve."""
 
 

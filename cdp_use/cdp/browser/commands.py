@@ -4,8 +4,8 @@
 
 """CDP Browser Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -26,9 +26,9 @@ class SetPermissionParameters(TypedDict):
     """Descriptor of permission to override."""
     setting: "PermissionSetting"
     """Setting of the permission."""
-    origin: "Optional[str]"
+    origin: "NotRequired[str]"
     """Origin the permission applies to, all origins if not specified."""
-    browserContextId: "Optional[BrowserContextID]"
+    browserContextId: "NotRequired[BrowserContextID]"
     """Context to override. When omitted, default browser context is used."""
 
 
@@ -37,9 +37,9 @@ class SetPermissionParameters(TypedDict):
 
 class GrantPermissionsParameters(TypedDict):
     permissions: "List[PermissionType]"
-    origin: "Optional[str]"
+    origin: "NotRequired[str]"
     """Origin the permission applies to, all origins if not specified."""
-    browserContextId: "Optional[BrowserContextID]"
+    browserContextId: "NotRequired[BrowserContextID]"
     """BrowserContext to override permissions. When omitted, default browser context is used."""
 
 
@@ -59,12 +59,12 @@ class SetDownloadBehaviorParameters(TypedDict):
     """Whether to allow all or deny all download requests, or use default Chrome behavior if
 available (otherwise deny). |allowAndName| allows download and names files according to
 their download guids."""
-    browserContextId: "Optional[BrowserContextID]"
+    browserContextId: "NotRequired[BrowserContextID]"
     """BrowserContext to set download behavior. When omitted, default browser context is used."""
-    downloadPath: "Optional[str]"
+    downloadPath: "NotRequired[str]"
     """The default path to save downloaded files to. This is required if behavior is set to 'allow'
 or 'allowAndName'."""
-    eventsEnabled: "Optional[bool]"
+    eventsEnabled: "NotRequired[bool]"
     """Whether to emit download events (defaults to false)."""
 
 
@@ -74,7 +74,7 @@ or 'allowAndName'."""
 class CancelDownloadParameters(TypedDict):
     guid: "str"
     """Global unique identifier of the download."""
-    browserContextId: "Optional[BrowserContextID]"
+    browserContextId: "NotRequired[BrowserContextID]"
     """BrowserContext to perform the action in. When omitted, default browser context is used."""
 
 
@@ -119,7 +119,7 @@ class GetHistogramsReturns(TypedDict):
 class GetHistogramParameters(TypedDict):
     name: "str"
     """Requested histogram name."""
-    delta: "Optional[bool]"
+    delta: "NotRequired[bool]"
     """If true, retrieve delta since last delta call."""
 
 
@@ -193,7 +193,7 @@ class AddPrivacySandboxCoordinatorKeyConfigParameters(TypedDict):
     api: "PrivacySandboxAPI"
     coordinatorOrigin: "str"
     keyConfig: "str"
-    browserContextId: "Optional[BrowserContextID]"
+    browserContextId: "NotRequired[BrowserContextID]"
     """BrowserContext to perform the action in. When omitted, default browser
 context is used."""
 

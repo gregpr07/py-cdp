@@ -4,8 +4,8 @@
 
 """CDP CacheStorage Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -69,11 +69,11 @@ class RequestCachedResponseReturns(TypedDict):
 class RequestEntriesParameters(TypedDict):
     cacheId: "CacheId"
     """ID of cache to get entries from."""
-    skipCount: "Optional[int]"
+    skipCount: "NotRequired[int]"
     """Number of records to skip."""
-    pageSize: "Optional[int]"
+    pageSize: "NotRequired[int]"
     """Number of records to fetch."""
-    pathFilter: "Optional[str]"
+    pathFilter: "NotRequired[str]"
     """If present, only return the entries containing this substring in the path"""
 
 

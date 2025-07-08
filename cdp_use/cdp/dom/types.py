@@ -5,8 +5,8 @@
 """CDP DOM Domain Types"""
 
 from enum import Enum
-from typing import Any, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -123,7 +123,7 @@ class Node(TypedDict):
     """Node identifier that is passed into the rest of the DOM messages as the `nodeId`. Backend
 will only push node with given `id` once. It is aware of all requested nodes and will only
 fire DOM events for nodes known to the client."""
-    parentId: "Optional[NodeId]"
+    parentId: "NotRequired[NodeId]"
     """The id of the parent node if any."""
     backendNodeId: "BackendNodeId"
     """The BackendNodeId for this node."""
@@ -135,56 +135,56 @@ fire DOM events for nodes known to the client."""
     """`Node`'s localName."""
     nodeValue: "str"
     """`Node`'s nodeValue."""
-    childNodeCount: "Optional[int]"
+    childNodeCount: "NotRequired[int]"
     """Child count for `Container` nodes."""
-    children: "Optional[List[Node]]"
+    children: "NotRequired[List[Node]]"
     """Child nodes of this node when requested with children."""
-    attributes: "Optional[List[str]]"
+    attributes: "NotRequired[List[str]]"
     """Attributes of the `Element` node in the form of flat array `[name1, value1, name2, value2]`."""
-    documentURL: "Optional[str]"
+    documentURL: "NotRequired[str]"
     """Document URL that `Document` or `FrameOwner` node points to."""
-    baseURL: "Optional[str]"
+    baseURL: "NotRequired[str]"
     """Base URL that `Document` or `FrameOwner` node uses for URL completion."""
-    publicId: "Optional[str]"
+    publicId: "NotRequired[str]"
     """`DocumentType`'s publicId."""
-    systemId: "Optional[str]"
+    systemId: "NotRequired[str]"
     """`DocumentType`'s systemId."""
-    internalSubset: "Optional[str]"
+    internalSubset: "NotRequired[str]"
     """`DocumentType`'s internalSubset."""
-    xmlVersion: "Optional[str]"
+    xmlVersion: "NotRequired[str]"
     """`Document`'s XML version in case of XML documents."""
-    name: "Optional[str]"
+    name: "NotRequired[str]"
     """`Attr`'s name."""
-    value: "Optional[str]"
+    value: "NotRequired[str]"
     """`Attr`'s value."""
-    pseudoType: "Optional[PseudoType]"
+    pseudoType: "NotRequired[PseudoType]"
     """Pseudo element type for this node."""
-    pseudoIdentifier: "Optional[str]"
+    pseudoIdentifier: "NotRequired[str]"
     """Pseudo element identifier for this node. Only present if there is a
 valid pseudoType."""
-    shadowRootType: "Optional[ShadowRootType]"
+    shadowRootType: "NotRequired[ShadowRootType]"
     """Shadow root type."""
-    frameId: "Optional[FrameId]"
+    frameId: "NotRequired[FrameId]"
     """Frame ID for frame owner elements."""
-    contentDocument: "Optional[Node]"
+    contentDocument: "NotRequired[Node]"
     """Content document for frame owner elements."""
-    shadowRoots: "Optional[List[Node]]"
+    shadowRoots: "NotRequired[List[Node]]"
     """Shadow root list for given element host."""
-    templateContent: "Optional[Node]"
+    templateContent: "NotRequired[Node]"
     """Content document fragment for template elements."""
-    pseudoElements: "Optional[List[Node]]"
+    pseudoElements: "NotRequired[List[Node]]"
     """Pseudo elements associated with this node."""
-    importedDocument: "Optional[Node]"
+    importedDocument: "NotRequired[Node]"
     """Deprecated, as the HTML Imports API has been removed (crbug.com/937746).
 This property used to return the imported document for the HTMLImport links.
 The property is always undefined now."""
-    distributedNodes: "Optional[List[BackendNode]]"
+    distributedNodes: "NotRequired[List[BackendNode]]"
     """Distributed nodes for given insertion point."""
-    isSVG: "Optional[bool]"
+    isSVG: "NotRequired[bool]"
     """Whether the node is SVG."""
-    compatibilityMode: "Optional[CompatibilityMode]"
-    assignedSlot: "Optional[BackendNode]"
-    isScrollable: "Optional[bool]"
+    compatibilityMode: "NotRequired[CompatibilityMode]"
+    assignedSlot: "NotRequired[BackendNode]"
+    isScrollable: "NotRequired[bool]"
 
 
 
@@ -203,7 +203,7 @@ class RGBA(TypedDict):
     """The green component, in the [0-255] range."""
     b: "int"
     """The blue component, in the [0-255] range."""
-    a: "Optional[float]"
+    a: "NotRequired[float]"
     """The alpha component, in the [0-1] range (default: 1)."""
 
 
@@ -227,7 +227,7 @@ class BoxModel(TypedDict):
     """Node width"""
     height: "int"
     """Node height"""
-    shapeOutside: "Optional[ShapeOutsideInfo]"
+    shapeOutside: "NotRequired[ShapeOutsideInfo]"
     """Shape outside coordinates"""
 
 

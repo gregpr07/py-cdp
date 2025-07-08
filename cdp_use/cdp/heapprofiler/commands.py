@@ -4,8 +4,7 @@
 
 """CDP HeapProfiler Domain Commands"""
 
-from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -36,7 +35,7 @@ class GetHeapObjectIdReturns(TypedDict):
 
 class GetObjectByHeapObjectIdParameters(TypedDict):
     objectId: "HeapSnapshotObjectId"
-    objectGroup: "Optional[str]"
+    objectGroup: "NotRequired[str]"
     """Symbolic group name that can be used to release multiple objects."""
 
 

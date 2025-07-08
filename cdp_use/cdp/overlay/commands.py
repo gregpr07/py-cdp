@@ -4,8 +4,8 @@
 
 """CDP Overlay Domain Commands"""
 
-from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, Dict, List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -31,13 +31,13 @@ if TYPE_CHECKING:
 class GetHighlightObjectForTestParameters(TypedDict):
     nodeId: "NodeId"
     """Id of the node to get highlight object for."""
-    includeDistance: "Optional[bool]"
+    includeDistance: "NotRequired[bool]"
     """Whether to include distance info."""
-    includeStyle: "Optional[bool]"
+    includeStyle: "NotRequired[bool]"
     """Whether to include style info."""
-    colorFormat: "Optional[ColorFormat]"
+    colorFormat: "NotRequired[ColorFormat]"
     """The color format to get config with (default: hex)."""
-    showAccessibilityInfo: "Optional[bool]"
+    showAccessibilityInfo: "NotRequired[bool]"
     """Whether to show accessibility info (default: true)."""
 
 
@@ -72,9 +72,9 @@ class GetSourceOrderHighlightObjectForTestReturns(TypedDict):
 class HighlightFrameParameters(TypedDict):
     frameId: "FrameId"
     """Identifier of the frame to highlight."""
-    contentColor: "Optional[RGBA]"
+    contentColor: "NotRequired[RGBA]"
     """The content box highlight fill color (default: transparent)."""
-    contentOutlineColor: "Optional[RGBA]"
+    contentOutlineColor: "NotRequired[RGBA]"
     """The content box highlight outline color (default: transparent)."""
 
 
@@ -84,13 +84,13 @@ class HighlightFrameParameters(TypedDict):
 class HighlightNodeParameters(TypedDict):
     highlightConfig: "HighlightConfig"
     """A descriptor for the highlight appearance."""
-    nodeId: "Optional[NodeId]"
+    nodeId: "NotRequired[NodeId]"
     """Identifier of the node to highlight."""
-    backendNodeId: "Optional[BackendNodeId]"
+    backendNodeId: "NotRequired[BackendNodeId]"
     """Identifier of the backend node to highlight."""
-    objectId: "Optional[RemoteObjectId]"
+    objectId: "NotRequired[RemoteObjectId]"
     """JavaScript object id of the node to be highlighted."""
-    selector: "Optional[str]"
+    selector: "NotRequired[str]"
     """Selectors to highlight relevant nodes."""
 
 
@@ -100,9 +100,9 @@ class HighlightNodeParameters(TypedDict):
 class HighlightQuadParameters(TypedDict):
     quad: "Quad"
     """Quad to highlight"""
-    color: "Optional[RGBA]"
+    color: "NotRequired[RGBA]"
     """The highlight fill color (default: transparent)."""
-    outlineColor: "Optional[RGBA]"
+    outlineColor: "NotRequired[RGBA]"
     """The highlight outline color (default: transparent)."""
 
 
@@ -118,9 +118,9 @@ class HighlightRectParameters(TypedDict):
     """Rectangle width"""
     height: "int"
     """Rectangle height"""
-    color: "Optional[RGBA]"
+    color: "NotRequired[RGBA]"
     """The highlight fill color (default: transparent)."""
-    outlineColor: "Optional[RGBA]"
+    outlineColor: "NotRequired[RGBA]"
     """The highlight outline color (default: transparent)."""
 
 
@@ -130,11 +130,11 @@ class HighlightRectParameters(TypedDict):
 class HighlightSourceOrderParameters(TypedDict):
     sourceOrderConfig: "SourceOrderConfig"
     """A descriptor for the appearance of the overlay drawing."""
-    nodeId: "Optional[NodeId]"
+    nodeId: "NotRequired[NodeId]"
     """Identifier of the node to highlight."""
-    backendNodeId: "Optional[BackendNodeId]"
+    backendNodeId: "NotRequired[BackendNodeId]"
     """Identifier of the backend node to highlight."""
-    objectId: "Optional[RemoteObjectId]"
+    objectId: "NotRequired[RemoteObjectId]"
     """JavaScript object id of the node to be highlighted."""
 
 
@@ -144,7 +144,7 @@ class HighlightSourceOrderParameters(TypedDict):
 class SetInspectModeParameters(TypedDict):
     mode: "InspectMode"
     """Set an inspection mode."""
-    highlightConfig: "Optional[HighlightConfig]"
+    highlightConfig: "NotRequired[HighlightConfig]"
     """A descriptor for the highlight appearance of hovered-over nodes. May be omitted if `enabled
 == false`."""
 

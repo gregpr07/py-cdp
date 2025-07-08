@@ -4,8 +4,8 @@
 
 """CDP FileSystem Domain Types"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -34,7 +34,7 @@ class Directory(TypedDict):
 class BucketFileSystemLocator(TypedDict):
     storageKey: "SerializedStorageKey"
     """Storage key"""
-    bucketName: "Optional[str]"
+    bucketName: "NotRequired[str]"
     """Bucket name. Not passing a `bucketName` will retrieve the default Bucket. (https://developer.mozilla.org/en-US/docs/Web/API/Storage_API#storage_buckets)"""
     pathComponents: "List[str]"
     """Path to the directory using each path component as an array item."""

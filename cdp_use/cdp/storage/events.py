@@ -4,8 +4,8 @@
 
 """CDP Storage Domain Events"""
 
-from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, Dict, List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -86,13 +86,13 @@ class InterestGroupAccessedEvent(TypedDict):
     type: "InterestGroupAccessType"
     ownerOrigin: "str"
     name: "str"
-    componentSellerOrigin: "Optional[str]"
+    componentSellerOrigin: "NotRequired[str]"
     """For topLevelBid/topLevelAdditionalBid, and when appropriate,
 win and additionalBidWin"""
-    bid: "Optional[float]"
+    bid: "NotRequired[float]"
     """For bid or somethingBid event, if done locally and not on a server."""
-    bidCurrency: "Optional[str]"
-    uniqueAuctionId: "Optional[InterestGroupAuctionId]"
+    bidCurrency: "NotRequired[str]"
+    uniqueAuctionId: "NotRequired[InterestGroupAuctionId]"
     """For non-global events --- links to interestGroupAuctionEvent"""
 
 
@@ -103,9 +103,9 @@ class InterestGroupAuctionEventOccurredEvent(TypedDict):
     eventTime: "TimeSinceEpoch"
     type: "InterestGroupAuctionEventType"
     uniqueAuctionId: "InterestGroupAuctionId"
-    parentAuctionId: "Optional[InterestGroupAuctionId]"
+    parentAuctionId: "NotRequired[InterestGroupAuctionId]"
     """Set for child auctions."""
-    auctionConfig: "Optional[Dict[str, Any]]"
+    auctionConfig: "NotRequired[Dict[str, Any]]"
     """Set for started and configResolved"""
 
 
@@ -194,16 +194,16 @@ class AttributionReportingReportSentEvent(TypedDict):
     url: "str"
     body: "Dict[str, Any]"
     result: "AttributionReportingReportResult"
-    netError: "Optional[int]"
+    netError: "NotRequired[int]"
     """If result is `sent`, populated with net/HTTP status."""
-    netErrorName: "Optional[str]"
-    httpStatusCode: "Optional[int]"
+    netErrorName: "NotRequired[str]"
+    httpStatusCode: "NotRequired[int]"
 
 
 
 class AttributionReportingVerboseDebugReportSentEvent(TypedDict):
     url: "str"
-    body: "Optional[List[Dict[str, Any]]]"
-    netError: "Optional[int]"
-    netErrorName: "Optional[str]"
-    httpStatusCode: "Optional[int]"
+    body: "NotRequired[List[Dict[str, Any]]]"
+    netError: "NotRequired[int]"
+    netErrorName: "NotRequired[str]"
+    httpStatusCode: "NotRequired[int]"

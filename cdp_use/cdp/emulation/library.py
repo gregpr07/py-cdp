@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from .commands import SetAutoDarkModeOverrideParameters
     from .commands import SetAutomationOverrideParameters
     from .commands import SetCPUThrottlingRateParameters
+    from .commands import SetDataSaverOverrideParameters
     from .commands import SetDefaultBackgroundColorOverrideParameters
     from .commands import SetDeviceMetricsOverrideParameters
     from .commands import SetDevicePostureOverrideParameters
@@ -531,6 +532,18 @@ on Android."""
     ) -> "Dict[str, Any]":
         return cast("Dict[str, Any]", await self._client.send_raw(
             method="Emulation.setDisabledImageTypes",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def setDataSaverOverride(
+        self,
+        params: Optional["SetDataSaverOverrideParameters"] = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Override the value of navigator.connection.saveData"""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Emulation.setDataSaverOverride",
             params=params,
             session_id=session_id,
         ))

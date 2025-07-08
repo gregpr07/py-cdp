@@ -5,8 +5,8 @@
 """CDP ServiceWorker Domain Types"""
 
 from enum import Enum
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -50,14 +50,14 @@ class ServiceWorkerVersion(TypedDict):
     scriptURL: "str"
     runningStatus: "ServiceWorkerVersionRunningStatus"
     status: "ServiceWorkerVersionStatus"
-    scriptLastModified: "Optional[float]"
+    scriptLastModified: "NotRequired[float]"
     """The Last-Modified header value of the main script."""
-    scriptResponseTime: "Optional[float]"
+    scriptResponseTime: "NotRequired[float]"
     """The time at which the response headers of the main script were received from the server.
 For cached script it is the last time the cache entry was validated."""
-    controlledClients: "Optional[List[TargetID]]"
-    targetId: "Optional[TargetID]"
-    routerRules: "Optional[str]"
+    controlledClients: "NotRequired[List[TargetID]]"
+    targetId: "NotRequired[TargetID]"
+    routerRules: "NotRequired[str]"
 
 
 

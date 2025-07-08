@@ -4,8 +4,8 @@
 
 """CDP IndexedDB Domain Types"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -54,22 +54,22 @@ class ObjectStoreIndex(TypedDict):
 class Key(TypedDict):
     type: "str"
     """Key type."""
-    number: "Optional[float]"
+    number: "NotRequired[float]"
     """Number value."""
-    string: "Optional[str]"
+    string: "NotRequired[str]"
     """String value."""
-    date: "Optional[float]"
+    date: "NotRequired[float]"
     """Date value."""
-    array: "Optional[List[Key]]"
+    array: "NotRequired[List[Key]]"
     """Array value."""
 
 
 
 """Key range."""
 class KeyRange(TypedDict):
-    lower: "Optional[Key]"
+    lower: "NotRequired[Key]"
     """Lower bound."""
-    upper: "Optional[Key]"
+    upper: "NotRequired[Key]"
     """Upper bound."""
     lowerOpen: "bool"
     """If true lower bound is open."""
@@ -93,7 +93,7 @@ class DataEntry(TypedDict):
 class KeyPath(TypedDict):
     type: "str"
     """Key path type."""
-    string: "Optional[str]"
+    string: "NotRequired[str]"
     """String value."""
-    array: "Optional[List[str]]"
+    array: "NotRequired[List[str]]"
     """Array value."""

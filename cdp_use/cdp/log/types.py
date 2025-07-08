@@ -4,8 +4,8 @@
 
 """CDP Log Domain Types"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -23,20 +23,20 @@ class LogEntry(TypedDict):
     """Log entry severity."""
     text: "str"
     """Logged text."""
-    category: "Optional[str]"
+    category: "NotRequired[str]"
     timestamp: "Timestamp"
     """Timestamp when this entry was added."""
-    url: "Optional[str]"
+    url: "NotRequired[str]"
     """URL of the resource if known."""
-    lineNumber: "Optional[int]"
+    lineNumber: "NotRequired[int]"
     """Line number in the resource."""
-    stackTrace: "Optional[StackTrace]"
+    stackTrace: "NotRequired[StackTrace]"
     """JavaScript stack trace."""
-    networkRequestId: "Optional[RequestId]"
+    networkRequestId: "NotRequired[RequestId]"
     """Identifier of the network request associated with this entry."""
-    workerId: "Optional[str]"
+    workerId: "NotRequired[str]"
     """Identifier of the worker associated with this entry."""
-    args: "Optional[List[RemoteObject]]"
+    args: "NotRequired[List[RemoteObject]]"
     """Call arguments."""
 
 

@@ -4,8 +4,8 @@
 
 """CDP Fetch Domain Events"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -39,18 +39,18 @@ class RequestPausedEvent(TypedDict):
     """The id of the frame that initiated the request."""
     resourceType: "ResourceType"
     """How the requested resource will be used."""
-    responseErrorReason: "Optional[ErrorReason]"
+    responseErrorReason: "NotRequired[ErrorReason]"
     """Response error if intercepted at response stage."""
-    responseStatusCode: "Optional[int]"
+    responseStatusCode: "NotRequired[int]"
     """Response code if intercepted at response stage."""
-    responseStatusText: "Optional[str]"
+    responseStatusText: "NotRequired[str]"
     """Response status text if intercepted at response stage."""
-    responseHeaders: "Optional[List[HeaderEntry]]"
+    responseHeaders: "NotRequired[List[HeaderEntry]]"
     """Response headers if intercepted at the response stage."""
-    networkId: "Optional[RequestId]"
+    networkId: "NotRequired[RequestId]"
     """If the intercepted request had a corresponding Network.requestWillBeSent event fired for it,
 then this networkId will be the same as the requestId present in the requestWillBeSent event."""
-    redirectedRequestId: "Optional[RequestId]"
+    redirectedRequestId: "NotRequired[RequestId]"
     """If the request is due to a redirect response from the server, the id of the request that
 has caused the redirect."""
 

@@ -4,8 +4,7 @@
 
 """CDP Browser Domain Events"""
 
-from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -35,7 +34,7 @@ class DownloadProgressEvent(TypedDict):
     """Total bytes received."""
     state: "str"
     """Download status."""
-    filePath: "Optional[str]"
+    filePath: "NotRequired[str]"
     """If download is \"completed\", provides the path of the downloaded file.
 Depending on the platform, it is not guaranteed to be set, nor the file
 is guaranteed to exist."""

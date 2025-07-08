@@ -5,8 +5,8 @@
 """CDP Network Domain Types"""
 
 from enum import Enum
-from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, Dict, List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -164,9 +164,9 @@ milliseconds relatively to this requestTime."""
     """Started fetch event."""
     workerRespondWithSettled: "float"
     """Settled fetch event respondWith promise."""
-    workerRouterEvaluationStart: "Optional[float]"
+    workerRouterEvaluationStart: "NotRequired[float]"
     """Started ServiceWorker static routing source evaluation."""
-    workerCacheLookupStart: "Optional[float]"
+    workerCacheLookupStart: "NotRequired[float]"
     """Started cache lookup when the source was evaluated to `cache`."""
     sendStart: "float"
     """Started sending request."""
@@ -203,31 +203,31 @@ class PostDataEntry(TypedDict, total=False):
 class Request(TypedDict):
     url: "str"
     """Request URL (without fragment)."""
-    urlFragment: "Optional[str]"
+    urlFragment: "NotRequired[str]"
     """Fragment of the requested URL starting with hash, if present."""
     method: "str"
     """HTTP request method."""
     headers: "Headers"
     """HTTP request headers."""
-    postData: "Optional[str]"
+    postData: "NotRequired[str]"
     """HTTP POST request data.
 Use postDataEntries instead."""
-    hasPostData: "Optional[bool]"
+    hasPostData: "NotRequired[bool]"
     """True when the request has POST data. Note that postData might still be omitted when this flag is true when the data is too long."""
-    postDataEntries: "Optional[List[PostDataEntry]]"
+    postDataEntries: "NotRequired[List[PostDataEntry]]"
     """Request body elements (post data broken into individual entries)."""
-    mixedContentType: "Optional[MixedContentType]"
+    mixedContentType: "NotRequired[MixedContentType]"
     """The mixed content type of the request."""
     initialPriority: "ResourcePriority"
     """Priority of the resource request at the time request is sent."""
     referrerPolicy: "str"
     """The referrer policy of the request, as defined in https://www.w3.org/TR/referrer-policy/"""
-    isLinkPreload: "Optional[bool]"
+    isLinkPreload: "NotRequired[bool]"
     """Whether is loaded via link preload."""
-    trustTokenParams: "Optional[TrustTokenParams]"
+    trustTokenParams: "NotRequired[TrustTokenParams]"
     """Set for requests when the TrustToken API is used. Contains the parameters
 passed by the developer (e.g. via \"fetch\") as understood by the backend."""
-    isSameSite: "Optional[bool]"
+    isSameSite: "NotRequired[bool]"
     """True if this resource request is considered to be the 'same site' as the
 request corresponding to the main frame."""
 
@@ -261,11 +261,11 @@ class SecurityDetails(TypedDict):
     """Protocol name (e.g. \"TLS 1.2\" or \"QUIC\")."""
     keyExchange: "str"
     """Key Exchange used by the connection, or the empty string if not applicable."""
-    keyExchangeGroup: "Optional[str]"
+    keyExchangeGroup: "NotRequired[str]"
     """(EC)DH group used by the connection, if applicable."""
     cipher: "str"
     """Cipher name."""
-    mac: "Optional[str]"
+    mac: "NotRequired[str]"
     """TLS MAC. Note that AEAD ciphers do not have separate MACs."""
     certificateId: "CertificateId"
     """Certificate ID value."""
@@ -283,7 +283,7 @@ class SecurityDetails(TypedDict):
     """List of signed certificate timestamps (SCTs)."""
     certificateTransparencyCompliance: "CertificateTransparencyCompliance"
     """Whether the request complied with Certificate Transparency policy"""
-    serverSignatureAlgorithm: "Optional[int]"
+    serverSignatureAlgorithm: "NotRequired[int]"
     """The signature algorithm used by the server in the TLS server signature,
 represented as a TLS SignatureScheme code point. Omitted if not
 applicable or not known."""
@@ -384,7 +384,7 @@ class TrustTokenParams(TypedDict):
     refreshPolicy: "str"
     """Only set for \"token-redemption\" operation and determine whether
 to request a fresh SRR or use a still valid cached SRR."""
-    issuers: "Optional[List[str]]"
+    issuers: "NotRequired[List[str]]"
     """Origins of issuers from whom to request tokens or redemption
 records."""
 
@@ -442,54 +442,54 @@ class Response(TypedDict):
     """HTTP response status text."""
     headers: "Headers"
     """HTTP response headers."""
-    headersText: "Optional[str]"
+    headersText: "NotRequired[str]"
     """HTTP response headers text. This has been replaced by the headers in Network.responseReceivedExtraInfo."""
     mimeType: "str"
     """Resource mimeType as determined by the browser."""
     charset: "str"
     """Resource charset as determined by the browser (if applicable)."""
-    requestHeaders: "Optional[Headers]"
+    requestHeaders: "NotRequired[Headers]"
     """Refined HTTP request headers that were actually transmitted over the network."""
-    requestHeadersText: "Optional[str]"
+    requestHeadersText: "NotRequired[str]"
     """HTTP request headers text. This has been replaced by the headers in Network.requestWillBeSentExtraInfo."""
     connectionReused: "bool"
     """Specifies whether physical connection was actually reused for this request."""
     connectionId: "float"
     """Physical connection id that was actually used for this request."""
-    remoteIPAddress: "Optional[str]"
+    remoteIPAddress: "NotRequired[str]"
     """Remote IP address."""
-    remotePort: "Optional[int]"
+    remotePort: "NotRequired[int]"
     """Remote port."""
-    fromDiskCache: "Optional[bool]"
+    fromDiskCache: "NotRequired[bool]"
     """Specifies that the request was served from the disk cache."""
-    fromServiceWorker: "Optional[bool]"
+    fromServiceWorker: "NotRequired[bool]"
     """Specifies that the request was served from the ServiceWorker."""
-    fromPrefetchCache: "Optional[bool]"
+    fromPrefetchCache: "NotRequired[bool]"
     """Specifies that the request was served from the prefetch cache."""
-    fromEarlyHints: "Optional[bool]"
+    fromEarlyHints: "NotRequired[bool]"
     """Specifies that the request was served from the prefetch cache."""
-    serviceWorkerRouterInfo: "Optional[ServiceWorkerRouterInfo]"
+    serviceWorkerRouterInfo: "NotRequired[ServiceWorkerRouterInfo]"
     """Information about how ServiceWorker Static Router API was used. If this
 field is set with `matchedSourceType` field, a matching rule is found.
 If this field is set without `matchedSource`, no matching rule is found.
 Otherwise, the API is not used."""
     encodedDataLength: "float"
     """Total number of bytes received for this request so far."""
-    timing: "Optional[ResourceTiming]"
+    timing: "NotRequired[ResourceTiming]"
     """Timing information for the given request."""
-    serviceWorkerResponseSource: "Optional[ServiceWorkerResponseSource]"
+    serviceWorkerResponseSource: "NotRequired[ServiceWorkerResponseSource]"
     """Response source of response from ServiceWorker."""
-    responseTime: "Optional[TimeSinceEpoch]"
+    responseTime: "NotRequired[TimeSinceEpoch]"
     """The time at which the returned response was generated."""
-    cacheStorageCacheName: "Optional[str]"
+    cacheStorageCacheName: "NotRequired[str]"
     """Cache Storage Cache Name."""
-    protocol: "Optional[str]"
+    protocol: "NotRequired[str]"
     """Protocol used to fetch this request."""
-    alternateProtocolUsage: "Optional[AlternateProtocolUsage]"
+    alternateProtocolUsage: "NotRequired[AlternateProtocolUsage]"
     """The reason why Chrome uses a specific transport protocol for HTTP semantics."""
     securityState: "SecurityState"
     """Security state of the request resource."""
-    securityDetails: "Optional[SecurityDetails]"
+    securityDetails: "NotRequired[SecurityDetails]"
     """Security details for the request."""
 
 
@@ -509,11 +509,11 @@ class WebSocketResponse(TypedDict):
     """HTTP response status text."""
     headers: "Headers"
     """HTTP response headers."""
-    headersText: "Optional[str]"
+    headersText: "NotRequired[str]"
     """HTTP response headers text."""
-    requestHeaders: "Optional[Headers]"
+    requestHeaders: "NotRequired[Headers]"
     """HTTP request headers."""
-    requestHeadersText: "Optional[str]"
+    requestHeadersText: "NotRequired[str]"
     """HTTP request headers text."""
 
 
@@ -537,7 +537,7 @@ class CachedResource(TypedDict):
     """Resource URL. This is the url of the original network request."""
     type: "ResourceType"
     """Type of this resource."""
-    response: "Optional[Response]"
+    response: "NotRequired[Response]"
     """Cached response data."""
     bodySize: "float"
     """Cached response body size."""
@@ -548,18 +548,18 @@ class CachedResource(TypedDict):
 class Initiator(TypedDict):
     type: "str"
     """Type of this initiator."""
-    stack: "Optional[StackTrace]"
+    stack: "NotRequired[StackTrace]"
     """Initiator JavaScript stack trace, set for Script only.
 Requires the Debugger domain to be enabled."""
-    url: "Optional[str]"
+    url: "NotRequired[str]"
     """Initiator URL, set for Parser type or for Script type (when script is importing module) or for SignedExchange type."""
-    lineNumber: "Optional[float]"
+    lineNumber: "NotRequired[float]"
     """Initiator line number, set for Parser type or for Script type (when script is importing
 module) (0-based)."""
-    columnNumber: "Optional[float]"
+    columnNumber: "NotRequired[float]"
     """Initiator column number, set for Parser type or for Script type (when script is importing
 module) (0-based)."""
-    requestId: "Optional[RequestId]"
+    requestId: "NotRequired[RequestId]"
     """Set if another request triggered this request (e.g. preflight)."""
 
 
@@ -595,7 +595,7 @@ class Cookie(TypedDict):
     """True if cookie is secure."""
     session: "bool"
     """True in case of session cookie."""
-    sameSite: "Optional[CookieSameSite]"
+    sameSite: "NotRequired[CookieSameSite]"
     """Cookie SameSite type."""
     priority: "CookiePriority"
     """Cookie Priority"""
@@ -607,9 +607,9 @@ class Cookie(TypedDict):
     """Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port.
 An unspecified port value allows protocol clients to emulate legacy cookie scope for the port.
 This is a temporary ability and it will be removed in the future."""
-    partitionKey: "Optional[CookiePartitionKey]"
+    partitionKey: "NotRequired[CookiePartitionKey]"
     """Cookie partition key."""
-    partitionKeyOpaque: "Optional[bool]"
+    partitionKeyOpaque: "NotRequired[bool]"
     """True if cookie partition key is opaque."""
 
 
@@ -688,7 +688,7 @@ class BlockedSetCookieWithReason(TypedDict):
     cookieLine: "str"
     """The string representing this individual cookie as it would appear in the header.
 This is not the entire \"cookie\" or \"set-cookie\" header which could have multiple cookies."""
-    cookie: "Optional[Cookie]"
+    cookie: "NotRequired[Cookie]"
     """The cookie object which represents the cookie which was not stored. It is optional because
 sometimes complete cookie information is not available, such as in the case of parsing
 errors."""
@@ -714,7 +714,7 @@ class AssociatedCookie(TypedDict):
     """The cookie object representing the cookie which was not sent."""
     blockedReasons: "List[CookieBlockedReason]"
     """The reason(s) the cookie was blocked. If empty means the cookie is included."""
-    exemptionReason: "Optional[CookieExemptionReason]"
+    exemptionReason: "NotRequired[CookieExemptionReason]"
     """The reason the cookie should have been blocked by 3PCD but is exempted. A cookie could
 only have at most one exemption reason."""
 
@@ -726,39 +726,39 @@ class CookieParam(TypedDict):
     """Cookie name."""
     value: "str"
     """Cookie value."""
-    url: "Optional[str]"
+    url: "NotRequired[str]"
     """The request-URI to associate with the setting of the cookie. This value can affect the
 default domain, path, source port, and source scheme values of the created cookie."""
-    domain: "Optional[str]"
+    domain: "NotRequired[str]"
     """Cookie domain."""
-    path: "Optional[str]"
+    path: "NotRequired[str]"
     """Cookie path."""
-    secure: "Optional[bool]"
+    secure: "NotRequired[bool]"
     """True if cookie is secure."""
-    httpOnly: "Optional[bool]"
+    httpOnly: "NotRequired[bool]"
     """True if cookie is http-only."""
-    sameSite: "Optional[CookieSameSite]"
+    sameSite: "NotRequired[CookieSameSite]"
     """Cookie SameSite type."""
-    expires: "Optional[TimeSinceEpoch]"
+    expires: "NotRequired[TimeSinceEpoch]"
     """Cookie expiration date, session cookie if not set"""
-    priority: "Optional[CookiePriority]"
+    priority: "NotRequired[CookiePriority]"
     """Cookie Priority."""
-    sameParty: "Optional[bool]"
+    sameParty: "NotRequired[bool]"
     """True if cookie is SameParty."""
-    sourceScheme: "Optional[CookieSourceScheme]"
+    sourceScheme: "NotRequired[CookieSourceScheme]"
     """Cookie source scheme type."""
-    sourcePort: "Optional[int]"
+    sourcePort: "NotRequired[int]"
     """Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port.
 An unspecified port value allows protocol clients to emulate legacy cookie scope for the port.
 This is a temporary ability and it will be removed in the future."""
-    partitionKey: "Optional[CookiePartitionKey]"
+    partitionKey: "NotRequired[CookiePartitionKey]"
     """Cookie partition key. If not set, the cookie will be set as not partitioned."""
 
 
 
 """Authorization challenge for HTTP status code 401 or 407."""
 class AuthChallenge(TypedDict):
-    source: "Optional[str]"
+    source: "NotRequired[str]"
     """Source of the authentication challenge."""
     origin: "str"
     """Origin of the challenger."""
@@ -775,10 +775,10 @@ class AuthChallengeResponse(TypedDict):
     """The decision on what to do in response to the authorization challenge.  Default means
 deferring to the default behavior of the net stack, which will likely either the Cancel
 authentication or display a popup dialog box."""
-    username: "Optional[str]"
+    username: "NotRequired[str]"
     """The username to provide, possibly empty. Should only be set if response is
 ProvideCredentials."""
-    password: "Optional[str]"
+    password: "NotRequired[str]"
     """The password to provide, possibly empty. Should only be set if response is
 ProvideCredentials."""
 
@@ -813,9 +813,9 @@ class SignedExchangeSignature(TypedDict):
     """The hex string of signed exchange signature."""
     integrity: "str"
     """Signed exchange signature integrity."""
-    certUrl: "Optional[str]"
+    certUrl: "NotRequired[str]"
     """Signed exchange signature cert Url."""
-    certSha256: "Optional[str]"
+    certSha256: "NotRequired[str]"
     """The hex string of signed exchange signature cert sha256."""
     validityUrl: "str"
     """Signed exchange signature validity Url."""
@@ -823,7 +823,7 @@ class SignedExchangeSignature(TypedDict):
     """Signed exchange signature date."""
     expires: "int"
     """Signed exchange signature expires."""
-    certificates: "Optional[List[str]]"
+    certificates: "NotRequired[List[str]]"
     """The encoded certificates."""
 
 
@@ -859,9 +859,9 @@ class SignedExchangeErrorField(Enum):
 class SignedExchangeError(TypedDict):
     message: "str"
     """Error message."""
-    signatureIndex: "Optional[int]"
+    signatureIndex: "NotRequired[int]"
     """The index of the signature which caused the error."""
-    errorField: "Optional[SignedExchangeErrorField]"
+    errorField: "NotRequired[SignedExchangeErrorField]"
     """The field which caused the error."""
 
 
@@ -873,11 +873,11 @@ class SignedExchangeInfo(TypedDict):
     hasExtraInfo: "bool"
     """Whether network response for the signed exchange was accompanied by
 extra headers."""
-    header: "Optional[SignedExchangeHeader]"
+    header: "NotRequired[SignedExchangeHeader]"
     """Information about the signed exchange header."""
-    securityDetails: "Optional[SecurityDetails]"
+    securityDetails: "NotRequired[SecurityDetails]"
     """Security details for the signed exchange header."""
-    errors: "Optional[List[SignedExchangeError]]"
+    errors: "NotRequired[List[SignedExchangeError]]"
     """Errors occurred while handling the signed exchange."""
 
 
@@ -900,13 +900,13 @@ class DirectSocketDnsQueryType(Enum):
 class DirectTCPSocketOptions(TypedDict):
     noDelay: "bool"
     """TCP_NODELAY option"""
-    keepAliveDelay: "Optional[float]"
+    keepAliveDelay: "NotRequired[float]"
     """Expected to be unsigned integer."""
-    sendBufferSize: "Optional[float]"
+    sendBufferSize: "NotRequired[float]"
     """Expected to be unsigned integer."""
-    receiveBufferSize: "Optional[float]"
+    receiveBufferSize: "NotRequired[float]"
     """Expected to be unsigned integer."""
-    dnsQueryType: "Optional[DirectSocketDnsQueryType]"
+    dnsQueryType: "NotRequired[DirectSocketDnsQueryType]"
 
 
 
@@ -927,9 +927,9 @@ class DirectUDPSocketOptions(TypedDict, total=False):
 
 class DirectUDPMessage(TypedDict):
     data: "str"
-    remoteAddr: "Optional[str]"
+    remoteAddr: "NotRequired[str]"
     """Null for connected mode."""
-    remotePort: "Optional[int]"
+    remotePort: "NotRequired[int]"
     """Null for connected mode.
 Expected to be unsigned integer."""
 
@@ -983,8 +983,8 @@ class CrossOriginOpenerPolicyValue(Enum):
 class CrossOriginOpenerPolicyStatus(TypedDict):
     value: "CrossOriginOpenerPolicyValue"
     reportOnlyValue: "CrossOriginOpenerPolicyValue"
-    reportingEndpoint: "Optional[str]"
-    reportOnlyReportingEndpoint: "Optional[str]"
+    reportingEndpoint: "NotRequired[str]"
+    reportOnlyReportingEndpoint: "NotRequired[str]"
 
 
 
@@ -998,8 +998,8 @@ class CrossOriginEmbedderPolicyValue(Enum):
 class CrossOriginEmbedderPolicyStatus(TypedDict):
     value: "CrossOriginEmbedderPolicyValue"
     reportOnlyValue: "CrossOriginEmbedderPolicyValue"
-    reportingEndpoint: "Optional[str]"
-    reportOnlyReportingEndpoint: "Optional[str]"
+    reportingEndpoint: "NotRequired[str]"
+    reportOnlyReportingEndpoint: "NotRequired[str]"
 
 
 
@@ -1067,13 +1067,13 @@ class ReportingApiEndpoint(TypedDict):
 """An object providing the result of a network resource load."""
 class LoadNetworkResourcePageResult(TypedDict):
     success: "bool"
-    netError: "Optional[float]"
+    netError: "NotRequired[float]"
     """Optional values used for error reporting."""
-    netErrorName: "Optional[str]"
-    httpStatusCode: "Optional[float]"
-    stream: "Optional[StreamHandle]"
+    netErrorName: "NotRequired[str]"
+    httpStatusCode: "NotRequired[float]"
+    stream: "NotRequired[StreamHandle]"
     """If successful, one of the following two fields holds the result."""
-    headers: "Optional[Headers]"
+    headers: "NotRequired[Headers]"
     """Response headers."""
 
 

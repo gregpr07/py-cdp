@@ -4,8 +4,8 @@
 
 """CDP Runtime Domain Types"""
 
-from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, Dict, List
+from typing_extensions import NotRequired, TypedDict
 
 """Unique script identifier."""
 ScriptId = str
@@ -15,9 +15,9 @@ ScriptId = str
 """Represents options for serialization. Overrides `generatePreview` and `returnByValue`."""
 class SerializationOptions(TypedDict):
     serialization: "str"
-    maxDepth: "Optional[int]"
+    maxDepth: "NotRequired[int]"
     """Deep serialization depth. Default is full depth. Respected only in `deep` serialization mode."""
-    additionalParameters: "Optional[Dict[str, Any]]"
+    additionalParameters: "NotRequired[Dict[str, Any]]"
     """Embedder-specific parameters. For example if connected to V8 in Chrome these control DOM
 serialization via `maxNodeDepth: integer` and `includeShadowTree: \"none\" | \"open\" | \"all\"`.
 Values can be only of type string or integer."""
@@ -27,9 +27,9 @@ Values can be only of type string or integer."""
 """Represents deep serialized value."""
 class DeepSerializedValue(TypedDict):
     type: "str"
-    value: "Optional[Any]"
-    objectId: "Optional[str]"
-    weakLocalObjectReference: "Optional[int]"
+    value: "NotRequired[Any]"
+    objectId: "NotRequired[str]"
+    weakLocalObjectReference: "NotRequired[int]"
     """Set if value reference met more then once during serialization. In such
 case, value is provided only to one of the serialized values. Unique
 per value in the scope of one CDP call."""
@@ -51,26 +51,26 @@ UnserializableValue = str
 class RemoteObject(TypedDict):
     type: "str"
     """Object type."""
-    subtype: "Optional[str]"
+    subtype: "NotRequired[str]"
     """Object subtype hint. Specified for `object` type values only.
 NOTE: If you change anything here, make sure to also update
 `subtype` in `ObjectPreview` and `PropertyPreview` below."""
-    className: "Optional[str]"
+    className: "NotRequired[str]"
     """Object class (constructor) name. Specified for `object` type values only."""
-    value: "Optional[Any]"
+    value: "NotRequired[Any]"
     """Remote object value in case of primitive values or JSON values (if it was requested)."""
-    unserializableValue: "Optional[UnserializableValue]"
+    unserializableValue: "NotRequired[UnserializableValue]"
     """Primitive value which can not be JSON-stringified does not have `value`, but gets this
 property."""
-    description: "Optional[str]"
+    description: "NotRequired[str]"
     """String representation of the object."""
-    deepSerializedValue: "Optional[DeepSerializedValue]"
+    deepSerializedValue: "NotRequired[DeepSerializedValue]"
     """Deep serialized value."""
-    objectId: "Optional[RemoteObjectId]"
+    objectId: "NotRequired[RemoteObjectId]"
     """Unique object identifier (for non-primitive values)."""
-    preview: "Optional[ObjectPreview]"
+    preview: "NotRequired[ObjectPreview]"
     """Preview containing abbreviated property values. Specified for `object` type values only."""
-    customPreview: "Optional[CustomPreview]"
+    customPreview: "NotRequired[CustomPreview]"
 
 
 
@@ -78,7 +78,7 @@ class CustomPreview(TypedDict):
     header: "str"
     """The JSON-stringified result of formatter.header(object, config) call.
 It contains json ML array that represents RemoteObject."""
-    bodyGetterId: "Optional[RemoteObjectId]"
+    bodyGetterId: "NotRequired[RemoteObjectId]"
     """If formatter returns true as a result of formatter.hasBody call then bodyGetterId will
 contain RemoteObjectId for the function that returns result of formatter.body(object, config) call.
 The result value is json ML array."""
@@ -89,15 +89,15 @@ The result value is json ML array."""
 class ObjectPreview(TypedDict):
     type: "str"
     """Object type."""
-    subtype: "Optional[str]"
+    subtype: "NotRequired[str]"
     """Object subtype hint. Specified for `object` type values only."""
-    description: "Optional[str]"
+    description: "NotRequired[str]"
     """String representation of the object."""
     overflow: "bool"
     """True iff some of the properties or entries of the original object did not fit."""
     properties: "List[PropertyPreview]"
     """List of the properties."""
-    entries: "Optional[List[EntryPreview]]"
+    entries: "NotRequired[List[EntryPreview]]"
     """List of the entries. Specified for `map` and `set` subtype values only."""
 
 
@@ -107,17 +107,17 @@ class PropertyPreview(TypedDict):
     """Property name."""
     type: "str"
     """Object type. Accessor means that the property itself is an accessor property."""
-    value: "Optional[str]"
+    value: "NotRequired[str]"
     """User-friendly property value string."""
-    valuePreview: "Optional[ObjectPreview]"
+    valuePreview: "NotRequired[ObjectPreview]"
     """Nested value preview."""
-    subtype: "Optional[str]"
+    subtype: "NotRequired[str]"
     """Object subtype hint. Specified for `object` type values only."""
 
 
 
 class EntryPreview(TypedDict):
-    key: "Optional[ObjectPreview]"
+    key: "NotRequired[ObjectPreview]"
     """Preview of the key. Specified for map-like collection entries."""
     value: "ObjectPreview"
     """Preview of the value."""
@@ -128,14 +128,14 @@ class EntryPreview(TypedDict):
 class PropertyDescriptor(TypedDict):
     name: "str"
     """Property name or symbol description."""
-    value: "Optional[RemoteObject]"
+    value: "NotRequired[RemoteObject]"
     """The value associated with the property."""
-    writable: "Optional[bool]"
+    writable: "NotRequired[bool]"
     """True if the value associated with the property may be changed (data descriptors only)."""
-    get: "Optional[RemoteObject]"
+    get: "NotRequired[RemoteObject]"
     """A function which serves as a getter for the property, or `undefined` if there is no getter
 (accessor descriptors only)."""
-    set: "Optional[RemoteObject]"
+    set: "NotRequired[RemoteObject]"
     """A function which serves as a setter for the property, or `undefined` if there is no setter
 (accessor descriptors only)."""
     configurable: "bool"
@@ -144,11 +144,11 @@ deleted from the corresponding object."""
     enumerable: "bool"
     """True if this property shows up during enumeration of the properties on the corresponding
 object."""
-    wasThrown: "Optional[bool]"
+    wasThrown: "NotRequired[bool]"
     """True if the result was thrown during the evaluation."""
-    isOwn: "Optional[bool]"
+    isOwn: "NotRequired[bool]"
     """True if the property is owned for the object."""
-    symbol: "Optional[RemoteObject]"
+    symbol: "NotRequired[RemoteObject]"
     """Property symbol object, if the property is of the `symbol` type."""
 
 
@@ -157,7 +157,7 @@ object."""
 class InternalPropertyDescriptor(TypedDict):
     name: "str"
     """Conventional property name."""
-    value: "Optional[RemoteObject]"
+    value: "NotRequired[RemoteObject]"
     """The value associated with the property."""
 
 
@@ -166,12 +166,12 @@ class InternalPropertyDescriptor(TypedDict):
 class PrivatePropertyDescriptor(TypedDict):
     name: "str"
     """Private property name."""
-    value: "Optional[RemoteObject]"
+    value: "NotRequired[RemoteObject]"
     """The value associated with the private property."""
-    get: "Optional[RemoteObject]"
+    get: "NotRequired[RemoteObject]"
     """A function which serves as a getter for the private property,
 or `undefined` if there is no getter (accessor descriptors only)."""
-    set: "Optional[RemoteObject]"
+    set: "NotRequired[RemoteObject]"
     """A function which serves as a setter for the private property,
 or `undefined` if there is no setter (accessor descriptors only)."""
 
@@ -207,7 +207,7 @@ script evaluation should be performed."""
     """A system-unique execution context identifier. Unlike the id, this is unique across
 multiple processes, so can be reliably used to identify specific context while backend
 performs a cross-process navigation."""
-    auxData: "Optional[Dict[str, Any]]"
+    auxData: "NotRequired[Dict[str, Any]]"
     """Embedder-specific auxiliary data likely matching {isDefault: boolean, type: 'default'|'isolated'|'worker', frameId: string}"""
 
 
@@ -223,17 +223,17 @@ class ExceptionDetails(TypedDict):
     """Line number of the exception location (0-based)."""
     columnNumber: "int"
     """Column number of the exception location (0-based)."""
-    scriptId: "Optional[ScriptId]"
+    scriptId: "NotRequired[ScriptId]"
     """Script ID of the exception location."""
-    url: "Optional[str]"
+    url: "NotRequired[str]"
     """URL of the exception location, to be used when the script was not reported."""
-    stackTrace: "Optional[StackTrace]"
+    stackTrace: "NotRequired[StackTrace]"
     """JavaScript stack trace if available."""
-    exception: "Optional[RemoteObject]"
+    exception: "NotRequired[RemoteObject]"
     """Exception object if available."""
-    executionContextId: "Optional[ExecutionContextId]"
+    executionContextId: "NotRequired[ExecutionContextId]"
     """Identifier of the context where exception happened."""
-    exceptionMetaData: "Optional[Dict[str, Any]]"
+    exceptionMetaData: "NotRequired[Dict[str, Any]]"
     """Dictionary with entries of meta data that the client associated
 with this exception, such as information about associated network
 requests, etc."""
@@ -267,14 +267,14 @@ class CallFrame(TypedDict):
 
 """Call frames for assertions or error messages."""
 class StackTrace(TypedDict):
-    description: "Optional[str]"
+    description: "NotRequired[str]"
     """String label of this stack trace. For async traces this may be a name of the function that
 initiated the async call."""
     callFrames: "List[CallFrame]"
     """JavaScript function name."""
-    parent: "Optional[StackTrace]"
+    parent: "NotRequired[StackTrace]"
     """Asynchronous JavaScript stack trace that preceded this stack, if available."""
-    parentId: "Optional[StackTraceId]"
+    parentId: "NotRequired[StackTraceId]"
     """Asynchronous JavaScript stack trace that preceded this stack, if available."""
 
 
@@ -288,4 +288,4 @@ UniqueDebuggerId = str
 allows to track cross-debugger calls. See `Runtime.StackTrace` and `Debugger.paused` for usages."""
 class StackTraceId(TypedDict):
     id: "str"
-    debuggerId: "Optional[UniqueDebuggerId]"
+    debuggerId: "NotRequired[UniqueDebuggerId]"

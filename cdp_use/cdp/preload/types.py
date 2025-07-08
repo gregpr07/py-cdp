@@ -5,8 +5,8 @@
 """CDP Preload Domain Types"""
 
 from enum import Enum
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -33,7 +33,7 @@ a JSON for valid case.
 See also:
 - https://wicg.github.io/nav-speculation/speculation-rules.html
 - https://github.com/WICG/nav-speculation/blob/main/triggers.md"""
-    backendNodeId: "Optional[BackendNodeId]"
+    backendNodeId: "NotRequired[BackendNodeId]"
     """A speculation rule set is either added through an inline
 `<script>` tag or through an external resource via the
 'Speculation-Rules' HTTP header. For the first case, we include
@@ -44,12 +44,12 @@ from, and also RequestId if Network domain is enabled.
 See also:
 - https://wicg.github.io/nav-speculation/speculation-rules.html#speculation-rules-script
 - https://wicg.github.io/nav-speculation/speculation-rules.html#speculation-rules-header"""
-    url: "Optional[str]"
-    requestId: "Optional[RequestId]"
-    errorType: "Optional[RuleSetErrorType]"
+    url: "NotRequired[str]"
+    requestId: "NotRequired[RequestId]"
+    errorType: "NotRequired[RuleSetErrorType]"
     """Error information
 `errorMessage` is null iff `errorType` is null."""
-    errorMessage: "Optional[str]"
+    errorMessage: "NotRequired[str]"
     """TODO(https://crbug.com/1425354): Replace this property with structured error."""
 
 
@@ -87,7 +87,7 @@ class PreloadingAttemptKey(TypedDict):
     loaderId: "LoaderId"
     action: "SpeculationAction"
     url: "str"
-    targetHint: "Optional[SpeculationTargetHint]"
+    targetHint: "NotRequired[SpeculationTargetHint]"
 
 
 
@@ -247,5 +247,5 @@ class PrefetchStatus(Enum):
 """Information of headers to be displayed when the header mismatch occurred."""
 class PrerenderMismatchedHeaders(TypedDict):
     headerName: "str"
-    initialValue: "Optional[str]"
-    activationValue: "Optional[str]"
+    initialValue: "NotRequired[str]"
+    activationValue: "NotRequired[str]"

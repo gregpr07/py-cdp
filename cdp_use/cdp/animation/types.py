@@ -4,8 +4,8 @@
 
 """CDP Animation Domain Types"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -34,27 +34,27 @@ percentage [0 - 100] for scroll driven animations
     """`Animation`'s current time."""
     type: "str"
     """Animation type of `Animation`."""
-    source: "Optional[AnimationEffect]"
+    source: "NotRequired[AnimationEffect]"
     """`Animation`'s source animation node."""
-    cssId: "Optional[str]"
+    cssId: "NotRequired[str]"
     """A unique ID for `Animation` representing the sources that triggered this CSS
 animation/transition."""
-    viewOrScrollTimeline: "Optional[ViewOrScrollTimeline]"
+    viewOrScrollTimeline: "NotRequired[ViewOrScrollTimeline]"
     """View or scroll timeline"""
 
 
 
 """Timeline instance"""
 class ViewOrScrollTimeline(TypedDict):
-    sourceNodeId: "Optional[BackendNodeId]"
+    sourceNodeId: "NotRequired[BackendNodeId]"
     """Scroll container node"""
-    startOffset: "Optional[float]"
+    startOffset: "NotRequired[float]"
     """Represents the starting scroll position of the timeline
 as a length offset in pixels from scroll origin."""
-    endOffset: "Optional[float]"
+    endOffset: "NotRequired[float]"
     """Represents the ending scroll position of the timeline
 as a length offset in pixels from scroll origin."""
-    subjectNodeId: "Optional[BackendNodeId]"
+    subjectNodeId: "NotRequired[BackendNodeId]"
     """The element whose principal box's visibility in the
 scrollport defined the progress of the timeline.
 Does not exist for animations with ScrollTimeline"""
@@ -82,9 +82,9 @@ percentage [0 - 100] for scroll driven animations
     """`AnimationEffect`'s playback direction."""
     fill: "str"
     """`AnimationEffect`'s fill mode."""
-    backendNodeId: "Optional[BackendNodeId]"
+    backendNodeId: "NotRequired[BackendNodeId]"
     """`AnimationEffect`'s target node."""
-    keyframesRule: "Optional[KeyframesRule]"
+    keyframesRule: "NotRequired[KeyframesRule]"
     """`AnimationEffect`'s keyframes."""
     easing: "str"
     """`AnimationEffect`'s timing function."""
@@ -93,7 +93,7 @@ percentage [0 - 100] for scroll driven animations
 
 """Keyframes Rule"""
 class KeyframesRule(TypedDict):
-    name: "Optional[str]"
+    name: "NotRequired[str]"
     """CSS keyframed animation's name."""
     keyframes: "List[KeyframeStyle]"
     """List of animation keyframes."""

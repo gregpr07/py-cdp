@@ -4,8 +4,8 @@
 
 """CDP Target Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -27,7 +27,7 @@ class ActivateTargetParameters(TypedDict):
 
 class AttachToTargetParameters(TypedDict):
     targetId: "TargetID"
-    flatten: "Optional[bool]"
+    flatten: "NotRequired[bool]"
     """Enables \"flat\" access to the session via specifying sessionId attribute in the commands.
 We plan to make this the default, deprecate non-flattened mode,
 and eventually retire it. See crbug.com/991325."""
@@ -57,9 +57,9 @@ class CloseTargetReturns(TypedDict):
 
 class ExposeDevToolsProtocolParameters(TypedDict):
     targetId: "TargetID"
-    bindingName: "Optional[str]"
+    bindingName: "NotRequired[str]"
     """Binding name, 'cdp' if not specified."""
-    inheritPermissions: "Optional[bool]"
+    inheritPermissions: "NotRequired[bool]"
     """If true, inherits the current root session's permissions (default: false)."""
 
 
@@ -93,30 +93,30 @@ class GetBrowserContextsReturns(TypedDict):
 class CreateTargetParameters(TypedDict):
     url: "str"
     """The initial URL the page will be navigated to. An empty string indicates about:blank."""
-    left: "Optional[int]"
+    left: "NotRequired[int]"
     """Frame left origin in DIP (requires newWindow to be true or headless shell)."""
-    top: "Optional[int]"
+    top: "NotRequired[int]"
     """Frame top origin in DIP (requires newWindow to be true or headless shell)."""
-    width: "Optional[int]"
+    width: "NotRequired[int]"
     """Frame width in DIP (requires newWindow to be true or headless shell)."""
-    height: "Optional[int]"
+    height: "NotRequired[int]"
     """Frame height in DIP (requires newWindow to be true or headless shell)."""
-    windowState: "Optional[WindowState]"
+    windowState: "NotRequired[WindowState]"
     """Frame window state (requires newWindow to be true or headless shell).
 Default is normal."""
-    browserContextId: "Optional[BrowserContextID]"
+    browserContextId: "NotRequired[BrowserContextID]"
     """The browser context to create the page in."""
-    enableBeginFrameControl: "Optional[bool]"
+    enableBeginFrameControl: "NotRequired[bool]"
     """Whether BeginFrames for this target will be controlled via DevTools (headless shell only,
 not supported on MacOS yet, false by default)."""
-    newWindow: "Optional[bool]"
+    newWindow: "NotRequired[bool]"
     """Whether to create a new Window or Tab (false by default, not supported by headless shell)."""
-    background: "Optional[bool]"
+    background: "NotRequired[bool]"
     """Whether to create the target in background or foreground (false by default, not supported
 by headless shell)."""
-    forTab: "Optional[bool]"
+    forTab: "NotRequired[bool]"
     """Whether to create the target of type \"tab\"."""
-    hidden: "Optional[bool]"
+    hidden: "NotRequired[bool]"
     """Whether to create a hidden target. The hidden target is observable via protocol, but not
 present in the tab UI strip. Cannot be created with `forTab: true`, `newWindow: true` or
 `background: false`. The life-time of the tab is limited to the life-time of the session."""
@@ -169,9 +169,9 @@ class GetTargetsReturns(TypedDict):
 
 class SendMessageToTargetParameters(TypedDict):
     message: "str"
-    sessionId: "Optional[SessionID]"
+    sessionId: "NotRequired[SessionID]"
     """Identifier of the session."""
-    targetId: "Optional[TargetID]"
+    targetId: "NotRequired[TargetID]"
     """Deprecated."""
 
 
@@ -184,11 +184,11 @@ class SetAutoAttachParameters(TypedDict):
     waitForDebuggerOnStart: "bool"
     """Whether to pause new targets when attaching to them. Use `Runtime.runIfWaitingForDebugger`
 to run paused targets."""
-    flatten: "Optional[bool]"
+    flatten: "NotRequired[bool]"
     """Enables \"flat\" access to the session via specifying sessionId attribute in the commands.
 We plan to make this the default, deprecate non-flattened mode,
 and eventually retire it. See crbug.com/991325."""
-    filter: "Optional[TargetFilter]"
+    filter: "NotRequired[TargetFilter]"
     """Only targets matching filter will be attached."""
 
 
@@ -200,7 +200,7 @@ class AutoAttachRelatedParameters(TypedDict):
     waitForDebuggerOnStart: "bool"
     """Whether to pause new targets when attaching to them. Use `Runtime.runIfWaitingForDebugger`
 to run paused targets."""
-    filter: "Optional[TargetFilter]"
+    filter: "NotRequired[TargetFilter]"
     """Only targets matching filter will be attached."""
 
 
@@ -210,7 +210,7 @@ to run paused targets."""
 class SetDiscoverTargetsParameters(TypedDict):
     discover: "bool"
     """Whether to discover available targets."""
-    filter: "Optional[TargetFilter]"
+    filter: "NotRequired[TargetFilter]"
     """Only targets matching filter will be attached. If `discover` is false,
 `filter` must be omitted or empty."""
 

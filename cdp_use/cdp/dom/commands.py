@@ -4,8 +4,8 @@
 
 """CDP DOM Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -43,7 +43,7 @@ class CopyToParameters(TypedDict):
     """Id of the node to copy."""
     targetNodeId: "NodeId"
     """Id of the element to drop the copy into."""
-    insertBeforeNodeId: "Optional[NodeId]"
+    insertBeforeNodeId: "NotRequired[NodeId]"
     """Drop the copy before this node (if absent, the copy becomes the last child of
 `targetNodeId`)."""
 
@@ -194,7 +194,7 @@ class GetNodesForSubtreeByStyleParameters(TypedDict):
     """Node ID pointing to the root of a subtree."""
     computedStyles: "List[CSSComputedStyleProperty]"
     """The style to filter nodes by (includes nodes if any of properties matches)."""
-    pierce: "Optional[bool]"
+    pierce: "NotRequired[bool]"
     """Whether or not iframes and shadow roots in the same target should be traversed when returning the
 results (default is false)."""
 
@@ -210,9 +210,9 @@ class GetNodeForLocationParameters(TypedDict):
     """X coordinate."""
     y: "int"
     """Y coordinate."""
-    includeUserAgentShadowDOM: "Optional[bool]"
+    includeUserAgentShadowDOM: "NotRequired[bool]"
     """False to skip to the nearest non-UA shadow root ancestor (default: false)."""
-    ignorePointerEventsNone: "Optional[bool]"
+    ignorePointerEventsNone: "NotRequired[bool]"
     """Whether to ignore pointer-events: none on elements and hit test them."""
 
 
@@ -233,6 +233,8 @@ class GetOuterHTMLParameters(TypedDict, total=False):
     """Identifier of the backend node."""
     objectId: "RemoteObjectId"
     """JavaScript object id of the node wrapper."""
+    includeShadowDOM: "bool"
+    """Include all shadow roots. Equals to false if not specified."""
 
 
 class GetOuterHTMLReturns(TypedDict):
@@ -272,7 +274,7 @@ class MoveToParameters(TypedDict):
     """Id of the node to move."""
     targetNodeId: "NodeId"
     """Id of the element to drop the moved node into."""
-    insertBeforeNodeId: "Optional[NodeId]"
+    insertBeforeNodeId: "NotRequired[NodeId]"
     """Drop node before this one (if absent, the moved node becomes the last child of
 `targetNodeId`)."""
 
@@ -286,7 +288,7 @@ class MoveToReturns(TypedDict):
 class PerformSearchParameters(TypedDict):
     query: "str"
     """Plain text or query selector or XPath search query."""
-    includeUserAgentShadowDOM: "Optional[bool]"
+    includeUserAgentShadowDOM: "NotRequired[bool]"
     """True to search in user agent shadow DOM."""
 
 
@@ -387,10 +389,10 @@ class RemoveNodeParameters(TypedDict):
 class RequestChildNodesParameters(TypedDict):
     nodeId: "NodeId"
     """Id of the node to get children for."""
-    depth: "Optional[int]"
+    depth: "NotRequired[int]"
     """The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
 entire subtree or provide an integer larger than 0."""
-    pierce: "Optional[bool]"
+    pierce: "NotRequired[bool]"
     """Whether or not iframes and shadow roots should be traversed when returning the sub-tree
 (default is false)."""
 
@@ -443,7 +445,7 @@ class SetAttributesAsTextParameters(TypedDict):
     """Id of the element to set attributes for."""
     text: "str"
     """Text with a number of attributes. Will parse this text using HTML parser."""
-    name: "Optional[str]"
+    name: "NotRequired[str]"
     """Attribute name to replace with new attributes derived from text in case text parsed
 successfully."""
 
@@ -454,11 +456,11 @@ successfully."""
 class SetFileInputFilesParameters(TypedDict):
     files: "List[str]"
     """Array of file paths to set."""
-    nodeId: "Optional[NodeId]"
+    nodeId: "NotRequired[NodeId]"
     """Identifier of the node."""
-    backendNodeId: "Optional[BackendNodeId]"
+    backendNodeId: "NotRequired[BackendNodeId]"
     """Identifier of the backend node."""
-    objectId: "Optional[RemoteObjectId]"
+    objectId: "NotRequired[RemoteObjectId]"
     """JavaScript object id of the node wrapper."""
 
 
@@ -555,10 +557,10 @@ class GetFrameOwnerReturns(TypedDict):
 
 class GetContainerForNodeParameters(TypedDict):
     nodeId: "NodeId"
-    containerName: "Optional[str]"
-    physicalAxes: "Optional[PhysicalAxes]"
-    logicalAxes: "Optional[LogicalAxes]"
-    queriesScrollState: "Optional[bool]"
+    containerName: "NotRequired[str]"
+    physicalAxes: "NotRequired[PhysicalAxes]"
+    logicalAxes: "NotRequired[LogicalAxes]"
+    queriesScrollState: "NotRequired[bool]"
 
 
 class GetContainerForNodeReturns(TypedDict):
@@ -581,7 +583,7 @@ class GetQueryingDescendantsForContainerReturns(TypedDict):
 class GetAnchorElementParameters(TypedDict):
     nodeId: "NodeId"
     """Id of the positioned element from which to find the anchor."""
-    anchorSpecifier: "Optional[str]"
+    anchorSpecifier: "NotRequired[str]"
     """An optional anchor specifier, as defined in
 https://www.w3.org/TR/css-anchor-position-1/#anchor-specifier.
 If not provided, it will return the implicit anchor element for

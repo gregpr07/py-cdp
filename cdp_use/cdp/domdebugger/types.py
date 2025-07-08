@@ -5,8 +5,7 @@
 """CDP DOMDebugger Domain Types"""
 
 from enum import Enum
-from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -46,9 +45,9 @@ class EventListener(TypedDict):
     """Line number in the script (0-based)."""
     columnNumber: "int"
     """Column number in the script (0-based)."""
-    handler: "Optional[RemoteObject]"
+    handler: "NotRequired[RemoteObject]"
     """Event handler function value."""
-    originalHandler: "Optional[RemoteObject]"
+    originalHandler: "NotRequired[RemoteObject]"
     """Event original handler function value."""
-    backendNodeId: "Optional[BackendNodeId]"
+    backendNodeId: "NotRequired[BackendNodeId]"
     """Node the listener is added to (if any)."""

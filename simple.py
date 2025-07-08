@@ -41,6 +41,10 @@ async def main():
         # Enable DOM domain
         await cdp.send.DOM.enable(session_id=session_id)
 
+        await cdp.send.Page.navigate(
+            params={"url": "https://www.google.com"}, session_id=session_id
+        )
+
         # Get full DOM tree
         dom_result = await cdp.send.DOM.getDocument(
             params={"depth": -1, "pierce": True}, session_id=session_id

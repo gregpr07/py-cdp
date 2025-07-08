@@ -4,8 +4,8 @@
 
 """CDP DOMDebugger Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -19,10 +19,10 @@ if TYPE_CHECKING:
 class GetEventListenersParameters(TypedDict):
     objectId: "RemoteObjectId"
     """Identifier of the object to return listeners for."""
-    depth: "Optional[int]"
+    depth: "NotRequired[int]"
     """The maximum depth at which Node children should be retrieved, defaults to 1. Use -1 for the
 entire subtree or provide an integer larger than 0."""
-    pierce: "Optional[bool]"
+    pierce: "NotRequired[bool]"
     """Whether or not iframes and shadow roots should be traversed when returning the subtree
 (default is false). Reports listeners for all contexts if pierce is enabled."""
 
@@ -46,7 +46,7 @@ class RemoveDOMBreakpointParameters(TypedDict):
 class RemoveEventListenerBreakpointParameters(TypedDict):
     eventName: "str"
     """Event name."""
-    targetName: "Optional[str]"
+    targetName: "NotRequired[str]"
     """EventTarget interface name."""
 
 
@@ -90,7 +90,7 @@ class SetDOMBreakpointParameters(TypedDict):
 class SetEventListenerBreakpointParameters(TypedDict):
     eventName: "str"
     """DOM Event name to stop on (any DOM event will do)."""
-    targetName: "Optional[str]"
+    targetName: "NotRequired[str]"
     """EventTarget interface name to stop on. If equal to `\"*\"` or not provided, will stop on any
 EventTarget."""
 

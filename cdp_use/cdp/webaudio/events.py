@@ -4,8 +4,7 @@
 
 """CDP WebAudio Domain Events"""
 
-from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -79,8 +78,8 @@ class NodesConnectedEvent(TypedDict):
     contextId: "GraphObjectId"
     sourceId: "GraphObjectId"
     destinationId: "GraphObjectId"
-    sourceOutputIndex: "Optional[float]"
-    destinationInputIndex: "Optional[float]"
+    sourceOutputIndex: "NotRequired[float]"
+    destinationInputIndex: "NotRequired[float]"
 
 
 
@@ -89,8 +88,8 @@ class NodesDisconnectedEvent(TypedDict):
     contextId: "GraphObjectId"
     sourceId: "GraphObjectId"
     destinationId: "GraphObjectId"
-    sourceOutputIndex: "Optional[float]"
-    destinationInputIndex: "Optional[float]"
+    sourceOutputIndex: "NotRequired[float]"
+    destinationInputIndex: "NotRequired[float]"
 
 
 
@@ -99,7 +98,7 @@ class NodeParamConnectedEvent(TypedDict):
     contextId: "GraphObjectId"
     sourceId: "GraphObjectId"
     destinationId: "GraphObjectId"
-    sourceOutputIndex: "Optional[float]"
+    sourceOutputIndex: "NotRequired[float]"
 
 
 
@@ -108,4 +107,4 @@ class NodeParamDisconnectedEvent(TypedDict):
     contextId: "GraphObjectId"
     sourceId: "GraphObjectId"
     destinationId: "GraphObjectId"
-    sourceOutputIndex: "Optional[float]"
+    sourceOutputIndex: "NotRequired[float]"

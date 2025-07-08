@@ -5,8 +5,7 @@
 """CDP Fetch Domain Types"""
 
 from enum import Enum
-from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -49,7 +48,7 @@ class HeaderEntry(TypedDict):
 
 """Authorization challenge for HTTP status code 401 or 407."""
 class AuthChallenge(TypedDict):
-    source: "Optional[str]"
+    source: "NotRequired[str]"
     """Source of the authentication challenge."""
     origin: "str"
     """Origin of the challenger."""
@@ -66,9 +65,9 @@ class AuthChallengeResponse(TypedDict):
     """The decision on what to do in response to the authorization challenge.  Default means
 deferring to the default behavior of the net stack, which will likely either the Cancel
 authentication or display a popup dialog box."""
-    username: "Optional[str]"
+    username: "NotRequired[str]"
     """The username to provide, possibly empty. Should only be set if response is
 ProvideCredentials."""
-    password: "Optional[str]"
+    password: "NotRequired[str]"
     """The password to provide, possibly empty. Should only be set if response is
 ProvideCredentials."""

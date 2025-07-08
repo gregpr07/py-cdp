@@ -4,12 +4,11 @@
 
 """CDP Cast Domain Types"""
 
-from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 class Sink(TypedDict):
     name: "str"
     id: "str"
-    session: "Optional[str]"
+    session: "NotRequired[str]"
     """Text describing the current session. Present only if there is an active
 session on the sink."""

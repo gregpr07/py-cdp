@@ -5,8 +5,8 @@
 """CDP Emulation Domain Types"""
 
 from enum import Enum
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 class SafeAreaInsets(TypedDict, total=False):
     top: "int"
@@ -83,19 +83,19 @@ class UserAgentBrandVersion(TypedDict):
 """Used to specify User Agent Client Hints to emulate. See https://wicg.github.io/ua-client-hints
 Missing optional values will be filled in by the target with what it would normally use."""
 class UserAgentMetadata(TypedDict):
-    brands: "Optional[List[UserAgentBrandVersion]]"
+    brands: "NotRequired[List[UserAgentBrandVersion]]"
     """Brands appearing in Sec-CH-UA."""
-    fullVersionList: "Optional[List[UserAgentBrandVersion]]"
+    fullVersionList: "NotRequired[List[UserAgentBrandVersion]]"
     """Brands appearing in Sec-CH-UA-Full-Version-List."""
-    fullVersion: "Optional[str]"
+    fullVersion: "NotRequired[str]"
     platform: "str"
     platformVersion: "str"
     architecture: "str"
     model: "str"
     mobile: "bool"
-    bitness: "Optional[str]"
-    wow64: "Optional[bool]"
-    formFactors: "Optional[List[str]]"
+    bitness: "NotRequired[str]"
+    wow64: "NotRequired[bool]"
+    formFactors: "NotRequired[List[str]]"
     """Used to specify User Agent form-factor values.
 See https://wicg.github.io/ua-client-hints/#sec-ch-ua-form-factors"""
 

@@ -4,8 +4,8 @@
 
 """CDP Debugger Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -32,7 +32,7 @@ if TYPE_CHECKING:
 class ContinueToLocationParameters(TypedDict):
     location: "Location"
     """Location to continue to."""
-    targetCallFrames: "Optional[str]"
+    targetCallFrames: "NotRequired[str]"
 
 
 
@@ -55,22 +55,22 @@ class EvaluateOnCallFrameParameters(TypedDict):
     """Call frame identifier to evaluate on."""
     expression: "str"
     """Expression to evaluate."""
-    objectGroup: "Optional[str]"
+    objectGroup: "NotRequired[str]"
     """String object group name to put result into (allows rapid releasing resulting object handles
 using `releaseObjectGroup`)."""
-    includeCommandLineAPI: "Optional[bool]"
+    includeCommandLineAPI: "NotRequired[bool]"
     """Specifies whether command line API should be available to the evaluated expression, defaults
 to false."""
-    silent: "Optional[bool]"
+    silent: "NotRequired[bool]"
     """In silent mode exceptions thrown during evaluation are not reported and do not pause
 execution. Overrides `setPauseOnException` state."""
-    returnByValue: "Optional[bool]"
+    returnByValue: "NotRequired[bool]"
     """Whether the result is expected to be a JSON object that should be sent by value."""
-    generatePreview: "Optional[bool]"
+    generatePreview: "NotRequired[bool]"
     """Whether preview should be generated for the result."""
-    throwOnSideEffect: "Optional[bool]"
+    throwOnSideEffect: "NotRequired[bool]"
     """Whether to throw an exception if side effect cannot be ruled out during evaluation."""
-    timeout: "Optional[TimeDelta]"
+    timeout: "NotRequired[TimeDelta]"
     """Terminate execution after timing out (number of milliseconds)."""
 
 
@@ -85,10 +85,10 @@ class EvaluateOnCallFrameReturns(TypedDict):
 class GetPossibleBreakpointsParameters(TypedDict):
     start: "Location"
     """Start of range to search possible breakpoint locations in."""
-    end: "Optional[Location]"
+    end: "NotRequired[Location]"
     """End of range to search possible breakpoint locations in (excluding). When not specified, end
 of scripts is used as end of range."""
-    restrictToFunction: "Optional[bool]"
+    restrictToFunction: "NotRequired[bool]"
     """Only consider locations which are in the same (non-nested) function as start."""
 
 
@@ -178,7 +178,7 @@ class RemoveBreakpointParameters(TypedDict):
 class RestartFrameParameters(TypedDict):
     callFrameId: "CallFrameId"
     """Call frame identifier to evaluate on."""
-    mode: "Optional[str]"
+    mode: "NotRequired[str]"
     """The `mode` parameter must be present and set to 'StepInto', otherwise
 `restartFrame` will error out."""
 
@@ -210,9 +210,9 @@ class SearchInContentParameters(TypedDict):
     """Id of the script to search in."""
     query: "str"
     """String to search for."""
-    caseSensitive: "Optional[bool]"
+    caseSensitive: "NotRequired[bool]"
     """If true, search is case sensitive."""
-    isRegex: "Optional[bool]"
+    isRegex: "NotRequired[bool]"
     """If true, treats string parameter as regex."""
 
 
@@ -242,7 +242,7 @@ class SetBlackboxExecutionContextsParameters(TypedDict):
 class SetBlackboxPatternsParameters(TypedDict):
     patterns: "List[str]"
     """Array of regexps that will be used to check script url for blackbox state."""
-    skipAnonymous: "Optional[bool]"
+    skipAnonymous: "NotRequired[bool]"
     """If true, also ignore scripts with no source url."""
 
 
@@ -261,7 +261,7 @@ class SetBlackboxedRangesParameters(TypedDict):
 class SetBreakpointParameters(TypedDict):
     location: "Location"
     """Location to set breakpoint in."""
-    condition: "Optional[str]"
+    condition: "NotRequired[str]"
     """Expression to use as a breakpoint condition. When specified, debugger will only stop on the
 breakpoint if this expression evaluates to true."""
 
@@ -288,16 +288,16 @@ class SetInstrumentationBreakpointReturns(TypedDict):
 class SetBreakpointByUrlParameters(TypedDict):
     lineNumber: "int"
     """Line number to set breakpoint at."""
-    url: "Optional[str]"
+    url: "NotRequired[str]"
     """URL of the resources to set breakpoint on."""
-    urlRegex: "Optional[str]"
+    urlRegex: "NotRequired[str]"
     """Regex pattern for the URLs of the resources to set breakpoints on. Either `url` or
 `urlRegex` must be specified."""
-    scriptHash: "Optional[str]"
+    scriptHash: "NotRequired[str]"
     """Script hash of the resources to set breakpoint on."""
-    columnNumber: "Optional[int]"
+    columnNumber: "NotRequired[int]"
     """Offset in the line to set breakpoint at."""
-    condition: "Optional[str]"
+    condition: "NotRequired[str]"
     """Expression to use as a breakpoint condition. When specified, debugger will only stop on the
 breakpoint if this expression evaluates to true."""
 
@@ -313,7 +313,7 @@ class SetBreakpointByUrlReturns(TypedDict):
 class SetBreakpointOnFunctionCallParameters(TypedDict):
     objectId: "RemoteObjectId"
     """Function object id."""
-    condition: "Optional[str]"
+    condition: "NotRequired[str]"
     """Expression to use as a breakpoint condition. When specified, debugger will
 stop on the breakpoint if this expression evaluates to true."""
 
@@ -353,10 +353,10 @@ class SetScriptSourceParameters(TypedDict):
     """Id of the script to edit."""
     scriptSource: "str"
     """New content of the script."""
-    dryRun: "Optional[bool]"
+    dryRun: "NotRequired[bool]"
     """If true the change will not actually be applied. Dry run may be used to get result
 description without actually modifying the code."""
-    allowTopFrameEditing: "Optional[bool]"
+    allowTopFrameEditing: "NotRequired[bool]"
     """If true, then `scriptSource` is allowed to change the function on top of the stack
 as long as the top-most stack frame is the only activation of that function."""
 

@@ -4,8 +4,8 @@
 
 """CDP Preload Domain Events"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -62,11 +62,11 @@ class PrerenderStatusUpdatedEvent(TypedDict):
     key: "PreloadingAttemptKey"
     pipelineId: "PreloadPipelineId"
     status: "PreloadingStatus"
-    prerenderStatus: "Optional[PrerenderFinalStatus]"
-    disallowedMojoInterface: "Optional[str]"
+    prerenderStatus: "NotRequired[PrerenderFinalStatus]"
+    disallowedMojoInterface: "NotRequired[str]"
     """This is used to give users more information about the name of Mojo interface
 that is incompatible with prerender and has caused the cancellation of the attempt."""
-    mismatchedHeaders: "Optional[List[PrerenderMismatchedHeaders]]"
+    mismatchedHeaders: "NotRequired[List[PrerenderMismatchedHeaders]]"
 
 
 

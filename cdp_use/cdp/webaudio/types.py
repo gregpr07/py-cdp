@@ -5,8 +5,7 @@
 """CDP WebAudio Domain Types"""
 
 from enum import Enum
-from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 """An unique ID for a graph object (AudioContext, AudioNode, AudioParam) in Web Audio API"""
 GraphObjectId = str
@@ -81,7 +80,7 @@ class BaseAudioContext(TypedDict):
     contextId: "GraphObjectId"
     contextType: "ContextType"
     contextState: "ContextState"
-    realtimeData: "Optional[ContextRealtimeData]"
+    realtimeData: "NotRequired[ContextRealtimeData]"
     callbackBufferSize: "float"
     """Platform-dependent callback buffer size."""
     maxOutputChannelCount: "float"

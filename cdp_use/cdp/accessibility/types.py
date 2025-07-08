@@ -5,8 +5,8 @@
 """CDP Accessibility Domain Types"""
 
 from enum import Enum
-from typing import Any, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -71,21 +71,21 @@ class AXValueNativeSourceType(Enum):
 class AXValueSource(TypedDict):
     type: "AXValueSourceType"
     """What type of source this is."""
-    value: "Optional[AXValue]"
+    value: "NotRequired[AXValue]"
     """The value of this property source."""
-    attribute: "Optional[str]"
+    attribute: "NotRequired[str]"
     """The name of the relevant attribute, if any."""
-    attributeValue: "Optional[AXValue]"
+    attributeValue: "NotRequired[AXValue]"
     """The value of the relevant attribute, if any."""
-    superseded: "Optional[bool]"
+    superseded: "NotRequired[bool]"
     """Whether this source is superseded by a higher priority source."""
-    nativeSource: "Optional[AXValueNativeSourceType]"
+    nativeSource: "NotRequired[AXValueNativeSourceType]"
     """The native markup source for this value, e.g. a `<label>` element."""
-    nativeSourceValue: "Optional[AXValue]"
+    nativeSourceValue: "NotRequired[AXValue]"
     """The value, such as a node or node list, of the native source."""
-    invalid: "Optional[bool]"
+    invalid: "NotRequired[bool]"
     """Whether the value for this property is invalid."""
-    invalidReason: "Optional[str]"
+    invalidReason: "NotRequired[str]"
     """Reason for the value being invalid, if it is."""
 
 
@@ -93,9 +93,9 @@ class AXValueSource(TypedDict):
 class AXRelatedNode(TypedDict):
     backendDOMNodeId: "BackendNodeId"
     """The BackendNodeId of the related DOM node."""
-    idref: "Optional[str]"
+    idref: "NotRequired[str]"
     """The IDRef value provided, if any."""
-    text: "Optional[str]"
+    text: "NotRequired[str]"
     """The text alternative of this node in the current context."""
 
 
@@ -112,11 +112,11 @@ class AXProperty(TypedDict):
 class AXValue(TypedDict):
     type: "AXValueType"
     """The type of this value."""
-    value: "Optional[Any]"
+    value: "NotRequired[Any]"
     """The computed value of this property."""
-    relatedNodes: "Optional[List[AXRelatedNode]]"
+    relatedNodes: "NotRequired[List[AXRelatedNode]]"
     """One or more related nodes, if applicable."""
-    sources: "Optional[List[AXValueSource]]"
+    sources: "NotRequired[List[AXValueSource]]"
     """The sources which contributed to the computation of this property."""
 
 
@@ -178,25 +178,25 @@ class AXNode(TypedDict):
     """Unique identifier for this node."""
     ignored: "bool"
     """Whether this node is ignored for accessibility"""
-    ignoredReasons: "Optional[List[AXProperty]]"
+    ignoredReasons: "NotRequired[List[AXProperty]]"
     """Collection of reasons why this node is hidden."""
-    role: "Optional[AXValue]"
+    role: "NotRequired[AXValue]"
     """This `Node`'s role, whether explicit or implicit."""
-    chromeRole: "Optional[AXValue]"
+    chromeRole: "NotRequired[AXValue]"
     """This `Node`'s Chrome raw role."""
-    name: "Optional[AXValue]"
+    name: "NotRequired[AXValue]"
     """The accessible name for this `Node`."""
-    description: "Optional[AXValue]"
+    description: "NotRequired[AXValue]"
     """The accessible description for this `Node`."""
-    value: "Optional[AXValue]"
+    value: "NotRequired[AXValue]"
     """The value for this `Node`."""
-    properties: "Optional[List[AXProperty]]"
+    properties: "NotRequired[List[AXProperty]]"
     """All other properties"""
-    parentId: "Optional[AXNodeId]"
+    parentId: "NotRequired[AXNodeId]"
     """ID for this node's parent."""
-    childIds: "Optional[List[AXNodeId]]"
+    childIds: "NotRequired[List[AXNodeId]]"
     """IDs for each of this node's child nodes."""
-    backendDOMNodeId: "Optional[BackendNodeId]"
+    backendDOMNodeId: "NotRequired[BackendNodeId]"
     """The backend ID for the associated DOM node, if any."""
-    frameId: "Optional[FrameId]"
+    frameId: "NotRequired[FrameId]"
     """The frame ID for the frame associated with this nodes document."""

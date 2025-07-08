@@ -4,8 +4,7 @@
 
 """CDP FedCm Domain Commands"""
 
-from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -50,6 +49,6 @@ class OpenUrlParameters(TypedDict):
 
 class DismissDialogParameters(TypedDict):
     dialogId: "str"
-    triggerCooldown: "Optional[bool]"
+    triggerCooldown: "NotRequired[bool]"
 
 

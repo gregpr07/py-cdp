@@ -4,8 +4,8 @@
 
 """CDP DOMSnapshot Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -18,11 +18,11 @@ if TYPE_CHECKING:
 class GetSnapshotParameters(TypedDict):
     computedStyleWhitelist: "List[str]"
     """Whitelist of computed styles to return."""
-    includeEventListeners: "Optional[bool]"
+    includeEventListeners: "NotRequired[bool]"
     """Whether or not to retrieve details of DOM listeners (default false)."""
-    includePaintOrder: "Optional[bool]"
+    includePaintOrder: "NotRequired[bool]"
     """Whether to determine and include the paint order index of LayoutTreeNodes (default false)."""
-    includeUserAgentShadowTree: "Optional[bool]"
+    includeUserAgentShadowTree: "NotRequired[bool]"
     """Whether to include UA shadow tree in the snapshot (default false)."""
 
 
@@ -39,15 +39,15 @@ class GetSnapshotReturns(TypedDict):
 class CaptureSnapshotParameters(TypedDict):
     computedStyles: "List[str]"
     """Whitelist of computed styles to return."""
-    includePaintOrder: "Optional[bool]"
+    includePaintOrder: "NotRequired[bool]"
     """Whether to include layout object paint orders into the snapshot."""
-    includeDOMRects: "Optional[bool]"
+    includeDOMRects: "NotRequired[bool]"
     """Whether to include DOM rectangles (offsetRects, clientRects, scrollRects) into the snapshot"""
-    includeBlendedBackgroundColors: "Optional[bool]"
+    includeBlendedBackgroundColors: "NotRequired[bool]"
     """Whether to include blended background colors in the snapshot (default: false).
 Blended background color is achieved by blending background colors of all elements
 that overlap with the current element."""
-    includeTextColorOpacities: "Optional[bool]"
+    includeTextColorOpacities: "NotRequired[bool]"
     """Whether to include text color opacity in the snapshot (default: false).
 An element might have the opacity property set that affects the text color of the element.
 The final text color opacity is computed based on the opacity of all overlapping elements."""

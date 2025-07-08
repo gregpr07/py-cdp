@@ -4,8 +4,8 @@
 
 """CDP Accessibility Domain Commands"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -76,7 +76,7 @@ class GetAXNodeAndAncestorsReturns(TypedDict):
 
 class GetChildAXNodesParameters(TypedDict):
     id: "AXNodeId"
-    frameId: "Optional[FrameId]"
+    frameId: "NotRequired[FrameId]"
     """The frame in whose document the node resides.
 If omitted, the root frame is used."""
 

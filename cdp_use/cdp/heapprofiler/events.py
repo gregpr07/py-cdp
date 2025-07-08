@@ -4,8 +4,8 @@
 
 """CDP HeapProfiler Domain Events"""
 
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import NotRequired, TypedDict
 
 class AddHeapSnapshotChunkEvent(TypedDict):
     chunk: "str"
@@ -33,7 +33,7 @@ class LastSeenObjectIdEvent(TypedDict):
 class ReportHeapSnapshotProgressEvent(TypedDict):
     done: "int"
     total: "int"
-    finished: "Optional[bool]"
+    finished: "NotRequired[bool]"
 
 
 
