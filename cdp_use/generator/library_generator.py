@@ -111,8 +111,10 @@ class LibraryGenerator:
 
         # Determine return type (quoted for forward references)
         if returns:
-            return_type = '"' + self.to_class_name(command_name) + 'Returns"'
+            return_class_name = self.to_class_name(command_name) + "Returns"
+            return_type = '"' + return_class_name + '"'
         else:
+            return_class_name = None
             return_type = '"Dict[str, Any]"'
 
         # Generate method
@@ -128,12 +130,21 @@ class LibraryGenerator:
             escaped_desc = description.replace("\\", "\\\\").replace('"', '\\"')
             content += f'        """{escaped_desc}"""\n'
 
-        # Use cast for type safety
-        content += f"        return cast({return_type}, await self._client.send_raw(\n"
+        content += (
+            f"        raw_result: Dict[str, Any] = await self._client.send_raw(\n"
+        )
         content += f'            method="{cdp_method_name}",\n'
         content += "            params=params,\n"
         content += "            session_id=session_id,\n"
-        content += "        ))\n"
+        content += "        )\n"
+
+        if return_class_name is not None:
+            content += f"        from .commands import {return_class_name} as _{return_class_name}\n"
+            content += (
+                f"        return _{return_class_name}.model_validate(raw_result)\n"
+            )
+        else:
+            content += "        return raw_result\n"
 
         return content
 
@@ -150,7 +161,7 @@ class LibraryGenerator:
         content += f'"""CDP {domain_name} Domain Library"""\n\n'
 
         # Basic imports
-        content += "from typing import Any, Dict, Optional, cast\n\n"
+        content += "from typing import Any, Dict, Optional\n\n"
 
         # TYPE_CHECKING section for CDPClient and command imports
         content += "from typing import TYPE_CHECKING\n\n"

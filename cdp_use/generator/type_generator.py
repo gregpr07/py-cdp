@@ -27,7 +27,7 @@ class TypeGenerator:
 
         # Always add basic imports
         self.imports.add("from typing import Any, Dict, List, Optional, Union")
-        self.imports.add("from typing_extensions import TypedDict")
+        self.imports.add("from pydantic import BaseModel")
         self.imports.add("from enum import Enum")
 
         # First pass: collect all type names that will be defined in this domain
@@ -109,13 +109,11 @@ class TypeGenerator:
         """Generate an enum type."""
         enum_values = type_def["enum"]
 
-        content = ""
+        # Build enum class with in-class docstring
+        content = f"class {type_id}(Enum):\n"
         if description:
-            # Escape all quotes in descriptions
             escaped_desc = description.replace("\\", "\\\\").replace('"', '\\"')
-            content += f'"""{escaped_desc}"""\n'
-
-        content += f"class {type_id}(Enum):\n"
+            content += f'    """{escaped_desc}"""\n'
 
         for value in enum_values:
             # Convert enum value to valid Python identifier
@@ -146,16 +144,14 @@ class TypeGenerator:
     def generate_object_type(
         self, type_id: str, type_def: Dict[str, Any], description: str, domain_name: str
     ) -> str:
-        """Generate a TypedDict for object types."""
+        """Generate a Pydantic BaseModel for object types."""
         properties = type_def.get("properties", [])
 
-        content = ""
-        if description:
-            # Escape all quotes in descriptions
-            escaped_desc = description.replace("\\", "\\\\").replace('"', '\\"')
-            content += f'"""{escaped_desc}"""\n'
+        content = f"class {type_id}(BaseModel):\n"
 
-        content += f"class {type_id}(TypedDict"
+        if description:
+            escaped_desc = description.replace("\\", "\\\\").replace('"', '\\"')
+            content += f'    """{escaped_desc}"""\n'
 
         # Check if all properties are optional
         required_props = set()
@@ -170,30 +166,37 @@ class TypeGenerator:
             else:
                 required_props.add(prop_name)
 
-        # Use total=False if all properties are optional
-        if optional_props and not required_props:
-            content += ", total=False"
-
-        content += "):\n"
-
         if not properties:
             content += "    pass\n"
         else:
+            # Required fields first (no default), then optional (default None)
             for prop in properties:
-                prop_name = prop["name"]
-                prop_type = self.resolve_property_type(prop, domain_name)
-                prop_desc = prop.get("description", "")
+                if not prop.get("optional", False):
+                    prop_name = prop["name"]
+                    prop_type = self.resolve_property_type(prop, domain_name)
+                    prop_desc = prop.get("description", "")
 
-                # Handle optional properties
-                if prop.get("optional", False) and required_props:
-                    prop_type = f"Optional[{prop_type}]"
+                    content += f'    {prop_name}: "{prop_type}"\n'
 
-                content += f'    {prop_name}: "{prop_type}"\n'
+                    if prop_desc:
+                        escaped_desc = prop_desc.replace("\\", "\\\\").replace(
+                            '"', '\\"'
+                        )
+                        content += f'    """{escaped_desc}"""\n'
 
-                if prop_desc:
-                    # Escape all quotes in descriptions
-                    escaped_desc = prop_desc.replace("\\", "\\\\").replace('"', '\\"')
-                    content += f'    """{escaped_desc}"""\n'
+            for prop in properties:
+                if prop.get("optional", False):
+                    prop_name = prop["name"]
+                    prop_type = self.resolve_property_type(prop, domain_name)
+                    prop_desc = prop.get("description", "")
+
+                    content += f'    {prop_name}: "Optional[{prop_type}]" = None\n'
+
+                    if prop_desc:
+                        escaped_desc = prop_desc.replace("\\", "\\\\").replace(
+                            '"', '\\"'
+                        )
+                        content += f'    """{escaped_desc}"""\n'
 
         self.generated_types.add(type_id)
         return content
