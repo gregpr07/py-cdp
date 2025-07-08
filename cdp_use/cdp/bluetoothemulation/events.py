@@ -4,8 +4,8 @@
 
 """CDP BluetoothEmulation Domain Events"""
 
+from pydantic import BaseModel
 from typing import Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -15,29 +15,46 @@ if TYPE_CHECKING:
     from .types import DescriptorOperationType
     from .types import GATTOperationType
 
-"""Event for when a GATT operation of |type| to the peripheral with |address|
+class GattOperationReceivedEvent(BaseModel):
+    """Event for when a GATT operation of |type| to the peripheral with |address|
 happened."""
-class GattOperationReceivedEvent(TypedDict):
     address: "str"
     type: "GATTOperationType"
 
 
 
-"""Event for when a characteristic operation of |type| to the characteristic
+class CharacteristicOperationReceivedEvent(BaseModel):
+    """Event for when a characteristic operation of |type| to the characteristic
 respresented by |characteristicId| happened. |data| and |writeType| is
 expected to exist when |type| is write."""
-class CharacteristicOperationReceivedEvent(TypedDict):
     characteristicId: "str"
     type: "CharacteristicOperationType"
-    data: "Optional[str]"
-    writeType: "Optional[CharacteristicWriteType]"
+    data: "Optional[str]" = None
+    writeType: "Optional[CharacteristicWriteType]" = None
 
 
 
-"""Event for when a descriptor operation of |type| to the descriptor
+class DescriptorOperationReceivedEvent(BaseModel):
+    """Event for when a descriptor operation of |type| to the descriptor
 respresented by |descriptorId| happened. |data| is expected to exist when
 |type| is write."""
-class DescriptorOperationReceivedEvent(TypedDict):
     descriptorId: "str"
     type: "DescriptorOperationType"
-    data: "Optional[str]"
+    data: "Optional[str]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import CharacteristicOperationType
+        from .types import CharacteristicWriteType
+        from .types import DescriptorOperationType
+        from .types import GATTOperationType
+        # Rebuild models now that imports are available
+        GattOperationReceivedEvent.model_rebuild()
+        CharacteristicOperationReceivedEvent.model_rebuild()
+        DescriptorOperationReceivedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

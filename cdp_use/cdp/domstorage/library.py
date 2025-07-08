@@ -4,7 +4,7 @@
 
 """CDP DOMStorage Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -27,11 +27,12 @@ class DOMStorageClient:
         params: "ClearParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOMStorage.clear",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def disable(
         self,
@@ -39,11 +40,12 @@ class DOMStorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables storage tracking, prevents storage events from being sent to the client."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOMStorage.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -51,43 +53,48 @@ class DOMStorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables storage tracking, storage events will now be delivered to the client."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOMStorage.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getDOMStorageItems(
         self,
         params: "GetDOMStorageItemsParameters",
         session_id: Optional[str] = None,
     ) -> "GetDOMStorageItemsReturns":
-        return cast("GetDOMStorageItemsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOMStorage.getDOMStorageItems",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetDOMStorageItemsReturns as _GetDOMStorageItemsReturns
+        return _GetDOMStorageItemsReturns.model_validate(raw_result)
 
     async def removeDOMStorageItem(
         self,
         params: "RemoveDOMStorageItemParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOMStorage.removeDOMStorageItem",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setDOMStorageItem(
         self,
         params: "SetDOMStorageItemParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOMStorage.setDOMStorageItem",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

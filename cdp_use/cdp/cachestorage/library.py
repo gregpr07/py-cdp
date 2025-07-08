@@ -4,7 +4,7 @@
 
 """CDP CacheStorage Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -31,11 +31,12 @@ class CacheStorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Deletes a cache."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CacheStorage.deleteCache",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def deleteEntry(
         self,
@@ -43,11 +44,12 @@ class CacheStorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Deletes a cache entry."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CacheStorage.deleteEntry",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def requestCacheNames(
         self,
@@ -55,11 +57,13 @@ class CacheStorageClient:
         session_id: Optional[str] = None,
     ) -> "RequestCacheNamesReturns":
         """Requests cache names."""
-        return cast("RequestCacheNamesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CacheStorage.requestCacheNames",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import RequestCacheNamesReturns as _RequestCacheNamesReturns
+        return _RequestCacheNamesReturns.model_validate(raw_result)
 
     async def requestCachedResponse(
         self,
@@ -67,11 +71,13 @@ class CacheStorageClient:
         session_id: Optional[str] = None,
     ) -> "RequestCachedResponseReturns":
         """Fetches cache entry."""
-        return cast("RequestCachedResponseReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CacheStorage.requestCachedResponse",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import RequestCachedResponseReturns as _RequestCachedResponseReturns
+        return _RequestCachedResponseReturns.model_validate(raw_result)
 
     async def requestEntries(
         self,
@@ -79,10 +85,12 @@ class CacheStorageClient:
         session_id: Optional[str] = None,
     ) -> "RequestEntriesReturns":
         """Requests data from cache."""
-        return cast("RequestEntriesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CacheStorage.requestEntries",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import RequestEntriesReturns as _RequestEntriesReturns
+        return _RequestEntriesReturns.model_validate(raw_result)
 
 

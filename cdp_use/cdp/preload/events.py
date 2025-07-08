@@ -4,8 +4,8 @@
 
 """CDP Preload Domain Events"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -23,19 +23,19 @@ if TYPE_CHECKING:
     from .types import RuleSet
     from .types import RuleSetId
 
-"""Upsert. Currently, it is only emitted when a rule set added."""
-class RuleSetUpdatedEvent(TypedDict):
+class RuleSetUpdatedEvent(BaseModel):
+    """Upsert. Currently, it is only emitted when a rule set added."""
     ruleSet: "RuleSet"
 
 
 
-class RuleSetRemovedEvent(TypedDict):
+class RuleSetRemovedEvent(BaseModel):
     id: "RuleSetId"
 
 
 
-"""Fired when a preload enabled state is updated."""
-class PreloadEnabledStateUpdatedEvent(TypedDict):
+class PreloadEnabledStateUpdatedEvent(BaseModel):
+    """Fired when a preload enabled state is updated."""
     disabledByPreference: "bool"
     disabledByDataSaver: "bool"
     disabledByBatterySaver: "bool"
@@ -44,12 +44,11 @@ class PreloadEnabledStateUpdatedEvent(TypedDict):
 
 
 
-"""Fired when a prefetch attempt is updated."""
-class PrefetchStatusUpdatedEvent(TypedDict):
+class PrefetchStatusUpdatedEvent(BaseModel):
+    """Fired when a prefetch attempt is updated."""
     key: "PreloadingAttemptKey"
     pipelineId: "PreloadPipelineId"
     initiatingFrameId: "FrameId"
-    """The frame id of the frame initiating prefetch."""
     prefetchUrl: "str"
     status: "PreloadingStatus"
     prefetchStatus: "PrefetchStatus"
@@ -57,20 +56,46 @@ class PrefetchStatusUpdatedEvent(TypedDict):
 
 
 
-"""Fired when a prerender attempt is updated."""
-class PrerenderStatusUpdatedEvent(TypedDict):
+class PrerenderStatusUpdatedEvent(BaseModel):
+    """Fired when a prerender attempt is updated."""
     key: "PreloadingAttemptKey"
     pipelineId: "PreloadPipelineId"
     status: "PreloadingStatus"
-    prerenderStatus: "Optional[PrerenderFinalStatus]"
-    disallowedMojoInterface: "Optional[str]"
-    """This is used to give users more information about the name of Mojo interface
-that is incompatible with prerender and has caused the cancellation of the attempt."""
-    mismatchedHeaders: "Optional[List[PrerenderMismatchedHeaders]]"
+    prerenderStatus: "Optional[PrerenderFinalStatus]" = None
+    disallowedMojoInterface: "Optional[str]" = None
+    mismatchedHeaders: "Optional[List[PrerenderMismatchedHeaders]]" = None
 
 
 
-"""Send a list of sources for all preloading attempts in a document."""
-class PreloadingAttemptSourcesUpdatedEvent(TypedDict):
+class PreloadingAttemptSourcesUpdatedEvent(BaseModel):
+    """Send a list of sources for all preloading attempts in a document."""
     loaderId: "LoaderId"
     preloadingAttemptSources: "List[PreloadingAttemptSource]"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..network.types import LoaderId
+        from ..network.types import RequestId
+        from ..page.types import FrameId
+        from .types import PrefetchStatus
+        from .types import PreloadPipelineId
+        from .types import PreloadingAttemptKey
+        from .types import PreloadingAttemptSource
+        from .types import PreloadingStatus
+        from .types import PrerenderFinalStatus
+        from .types import PrerenderMismatchedHeaders
+        from .types import RuleSet
+        from .types import RuleSetId
+        # Rebuild models now that imports are available
+        RuleSetUpdatedEvent.model_rebuild()
+        RuleSetRemovedEvent.model_rebuild()
+        PreloadEnabledStateUpdatedEvent.model_rebuild()
+        PrefetchStatusUpdatedEvent.model_rebuild()
+        PrerenderStatusUpdatedEvent.model_rebuild()
+        PreloadingAttemptSourcesUpdatedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

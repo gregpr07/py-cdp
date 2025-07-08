@@ -4,14 +4,25 @@
 
 """CDP Schema Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .types import Domain
 
-class GetDomainsReturns(TypedDict):
+class GetDomainsReturns(BaseModel):
     domains: "List[Domain]"
-    """List of supported domains."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import Domain
+        # Rebuild models now that imports are available
+        GetDomainsReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

@@ -4,6 +4,7 @@
 
 """CDP BluetoothEmulation Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -87,9 +88,8 @@ class AddServiceParameters(TypedDict):
     serviceUuid: "str"
 
 
-class AddServiceReturns(TypedDict):
+class AddServiceReturns(BaseModel):
     serviceId: "str"
-    """An identifier that uniquely represents this service."""
 
 
 
@@ -106,9 +106,8 @@ class AddCharacteristicParameters(TypedDict):
     properties: "CharacteristicProperties"
 
 
-class AddCharacteristicReturns(TypedDict):
+class AddCharacteristicReturns(BaseModel):
     characteristicId: "str"
-    """An identifier that uniquely represents this characteristic."""
 
 
 
@@ -124,9 +123,8 @@ class AddDescriptorParameters(TypedDict):
     descriptorUuid: "str"
 
 
-class AddDescriptorReturns(TypedDict):
+class AddDescriptorReturns(BaseModel):
     descriptorId: "str"
-    """An identifier that uniquely represents this descriptor."""
 
 
 
@@ -141,3 +139,23 @@ class SimulateGATTDisconnectionParameters(TypedDict):
     address: "str"
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import CentralState
+        from .types import CharacteristicOperationType
+        from .types import CharacteristicProperties
+        from .types import DescriptorOperationType
+        from .types import GATTOperationType
+        from .types import ManufacturerData
+        from .types import ScanEntry
+        # Rebuild models now that imports are available
+        AddServiceReturns.model_rebuild()
+        AddCharacteristicReturns.model_rebuild()
+        AddDescriptorReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

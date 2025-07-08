@@ -4,6 +4,7 @@
 
 """CDP Runtime Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -31,11 +32,9 @@ class AwaitPromiseParameters(TypedDict):
     """Whether preview should be generated for the result."""
 
 
-class AwaitPromiseReturns(TypedDict):
+class AwaitPromiseReturns(BaseModel):
     result: "RemoteObject"
-    """Promise result. Will contain rejected value if promise was rejected."""
-    exceptionDetails: "ExceptionDetails"
-    """Exception details if stack strace is available."""
+    exceptionDetails: "Optional[ExceptionDetails]" = None
 
 
 
@@ -81,11 +80,9 @@ This is mutually exclusive with `executionContextId`."""
 `generatePreview` and `returnByValue`."""
 
 
-class CallFunctionOnReturns(TypedDict):
+class CallFunctionOnReturns(BaseModel):
     result: "RemoteObject"
-    """Call result."""
-    exceptionDetails: "ExceptionDetails"
-    """Exception details."""
+    exceptionDetails: "Optional[ExceptionDetails]" = None
 
 
 
@@ -101,11 +98,9 @@ class CompileScriptParameters(TypedDict):
 evaluation will be performed in the context of the inspected page."""
 
 
-class CompileScriptReturns(TypedDict):
-    scriptId: "ScriptId"
-    """Id of the script."""
-    exceptionDetails: "ExceptionDetails"
-    """Exception details."""
+class CompileScriptReturns(BaseModel):
+    scriptId: "Optional[ScriptId]" = None
+    exceptionDetails: "Optional[ExceptionDetails]" = None
 
 
 
@@ -162,29 +157,22 @@ This is mutually exclusive with `contextId`."""
 `generatePreview` and `returnByValue`."""
 
 
-class EvaluateReturns(TypedDict):
+class EvaluateReturns(BaseModel):
     result: "RemoteObject"
-    """Evaluation result."""
-    exceptionDetails: "ExceptionDetails"
-    """Exception details."""
+    exceptionDetails: "Optional[ExceptionDetails]" = None
 
 
 
-class GetIsolateIdReturns(TypedDict):
+class GetIsolateIdReturns(BaseModel):
     id: "str"
-    """The isolate id."""
 
 
 
-class GetHeapUsageReturns(TypedDict):
+class GetHeapUsageReturns(BaseModel):
     usedSize: "float"
-    """Used JavaScript heap size in bytes."""
     totalSize: "float"
-    """Allocated JavaScript heap size in bytes."""
     embedderHeapUsedSize: "float"
-    """Used size in bytes in the embedder's garbage-collected heap."""
     backingStorageSize: "float"
-    """Size in bytes of backing storage for array buffers and external strings."""
 
 
 
@@ -203,15 +191,11 @@ returned either."""
     """If true, returns non-indexed properties only."""
 
 
-class GetPropertiesReturns(TypedDict):
+class GetPropertiesReturns(BaseModel):
     result: "List[PropertyDescriptor]"
-    """Object properties."""
-    internalProperties: "List[InternalPropertyDescriptor]"
-    """Internal object properties (only of the element itself)."""
-    privateProperties: "List[PrivatePropertyDescriptor]"
-    """Object private properties."""
-    exceptionDetails: "ExceptionDetails"
-    """Exception details."""
+    internalProperties: "Optional[List[InternalPropertyDescriptor]]" = None
+    privateProperties: "Optional[List[PrivatePropertyDescriptor]]" = None
+    exceptionDetails: "Optional[ExceptionDetails]" = None
 
 
 
@@ -220,7 +204,7 @@ class GlobalLexicalScopeNamesParameters(TypedDict, total=False):
     """Specifies in which execution context to lookup global scope variables."""
 
 
-class GlobalLexicalScopeNamesReturns(TypedDict):
+class GlobalLexicalScopeNamesReturns(BaseModel):
     names: "List[str]"
 
 
@@ -232,9 +216,8 @@ class QueryObjectsParameters(TypedDict):
     """Symbolic group name that can be used to release the results."""
 
 
-class QueryObjectsReturns(TypedDict):
+class QueryObjectsReturns(BaseModel):
     objects: "RemoteObject"
-    """Array with objects."""
 
 
 
@@ -276,11 +259,9 @@ execution. Overrides `setPauseOnException` state."""
 resolved."""
 
 
-class RunScriptReturns(TypedDict):
+class RunScriptReturns(BaseModel):
     result: "RemoteObject"
-    """Run result."""
-    exceptionDetails: "ExceptionDetails"
-    """Exception details."""
+    exceptionDetails: "Optional[ExceptionDetails]" = None
 
 
 
@@ -340,5 +321,37 @@ class GetExceptionDetailsParameters(TypedDict):
     """The error object for which to resolve the exception details."""
 
 
-class GetExceptionDetailsReturns(TypedDict):
-    exceptionDetails: "ExceptionDetails"
+class GetExceptionDetailsReturns(BaseModel):
+    exceptionDetails: "Optional[ExceptionDetails]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import CallArgument
+        from .types import ExceptionDetails
+        from .types import ExecutionContextId
+        from .types import InternalPropertyDescriptor
+        from .types import PrivatePropertyDescriptor
+        from .types import PropertyDescriptor
+        from .types import RemoteObject
+        from .types import RemoteObjectId
+        from .types import ScriptId
+        from .types import SerializationOptions
+        from .types import TimeDelta
+        # Rebuild models now that imports are available
+        AwaitPromiseReturns.model_rebuild()
+        CallFunctionOnReturns.model_rebuild()
+        CompileScriptReturns.model_rebuild()
+        EvaluateReturns.model_rebuild()
+        GetIsolateIdReturns.model_rebuild()
+        GetHeapUsageReturns.model_rebuild()
+        GetPropertiesReturns.model_rebuild()
+        GlobalLexicalScopeNamesReturns.model_rebuild()
+        QueryObjectsReturns.model_rebuild()
+        RunScriptReturns.model_rebuild()
+        GetExceptionDetailsReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

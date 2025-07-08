@@ -4,7 +4,7 @@
 
 """CDP Input Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -35,11 +35,12 @@ class InputClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Dispatches a drag event into the page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Input.dispatchDragEvent",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def dispatchKeyEvent(
         self,
@@ -47,11 +48,12 @@ class InputClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Dispatches a key event to the page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Input.dispatchKeyEvent",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def insertText(
         self,
@@ -60,11 +62,12 @@ class InputClient:
     ) -> "Dict[str, Any]":
         """This method emulates inserting text that doesn't come from a key press,
 for example an emoji keyboard or an IME."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Input.insertText",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def imeSetComposition(
         self,
@@ -74,11 +77,12 @@ for example an emoji keyboard or an IME."""
         """This method sets the current candidate text for IME.
 Use imeCommitComposition to commit the final text.
 Use imeSetComposition with empty string as text to cancel composition."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Input.imeSetComposition",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def dispatchMouseEvent(
         self,
@@ -86,11 +90,12 @@ Use imeSetComposition with empty string as text to cancel composition."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Dispatches a mouse event to the page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Input.dispatchMouseEvent",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def dispatchTouchEvent(
         self,
@@ -98,11 +103,12 @@ Use imeSetComposition with empty string as text to cancel composition."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Dispatches a touch event to the page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Input.dispatchTouchEvent",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def cancelDragging(
         self,
@@ -110,11 +116,12 @@ Use imeSetComposition with empty string as text to cancel composition."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Cancels any active dragging in the page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Input.cancelDragging",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def emulateTouchFromMouseEvent(
         self,
@@ -122,11 +129,12 @@ Use imeSetComposition with empty string as text to cancel composition."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Emulates touch event from the mouse event parameters."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Input.emulateTouchFromMouseEvent",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setIgnoreInputEvents(
         self,
@@ -134,11 +142,12 @@ Use imeSetComposition with empty string as text to cancel composition."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Ignores input events (useful while auditing page)."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Input.setIgnoreInputEvents",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setInterceptDrags(
         self,
@@ -147,11 +156,12 @@ Use imeSetComposition with empty string as text to cancel composition."""
     ) -> "Dict[str, Any]":
         """Prevents default drag and drop behavior and instead emits `Input.dragIntercepted` events.
 Drag and drop behavior can be directly controlled via `Input.dispatchDragEvent`."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Input.setInterceptDrags",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def synthesizePinchGesture(
         self,
@@ -159,11 +169,12 @@ Drag and drop behavior can be directly controlled via `Input.dispatchDragEvent`.
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Synthesizes a pinch gesture over a time period by issuing appropriate touch events."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Input.synthesizePinchGesture",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def synthesizeScrollGesture(
         self,
@@ -171,11 +182,12 @@ Drag and drop behavior can be directly controlled via `Input.dispatchDragEvent`.
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Synthesizes a scroll gesture over a time period by issuing appropriate touch events."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Input.synthesizeScrollGesture",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def synthesizeTapGesture(
         self,
@@ -183,10 +195,11 @@ Drag and drop behavior can be directly controlled via `Input.dispatchDragEvent`.
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Synthesizes a tap gesture over a time period by issuing appropriate touch events."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Input.synthesizeTapGesture",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

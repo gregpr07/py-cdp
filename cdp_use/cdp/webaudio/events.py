@@ -4,8 +4,8 @@
 
 """CDP WebAudio Domain Events"""
 
+from pydantic import BaseModel
 from typing import Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -16,96 +16,124 @@ if TYPE_CHECKING:
     from .types import BaseAudioContext
     from .types import GraphObjectId
 
-"""Notifies that a new BaseAudioContext has been created."""
-class ContextCreatedEvent(TypedDict):
+class ContextCreatedEvent(BaseModel):
+    """Notifies that a new BaseAudioContext has been created."""
     context: "BaseAudioContext"
 
 
 
-"""Notifies that an existing BaseAudioContext will be destroyed."""
-class ContextWillBeDestroyedEvent(TypedDict):
+class ContextWillBeDestroyedEvent(BaseModel):
+    """Notifies that an existing BaseAudioContext will be destroyed."""
     contextId: "GraphObjectId"
 
 
 
-"""Notifies that existing BaseAudioContext has changed some properties (id stays the same).."""
-class ContextChangedEvent(TypedDict):
+class ContextChangedEvent(BaseModel):
+    """Notifies that existing BaseAudioContext has changed some properties (id stays the same).."""
     context: "BaseAudioContext"
 
 
 
-"""Notifies that the construction of an AudioListener has finished."""
-class AudioListenerCreatedEvent(TypedDict):
+class AudioListenerCreatedEvent(BaseModel):
+    """Notifies that the construction of an AudioListener has finished."""
     listener: "AudioListener"
 
 
 
-"""Notifies that a new AudioListener has been created."""
-class AudioListenerWillBeDestroyedEvent(TypedDict):
+class AudioListenerWillBeDestroyedEvent(BaseModel):
+    """Notifies that a new AudioListener has been created."""
     contextId: "GraphObjectId"
     listenerId: "GraphObjectId"
 
 
 
-"""Notifies that a new AudioNode has been created."""
-class AudioNodeCreatedEvent(TypedDict):
+class AudioNodeCreatedEvent(BaseModel):
+    """Notifies that a new AudioNode has been created."""
     node: "AudioNode"
 
 
 
-"""Notifies that an existing AudioNode has been destroyed."""
-class AudioNodeWillBeDestroyedEvent(TypedDict):
+class AudioNodeWillBeDestroyedEvent(BaseModel):
+    """Notifies that an existing AudioNode has been destroyed."""
     contextId: "GraphObjectId"
     nodeId: "GraphObjectId"
 
 
 
-"""Notifies that a new AudioParam has been created."""
-class AudioParamCreatedEvent(TypedDict):
+class AudioParamCreatedEvent(BaseModel):
+    """Notifies that a new AudioParam has been created."""
     param: "AudioParam"
 
 
 
-"""Notifies that an existing AudioParam has been destroyed."""
-class AudioParamWillBeDestroyedEvent(TypedDict):
+class AudioParamWillBeDestroyedEvent(BaseModel):
+    """Notifies that an existing AudioParam has been destroyed."""
     contextId: "GraphObjectId"
     nodeId: "GraphObjectId"
     paramId: "GraphObjectId"
 
 
 
-"""Notifies that two AudioNodes are connected."""
-class NodesConnectedEvent(TypedDict):
+class NodesConnectedEvent(BaseModel):
+    """Notifies that two AudioNodes are connected."""
     contextId: "GraphObjectId"
     sourceId: "GraphObjectId"
     destinationId: "GraphObjectId"
-    sourceOutputIndex: "Optional[float]"
-    destinationInputIndex: "Optional[float]"
+    sourceOutputIndex: "Optional[float]" = None
+    destinationInputIndex: "Optional[float]" = None
 
 
 
-"""Notifies that AudioNodes are disconnected. The destination can be null, and it means all the outgoing connections from the source are disconnected."""
-class NodesDisconnectedEvent(TypedDict):
+class NodesDisconnectedEvent(BaseModel):
+    """Notifies that AudioNodes are disconnected. The destination can be null, and it means all the outgoing connections from the source are disconnected."""
     contextId: "GraphObjectId"
     sourceId: "GraphObjectId"
     destinationId: "GraphObjectId"
-    sourceOutputIndex: "Optional[float]"
-    destinationInputIndex: "Optional[float]"
+    sourceOutputIndex: "Optional[float]" = None
+    destinationInputIndex: "Optional[float]" = None
 
 
 
-"""Notifies that an AudioNode is connected to an AudioParam."""
-class NodeParamConnectedEvent(TypedDict):
+class NodeParamConnectedEvent(BaseModel):
+    """Notifies that an AudioNode is connected to an AudioParam."""
     contextId: "GraphObjectId"
     sourceId: "GraphObjectId"
     destinationId: "GraphObjectId"
-    sourceOutputIndex: "Optional[float]"
+    sourceOutputIndex: "Optional[float]" = None
 
 
 
-"""Notifies that an AudioNode is disconnected to an AudioParam."""
-class NodeParamDisconnectedEvent(TypedDict):
+class NodeParamDisconnectedEvent(BaseModel):
+    """Notifies that an AudioNode is disconnected to an AudioParam."""
     contextId: "GraphObjectId"
     sourceId: "GraphObjectId"
     destinationId: "GraphObjectId"
-    sourceOutputIndex: "Optional[float]"
+    sourceOutputIndex: "Optional[float]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import AudioListener
+        from .types import AudioNode
+        from .types import AudioParam
+        from .types import BaseAudioContext
+        from .types import GraphObjectId
+        # Rebuild models now that imports are available
+        ContextCreatedEvent.model_rebuild()
+        ContextWillBeDestroyedEvent.model_rebuild()
+        ContextChangedEvent.model_rebuild()
+        AudioListenerCreatedEvent.model_rebuild()
+        AudioListenerWillBeDestroyedEvent.model_rebuild()
+        AudioNodeCreatedEvent.model_rebuild()
+        AudioNodeWillBeDestroyedEvent.model_rebuild()
+        AudioParamCreatedEvent.model_rebuild()
+        AudioParamWillBeDestroyedEvent.model_rebuild()
+        NodesConnectedEvent.model_rebuild()
+        NodesDisconnectedEvent.model_rebuild()
+        NodeParamConnectedEvent.model_rebuild()
+        NodeParamDisconnectedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

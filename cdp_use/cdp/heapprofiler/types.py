@@ -4,8 +4,8 @@
 
 """CDP HeapProfiler Domain Types"""
 
+from pydantic import BaseModel
 from typing import List
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -17,32 +17,39 @@ HeapSnapshotObjectId = str
 
 
 
-"""Sampling Heap Profile node. Holds callsite information, allocation statistics and child nodes."""
-class SamplingHeapProfileNode(TypedDict):
+class SamplingHeapProfileNode(BaseModel):
+    """Sampling Heap Profile node. Holds callsite information, allocation statistics and child nodes."""
     callFrame: "CallFrame"
-    """Function location."""
     selfSize: "float"
-    """Allocations size in bytes for the node excluding children."""
     id: "int"
-    """Node id. Ids are unique across all profiles collected between startSampling and stopSampling."""
     children: "List[SamplingHeapProfileNode]"
-    """Child nodes."""
 
 
 
-"""A single sample from a sampling profile."""
-class SamplingHeapProfileSample(TypedDict):
+class SamplingHeapProfileSample(BaseModel):
+    """A single sample from a sampling profile."""
     size: "float"
-    """Allocation size in bytes attributed to the sample."""
     nodeId: "int"
-    """Id of the corresponding profile tree node."""
     ordinal: "float"
-    """Time-ordered sample ordinal number. It is unique across all profiles retrieved
-between startSampling and stopSampling."""
 
 
 
-"""Sampling profile."""
-class SamplingHeapProfile(TypedDict):
+class SamplingHeapProfile(BaseModel):
+    """Sampling profile."""
     head: "SamplingHeapProfileNode"
     samples: "List[SamplingHeapProfileSample]"
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..runtime.types import CallFrame
+        # Rebuild models now that imports are available
+        SamplingHeapProfileNode.model_rebuild()
+        SamplingHeapProfileSample.model_rebuild()
+        SamplingHeapProfile.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

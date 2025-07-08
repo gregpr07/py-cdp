@@ -4,12 +4,24 @@
 
 """CDP Audits Domain Events"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .types import InspectorIssue
 
-class IssueAddedEvent(TypedDict):
+class IssueAddedEvent(BaseModel):
     issue: "InspectorIssue"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import InspectorIssue
+        # Rebuild models now that imports are available
+        IssueAddedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

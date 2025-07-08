@@ -4,7 +4,7 @@
 
 """CDP Network Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -65,11 +65,12 @@ class NetworkClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets a list of content encodings that will be accepted. Empty list means no encoding is accepted."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.setAcceptedEncodings",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def clearAcceptedEncodingsOverride(
         self,
@@ -77,11 +78,12 @@ class NetworkClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears accepted encodings set by setAcceptedEncodings"""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.clearAcceptedEncodingsOverride",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def canClearBrowserCache(
         self,
@@ -89,11 +91,13 @@ class NetworkClient:
         session_id: Optional[str] = None,
     ) -> "CanClearBrowserCacheReturns":
         """Tells whether clearing browser cache is supported."""
-        return cast("CanClearBrowserCacheReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.canClearBrowserCache",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import CanClearBrowserCacheReturns as _CanClearBrowserCacheReturns
+        return _CanClearBrowserCacheReturns.model_validate(raw_result)
 
     async def canClearBrowserCookies(
         self,
@@ -101,11 +105,13 @@ class NetworkClient:
         session_id: Optional[str] = None,
     ) -> "CanClearBrowserCookiesReturns":
         """Tells whether clearing browser cookies is supported."""
-        return cast("CanClearBrowserCookiesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.canClearBrowserCookies",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import CanClearBrowserCookiesReturns as _CanClearBrowserCookiesReturns
+        return _CanClearBrowserCookiesReturns.model_validate(raw_result)
 
     async def canEmulateNetworkConditions(
         self,
@@ -113,11 +119,13 @@ class NetworkClient:
         session_id: Optional[str] = None,
     ) -> "CanEmulateNetworkConditionsReturns":
         """Tells whether emulation of network conditions is supported."""
-        return cast("CanEmulateNetworkConditionsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.canEmulateNetworkConditions",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import CanEmulateNetworkConditionsReturns as _CanEmulateNetworkConditionsReturns
+        return _CanEmulateNetworkConditionsReturns.model_validate(raw_result)
 
     async def clearBrowserCache(
         self,
@@ -125,11 +133,12 @@ class NetworkClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears browser cache."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.clearBrowserCache",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def clearBrowserCookies(
         self,
@@ -137,11 +146,12 @@ class NetworkClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears browser cookies."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.clearBrowserCookies",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def continueInterceptedRequest(
         self,
@@ -153,11 +163,12 @@ modifications, or blocks it, or completes it with the provided response bytes. I
 fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted
 event will be sent with the same InterceptionId.
 Deprecated, use Fetch.continueRequest, Fetch.fulfillRequest and Fetch.failRequest instead."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.continueInterceptedRequest",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def deleteCookies(
         self,
@@ -165,11 +176,12 @@ Deprecated, use Fetch.continueRequest, Fetch.fulfillRequest and Fetch.failReques
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Deletes browser cookies with matching name and url or domain/path/partitionKey pair."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.deleteCookies",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def disable(
         self,
@@ -177,11 +189,12 @@ Deprecated, use Fetch.continueRequest, Fetch.fulfillRequest and Fetch.failReques
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables network tracking, prevents network events from being sent to the client."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def emulateNetworkConditions(
         self,
@@ -189,11 +202,12 @@ Deprecated, use Fetch.continueRequest, Fetch.fulfillRequest and Fetch.failReques
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Activates emulation of network conditions."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.emulateNetworkConditions",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -201,11 +215,12 @@ Deprecated, use Fetch.continueRequest, Fetch.fulfillRequest and Fetch.failReques
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables network tracking, network events will now be delivered to the client."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getAllCookies(
         self,
@@ -215,11 +230,13 @@ Deprecated, use Fetch.continueRequest, Fetch.fulfillRequest and Fetch.failReques
         """Returns all browser cookies. Depending on the backend support, will return detailed cookie
 information in the `cookies` field.
 Deprecated. Use Storage.getCookies instead."""
-        return cast("GetAllCookiesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.getAllCookies",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetAllCookiesReturns as _GetAllCookiesReturns
+        return _GetAllCookiesReturns.model_validate(raw_result)
 
     async def getCertificate(
         self,
@@ -227,11 +244,13 @@ Deprecated. Use Storage.getCookies instead."""
         session_id: Optional[str] = None,
     ) -> "GetCertificateReturns":
         """Returns the DER-encoded certificate."""
-        return cast("GetCertificateReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.getCertificate",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetCertificateReturns as _GetCertificateReturns
+        return _GetCertificateReturns.model_validate(raw_result)
 
     async def getCookies(
         self,
@@ -240,11 +259,13 @@ Deprecated. Use Storage.getCookies instead."""
     ) -> "GetCookiesReturns":
         """Returns all browser cookies for the current URL. Depending on the backend support, will return
 detailed cookie information in the `cookies` field."""
-        return cast("GetCookiesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.getCookies",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetCookiesReturns as _GetCookiesReturns
+        return _GetCookiesReturns.model_validate(raw_result)
 
     async def getResponseBody(
         self,
@@ -252,11 +273,13 @@ detailed cookie information in the `cookies` field."""
         session_id: Optional[str] = None,
     ) -> "GetResponseBodyReturns":
         """Returns content served for the given request."""
-        return cast("GetResponseBodyReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.getResponseBody",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetResponseBodyReturns as _GetResponseBodyReturns
+        return _GetResponseBodyReturns.model_validate(raw_result)
 
     async def getRequestPostData(
         self,
@@ -264,11 +287,13 @@ detailed cookie information in the `cookies` field."""
         session_id: Optional[str] = None,
     ) -> "GetRequestPostDataReturns":
         """Returns post data sent with the request. Returns an error when no data was sent with the request."""
-        return cast("GetRequestPostDataReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.getRequestPostData",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetRequestPostDataReturns as _GetRequestPostDataReturns
+        return _GetRequestPostDataReturns.model_validate(raw_result)
 
     async def getResponseBodyForInterception(
         self,
@@ -276,11 +301,13 @@ detailed cookie information in the `cookies` field."""
         session_id: Optional[str] = None,
     ) -> "GetResponseBodyForInterceptionReturns":
         """Returns content served for the given currently intercepted request."""
-        return cast("GetResponseBodyForInterceptionReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.getResponseBodyForInterception",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetResponseBodyForInterceptionReturns as _GetResponseBodyForInterceptionReturns
+        return _GetResponseBodyForInterceptionReturns.model_validate(raw_result)
 
     async def takeResponseBodyForInterceptionAsStream(
         self,
@@ -291,11 +318,13 @@ detailed cookie information in the `cookies` field."""
 the intercepted request can't be continued as is -- you either need to cancel it or to provide
 the response body. The stream only supports sequential read, IO.read will fail if the position
 is specified."""
-        return cast("TakeResponseBodyForInterceptionAsStreamReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.takeResponseBodyForInterceptionAsStream",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import TakeResponseBodyForInterceptionAsStreamReturns as _TakeResponseBodyForInterceptionAsStreamReturns
+        return _TakeResponseBodyForInterceptionAsStreamReturns.model_validate(raw_result)
 
     async def replayXHR(
         self,
@@ -305,11 +334,12 @@ is specified."""
         """This method sends a new XMLHttpRequest which is identical to the original one. The following
 parameters should be identical: method, url, async, request body, extra headers, withCredentials
 attribute, user, password."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.replayXHR",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def searchInResponseBody(
         self,
@@ -317,11 +347,13 @@ attribute, user, password."""
         session_id: Optional[str] = None,
     ) -> "SearchInResponseBodyReturns":
         """Searches for given string in response content."""
-        return cast("SearchInResponseBodyReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.searchInResponseBody",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SearchInResponseBodyReturns as _SearchInResponseBodyReturns
+        return _SearchInResponseBodyReturns.model_validate(raw_result)
 
     async def setBlockedURLs(
         self,
@@ -329,11 +361,12 @@ attribute, user, password."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Blocks URLs from loading."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.setBlockedURLs",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setBypassServiceWorker(
         self,
@@ -341,11 +374,12 @@ attribute, user, password."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Toggles ignoring of service worker for each request."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.setBypassServiceWorker",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setCacheDisabled(
         self,
@@ -353,11 +387,12 @@ attribute, user, password."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Toggles ignoring cache for each request. If `true`, cache will not be used."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.setCacheDisabled",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setCookie(
         self,
@@ -365,11 +400,13 @@ attribute, user, password."""
         session_id: Optional[str] = None,
     ) -> "SetCookieReturns":
         """Sets a cookie with the given cookie data; may overwrite equivalent cookies if they exist."""
-        return cast("SetCookieReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.setCookie",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetCookieReturns as _SetCookieReturns
+        return _SetCookieReturns.model_validate(raw_result)
 
     async def setCookies(
         self,
@@ -377,11 +414,12 @@ attribute, user, password."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets given cookies."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.setCookies",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setExtraHTTPHeaders(
         self,
@@ -389,11 +427,12 @@ attribute, user, password."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Specifies whether to always send extra HTTP headers with the requests from this page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.setExtraHTTPHeaders",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setAttachDebugStack(
         self,
@@ -401,11 +440,12 @@ attribute, user, password."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Specifies whether to attach a page script stack id in requests"""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.setAttachDebugStack",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setRequestInterception(
         self,
@@ -414,11 +454,12 @@ attribute, user, password."""
     ) -> "Dict[str, Any]":
         """Sets the requests to intercept that match the provided patterns and optionally resource types.
 Deprecated, please use Fetch.enable instead."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.setRequestInterception",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setUserAgentOverride(
         self,
@@ -426,11 +467,12 @@ Deprecated, please use Fetch.enable instead."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Allows overriding user agent with the given string."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.setUserAgentOverride",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def streamResourceContent(
         self,
@@ -439,11 +481,13 @@ Deprecated, please use Fetch.enable instead."""
     ) -> "StreamResourceContentReturns":
         """Enables streaming of the response for the given requestId.
 If enabled, the dataReceived event contains the data that was received during streaming."""
-        return cast("StreamResourceContentReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.streamResourceContent",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import StreamResourceContentReturns as _StreamResourceContentReturns
+        return _StreamResourceContentReturns.model_validate(raw_result)
 
     async def getSecurityIsolationStatus(
         self,
@@ -451,11 +495,13 @@ If enabled, the dataReceived event contains the data that was received during st
         session_id: Optional[str] = None,
     ) -> "GetSecurityIsolationStatusReturns":
         """Returns information about the COEP/COOP isolation status."""
-        return cast("GetSecurityIsolationStatusReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.getSecurityIsolationStatus",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetSecurityIsolationStatusReturns as _GetSecurityIsolationStatusReturns
+        return _GetSecurityIsolationStatusReturns.model_validate(raw_result)
 
     async def enableReportingApi(
         self,
@@ -464,11 +510,12 @@ If enabled, the dataReceived event contains the data that was received during st
     ) -> "Dict[str, Any]":
         """Enables tracking for the Reporting API, events generated by the Reporting API will now be delivered to the client.
 Enabling triggers 'reportingApiReportAdded' for all existing reports."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.enableReportingApi",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def loadNetworkResource(
         self,
@@ -476,11 +523,13 @@ Enabling triggers 'reportingApiReportAdded' for all existing reports."""
         session_id: Optional[str] = None,
     ) -> "LoadNetworkResourceReturns":
         """Fetches the resource and returns the content."""
-        return cast("LoadNetworkResourceReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.loadNetworkResource",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import LoadNetworkResourceReturns as _LoadNetworkResourceReturns
+        return _LoadNetworkResourceReturns.model_validate(raw_result)
 
     async def setCookieControls(
         self,
@@ -489,10 +538,11 @@ Enabling triggers 'reportingApiReportAdded' for all existing reports."""
     ) -> "Dict[str, Any]":
         """Sets Controls for third-party cookie access
 Page reload is required before the new cookie behavior will be observed"""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Network.setCookieControls",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

@@ -4,8 +4,8 @@
 
 """CDP Page Domain Events"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -24,290 +24,276 @@ if TYPE_CHECKING:
     from .types import NavigationType
     from .types import ScreencastFrameMetadata
 
-class DomContentEventFiredEvent(TypedDict):
+class DomContentEventFiredEvent(BaseModel):
     timestamp: "MonotonicTime"
 
 
 
-"""Emitted only when `page.interceptFileChooser` is enabled."""
-class FileChooserOpenedEvent(TypedDict):
+class FileChooserOpenedEvent(BaseModel):
+    """Emitted only when `page.interceptFileChooser` is enabled."""
     frameId: "FrameId"
-    """Id of the frame containing input node."""
     mode: "str"
-    """Input mode."""
-    backendNodeId: "Optional[BackendNodeId]"
-    """Input node id. Only present for file choosers opened via an `<input type=\"file\">` element."""
+    backendNodeId: "Optional[BackendNodeId]" = None
 
 
 
-"""Fired when frame has been attached to its parent."""
-class FrameAttachedEvent(TypedDict):
+class FrameAttachedEvent(BaseModel):
+    """Fired when frame has been attached to its parent."""
     frameId: "FrameId"
-    """Id of the frame that has been attached."""
     parentFrameId: "FrameId"
-    """Parent frame identifier."""
-    stack: "Optional[StackTrace]"
-    """JavaScript stack trace of when frame was attached, only set if frame initiated from script."""
+    stack: "Optional[StackTrace]" = None
 
 
 
-"""Fired when frame no longer has a scheduled navigation."""
-class FrameClearedScheduledNavigationEvent(TypedDict):
+class FrameClearedScheduledNavigationEvent(BaseModel):
+    """Fired when frame no longer has a scheduled navigation."""
     frameId: "FrameId"
-    """Id of the frame that has cleared its scheduled navigation."""
 
 
 
-"""Fired when frame has been detached from its parent."""
-class FrameDetachedEvent(TypedDict):
+class FrameDetachedEvent(BaseModel):
+    """Fired when frame has been detached from its parent."""
     frameId: "FrameId"
-    """Id of the frame that has been detached."""
     reason: "str"
 
 
 
-"""Fired before frame subtree is detached. Emitted before any frame of the
+class FrameSubtreeWillBeDetachedEvent(BaseModel):
+    """Fired before frame subtree is detached. Emitted before any frame of the
 subtree is actually detached."""
-class FrameSubtreeWillBeDetachedEvent(TypedDict):
     frameId: "FrameId"
-    """Id of the frame that is the root of the subtree that will be detached."""
 
 
 
-"""Fired once navigation of the frame has completed. Frame is now associated with the new loader."""
-class FrameNavigatedEvent(TypedDict):
+class FrameNavigatedEvent(BaseModel):
+    """Fired once navigation of the frame has completed. Frame is now associated with the new loader."""
     frame: "Frame"
-    """Frame object."""
     type: "NavigationType"
 
 
 
-"""Fired when opening document to write to."""
-class DocumentOpenedEvent(TypedDict):
+class DocumentOpenedEvent(BaseModel):
+    """Fired when opening document to write to."""
     frame: "Frame"
-    """Frame object."""
 
 
 
-class FrameResizedEvent(TypedDict):
+class FrameResizedEvent(BaseModel):
     pass
 
 
 
-"""Fired when a navigation starts. This event is fired for both
+class FrameStartedNavigatingEvent(BaseModel):
+    """Fired when a navigation starts. This event is fired for both
 renderer-initiated and browser-initiated navigations. For renderer-initiated
 navigations, the event is fired after `frameRequestedNavigation`.
 Navigation may still be cancelled after the event is issued. Multiple events
 can be fired for a single navigation, for example, when a same-document
 navigation becomes a cross-document navigation (such as in the case of a
 frameset)."""
-class FrameStartedNavigatingEvent(TypedDict):
     frameId: "FrameId"
-    """ID of the frame that is being navigated."""
     url: "str"
-    """The URL the navigation started with. The final URL can be different."""
     loaderId: "LoaderId"
-    """Loader identifier. Even though it is present in case of same-document
-navigation, the previously committed loaderId would not change unless
-the navigation changes from a same-document to a cross-document
-navigation."""
     navigationType: "str"
 
 
 
-"""Fired when a renderer-initiated navigation is requested.
+class FrameRequestedNavigationEvent(BaseModel):
+    """Fired when a renderer-initiated navigation is requested.
 Navigation may still be cancelled after the event is issued."""
-class FrameRequestedNavigationEvent(TypedDict):
     frameId: "FrameId"
-    """Id of the frame that is being navigated."""
     reason: "ClientNavigationReason"
-    """The reason for the navigation."""
     url: "str"
-    """The destination URL for the requested navigation."""
     disposition: "ClientNavigationDisposition"
-    """The disposition for the navigation."""
 
 
 
-"""Fired when frame schedules a potential navigation."""
-class FrameScheduledNavigationEvent(TypedDict):
+class FrameScheduledNavigationEvent(BaseModel):
+    """Fired when frame schedules a potential navigation."""
     frameId: "FrameId"
-    """Id of the frame that has scheduled a navigation."""
     delay: "float"
-    """Delay (in seconds) until the navigation is scheduled to begin. The navigation is not
-guaranteed to start."""
     reason: "ClientNavigationReason"
-    """The reason for the navigation."""
     url: "str"
-    """The destination URL for the scheduled navigation."""
 
 
 
-"""Fired when frame has started loading."""
-class FrameStartedLoadingEvent(TypedDict):
+class FrameStartedLoadingEvent(BaseModel):
+    """Fired when frame has started loading."""
     frameId: "FrameId"
-    """Id of the frame that has started loading."""
 
 
 
-"""Fired when frame has stopped loading."""
-class FrameStoppedLoadingEvent(TypedDict):
+class FrameStoppedLoadingEvent(BaseModel):
+    """Fired when frame has stopped loading."""
     frameId: "FrameId"
-    """Id of the frame that has stopped loading."""
 
 
 
-"""Fired when page is about to start a download.
+class DownloadWillBeginEvent(BaseModel):
+    """Fired when page is about to start a download.
 Deprecated. Use Browser.downloadWillBegin instead."""
-class DownloadWillBeginEvent(TypedDict):
     frameId: "FrameId"
-    """Id of the frame that caused download to begin."""
     guid: "str"
-    """Global unique identifier of the download."""
     url: "str"
-    """URL of the resource being downloaded."""
     suggestedFilename: "str"
-    """Suggested file name of the resource (the actual name of the file saved on disk may differ)."""
 
 
 
-"""Fired when download makes progress. Last call has |done| == true.
+class DownloadProgressEvent(BaseModel):
+    """Fired when download makes progress. Last call has |done| == true.
 Deprecated. Use Browser.downloadProgress instead."""
-class DownloadProgressEvent(TypedDict):
     guid: "str"
-    """Global unique identifier of the download."""
     totalBytes: "float"
-    """Total expected bytes to download."""
     receivedBytes: "float"
-    """Total bytes received."""
     state: "str"
-    """Download status."""
 
 
 
-"""Fired when interstitial page was hidden"""
-class InterstitialHiddenEvent(TypedDict):
+class InterstitialHiddenEvent(BaseModel):
+    """Fired when interstitial page was hidden"""
     pass
 
 
 
-"""Fired when interstitial page was shown"""
-class InterstitialShownEvent(TypedDict):
+class InterstitialShownEvent(BaseModel):
+    """Fired when interstitial page was shown"""
     pass
 
 
 
-"""Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been
+class JavascriptDialogClosedEvent(BaseModel):
+    """Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been
 closed."""
-class JavascriptDialogClosedEvent(TypedDict):
     frameId: "FrameId"
-    """Frame id."""
     result: "bool"
-    """Whether dialog was confirmed."""
     userInput: "str"
-    """User input in case of prompt."""
 
 
 
-"""Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to
+class JavascriptDialogOpeningEvent(BaseModel):
+    """Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to
 open."""
-class JavascriptDialogOpeningEvent(TypedDict):
     url: "str"
-    """Frame url."""
     frameId: "FrameId"
-    """Frame id."""
     message: "str"
-    """Message that will be displayed by the dialog."""
     type: "DialogType"
-    """Dialog type."""
     hasBrowserHandler: "bool"
-    """True iff browser is capable showing or acting on the given dialog. When browser has no
-dialog handler for given target, calling alert while Page domain is engaged will stall
-the page execution. Execution can be resumed via calling Page.handleJavaScriptDialog."""
-    defaultPrompt: "Optional[str]"
-    """Default dialog prompt."""
+    defaultPrompt: "Optional[str]" = None
 
 
 
-"""Fired for lifecycle events (navigation, load, paint, etc) in the current
+class LifecycleEventEvent(BaseModel):
+    """Fired for lifecycle events (navigation, load, paint, etc) in the current
 target (including local frames)."""
-class LifecycleEventEvent(TypedDict):
     frameId: "FrameId"
-    """Id of the frame."""
     loaderId: "LoaderId"
-    """Loader identifier. Empty string if the request is fetched from worker."""
     name: "str"
     timestamp: "MonotonicTime"
 
 
 
-"""Fired for failed bfcache history navigations if BackForwardCache feature is enabled. Do
+class BackForwardCacheNotUsedEvent(BaseModel):
+    """Fired for failed bfcache history navigations if BackForwardCache feature is enabled. Do
 not assume any ordering with the Page.frameNavigated event. This event is fired only for
 main-frame history navigation where the document changes (non-same-document navigations),
 when bfcache navigation fails."""
-class BackForwardCacheNotUsedEvent(TypedDict):
     loaderId: "LoaderId"
-    """The loader id for the associated navigation."""
     frameId: "FrameId"
-    """The frame id of the associated frame."""
     notRestoredExplanations: "List[BackForwardCacheNotRestoredExplanation]"
-    """Array of reasons why the page could not be cached. This must not be empty."""
-    notRestoredExplanationsTree: "Optional[BackForwardCacheNotRestoredExplanationTree]"
-    """Tree structure of reasons why the page could not be cached for each frame."""
+    notRestoredExplanationsTree: "Optional[BackForwardCacheNotRestoredExplanationTree]" = None
 
 
 
-class LoadEventFiredEvent(TypedDict):
+class LoadEventFiredEvent(BaseModel):
     timestamp: "MonotonicTime"
 
 
 
-"""Fired when same-document navigation happens, e.g. due to history API usage or anchor navigation."""
-class NavigatedWithinDocumentEvent(TypedDict):
+class NavigatedWithinDocumentEvent(BaseModel):
+    """Fired when same-document navigation happens, e.g. due to history API usage or anchor navigation."""
     frameId: "FrameId"
-    """Id of the frame."""
     url: "str"
-    """Frame's new url."""
     navigationType: "str"
-    """Navigation type"""
 
 
 
-"""Compressed image data requested by the `startScreencast`."""
-class ScreencastFrameEvent(TypedDict):
+class ScreencastFrameEvent(BaseModel):
+    """Compressed image data requested by the `startScreencast`."""
     data: "str"
-    """Base64-encoded compressed image. (Encoded as a base64 string when passed over JSON)"""
     metadata: "ScreencastFrameMetadata"
-    """Screencast frame metadata."""
     sessionId: "int"
-    """Frame number."""
 
 
 
-"""Fired when the page with currently enabled screencast was shown or hidden `."""
-class ScreencastVisibilityChangedEvent(TypedDict):
+class ScreencastVisibilityChangedEvent(BaseModel):
+    """Fired when the page with currently enabled screencast was shown or hidden `."""
     visible: "bool"
-    """True if the page is visible."""
 
 
 
-"""Fired when a new window is going to be opened, via window.open(), link click, form submission,
+class WindowOpenEvent(BaseModel):
+    """Fired when a new window is going to be opened, via window.open(), link click, form submission,
 etc."""
-class WindowOpenEvent(TypedDict):
     url: "str"
-    """The URL for the new window."""
     windowName: "str"
-    """Window name."""
     windowFeatures: "List[str]"
-    """An array of enabled window features."""
     userGesture: "bool"
-    """Whether or not it was triggered by user gesture."""
 
 
 
-"""Issued for every compilation cache generated. Is only available
+class CompilationCacheProducedEvent(BaseModel):
+    """Issued for every compilation cache generated. Is only available
 if Page.setGenerateCompilationCache is enabled."""
-class CompilationCacheProducedEvent(TypedDict):
     url: "str"
     data: "str"
-    """Base64-encoded data (Encoded as a base64 string when passed over JSON)"""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import BackendNodeId
+        from ..network.types import LoaderId
+        from ..network.types import MonotonicTime
+        from ..runtime.types import StackTrace
+        from .types import BackForwardCacheNotRestoredExplanation
+        from .types import BackForwardCacheNotRestoredExplanationTree
+        from .types import ClientNavigationDisposition
+        from .types import ClientNavigationReason
+        from .types import DialogType
+        from .types import Frame
+        from .types import FrameId
+        from .types import NavigationType
+        from .types import ScreencastFrameMetadata
+        # Rebuild models now that imports are available
+        DomContentEventFiredEvent.model_rebuild()
+        FileChooserOpenedEvent.model_rebuild()
+        FrameAttachedEvent.model_rebuild()
+        FrameClearedScheduledNavigationEvent.model_rebuild()
+        FrameDetachedEvent.model_rebuild()
+        FrameSubtreeWillBeDetachedEvent.model_rebuild()
+        FrameNavigatedEvent.model_rebuild()
+        DocumentOpenedEvent.model_rebuild()
+        FrameResizedEvent.model_rebuild()
+        FrameStartedNavigatingEvent.model_rebuild()
+        FrameRequestedNavigationEvent.model_rebuild()
+        FrameScheduledNavigationEvent.model_rebuild()
+        FrameStartedLoadingEvent.model_rebuild()
+        FrameStoppedLoadingEvent.model_rebuild()
+        DownloadWillBeginEvent.model_rebuild()
+        DownloadProgressEvent.model_rebuild()
+        InterstitialHiddenEvent.model_rebuild()
+        InterstitialShownEvent.model_rebuild()
+        JavascriptDialogClosedEvent.model_rebuild()
+        JavascriptDialogOpeningEvent.model_rebuild()
+        LifecycleEventEvent.model_rebuild()
+        BackForwardCacheNotUsedEvent.model_rebuild()
+        LoadEventFiredEvent.model_rebuild()
+        NavigatedWithinDocumentEvent.model_rebuild()
+        ScreencastFrameEvent.model_rebuild()
+        ScreencastVisibilityChangedEvent.model_rebuild()
+        WindowOpenEvent.model_rebuild()
+        CompilationCacheProducedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

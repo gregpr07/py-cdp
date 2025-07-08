@@ -4,6 +4,7 @@
 
 """CDP SystemInfo Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List
 from typing_extensions import TypedDict
 
@@ -13,18 +14,11 @@ if TYPE_CHECKING:
     from .types import GPUInfo
     from .types import ProcessInfo
 
-class GetInfoReturns(TypedDict):
+class GetInfoReturns(BaseModel):
     gpu: "GPUInfo"
-    """Information about the GPUs on the system."""
     modelName: "str"
-    """A platform-dependent description of the model of the machine. On Mac OS, this is, for
-example, 'MacBookPro'. Will be the empty string if not supported."""
     modelVersion: "str"
-    """A platform-dependent description of the version of the machine. On Mac OS, this is, for
-example, '10.1'. Will be the empty string if not supported."""
     commandLine: "str"
-    """The command line string used to launch the browser. Will be the empty string if not
-supported."""
 
 
 
@@ -32,11 +26,25 @@ class GetFeatureStateParameters(TypedDict):
     featureState: "str"
 
 
-class GetFeatureStateReturns(TypedDict):
+class GetFeatureStateReturns(BaseModel):
     featureEnabled: "bool"
 
 
 
-class GetProcessInfoReturns(TypedDict):
+class GetProcessInfoReturns(BaseModel):
     processInfo: "List[ProcessInfo]"
-    """An array of process info blocks."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import GPUInfo
+        from .types import ProcessInfo
+        # Rebuild models now that imports are available
+        GetInfoReturns.model_rebuild()
+        GetFeatureStateReturns.model_rebuild()
+        GetProcessInfoReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

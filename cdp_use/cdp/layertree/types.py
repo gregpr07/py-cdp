@@ -4,8 +4,8 @@
 
 """CDP LayerTree Domain Types"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -23,76 +23,67 @@ SnapshotId = str
 
 
 
-"""Rectangle where scrolling happens on the main thread."""
-class ScrollRect(TypedDict):
+class ScrollRect(BaseModel):
+    """Rectangle where scrolling happens on the main thread."""
     rect: "Rect"
-    """Rectangle itself."""
     type: "str"
-    """Reason for rectangle to force scrolling on the main thread"""
 
 
 
-"""Sticky position constraints."""
-class StickyPositionConstraint(TypedDict):
+class StickyPositionConstraint(BaseModel):
+    """Sticky position constraints."""
     stickyBoxRect: "Rect"
-    """Layout rectangle of the sticky element before being shifted"""
     containingBlockRect: "Rect"
-    """Layout rectangle of the containing block of the sticky element"""
-    nearestLayerShiftingStickyBox: "Optional[LayerId]"
-    """The nearest sticky layer that shifts the sticky box"""
-    nearestLayerShiftingContainingBlock: "Optional[LayerId]"
-    """The nearest sticky layer that shifts the containing block"""
+    nearestLayerShiftingStickyBox: "Optional[LayerId]" = None
+    nearestLayerShiftingContainingBlock: "Optional[LayerId]" = None
 
 
 
-"""Serialized fragment of layer picture along with its offset within the layer."""
-class PictureTile(TypedDict):
+class PictureTile(BaseModel):
+    """Serialized fragment of layer picture along with its offset within the layer."""
     x: "float"
-    """Offset from owning layer left boundary"""
     y: "float"
-    """Offset from owning layer top boundary"""
     picture: "str"
-    """Base64-encoded snapshot data. (Encoded as a base64 string when passed over JSON)"""
 
 
 
-"""Information about a compositing layer."""
-class Layer(TypedDict):
+class Layer(BaseModel):
+    """Information about a compositing layer."""
     layerId: "LayerId"
-    """The unique id for this layer."""
-    parentLayerId: "Optional[LayerId]"
-    """The id of parent (not present for root)."""
-    backendNodeId: "Optional[BackendNodeId]"
-    """The backend id for the node associated with this layer."""
     offsetX: "float"
-    """Offset from parent layer, X coordinate."""
     offsetY: "float"
-    """Offset from parent layer, Y coordinate."""
     width: "float"
-    """Layer width."""
     height: "float"
-    """Layer height."""
-    transform: "Optional[List[float]]"
-    """Transformation matrix for layer, default is identity matrix"""
-    anchorX: "Optional[float]"
-    """Transform anchor point X, absent if no transform specified"""
-    anchorY: "Optional[float]"
-    """Transform anchor point Y, absent if no transform specified"""
-    anchorZ: "Optional[float]"
-    """Transform anchor point Z, absent if no transform specified"""
     paintCount: "int"
-    """Indicates how many time this layer has painted."""
     drawsContent: "bool"
-    """Indicates whether this layer hosts any content, rather than being used for
-transform/scrolling purposes only."""
-    invisible: "Optional[bool]"
-    """Set if layer is not visible."""
-    scrollRects: "Optional[List[ScrollRect]]"
-    """Rectangles scrolling on main thread only."""
-    stickyPositionConstraint: "Optional[StickyPositionConstraint]"
-    """Sticky position constraint information"""
+    parentLayerId: "Optional[LayerId]" = None
+    backendNodeId: "Optional[BackendNodeId]" = None
+    transform: "Optional[List[float]]" = None
+    anchorX: "Optional[float]" = None
+    anchorY: "Optional[float]" = None
+    anchorZ: "Optional[float]" = None
+    invisible: "Optional[bool]" = None
+    scrollRects: "Optional[List[ScrollRect]]" = None
+    stickyPositionConstraint: "Optional[StickyPositionConstraint]" = None
 
 
 
 """Array of timings, one per paint step."""
 PaintProfile = List[float]
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import BackendNodeId
+        from ..dom.types import Rect
+        # Rebuild models now that imports are available
+        ScrollRect.model_rebuild()
+        StickyPositionConstraint.model_rebuild()
+        PictureTile.model_rebuild()
+        Layer.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

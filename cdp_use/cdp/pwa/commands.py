@@ -4,6 +4,7 @@
 
 """CDP PWA Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -21,7 +22,7 @@ site installing the webapp. See
 https://web.dev/learn/pwa/web-app-manifest."""
 
 
-class GetOsAppStateReturns(TypedDict):
+class GetOsAppStateReturns(BaseModel):
     badgeCount: "int"
     fileHandlers: "List[FileHandler]"
 
@@ -49,9 +50,8 @@ class LaunchParameters(TypedDict):
     url: "Optional[str]"
 
 
-class LaunchReturns(TypedDict):
+class LaunchReturns(BaseModel):
     targetId: "TargetID"
-    """ID of the tab target created as a result."""
 
 
 
@@ -60,9 +60,8 @@ class LaunchFilesInAppParameters(TypedDict):
     files: "List[str]"
 
 
-class LaunchFilesInAppReturns(TypedDict):
+class LaunchFilesInAppReturns(BaseModel):
     targetIds: "List[TargetID]"
-    """IDs of the tab targets created as the result."""
 
 
 
@@ -90,3 +89,19 @@ supported yet."""
     displayMode: "Optional[DisplayMode]"
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..target.types import TargetID
+        from .types import DisplayMode
+        from .types import FileHandler
+        # Rebuild models now that imports are available
+        GetOsAppStateReturns.model_rebuild()
+        LaunchReturns.model_rebuild()
+        LaunchFilesInAppReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

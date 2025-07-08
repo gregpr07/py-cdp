@@ -4,7 +4,7 @@
 
 """CDP Accessibility Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -35,11 +35,12 @@ class AccessibilityClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables the accessibility domain."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Accessibility.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -48,11 +49,12 @@ class AccessibilityClient:
     ) -> "Dict[str, Any]":
         """Enables the accessibility domain which causes `AXNodeId`s to remain consistent between method calls.
 This turns on accessibility for the page, which can impact performance until accessibility is disabled."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Accessibility.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getPartialAXTree(
         self,
@@ -60,11 +62,13 @@ This turns on accessibility for the page, which can impact performance until acc
         session_id: Optional[str] = None,
     ) -> "GetPartialAXTreeReturns":
         """Fetches the accessibility node and partial accessibility tree for this DOM node, if it exists."""
-        return cast("GetPartialAXTreeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Accessibility.getPartialAXTree",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetPartialAXTreeReturns as _GetPartialAXTreeReturns
+        return _GetPartialAXTreeReturns.model_validate(raw_result)
 
     async def getFullAXTree(
         self,
@@ -72,11 +76,13 @@ This turns on accessibility for the page, which can impact performance until acc
         session_id: Optional[str] = None,
     ) -> "GetFullAXTreeReturns":
         """Fetches the entire accessibility tree for the root Document"""
-        return cast("GetFullAXTreeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Accessibility.getFullAXTree",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetFullAXTreeReturns as _GetFullAXTreeReturns
+        return _GetFullAXTreeReturns.model_validate(raw_result)
 
     async def getRootAXNode(
         self,
@@ -85,11 +91,13 @@ This turns on accessibility for the page, which can impact performance until acc
     ) -> "GetRootAXNodeReturns":
         """Fetches the root node.
 Requires `enable()` to have been called previously."""
-        return cast("GetRootAXNodeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Accessibility.getRootAXNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetRootAXNodeReturns as _GetRootAXNodeReturns
+        return _GetRootAXNodeReturns.model_validate(raw_result)
 
     async def getAXNodeAndAncestors(
         self,
@@ -98,11 +106,13 @@ Requires `enable()` to have been called previously."""
     ) -> "GetAXNodeAndAncestorsReturns":
         """Fetches a node and all ancestors up to and including the root.
 Requires `enable()` to have been called previously."""
-        return cast("GetAXNodeAndAncestorsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Accessibility.getAXNodeAndAncestors",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetAXNodeAndAncestorsReturns as _GetAXNodeAndAncestorsReturns
+        return _GetAXNodeAndAncestorsReturns.model_validate(raw_result)
 
     async def getChildAXNodes(
         self,
@@ -111,11 +121,13 @@ Requires `enable()` to have been called previously."""
     ) -> "GetChildAXNodesReturns":
         """Fetches a particular accessibility node by AXNodeId.
 Requires `enable()` to have been called previously."""
-        return cast("GetChildAXNodesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Accessibility.getChildAXNodes",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetChildAXNodesReturns as _GetChildAXNodesReturns
+        return _GetChildAXNodesReturns.model_validate(raw_result)
 
     async def queryAXTree(
         self,
@@ -127,10 +139,12 @@ This command computes the name and role for all nodes in the subtree, including 
 ignored for accessibility, and returns those that match the specified name and role. If no DOM
 node is specified, or the DOM node does not exist, the command returns an error. If neither
 `accessibleName` or `role` is specified, it returns all the accessibility nodes in the subtree."""
-        return cast("QueryAXTreeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Accessibility.queryAXTree",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import QueryAXTreeReturns as _QueryAXTreeReturns
+        return _QueryAXTreeReturns.model_validate(raw_result)
 
 

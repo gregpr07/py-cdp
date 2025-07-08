@@ -4,6 +4,7 @@
 
 """CDP Profiler Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List
 from typing_extensions import TypedDict
 
@@ -13,9 +14,8 @@ if TYPE_CHECKING:
     from .types import Profile
     from .types import ScriptCoverage
 
-class GetBestEffortCoverageReturns(TypedDict):
+class GetBestEffortCoverageReturns(BaseModel):
     result: "List[ScriptCoverage]"
-    """Coverage data for the current isolate."""
 
 
 
@@ -36,20 +36,32 @@ class StartPreciseCoverageParameters(TypedDict, total=False):
     """Allow the backend to send updates on its own initiative"""
 
 
-class StartPreciseCoverageReturns(TypedDict):
+class StartPreciseCoverageReturns(BaseModel):
     timestamp: "float"
-    """Monotonically increasing time (in seconds) when the coverage update was taken in the backend."""
 
 
 
-class StopReturns(TypedDict):
+class StopReturns(BaseModel):
     profile: "Profile"
-    """Recorded profile."""
 
 
 
-class TakePreciseCoverageReturns(TypedDict):
+class TakePreciseCoverageReturns(BaseModel):
     result: "List[ScriptCoverage]"
-    """Coverage data for the current isolate."""
     timestamp: "float"
-    """Monotonically increasing time (in seconds) when the coverage update was taken in the backend."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import Profile
+        from .types import ScriptCoverage
+        # Rebuild models now that imports are available
+        GetBestEffortCoverageReturns.model_rebuild()
+        StartPreciseCoverageReturns.model_rebuild()
+        StopReturns.model_rebuild()
+        TakePreciseCoverageReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

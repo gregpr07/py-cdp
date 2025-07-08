@@ -4,7 +4,7 @@
 
 """CDP PWA Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -33,11 +33,13 @@ class PWAClient:
         session_id: Optional[str] = None,
     ) -> "GetOsAppStateReturns":
         """Returns the following OS state for the given manifest id."""
-        return cast("GetOsAppStateReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="PWA.getOsAppState",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetOsAppStateReturns as _GetOsAppStateReturns
+        return _GetOsAppStateReturns.model_validate(raw_result)
 
     async def install(
         self,
@@ -69,11 +71,12 @@ To generate bundle id for proxy mode:
 
 If Chrome is not in IWA dev
 mode, the installation will fail, regardless of the state of the allowlist."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="PWA.install",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def uninstall(
         self,
@@ -81,11 +84,12 @@ mode, the installation will fail, regardless of the state of the allowlist."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Uninstalls the given manifest_id and closes any opened app windows."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="PWA.uninstall",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def launch(
         self,
@@ -95,11 +99,13 @@ mode, the installation will fail, regardless of the state of the allowlist."""
         """Launches the installed web app, or an url in the same web app instead of the
 default start url if it is provided. Returns a page Target.TargetID which
 can be used to attach to via Target.attachToTarget or similar APIs."""
-        return cast("LaunchReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="PWA.launch",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import LaunchReturns as _LaunchReturns
+        return _LaunchReturns.model_validate(raw_result)
 
     async def launchFilesInApp(
         self,
@@ -119,11 +125,13 @@ Target.TargetID may represent a page handling one or more files. The order
 of the returned Target.TargetIDs is not guaranteed.
 
 TODO(crbug.com/339454034): Check the existences of the input files."""
-        return cast("LaunchFilesInAppReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="PWA.launchFilesInApp",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import LaunchFilesInAppReturns as _LaunchFilesInAppReturns
+        return _LaunchFilesInAppReturns.model_validate(raw_result)
 
     async def openCurrentPageInApp(
         self,
@@ -133,11 +141,12 @@ TODO(crbug.com/339454034): Check the existences of the input files."""
         """Opens the current page in its web app identified by the manifest id, needs
 to be called on a page target. This function returns immediately without
 waiting for the app to finish loading."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="PWA.openCurrentPageInApp",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def changeAppUserSettings(
         self,
@@ -153,10 +162,11 @@ settings are provided by the browser and controlled by the users, they
 impact the way the browser handling the web apps.
 
 See the comment of each parameter."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="PWA.changeAppUserSettings",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

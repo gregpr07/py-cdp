@@ -4,7 +4,7 @@
 
 """CDP DOMSnapshot Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -27,11 +27,12 @@ class DOMSnapshotClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables DOM snapshot agent for the given page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOMSnapshot.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -39,11 +40,12 @@ class DOMSnapshotClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables DOM snapshot agent for the given page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOMSnapshot.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getSnapshot(
         self,
@@ -54,11 +56,13 @@ class DOMSnapshotClient:
 template contents, and imported documents) in a flattened array, as well as layout and
 white-listed computed style information for the nodes. Shadow DOM in the returned DOM tree is
 flattened."""
-        return cast("GetSnapshotReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOMSnapshot.getSnapshot",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetSnapshotReturns as _GetSnapshotReturns
+        return _GetSnapshotReturns.model_validate(raw_result)
 
     async def captureSnapshot(
         self,
@@ -69,10 +73,12 @@ flattened."""
 template contents, and imported documents) in a flattened array, as well as layout and
 white-listed computed style information for the nodes. Shadow DOM in the returned DOM tree is
 flattened."""
-        return cast("CaptureSnapshotReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOMSnapshot.captureSnapshot",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import CaptureSnapshotReturns as _CaptureSnapshotReturns
+        return _CaptureSnapshotReturns.model_validate(raw_result)
 
 

@@ -4,7 +4,7 @@
 
 """CDP Audits Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -28,11 +28,13 @@ class AuditsClient:
     ) -> "GetEncodedResponseReturns":
         """Returns the response body and size if it were re-encoded with the specified settings. Only
 applies to images."""
-        return cast("GetEncodedResponseReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Audits.getEncodedResponse",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetEncodedResponseReturns as _GetEncodedResponseReturns
+        return _GetEncodedResponseReturns.model_validate(raw_result)
 
     async def disable(
         self,
@@ -40,11 +42,12 @@ applies to images."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables issues domain, prevents further issues from being reported to the client."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Audits.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -53,11 +56,12 @@ applies to images."""
     ) -> "Dict[str, Any]":
         """Enables issues domain, sends the issues collected so far to the client by means of the
 `issueAdded` event."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Audits.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def checkContrast(
         self,
@@ -66,11 +70,12 @@ applies to images."""
     ) -> "Dict[str, Any]":
         """Runs the contrast check for the target page. Found issues are reported
 using Audits.issueAdded event."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Audits.checkContrast",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def checkFormsIssues(
         self,
@@ -79,10 +84,12 @@ using Audits.issueAdded event."""
     ) -> "CheckFormsIssuesReturns":
         """Runs the form issues check for the target page. Found issues are reported
 using Audits.issueAdded event."""
-        return cast("CheckFormsIssuesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Audits.checkFormsIssues",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import CheckFormsIssuesReturns as _CheckFormsIssuesReturns
+        return _CheckFormsIssuesReturns.model_validate(raw_result)
 
 

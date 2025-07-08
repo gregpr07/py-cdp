@@ -4,7 +4,7 @@
 
 """CDP PerformanceTimeline Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -25,10 +25,11 @@ class PerformanceTimelineClient:
     ) -> "Dict[str, Any]":
         """Previously buffered events would be reported before method returns.
 See also: timelineEventAdded"""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="PerformanceTimeline.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

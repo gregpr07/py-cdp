@@ -4,6 +4,7 @@
 
 """CDP WebAuthn Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -30,7 +31,7 @@ class AddVirtualAuthenticatorParameters(TypedDict):
     options: "VirtualAuthenticatorOptions"
 
 
-class AddVirtualAuthenticatorReturns(TypedDict):
+class AddVirtualAuthenticatorReturns(BaseModel):
     authenticatorId: "AuthenticatorId"
 
 
@@ -71,7 +72,7 @@ class GetCredentialParameters(TypedDict):
     credentialId: "str"
 
 
-class GetCredentialReturns(TypedDict):
+class GetCredentialReturns(BaseModel):
     credential: "Credential"
 
 
@@ -80,7 +81,7 @@ class GetCredentialsParameters(TypedDict):
     authenticatorId: "AuthenticatorId"
 
 
-class GetCredentialsReturns(TypedDict):
+class GetCredentialsReturns(BaseModel):
     credentials: "List[Credential]"
 
 
@@ -123,3 +124,19 @@ class SetCredentialPropertiesParameters(TypedDict):
     backupState: "Optional[bool]"
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import AuthenticatorId
+        from .types import Credential
+        from .types import VirtualAuthenticatorOptions
+        # Rebuild models now that imports are available
+        AddVirtualAuthenticatorReturns.model_rebuild()
+        GetCredentialReturns.model_rebuild()
+        GetCredentialsReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

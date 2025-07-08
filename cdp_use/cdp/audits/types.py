@@ -5,8 +5,8 @@
 """CDP Audits Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -20,25 +20,23 @@ if TYPE_CHECKING:
     from ..page.types import FrameId
     from ..runtime.types import ScriptId
 
-"""Information about a cookie that is affected by an inspector issue."""
-class AffectedCookie(TypedDict):
+class AffectedCookie(BaseModel):
+    """Information about a cookie that is affected by an inspector issue."""
     name: "str"
-    """The following three properties uniquely identify a cookie"""
     path: "str"
     domain: "str"
 
 
 
-"""Information about a request that is affected by an inspector issue."""
-class AffectedRequest(TypedDict):
-    requestId: "Optional[RequestId]"
-    """The unique request id."""
+class AffectedRequest(BaseModel):
+    """Information about a request that is affected by an inspector issue."""
     url: "str"
+    requestId: "Optional[RequestId]" = None
 
 
 
-"""Information about the frame affected by an inspector issue."""
-class AffectedFrame(TypedDict):
+class AffectedFrame(BaseModel):
+    """Information about the frame affected by an inspector issue."""
     frameId: "FrameId"
 
 
@@ -82,42 +80,34 @@ class CookieOperation(Enum):
 
 
 
-"""Represents the category of insight that a cookie issue falls under."""
 class InsightType(Enum):
+    """Represents the category of insight that a cookie issue falls under."""
     GITHUBRESOURCE = "GitHubResource"
     GRACEPERIOD = "GracePeriod"
     HEURISTICS = "Heuristics"
 
 
 
-"""Information about the suggested solution to a cookie issue."""
-class CookieIssueInsight(TypedDict):
+class CookieIssueInsight(BaseModel):
+    """Information about the suggested solution to a cookie issue."""
     type: "InsightType"
-    tableEntryUrl: "Optional[str]"
-    """Link to table entry in third-party cookie migration readiness list."""
+    tableEntryUrl: "Optional[str]" = None
 
 
 
-"""This information is currently necessary, as the front-end has a difficult
+class CookieIssueDetails(BaseModel):
+    """This information is currently necessary, as the front-end has a difficult
 time finding a specific cookie. With this, we can convey specific error
 information without the cookie."""
-class CookieIssueDetails(TypedDict):
-    cookie: "Optional[AffectedCookie]"
-    """If AffectedCookie is not set then rawCookieLine contains the raw
-Set-Cookie header string. This hints at a problem where the
-cookie line is syntactically or semantically malformed in a way
-that no valid cookie could be created."""
-    rawCookieLine: "Optional[str]"
     cookieWarningReasons: "List[CookieWarningReason]"
     cookieExclusionReasons: "List[CookieExclusionReason]"
     operation: "CookieOperation"
-    """Optionally identifies the site-for-cookies and the cookie url, which
-may be used by the front-end as additional context."""
-    siteForCookies: "Optional[str]"
-    cookieUrl: "Optional[str]"
-    request: "Optional[AffectedRequest]"
-    insight: "Optional[CookieIssueInsight]"
-    """The recommended solution to the issue."""
+    cookie: "Optional[AffectedCookie]" = None
+    rawCookieLine: "Optional[str]" = None
+    siteForCookies: "Optional[str]" = None
+    cookieUrl: "Optional[str]" = None
+    request: "Optional[AffectedRequest]" = None
+    insight: "Optional[CookieIssueInsight]" = None
 
 
 
@@ -161,29 +151,19 @@ class MixedContentResourceType(Enum):
 
 
 
-class MixedContentIssueDetails(TypedDict):
-    resourceType: "Optional[MixedContentResourceType]"
-    """The type of resource causing the mixed content issue (css, js, iframe,
-form,...). Marked as optional because it is mapped to from
-blink::mojom::RequestContextType, which will be replaced
-by network::mojom::RequestDestination"""
+class MixedContentIssueDetails(BaseModel):
     resolutionStatus: "MixedContentResolutionStatus"
-    """The way the mixed content issue is being resolved."""
     insecureURL: "str"
-    """The unsafe http url causing the mixed content issue."""
     mainResourceURL: "str"
-    """The url responsible for the call to an unsafe url."""
-    request: "Optional[AffectedRequest]"
-    """The mixed content request.
-Does not always exist (e.g. for unsafe form submission urls)."""
-    frame: "Optional[AffectedFrame]"
-    """Optional because not every mixed content issue is necessarily linked to a frame."""
+    resourceType: "Optional[MixedContentResourceType]" = None
+    request: "Optional[AffectedRequest]" = None
+    frame: "Optional[AffectedFrame]" = None
 
 
 
-"""Enum indicating the reason a response has been blocked. These reasons are
-refinements of the net error BLOCKED_BY_RESPONSE."""
 class BlockedByResponseReason(Enum):
+    """Enum indicating the reason a response has been blocked. These reasons are
+refinements of the net error BLOCKED_BY_RESPONSE."""
     COEPFRAMERESOURCENEEDSCOEPHEADER = "CoepFrameResourceNeedsCoepHeader"
     COOPSANDBOXEDIFRAMECANNOTNAVIGATETOCOOPPAGE = "CoopSandboxedIFrameCannotNavigateToCoopPage"
     CORPNOTSAMEORIGIN = "CorpNotSameOrigin"
@@ -195,14 +175,14 @@ class BlockedByResponseReason(Enum):
 
 
 
-"""Details for a request that has been blocked with the BLOCKED_BY_RESPONSE
+class BlockedByResponseIssueDetails(BaseModel):
+    """Details for a request that has been blocked with the BLOCKED_BY_RESPONSE
 code. Currently only used for COEP/COOP, but may be extended to include
 some CSP errors in the future."""
-class BlockedByResponseIssueDetails(TypedDict):
     request: "AffectedRequest"
-    parentFrame: "Optional[AffectedFrame]"
-    blockedFrame: "Optional[AffectedFrame]"
     reason: "BlockedByResponseReason"
+    parentFrame: "Optional[AffectedFrame]" = None
+    blockedFrame: "Optional[AffectedFrame]" = None
 
 
 
@@ -219,13 +199,10 @@ class HeavyAdReason(Enum):
 
 
 
-class HeavyAdIssueDetails(TypedDict):
+class HeavyAdIssueDetails(BaseModel):
     resolution: "HeavyAdResolutionStatus"
-    """The resolution status, either blocking the content or warning."""
     reason: "HeavyAdReason"
-    """The reason the ad was blocked, total network or cpu or peak cpu."""
     frame: "AffectedFrame"
-    """The frame that was blocked."""
 
 
 
@@ -240,24 +217,22 @@ class ContentSecurityPolicyViolationType(Enum):
 
 
 
-class SourceCodeLocation(TypedDict):
-    scriptId: "Optional[ScriptId]"
+class SourceCodeLocation(BaseModel):
     url: "str"
     lineNumber: "int"
     columnNumber: "int"
+    scriptId: "Optional[ScriptId]" = None
 
 
 
-class ContentSecurityPolicyIssueDetails(TypedDict):
-    blockedURL: "Optional[str]"
-    """The url not included in allowed sources."""
+class ContentSecurityPolicyIssueDetails(BaseModel):
     violatedDirective: "str"
-    """Specific directive that is violated, causing the CSP issue."""
     isReportOnly: "bool"
     contentSecurityPolicyViolationType: "ContentSecurityPolicyViolationType"
-    frameAncestor: "Optional[AffectedFrame]"
-    sourceCodeLocation: "Optional[SourceCodeLocation]"
-    violatingNodeId: "Optional[BackendNodeId]"
+    blockedURL: "Optional[str]" = None
+    frameAncestor: "Optional[AffectedFrame]" = None
+    sourceCodeLocation: "Optional[SourceCodeLocation]" = None
+    violatingNodeId: "Optional[BackendNodeId]" = None
 
 
 
@@ -267,16 +242,16 @@ class SharedArrayBufferIssueType(Enum):
 
 
 
-"""Details for a issue arising from an SAB being instantiated in, or
+class SharedArrayBufferIssueDetails(BaseModel):
+    """Details for a issue arising from an SAB being instantiated in, or
 transferred to a context that is not cross-origin isolated."""
-class SharedArrayBufferIssueDetails(TypedDict):
     sourceCodeLocation: "SourceCodeLocation"
     isWarning: "bool"
     type: "SharedArrayBufferIssueType"
 
 
 
-class LowTextContrastIssueDetails(TypedDict):
+class LowTextContrastIssueDetails(BaseModel):
     violatingNodeId: "BackendNodeId"
     violatingNodeSelector: "str"
     contrastRatio: "float"
@@ -287,16 +262,16 @@ class LowTextContrastIssueDetails(TypedDict):
 
 
 
-"""Details for a CORS related issue, e.g. a warning or error related to
+class CorsIssueDetails(BaseModel):
+    """Details for a CORS related issue, e.g. a warning or error related to
 CORS RFC1918 enforcement."""
-class CorsIssueDetails(TypedDict):
     corsErrorStatus: "CorsErrorStatus"
     isWarning: "bool"
     request: "AffectedRequest"
-    location: "Optional[SourceCodeLocation]"
-    initiatorOrigin: "Optional[str]"
-    resourceIPAddressSpace: "Optional[IPAddressSpace]"
-    clientSecurityState: "Optional[ClientSecurityState]"
+    location: "Optional[SourceCodeLocation]" = None
+    initiatorOrigin: "Optional[str]" = None
+    resourceIPAddressSpace: "Optional[IPAddressSpace]" = None
+    clientSecurityState: "Optional[ClientSecurityState]" = None
 
 
 
@@ -377,22 +352,20 @@ class SRIMessageSignatureError(Enum):
 
 
 
-"""Details for issues around \"Attribution Reporting API\" usage.
+class AttributionReportingIssueDetails(BaseModel):
+    """Details for issues around \"Attribution Reporting API\" usage.
 Explainer: https://github.com/WICG/attribution-reporting-api"""
-class AttributionReportingIssueDetails(TypedDict):
     violationType: "AttributionReportingIssueType"
-    request: "Optional[AffectedRequest]"
-    violatingNodeId: "Optional[BackendNodeId]"
-    invalidParameter: "Optional[str]"
+    request: "Optional[AffectedRequest]" = None
+    violatingNodeId: "Optional[BackendNodeId]" = None
+    invalidParameter: "Optional[str]" = None
 
 
 
-"""Details for issues about documents in Quirks Mode
+class QuirksModeIssueDetails(BaseModel):
+    """Details for issues about documents in Quirks Mode
 or Limited Quirks Mode that affects page layouting."""
-class QuirksModeIssueDetails(TypedDict):
     isLimitedQuirksMode: "bool"
-    """If false, it means the document's mode is \"quirks\"
-instead of \"limited-quirks\"."""
     documentNodeId: "BackendNodeId"
     url: "str"
     frameId: "FrameId"
@@ -400,19 +373,19 @@ instead of \"limited-quirks\"."""
 
 
 
-class NavigatorUserAgentIssueDetails(TypedDict):
+class NavigatorUserAgentIssueDetails(BaseModel):
     url: "str"
-    location: "Optional[SourceCodeLocation]"
+    location: "Optional[SourceCodeLocation]" = None
 
 
 
-class SharedDictionaryIssueDetails(TypedDict):
+class SharedDictionaryIssueDetails(BaseModel):
     sharedDictionaryError: "SharedDictionaryError"
     request: "AffectedRequest"
 
 
 
-class SRIMessageSignatureIssueDetails(TypedDict):
+class SRIMessageSignatureIssueDetails(BaseModel):
     error: "SRIMessageSignatureError"
     signatureBase: "str"
     integrityAssertions: "List[str]"
@@ -435,43 +408,41 @@ class GenericIssueErrorType(Enum):
 
 
 
-"""Depending on the concrete errorType, different properties are set."""
-class GenericIssueDetails(TypedDict):
+class GenericIssueDetails(BaseModel):
+    """Depending on the concrete errorType, different properties are set."""
     errorType: "GenericIssueErrorType"
-    """Issues with the same errorType are aggregated in the frontend."""
-    frameId: "Optional[FrameId]"
-    violatingNodeId: "Optional[BackendNodeId]"
-    violatingNodeAttribute: "Optional[str]"
-    request: "Optional[AffectedRequest]"
+    frameId: "Optional[FrameId]" = None
+    violatingNodeId: "Optional[BackendNodeId]" = None
+    violatingNodeAttribute: "Optional[str]" = None
+    request: "Optional[AffectedRequest]" = None
 
 
 
-"""This issue tracks information needed to print a deprecation message.
+class DeprecationIssueDetails(BaseModel):
+    """This issue tracks information needed to print a deprecation message.
 https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/core/frame/third_party/blink/renderer/core/frame/deprecation/README.md"""
-class DeprecationIssueDetails(TypedDict):
-    affectedFrame: "Optional[AffectedFrame]"
     sourceCodeLocation: "SourceCodeLocation"
     type: "str"
-    """One of the deprecation names from third_party/blink/renderer/core/frame/deprecation/deprecation.json5"""
+    affectedFrame: "Optional[AffectedFrame]" = None
 
 
 
-"""This issue warns about sites in the redirect chain of a finished navigation
+class BounceTrackingIssueDetails(BaseModel):
+    """This issue warns about sites in the redirect chain of a finished navigation
 that may be flagged as trackers and have their state cleared if they don't
 receive a user interaction. Note that in this context 'site' means eTLD+1.
 For example, if the URL `https://example.test:80/bounce` was in the
 redirect chain, the site reported would be `example.test`."""
-class BounceTrackingIssueDetails(TypedDict):
     trackingSites: "List[str]"
 
 
 
-"""This issue warns about third-party sites that are accessing cookies on the
+class CookieDeprecationMetadataIssueDetails(BaseModel):
+    """This issue warns about third-party sites that are accessing cookies on the
 current page, and have been permitted due to having a global metadata grant.
 Note that in this context 'site' means eTLD+1. For example, if the URL
 `https://example.test:80/web_page` was accessing cookies, the site reported
 would be `example.test`."""
-class CookieDeprecationMetadataIssueDetails(TypedDict):
     allowedSites: "List[str]"
     optOutPercentage: "float"
     isOptOutTopLevel: "bool"
@@ -485,16 +456,16 @@ class ClientHintIssueReason(Enum):
 
 
 
-class FederatedAuthRequestIssueDetails(TypedDict):
+class FederatedAuthRequestIssueDetails(BaseModel):
     federatedAuthRequestIssueReason: "FederatedAuthRequestIssueReason"
 
 
 
-"""Represents the failure reason when a federated authentication reason fails.
+class FederatedAuthRequestIssueReason(Enum):
+    """Represents the failure reason when a federated authentication reason fails.
 Should be updated alongside RequestIdTokenStatus in
 third_party/blink/public/mojom/devtools/inspector_issue.mojom to include
 all cases except for success."""
-class FederatedAuthRequestIssueReason(Enum):
     SHOULDEMBARGO = "ShouldEmbargo"
     TOOMANYREQUESTS = "TooManyRequests"
     WELLKNOWNHTTPNOTFOUND = "WellKnownHttpNotFound"
@@ -546,15 +517,15 @@ class FederatedAuthRequestIssueReason(Enum):
 
 
 
-class FederatedAuthUserInfoRequestIssueDetails(TypedDict):
+class FederatedAuthUserInfoRequestIssueDetails(BaseModel):
     federatedAuthUserInfoRequestIssueReason: "FederatedAuthUserInfoRequestIssueReason"
 
 
 
-"""Represents the failure reason when a getUserInfo() call fails.
+class FederatedAuthUserInfoRequestIssueReason(Enum):
+    """Represents the failure reason when a getUserInfo() call fails.
 Should be updated alongside FederatedAuthUserInfoRequestResult in
 third_party/blink/public/mojom/devtools/inspector_issue.mojom."""
-class FederatedAuthUserInfoRequestIssueReason(Enum):
     NOTSAMEORIGIN = "NotSameOrigin"
     NOTIFRAME = "NotIframe"
     NOTPOTENTIALLYTRUSTWORTHY = "NotPotentiallyTrustworthy"
@@ -567,20 +538,18 @@ class FederatedAuthUserInfoRequestIssueReason(Enum):
 
 
 
-"""This issue tracks client hints related issues. It's used to deprecate old
+class ClientHintIssueDetails(BaseModel):
+    """This issue tracks client hints related issues. It's used to deprecate old
 features, encourage the use of new ones, and provide general guidance."""
-class ClientHintIssueDetails(TypedDict):
     sourceCodeLocation: "SourceCodeLocation"
     clientHintIssueReason: "ClientHintIssueReason"
 
 
 
-class FailedRequestInfo(TypedDict):
+class FailedRequestInfo(BaseModel):
     url: "str"
-    """The URL that failed to load."""
     failureMessage: "str"
-    """The failure message for the failed request."""
-    requestId: "Optional[RequestId]"
+    requestId: "Optional[RequestId]" = None
 
 
 
@@ -590,11 +559,9 @@ class PartitioningBlobURLInfo(Enum):
 
 
 
-class PartitioningBlobURLIssueDetails(TypedDict):
+class PartitioningBlobURLIssueDetails(BaseModel):
     url: "str"
-    """The BlobURL that failed to load."""
     partitioningBlobURLInfo: "PartitioningBlobURLInfo"
-    """Additional information about the Partitioning Blob URL issue."""
 
 
 
@@ -608,8 +575,8 @@ class ElementAccessibilityIssueReason(Enum):
 
 
 
-"""This issue warns about errors in the select or summary element content model."""
-class ElementAccessibilityIssueDetails(TypedDict):
+class ElementAccessibilityIssueDetails(BaseModel):
+    """This issue warns about errors in the select or summary element content model."""
     nodeId: "BackendNodeId"
     elementAccessibilityIssueReason: "ElementAccessibilityIssueReason"
     hasDisallowedAttributes: "bool"
@@ -622,14 +589,11 @@ class StyleSheetLoadingIssueReason(Enum):
 
 
 
-"""This issue warns when a referenced stylesheet couldn't be loaded."""
-class StylesheetLoadingIssueDetails(TypedDict):
+class StylesheetLoadingIssueDetails(BaseModel):
+    """This issue warns when a referenced stylesheet couldn't be loaded."""
     sourceCodeLocation: "SourceCodeLocation"
-    """Source code position that referenced the failing stylesheet."""
     styleSheetLoadingIssueReason: "StyleSheetLoadingIssueReason"
-    """Reason why the stylesheet couldn't be loaded."""
-    failedRequestInfo: "Optional[FailedRequestInfo]"
-    """Contains additional info when the failure was due to a request."""
+    failedRequestInfo: "Optional[FailedRequestInfo]" = None
 
 
 
@@ -641,15 +605,12 @@ class PropertyRuleIssueReason(Enum):
 
 
 
-"""This issue warns about errors in property rules that lead to property
+class PropertyRuleIssueDetails(BaseModel):
+    """This issue warns about errors in property rules that lead to property
 registrations being ignored."""
-class PropertyRuleIssueDetails(TypedDict):
     sourceCodeLocation: "SourceCodeLocation"
-    """Source code position of the property rule."""
     propertyRuleIssueReason: "PropertyRuleIssueReason"
-    """Reason why the property rule was discarded."""
-    propertyValue: "Optional[str]"
-    """The value of the property rule property that failed to parse"""
+    propertyValue: "Optional[str]" = None
 
 
 
@@ -659,19 +620,18 @@ class UserReidentificationIssueType(Enum):
 
 
 
-"""This issue warns about uses of APIs that may be considered misuse to
+class UserReidentificationIssueDetails(BaseModel):
+    """This issue warns about uses of APIs that may be considered misuse to
 re-identify users."""
-class UserReidentificationIssueDetails(TypedDict):
     type: "UserReidentificationIssueType"
-    request: "Optional[AffectedRequest]"
-    """Applies to BlockedFrameNavigation and BlockedSubresource issue types."""
+    request: "Optional[AffectedRequest]" = None
 
 
 
-"""A unique identifier for the type of issue. Each type may use one of the
+class InspectorIssueCode(Enum):
+    """A unique identifier for the type of issue. Each type may use one of the
 optional fields in InspectorIssueDetails to convey more specific
 information about the kind of issue."""
-class InspectorIssueCode(Enum):
     COOKIEISSUE = "CookieIssue"
     MIXEDCONTENTISSUE = "MixedContentIssue"
     BLOCKEDBYRESPONSEISSUE = "BlockedByResponseIssue"
@@ -700,35 +660,35 @@ class InspectorIssueCode(Enum):
 
 
 
-"""This struct holds a list of optional fields with additional information
+class InspectorIssueDetails(BaseModel):
+    """This struct holds a list of optional fields with additional information
 specific to the kind of issue. When adding a new issue code, please also
 add a new optional field to this type."""
-class InspectorIssueDetails(TypedDict, total=False):
-    cookieIssueDetails: "CookieIssueDetails"
-    mixedContentIssueDetails: "MixedContentIssueDetails"
-    blockedByResponseIssueDetails: "BlockedByResponseIssueDetails"
-    heavyAdIssueDetails: "HeavyAdIssueDetails"
-    contentSecurityPolicyIssueDetails: "ContentSecurityPolicyIssueDetails"
-    sharedArrayBufferIssueDetails: "SharedArrayBufferIssueDetails"
-    lowTextContrastIssueDetails: "LowTextContrastIssueDetails"
-    corsIssueDetails: "CorsIssueDetails"
-    attributionReportingIssueDetails: "AttributionReportingIssueDetails"
-    quirksModeIssueDetails: "QuirksModeIssueDetails"
-    partitioningBlobURLIssueDetails: "PartitioningBlobURLIssueDetails"
-    navigatorUserAgentIssueDetails: "NavigatorUserAgentIssueDetails"
-    genericIssueDetails: "GenericIssueDetails"
-    deprecationIssueDetails: "DeprecationIssueDetails"
-    clientHintIssueDetails: "ClientHintIssueDetails"
-    federatedAuthRequestIssueDetails: "FederatedAuthRequestIssueDetails"
-    bounceTrackingIssueDetails: "BounceTrackingIssueDetails"
-    cookieDeprecationMetadataIssueDetails: "CookieDeprecationMetadataIssueDetails"
-    stylesheetLoadingIssueDetails: "StylesheetLoadingIssueDetails"
-    propertyRuleIssueDetails: "PropertyRuleIssueDetails"
-    federatedAuthUserInfoRequestIssueDetails: "FederatedAuthUserInfoRequestIssueDetails"
-    sharedDictionaryIssueDetails: "SharedDictionaryIssueDetails"
-    elementAccessibilityIssueDetails: "ElementAccessibilityIssueDetails"
-    sriMessageSignatureIssueDetails: "SRIMessageSignatureIssueDetails"
-    userReidentificationIssueDetails: "UserReidentificationIssueDetails"
+    cookieIssueDetails: "Optional[CookieIssueDetails]" = None
+    mixedContentIssueDetails: "Optional[MixedContentIssueDetails]" = None
+    blockedByResponseIssueDetails: "Optional[BlockedByResponseIssueDetails]" = None
+    heavyAdIssueDetails: "Optional[HeavyAdIssueDetails]" = None
+    contentSecurityPolicyIssueDetails: "Optional[ContentSecurityPolicyIssueDetails]" = None
+    sharedArrayBufferIssueDetails: "Optional[SharedArrayBufferIssueDetails]" = None
+    lowTextContrastIssueDetails: "Optional[LowTextContrastIssueDetails]" = None
+    corsIssueDetails: "Optional[CorsIssueDetails]" = None
+    attributionReportingIssueDetails: "Optional[AttributionReportingIssueDetails]" = None
+    quirksModeIssueDetails: "Optional[QuirksModeIssueDetails]" = None
+    partitioningBlobURLIssueDetails: "Optional[PartitioningBlobURLIssueDetails]" = None
+    navigatorUserAgentIssueDetails: "Optional[NavigatorUserAgentIssueDetails]" = None
+    genericIssueDetails: "Optional[GenericIssueDetails]" = None
+    deprecationIssueDetails: "Optional[DeprecationIssueDetails]" = None
+    clientHintIssueDetails: "Optional[ClientHintIssueDetails]" = None
+    federatedAuthRequestIssueDetails: "Optional[FederatedAuthRequestIssueDetails]" = None
+    bounceTrackingIssueDetails: "Optional[BounceTrackingIssueDetails]" = None
+    cookieDeprecationMetadataIssueDetails: "Optional[CookieDeprecationMetadataIssueDetails]" = None
+    stylesheetLoadingIssueDetails: "Optional[StylesheetLoadingIssueDetails]" = None
+    propertyRuleIssueDetails: "Optional[PropertyRuleIssueDetails]" = None
+    federatedAuthUserInfoRequestIssueDetails: "Optional[FederatedAuthUserInfoRequestIssueDetails]" = None
+    sharedDictionaryIssueDetails: "Optional[SharedDictionaryIssueDetails]" = None
+    elementAccessibilityIssueDetails: "Optional[ElementAccessibilityIssueDetails]" = None
+    sriMessageSignatureIssueDetails: "Optional[SRIMessageSignatureIssueDetails]" = None
+    userReidentificationIssueDetails: "Optional[UserReidentificationIssueDetails]" = None
 
 
 
@@ -738,10 +698,60 @@ IssueId = str
 
 
 
-"""An inspector issue reported from the back-end."""
-class InspectorIssue(TypedDict):
+class InspectorIssue(BaseModel):
+    """An inspector issue reported from the back-end."""
     code: "InspectorIssueCode"
     details: "InspectorIssueDetails"
-    issueId: "Optional[IssueId]"
-    """A unique id for this issue. May be omitted if no other entity (e.g.
-exception, CDP message, etc.) is referencing this issue."""
+    issueId: "Optional[IssueId]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import BackendNodeId
+        from ..network.types import ClientSecurityState
+        from ..network.types import CorsErrorStatus
+        from ..network.types import IPAddressSpace
+        from ..network.types import LoaderId
+        from ..network.types import RequestId
+        from ..page.types import FrameId
+        from ..runtime.types import ScriptId
+        # Rebuild models now that imports are available
+        AffectedCookie.model_rebuild()
+        AffectedRequest.model_rebuild()
+        AffectedFrame.model_rebuild()
+        CookieIssueInsight.model_rebuild()
+        CookieIssueDetails.model_rebuild()
+        MixedContentIssueDetails.model_rebuild()
+        BlockedByResponseIssueDetails.model_rebuild()
+        HeavyAdIssueDetails.model_rebuild()
+        SourceCodeLocation.model_rebuild()
+        ContentSecurityPolicyIssueDetails.model_rebuild()
+        SharedArrayBufferIssueDetails.model_rebuild()
+        LowTextContrastIssueDetails.model_rebuild()
+        CorsIssueDetails.model_rebuild()
+        AttributionReportingIssueDetails.model_rebuild()
+        QuirksModeIssueDetails.model_rebuild()
+        NavigatorUserAgentIssueDetails.model_rebuild()
+        SharedDictionaryIssueDetails.model_rebuild()
+        SRIMessageSignatureIssueDetails.model_rebuild()
+        GenericIssueDetails.model_rebuild()
+        DeprecationIssueDetails.model_rebuild()
+        BounceTrackingIssueDetails.model_rebuild()
+        CookieDeprecationMetadataIssueDetails.model_rebuild()
+        FederatedAuthRequestIssueDetails.model_rebuild()
+        FederatedAuthUserInfoRequestIssueDetails.model_rebuild()
+        ClientHintIssueDetails.model_rebuild()
+        FailedRequestInfo.model_rebuild()
+        PartitioningBlobURLIssueDetails.model_rebuild()
+        ElementAccessibilityIssueDetails.model_rebuild()
+        StylesheetLoadingIssueDetails.model_rebuild()
+        PropertyRuleIssueDetails.model_rebuild()
+        UserReidentificationIssueDetails.model_rebuild()
+        InspectorIssueDetails.model_rebuild()
+        InspectorIssue.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

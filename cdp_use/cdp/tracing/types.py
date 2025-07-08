@@ -5,69 +5,72 @@
 """CDP Tracing Domain Types"""
 
 from enum import Enum
-from typing import List
-from typing_extensions import TypedDict
+from pydantic import BaseModel
+from typing import List, Optional
 
-"""Configuration for memory dump. Used only when \"memory-infra\" category is enabled."""
-class MemoryDumpConfig(TypedDict):
+class MemoryDumpConfig(BaseModel):
+    """Configuration for memory dump. Used only when \"memory-infra\" category is enabled."""
     pass
 
 
 
-class TraceConfig(TypedDict, total=False):
-    recordMode: "str"
-    """Controls how the trace buffer stores data. The default is `recordUntilFull`."""
-    traceBufferSizeInKb: "float"
-    """Size of the trace buffer in kilobytes. If not specified or zero is passed, a default value
-of 200 MB would be used."""
-    enableSampling: "bool"
-    """Turns on JavaScript stack sampling."""
-    enableSystrace: "bool"
-    """Turns on system tracing."""
-    enableArgumentFilter: "bool"
-    """Turns on argument filter."""
-    includedCategories: "List[str]"
-    """Included category filters."""
-    excludedCategories: "List[str]"
-    """Excluded category filters."""
-    syntheticDelays: "List[str]"
-    """Configuration to synthesize the delays in tracing."""
-    memoryDumpConfig: "MemoryDumpConfig"
-    """Configuration for memory dump triggers. Used only when \"memory-infra\" category is enabled."""
+class TraceConfig(BaseModel):
+    recordMode: "Optional[str]" = None
+    traceBufferSizeInKb: "Optional[float]" = None
+    enableSampling: "Optional[bool]" = None
+    enableSystrace: "Optional[bool]" = None
+    enableArgumentFilter: "Optional[bool]" = None
+    includedCategories: "Optional[List[str]]" = None
+    excludedCategories: "Optional[List[str]]" = None
+    syntheticDelays: "Optional[List[str]]" = None
+    memoryDumpConfig: "Optional[MemoryDumpConfig]" = None
 
 
 
-"""Data format of a trace. Can be either the legacy JSON format or the
-protocol buffer format. Note that the JSON format will be deprecated soon."""
 class StreamFormat(Enum):
+    """Data format of a trace. Can be either the legacy JSON format or the
+protocol buffer format. Note that the JSON format will be deprecated soon."""
     JSON = "json"
     PROTO = "proto"
 
 
 
-"""Compression type to use for traces returned via streams."""
 class StreamCompression(Enum):
+    """Compression type to use for traces returned via streams."""
     NONE = "none"
     GZIP = "gzip"
 
 
 
-"""Details exposed when memory request explicitly declared.
+class MemoryDumpLevelOfDetail(Enum):
+    """Details exposed when memory request explicitly declared.
 Keep consistent with memory_dump_request_args.h and
 memory_instrumentation.mojom"""
-class MemoryDumpLevelOfDetail(Enum):
     BACKGROUND = "background"
     LIGHT = "light"
     DETAILED = "detailed"
 
 
 
-"""Backend type to use for tracing. `chrome` uses the Chrome-integrated
+class TracingBackend(Enum):
+    """Backend type to use for tracing. `chrome` uses the Chrome-integrated
 tracing service and is supported on all platforms. `system` is only
 supported on Chrome OS and uses the Perfetto system tracing service.
 `auto` chooses `system` when the perfettoConfig provided to Tracing.start
 specifies at least one non-Chrome data source; otherwise uses `chrome`."""
-class TracingBackend(Enum):
     AUTO = "auto"
     CHROME = "chrome"
     SYSTEM = "system"
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        MemoryDumpConfig.model_rebuild()
+        TraceConfig.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

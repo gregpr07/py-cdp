@@ -4,7 +4,7 @@
 
 """CDP Debugger Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -68,11 +68,12 @@ class DebuggerClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Continues execution until specific location is reached."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.continueToLocation",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def disable(
         self,
@@ -80,11 +81,12 @@ class DebuggerClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables debugger for given page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -93,11 +95,13 @@ class DebuggerClient:
     ) -> "EnableReturns":
         """Enables debugger for the given page. Clients should not assume that the debugging has been
 enabled until the result for this command is received."""
-        return cast("EnableReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import EnableReturns as _EnableReturns
+        return _EnableReturns.model_validate(raw_result)
 
     async def evaluateOnCallFrame(
         self,
@@ -105,11 +109,13 @@ enabled until the result for this command is received."""
         session_id: Optional[str] = None,
     ) -> "EvaluateOnCallFrameReturns":
         """Evaluates expression on a given call frame."""
-        return cast("EvaluateOnCallFrameReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.evaluateOnCallFrame",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import EvaluateOnCallFrameReturns as _EvaluateOnCallFrameReturns
+        return _EvaluateOnCallFrameReturns.model_validate(raw_result)
 
     async def getPossibleBreakpoints(
         self,
@@ -118,11 +124,13 @@ enabled until the result for this command is received."""
     ) -> "GetPossibleBreakpointsReturns":
         """Returns possible locations for breakpoint. scriptId in start and end range locations should be
 the same."""
-        return cast("GetPossibleBreakpointsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.getPossibleBreakpoints",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetPossibleBreakpointsReturns as _GetPossibleBreakpointsReturns
+        return _GetPossibleBreakpointsReturns.model_validate(raw_result)
 
     async def getScriptSource(
         self,
@@ -130,22 +138,26 @@ the same."""
         session_id: Optional[str] = None,
     ) -> "GetScriptSourceReturns":
         """Returns source for the script with given id."""
-        return cast("GetScriptSourceReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.getScriptSource",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetScriptSourceReturns as _GetScriptSourceReturns
+        return _GetScriptSourceReturns.model_validate(raw_result)
 
     async def disassembleWasmModule(
         self,
         params: "DisassembleWasmModuleParameters",
         session_id: Optional[str] = None,
     ) -> "DisassembleWasmModuleReturns":
-        return cast("DisassembleWasmModuleReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.disassembleWasmModule",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import DisassembleWasmModuleReturns as _DisassembleWasmModuleReturns
+        return _DisassembleWasmModuleReturns.model_validate(raw_result)
 
     async def nextWasmDisassemblyChunk(
         self,
@@ -156,11 +168,13 @@ the same."""
 stream. If disassembly is complete, this API will invalidate the streamId
 and return an empty chunk. Any subsequent calls for the now invalid stream
 will return errors."""
-        return cast("NextWasmDisassemblyChunkReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.nextWasmDisassemblyChunk",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import NextWasmDisassemblyChunkReturns as _NextWasmDisassemblyChunkReturns
+        return _NextWasmDisassemblyChunkReturns.model_validate(raw_result)
 
     async def getWasmBytecode(
         self,
@@ -168,11 +182,13 @@ will return errors."""
         session_id: Optional[str] = None,
     ) -> "GetWasmBytecodeReturns":
         """This command is deprecated. Use getScriptSource instead."""
-        return cast("GetWasmBytecodeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.getWasmBytecode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetWasmBytecodeReturns as _GetWasmBytecodeReturns
+        return _GetWasmBytecodeReturns.model_validate(raw_result)
 
     async def getStackTrace(
         self,
@@ -180,11 +196,13 @@ will return errors."""
         session_id: Optional[str] = None,
     ) -> "GetStackTraceReturns":
         """Returns stack trace with given `stackTraceId`."""
-        return cast("GetStackTraceReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.getStackTrace",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetStackTraceReturns as _GetStackTraceReturns
+        return _GetStackTraceReturns.model_validate(raw_result)
 
     async def pause(
         self,
@@ -192,22 +210,24 @@ will return errors."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Stops on the next JavaScript statement."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.pause",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def pauseOnAsyncCall(
         self,
         params: "PauseOnAsyncCallParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.pauseOnAsyncCall",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def removeBreakpoint(
         self,
@@ -215,11 +235,12 @@ will return errors."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Removes JavaScript breakpoint."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.removeBreakpoint",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def restartFrame(
         self,
@@ -239,11 +260,13 @@ errors out.
 The various return values are deprecated and `callFrames` is always empty.
 Use the call frames from the `Debugger#paused` events instead, that fires
 once V8 pauses at the beginning of the restarted function."""
-        return cast("RestartFrameReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.restartFrame",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import RestartFrameReturns as _RestartFrameReturns
+        return _RestartFrameReturns.model_validate(raw_result)
 
     async def resume(
         self,
@@ -251,11 +274,12 @@ once V8 pauses at the beginning of the restarted function."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Resumes JavaScript execution."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.resume",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def searchInContent(
         self,
@@ -263,11 +287,13 @@ once V8 pauses at the beginning of the restarted function."""
         session_id: Optional[str] = None,
     ) -> "SearchInContentReturns":
         """Searches for given string in script content."""
-        return cast("SearchInContentReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.searchInContent",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SearchInContentReturns as _SearchInContentReturns
+        return _SearchInContentReturns.model_validate(raw_result)
 
     async def setAsyncCallStackDepth(
         self,
@@ -275,11 +301,12 @@ once V8 pauses at the beginning of the restarted function."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables or disables async call stacks tracking."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.setAsyncCallStackDepth",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setBlackboxExecutionContexts(
         self,
@@ -289,11 +316,12 @@ once V8 pauses at the beginning of the restarted function."""
         """Replace previous blackbox execution contexts with passed ones. Forces backend to skip
 stepping/pausing in scripts in these execution contexts. VM will try to leave blackboxed script by
 performing 'step in' several times, finally resorting to 'step out' if unsuccessful."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.setBlackboxExecutionContexts",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setBlackboxPatterns(
         self,
@@ -303,11 +331,12 @@ performing 'step in' several times, finally resorting to 'step out' if unsuccess
         """Replace previous blackbox patterns with passed ones. Forces backend to skip stepping/pausing in
 scripts with url matching one of the patterns. VM will try to leave blackboxed script by
 performing 'step in' several times, finally resorting to 'step out' if unsuccessful."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.setBlackboxPatterns",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setBlackboxedRanges(
         self,
@@ -318,11 +347,12 @@ performing 'step in' several times, finally resorting to 'step out' if unsuccess
 scripts by performing 'step in' several times, finally resorting to 'step out' if unsuccessful.
 Positions array contains positions where blackbox state is changed. First interval isn't
 blackboxed. Array should be sorted."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.setBlackboxedRanges",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setBreakpoint(
         self,
@@ -330,11 +360,13 @@ blackboxed. Array should be sorted."""
         session_id: Optional[str] = None,
     ) -> "SetBreakpointReturns":
         """Sets JavaScript breakpoint at a given location."""
-        return cast("SetBreakpointReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.setBreakpoint",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetBreakpointReturns as _SetBreakpointReturns
+        return _SetBreakpointReturns.model_validate(raw_result)
 
     async def setInstrumentationBreakpoint(
         self,
@@ -342,11 +374,13 @@ blackboxed. Array should be sorted."""
         session_id: Optional[str] = None,
     ) -> "SetInstrumentationBreakpointReturns":
         """Sets instrumentation breakpoint."""
-        return cast("SetInstrumentationBreakpointReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.setInstrumentationBreakpoint",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetInstrumentationBreakpointReturns as _SetInstrumentationBreakpointReturns
+        return _SetInstrumentationBreakpointReturns.model_validate(raw_result)
 
     async def setBreakpointByUrl(
         self,
@@ -357,11 +391,13 @@ blackboxed. Array should be sorted."""
 command is issued, all existing parsed scripts will have breakpoints resolved and returned in
 `locations` property. Further matching script parsing will result in subsequent
 `breakpointResolved` events issued. This logical breakpoint will survive page reloads."""
-        return cast("SetBreakpointByUrlReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.setBreakpointByUrl",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetBreakpointByUrlReturns as _SetBreakpointByUrlReturns
+        return _SetBreakpointByUrlReturns.model_validate(raw_result)
 
     async def setBreakpointOnFunctionCall(
         self,
@@ -371,11 +407,13 @@ command is issued, all existing parsed scripts will have breakpoints resolved an
         """Sets JavaScript breakpoint before each call to the given function.
 If another function was created from the same source as a given one,
 calling it will also trigger the breakpoint."""
-        return cast("SetBreakpointOnFunctionCallReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.setBreakpointOnFunctionCall",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetBreakpointOnFunctionCallReturns as _SetBreakpointOnFunctionCallReturns
+        return _SetBreakpointOnFunctionCallReturns.model_validate(raw_result)
 
     async def setBreakpointsActive(
         self,
@@ -383,11 +421,12 @@ calling it will also trigger the breakpoint."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Activates / deactivates all breakpoints on the page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.setBreakpointsActive",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setPauseOnExceptions(
         self,
@@ -396,11 +435,12 @@ calling it will also trigger the breakpoint."""
     ) -> "Dict[str, Any]":
         """Defines pause on exceptions state. Can be set to stop on all exceptions, uncaught exceptions,
 or caught exceptions, no exceptions. Initial pause on exceptions state is `none`."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.setPauseOnExceptions",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setReturnValue(
         self,
@@ -408,11 +448,12 @@ or caught exceptions, no exceptions. Initial pause on exceptions state is `none`
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Changes return value in top frame. Available only at return break position."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.setReturnValue",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setScriptSource(
         self,
@@ -426,11 +467,13 @@ a single exception: If the edited function is the top-most stack frame and
 that is the only activation of that function on the stack. In this case
 the live edit will be successful and a `Debugger.restartFrame` for the
 top-most function is automatically triggered."""
-        return cast("SetScriptSourceReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.setScriptSource",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetScriptSourceReturns as _SetScriptSourceReturns
+        return _SetScriptSourceReturns.model_validate(raw_result)
 
     async def setSkipAllPauses(
         self,
@@ -438,11 +481,12 @@ top-most function is automatically triggered."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Makes page not interrupt on any pauses (breakpoint, exception, dom exception etc)."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.setSkipAllPauses",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setVariableValue(
         self,
@@ -451,11 +495,12 @@ top-most function is automatically triggered."""
     ) -> "Dict[str, Any]":
         """Changes value of variable in a callframe. Object-based scopes are not supported and must be
 mutated manually."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.setVariableValue",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def stepInto(
         self,
@@ -463,11 +508,12 @@ mutated manually."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Steps into the function call."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.stepInto",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def stepOut(
         self,
@@ -475,11 +521,12 @@ mutated manually."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Steps out of the function call."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.stepOut",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def stepOver(
         self,
@@ -487,10 +534,11 @@ mutated manually."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Steps over the statement."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Debugger.stepOver",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

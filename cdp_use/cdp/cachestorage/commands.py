@@ -4,6 +4,7 @@
 
 """CDP CacheStorage Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -45,9 +46,8 @@ Security origin."""
     """Storage bucket. If not specified, it uses the default bucket."""
 
 
-class RequestCacheNamesReturns(TypedDict):
+class RequestCacheNamesReturns(BaseModel):
     caches: "List[Cache]"
-    """Caches for the security origin."""
 
 
 
@@ -60,9 +60,8 @@ class RequestCachedResponseParameters(TypedDict):
     """headers of the request."""
 
 
-class RequestCachedResponseReturns(TypedDict):
+class RequestCachedResponseReturns(BaseModel):
     response: "CachedResponse"
-    """Response read from the cache."""
 
 
 
@@ -77,9 +76,25 @@ class RequestEntriesParameters(TypedDict):
     """If present, only return the entries containing this substring in the path"""
 
 
-class RequestEntriesReturns(TypedDict):
+class RequestEntriesReturns(BaseModel):
     cacheDataEntries: "List[DataEntry]"
-    """Array of object store data entries."""
     returnCount: "float"
-    """Count of returned entries from this storage. If pathFilter is empty, it
-is the count of all entries from this storage."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..storage.types import StorageBucket
+        from .types import Cache
+        from .types import CacheId
+        from .types import CachedResponse
+        from .types import DataEntry
+        from .types import Header
+        # Rebuild models now that imports are available
+        RequestCacheNamesReturns.model_rebuild()
+        RequestCachedResponseReturns.model_rebuild()
+        RequestEntriesReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

@@ -4,11 +4,20 @@
 
 """CDP Tethering Domain Events"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
-"""Informs that port was successfully bound and got a specified connection id."""
-class AcceptedEvent(TypedDict):
+class AcceptedEvent(BaseModel):
+    """Informs that port was successfully bound and got a specified connection id."""
     port: "int"
-    """Port number that was successfully bound."""
     connectionId: "str"
-    """Connection id to be used."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        AcceptedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

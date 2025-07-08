@@ -4,11 +4,21 @@
 
 """CDP Schema Domain Types"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
-"""Description of the protocol domain."""
-class Domain(TypedDict):
+class Domain(BaseModel):
+    """Description of the protocol domain."""
     name: "str"
-    """Domain name."""
     version: "str"
-    """Domain version."""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        Domain.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

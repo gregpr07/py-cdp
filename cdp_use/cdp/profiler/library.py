@@ -4,7 +4,7 @@
 
 """CDP Profiler Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -28,22 +28,24 @@ class ProfilerClient:
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Profiler.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Profiler.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getBestEffortCoverage(
         self,
@@ -52,11 +54,13 @@ class ProfilerClient:
     ) -> "GetBestEffortCoverageReturns":
         """Collect coverage data for the current isolate. The coverage data may be incomplete due to
 garbage collection."""
-        return cast("GetBestEffortCoverageReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Profiler.getBestEffortCoverage",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetBestEffortCoverageReturns as _GetBestEffortCoverageReturns
+        return _GetBestEffortCoverageReturns.model_validate(raw_result)
 
     async def setSamplingInterval(
         self,
@@ -64,22 +68,24 @@ garbage collection."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Changes CPU profiler sampling interval. Must be called before CPU profiles recording started."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Profiler.setSamplingInterval",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def start(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Profiler.start",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def startPreciseCoverage(
         self,
@@ -89,22 +95,26 @@ garbage collection."""
         """Enable precise code coverage. Coverage data for JavaScript executed before enabling precise code
 coverage may be incomplete. Enabling prevents running optimized code and resets execution
 counters."""
-        return cast("StartPreciseCoverageReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Profiler.startPreciseCoverage",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import StartPreciseCoverageReturns as _StartPreciseCoverageReturns
+        return _StartPreciseCoverageReturns.model_validate(raw_result)
 
     async def stop(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "StopReturns":
-        return cast("StopReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Profiler.stop",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import StopReturns as _StopReturns
+        return _StopReturns.model_validate(raw_result)
 
     async def stopPreciseCoverage(
         self,
@@ -113,11 +123,12 @@ counters."""
     ) -> "Dict[str, Any]":
         """Disable precise code coverage. Disabling releases unnecessary execution count records and allows
 executing optimized code."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Profiler.stopPreciseCoverage",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def takePreciseCoverage(
         self,
@@ -126,10 +137,12 @@ executing optimized code."""
     ) -> "TakePreciseCoverageReturns":
         """Collect coverage data for the current isolate, and resets execution counters. Precise code
 coverage needs to have started."""
-        return cast("TakePreciseCoverageReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Profiler.takePreciseCoverage",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import TakePreciseCoverageReturns as _TakePreciseCoverageReturns
+        return _TakePreciseCoverageReturns.model_validate(raw_result)
 
 

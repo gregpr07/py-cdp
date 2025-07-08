@@ -4,6 +4,7 @@
 
 """CDP Debugger Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -44,9 +45,8 @@ class EnableParameters(TypedDict, total=False):
 the debugger can hold. Puts no limit if parameter is omitted."""
 
 
-class EnableReturns(TypedDict):
+class EnableReturns(BaseModel):
     debuggerId: "UniqueDebuggerId"
-    """Unique identifier of the debugger."""
 
 
 
@@ -74,11 +74,9 @@ execution. Overrides `setPauseOnException` state."""
     """Terminate execution after timing out (number of milliseconds)."""
 
 
-class EvaluateOnCallFrameReturns(TypedDict):
+class EvaluateOnCallFrameReturns(BaseModel):
     result: "RemoteObject"
-    """Object wrapper for the evaluation result."""
-    exceptionDetails: "ExceptionDetails"
-    """Exception details."""
+    exceptionDetails: "Optional[ExceptionDetails]" = None
 
 
 
@@ -92,9 +90,8 @@ of scripts is used as end of range."""
     """Only consider locations which are in the same (non-nested) function as start."""
 
 
-class GetPossibleBreakpointsReturns(TypedDict):
+class GetPossibleBreakpointsReturns(BaseModel):
     locations: "List[BreakLocation]"
-    """List of the possible breakpoint locations."""
 
 
 
@@ -103,11 +100,9 @@ class GetScriptSourceParameters(TypedDict):
     """Id of the script to get source for."""
 
 
-class GetScriptSourceReturns(TypedDict):
+class GetScriptSourceReturns(BaseModel):
     scriptSource: "str"
-    """Script source (empty in case of Wasm bytecode)."""
-    bytecode: "str"
-    """Wasm bytecode. (Encoded as a base64 string when passed over JSON)"""
+    bytecode: "Optional[str]" = None
 
 
 
@@ -116,17 +111,11 @@ class DisassembleWasmModuleParameters(TypedDict):
     """Id of the script to disassemble"""
 
 
-class DisassembleWasmModuleReturns(TypedDict):
-    streamId: "str"
-    """For large modules, return a stream from which additional chunks of
-disassembly can be read successively."""
+class DisassembleWasmModuleReturns(BaseModel):
     totalNumberOfLines: "int"
-    """The total number of lines in the disassembly text."""
     functionBodyOffsets: "List[int]"
-    """The offsets of all function bodies, in the format [start1, end1,
-start2, end2, ...] where all ends are exclusive."""
     chunk: "WasmDisassemblyChunk"
-    """The first chunk of disassembly."""
+    streamId: "Optional[str]" = None
 
 
 
@@ -134,9 +123,8 @@ class NextWasmDisassemblyChunkParameters(TypedDict):
     streamId: "str"
 
 
-class NextWasmDisassemblyChunkReturns(TypedDict):
+class NextWasmDisassemblyChunkReturns(BaseModel):
     chunk: "WasmDisassemblyChunk"
-    """The next chunk of disassembly."""
 
 
 
@@ -145,9 +133,8 @@ class GetWasmBytecodeParameters(TypedDict):
     """Id of the Wasm script to get source for."""
 
 
-class GetWasmBytecodeReturns(TypedDict):
+class GetWasmBytecodeReturns(BaseModel):
     bytecode: "str"
-    """Script source. (Encoded as a base64 string when passed over JSON)"""
 
 
 
@@ -155,7 +142,7 @@ class GetStackTraceParameters(TypedDict):
     stackTraceId: "StackTraceId"
 
 
-class GetStackTraceReturns(TypedDict):
+class GetStackTraceReturns(BaseModel):
     stackTrace: "StackTrace"
 
 
@@ -183,13 +170,10 @@ class RestartFrameParameters(TypedDict):
 `restartFrame` will error out."""
 
 
-class RestartFrameReturns(TypedDict):
+class RestartFrameReturns(BaseModel):
     callFrames: "List[CallFrame]"
-    """New stack trace."""
-    asyncStackTrace: "StackTrace"
-    """Async stack trace, if any."""
-    asyncStackTraceId: "StackTraceId"
-    """Async stack trace, if any."""
+    asyncStackTrace: "Optional[StackTrace]" = None
+    asyncStackTraceId: "Optional[StackTraceId]" = None
 
 
 
@@ -216,9 +200,8 @@ class SearchInContentParameters(TypedDict):
     """If true, treats string parameter as regex."""
 
 
-class SearchInContentReturns(TypedDict):
+class SearchInContentReturns(BaseModel):
     result: "List[SearchMatch]"
-    """List of search matches."""
 
 
 
@@ -266,11 +249,9 @@ class SetBreakpointParameters(TypedDict):
 breakpoint if this expression evaluates to true."""
 
 
-class SetBreakpointReturns(TypedDict):
+class SetBreakpointReturns(BaseModel):
     breakpointId: "BreakpointId"
-    """Id of the created breakpoint for further reference."""
     actualLocation: "Location"
-    """Location this breakpoint resolved into."""
 
 
 
@@ -279,9 +260,8 @@ class SetInstrumentationBreakpointParameters(TypedDict):
     """Instrumentation name."""
 
 
-class SetInstrumentationBreakpointReturns(TypedDict):
+class SetInstrumentationBreakpointReturns(BaseModel):
     breakpointId: "BreakpointId"
-    """Id of the created breakpoint for further reference."""
 
 
 
@@ -302,11 +282,9 @@ class SetBreakpointByUrlParameters(TypedDict):
 breakpoint if this expression evaluates to true."""
 
 
-class SetBreakpointByUrlReturns(TypedDict):
+class SetBreakpointByUrlReturns(BaseModel):
     breakpointId: "BreakpointId"
-    """Id of the created breakpoint for further reference."""
     locations: "List[Location]"
-    """List of the locations this breakpoint resolved into upon addition."""
 
 
 
@@ -318,9 +296,8 @@ class SetBreakpointOnFunctionCallParameters(TypedDict):
 stop on the breakpoint if this expression evaluates to true."""
 
 
-class SetBreakpointOnFunctionCallReturns(TypedDict):
+class SetBreakpointOnFunctionCallReturns(BaseModel):
     breakpointId: "BreakpointId"
-    """Id of the created breakpoint for further reference."""
 
 
 
@@ -361,21 +338,13 @@ description without actually modifying the code."""
 as long as the top-most stack frame is the only activation of that function."""
 
 
-class SetScriptSourceReturns(TypedDict):
-    callFrames: "List[CallFrame]"
-    """New stack trace in case editing has happened while VM was stopped."""
-    stackChanged: "bool"
-    """Whether current call stack  was modified after applying the changes."""
-    asyncStackTrace: "StackTrace"
-    """Async stack trace, if any."""
-    asyncStackTraceId: "StackTraceId"
-    """Async stack trace, if any."""
+class SetScriptSourceReturns(BaseModel):
     status: "str"
-    """Whether the operation was successful or not. Only `Ok` denotes a
-successful live edit while the other enum variants denote why
-the live edit failed."""
-    exceptionDetails: "ExceptionDetails"
-    """Exception details if any. Only present when `status` is `CompileError`."""
+    callFrames: "Optional[List[CallFrame]]" = None
+    stackChanged: "Optional[bool]" = None
+    asyncStackTrace: "Optional[StackTrace]" = None
+    asyncStackTraceId: "Optional[StackTraceId]" = None
+    exceptionDetails: "Optional[ExceptionDetails]" = None
 
 
 
@@ -418,3 +387,46 @@ class StepOverParameters(TypedDict, total=False):
     """The skipList specifies location ranges that should be skipped on step over."""
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..runtime.types import CallArgument
+        from ..runtime.types import ExceptionDetails
+        from ..runtime.types import RemoteObject
+        from ..runtime.types import RemoteObjectId
+        from ..runtime.types import ScriptId
+        from ..runtime.types import StackTrace
+        from ..runtime.types import StackTraceId
+        from ..runtime.types import TimeDelta
+        from ..runtime.types import UniqueDebuggerId
+        from .types import BreakLocation
+        from .types import BreakpointId
+        from .types import CallFrame
+        from .types import CallFrameId
+        from .types import Location
+        from .types import LocationRange
+        from .types import ScriptPosition
+        from .types import SearchMatch
+        from .types import WasmDisassemblyChunk
+        # Rebuild models now that imports are available
+        EnableReturns.model_rebuild()
+        EvaluateOnCallFrameReturns.model_rebuild()
+        GetPossibleBreakpointsReturns.model_rebuild()
+        GetScriptSourceReturns.model_rebuild()
+        DisassembleWasmModuleReturns.model_rebuild()
+        NextWasmDisassemblyChunkReturns.model_rebuild()
+        GetWasmBytecodeReturns.model_rebuild()
+        GetStackTraceReturns.model_rebuild()
+        RestartFrameReturns.model_rebuild()
+        SearchInContentReturns.model_rebuild()
+        SetBreakpointReturns.model_rebuild()
+        SetInstrumentationBreakpointReturns.model_rebuild()
+        SetBreakpointByUrlReturns.model_rebuild()
+        SetBreakpointOnFunctionCallReturns.model_rebuild()
+        SetScriptSourceReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

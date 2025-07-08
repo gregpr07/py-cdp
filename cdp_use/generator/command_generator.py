@@ -63,6 +63,30 @@ class CommandGenerator:
         # Add command definitions
         if command_definitions:
             content += "\n\n\n".join(command_definitions)
+
+            # Add model_rebuild() calls for Pydantic return models
+            rebuild_calls = []
+            for command in commands:
+                returns = command.get("returns", [])
+                if returns:
+                    command_name = command["name"]
+                    class_name = self.to_class_name(command_name) + "Returns"
+                    rebuild_calls.append(f"{class_name}.model_rebuild()")
+
+            if rebuild_calls:
+                content += (
+                    "\n\n# Rebuild Pydantic models to resolve forward references\n"
+                )
+                content += "def _rebuild_models_when_ready():\n"
+                content += "    try:\n"
+                for imp in sorted(self.type_checking_imports):
+                    content += f"        {imp}\n"
+                content += "        # Rebuild models now that imports are available\n"
+                for call in rebuild_calls:
+                    content += f"        {call}\n"
+                content += "    except ImportError:\n"
+                content += "        pass  # Will be rebuilt later\n"
+                content += "\n_rebuild_models_when_ready()\n"
         else:
             content += "# No commands defined for this domain"
 
@@ -171,10 +195,6 @@ class CommandGenerator:
 
                 content += f'    {return_name}: "{return_type}"\n'
 
-                if return_desc:
-                    escaped_desc = return_desc.replace("\\", "\\\\").replace('"', '\\"')
-                    content += f'    """{escaped_desc}"""\n'
-
             # Optional returns
             for return_param in optional_returns:
                 return_name = return_param["name"]
@@ -182,10 +202,6 @@ class CommandGenerator:
                 return_desc = return_param.get("description", "")
 
                 content += f'    {return_name}: "Optional[{return_type}]" = None\n'
-
-                if return_desc:
-                    escaped_desc = return_desc.replace("\\", "\\\\").replace('"', '\\"')
-                    content += f'    """{escaped_desc}"""\n'
 
         self.generated_commands.add(class_name)
         return content

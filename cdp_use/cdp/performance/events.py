@@ -4,17 +4,27 @@
 
 """CDP Performance Domain Events"""
 
+from pydantic import BaseModel
 from typing import List
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .types import Metric
 
-"""Current values of the metrics."""
-class MetricsEvent(TypedDict):
-    metrics: "List[Metric]"
+class MetricsEvent(BaseModel):
     """Current values of the metrics."""
+    metrics: "List[Metric]"
     title: "str"
-    """Timestamp title."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import Metric
+        # Rebuild models now that imports are available
+        MetricsEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

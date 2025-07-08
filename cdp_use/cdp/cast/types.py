@@ -4,12 +4,22 @@
 
 """CDP Cast Domain Types"""
 
+from pydantic import BaseModel
 from typing import Optional
-from typing_extensions import TypedDict
 
-class Sink(TypedDict):
+class Sink(BaseModel):
     name: "str"
     id: "str"
-    session: "Optional[str]"
-    """Text describing the current session. Present only if there is an active
-session on the sink."""
+    session: "Optional[str]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        Sink.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

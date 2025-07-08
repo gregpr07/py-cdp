@@ -5,8 +5,8 @@
 """CDP Autofill Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -14,74 +14,76 @@ if TYPE_CHECKING:
     from ..dom.types import BackendNodeId
     from ..page.types import FrameId
 
-class CreditCard(TypedDict):
+class CreditCard(BaseModel):
     number: "str"
-    """16-digit credit card number."""
     name: "str"
-    """Name of the credit card owner."""
     expiryMonth: "str"
-    """2-digit expiry month."""
     expiryYear: "str"
-    """4-digit expiry year."""
     cvc: "str"
-    """3-digit card verification code."""
 
 
 
-class AddressField(TypedDict):
+class AddressField(BaseModel):
     name: "str"
-    """address field name, for example GIVEN_NAME."""
     value: "str"
-    """address field value, for example Jon Doe."""
 
 
 
-"""A list of address fields."""
-class AddressFields(TypedDict):
+class AddressFields(BaseModel):
+    """A list of address fields."""
     fields: "List[AddressField]"
 
 
 
-class Address(TypedDict):
+class Address(BaseModel):
     fields: "List[AddressField]"
-    """fields and values defining an address."""
 
 
 
-"""Defines how an address can be displayed like in chrome://settings/addresses.
+class AddressUI(BaseModel):
+    """Defines how an address can be displayed like in chrome://settings/addresses.
 Address UI is a two dimensional array, each inner array is an \"address information line\", and when rendered in a UI surface should be displayed as such.
 The following address UI for instance:
 [[{name: \"GIVE_NAME\", value: \"Jon\"}, {name: \"FAMILY_NAME\", value: \"Doe\"}], [{name: \"CITY\", value: \"Munich\"}, {name: \"ZIP\", value: \"81456\"}]]
 should allow the receiver to render:
 Jon Doe
 Munich 81456"""
-class AddressUI(TypedDict):
     addressFields: "List[AddressFields]"
-    """A two dimension array containing the representation of values from an address profile."""
 
 
 
-"""Specified whether a filled field was done so by using the html autocomplete attribute or autofill heuristics."""
 class FillingStrategy(Enum):
+    """Specified whether a filled field was done so by using the html autocomplete attribute or autofill heuristics."""
     AUTOCOMPLETEATTRIBUTE = "autocompleteAttribute"
     AUTOFILLINFERRED = "autofillInferred"
 
 
 
-class FilledField(TypedDict):
+class FilledField(BaseModel):
     htmlType: "str"
-    """The type of the field, e.g text, password etc."""
     id: "str"
-    """the html id"""
     name: "str"
-    """the html name"""
     value: "str"
-    """the field value"""
     autofillType: "str"
-    """The actual field type, e.g FAMILY_NAME"""
     fillingStrategy: "FillingStrategy"
-    """The filling strategy"""
     frameId: "FrameId"
-    """The frame the field belongs to"""
     fieldId: "BackendNodeId"
-    """The form field's DOM node"""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import BackendNodeId
+        from ..page.types import FrameId
+        # Rebuild models now that imports are available
+        CreditCard.model_rebuild()
+        AddressField.model_rebuild()
+        AddressFields.model_rebuild()
+        Address.model_rebuild()
+        AddressUI.model_rebuild()
+        FilledField.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

@@ -4,6 +4,7 @@
 
 """CDP Page Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -42,9 +43,8 @@ class AddScriptToEvaluateOnLoadParameters(TypedDict):
     scriptSource: "str"
 
 
-class AddScriptToEvaluateOnLoadReturns(TypedDict):
+class AddScriptToEvaluateOnLoadReturns(BaseModel):
     identifier: "ScriptIdentifier"
-    """Identifier of the added script."""
 
 
 
@@ -62,9 +62,8 @@ to false."""
 Default: false."""
 
 
-class AddScriptToEvaluateOnNewDocumentReturns(TypedDict):
+class AddScriptToEvaluateOnNewDocumentReturns(BaseModel):
     identifier: "ScriptIdentifier"
-    """Identifier of the added script."""
 
 
 
@@ -83,9 +82,8 @@ class CaptureScreenshotParameters(TypedDict, total=False):
     """Optimize image encoding for speed, not for resulting size (defaults to false)"""
 
 
-class CaptureScreenshotReturns(TypedDict):
+class CaptureScreenshotReturns(BaseModel):
     data: "str"
-    """Base64-encoded image data. (Encoded as a base64 string when passed over JSON)"""
 
 
 
@@ -94,9 +92,8 @@ class CaptureSnapshotParameters(TypedDict, total=False):
     """Format (defaults to mhtml)."""
 
 
-class CaptureSnapshotReturns(TypedDict):
+class CaptureSnapshotReturns(BaseModel):
     data: "str"
-    """Serialized page data."""
 
 
 
@@ -110,9 +107,8 @@ class CreateIsolatedWorldParameters(TypedDict):
 option, use with caution."""
 
 
-class CreateIsolatedWorldReturns(TypedDict):
+class CreateIsolatedWorldReturns(BaseModel):
     executionContextId: "ExecutionContextId"
-    """Execution context of the isolated world."""
 
 
 
@@ -139,33 +135,28 @@ class GetAppManifestParameters(TypedDict, total=False):
     manifestId: "str"
 
 
-class GetAppManifestReturns(TypedDict):
+class GetAppManifestReturns(BaseModel):
     url: "str"
-    """Manifest location."""
     errors: "List[AppManifestError]"
-    data: "str"
-    """Manifest content."""
-    parsed: "AppManifestParsedProperties"
-    """Parsed manifest properties. Deprecated, use manifest instead."""
     manifest: "WebAppManifest"
+    data: "Optional[str]" = None
+    parsed: "Optional[AppManifestParsedProperties]" = None
 
 
 
-class GetInstallabilityErrorsReturns(TypedDict):
+class GetInstallabilityErrorsReturns(BaseModel):
     installabilityErrors: "List[InstallabilityError]"
 
 
 
-class GetManifestIconsReturns(TypedDict):
-    primaryIcon: "str"
+class GetManifestIconsReturns(BaseModel):
+    primaryIcon: "Optional[str]" = None
 
 
 
-class GetAppIdReturns(TypedDict):
-    appId: "str"
-    """App id, either from manifest's id attribute or computed from start_url"""
-    recommendedId: "str"
-    """Recommendation for manifest's id attribute to match current id computed from start_url"""
+class GetAppIdReturns(BaseModel):
+    appId: "Optional[str]" = None
+    recommendedId: "Optional[str]" = None
 
 
 
@@ -173,43 +164,29 @@ class GetAdScriptAncestryParameters(TypedDict):
     frameId: "FrameId"
 
 
-class GetAdScriptAncestryReturns(TypedDict):
-    adScriptAncestry: "AdScriptAncestry"
-    """The ancestry chain of ad script identifiers leading to this frame's
-creation, along with the root script's filterlist rule. The ancestry
-chain is ordered from the most immediate script (in the frame creation
-stack) to more distant ancestors (that created the immediately preceding
-script). Only sent if frame is labelled as an ad and ids are available."""
+class GetAdScriptAncestryReturns(BaseModel):
+    adScriptAncestry: "Optional[AdScriptAncestry]" = None
 
 
 
-class GetFrameTreeReturns(TypedDict):
+class GetFrameTreeReturns(BaseModel):
     frameTree: "FrameTree"
-    """Present frame tree structure."""
 
 
 
-class GetLayoutMetricsReturns(TypedDict):
+class GetLayoutMetricsReturns(BaseModel):
     layoutViewport: "LayoutViewport"
-    """Deprecated metrics relating to the layout viewport. Is in device pixels. Use `cssLayoutViewport` instead."""
     visualViewport: "VisualViewport"
-    """Deprecated metrics relating to the visual viewport. Is in device pixels. Use `cssVisualViewport` instead."""
     contentSize: "Rect"
-    """Deprecated size of scrollable area. Is in DP. Use `cssContentSize` instead."""
     cssLayoutViewport: "LayoutViewport"
-    """Metrics relating to the layout viewport in CSS pixels."""
     cssVisualViewport: "VisualViewport"
-    """Metrics relating to the visual viewport in CSS pixels."""
     cssContentSize: "Rect"
-    """Size of scrollable area in CSS pixels."""
 
 
 
-class GetNavigationHistoryReturns(TypedDict):
+class GetNavigationHistoryReturns(BaseModel):
     currentIndex: "int"
-    """Index of the current navigation history entry."""
     entries: "List[NavigationEntry]"
-    """Array of navigation history entries."""
 
 
 
@@ -220,17 +197,14 @@ class GetResourceContentParameters(TypedDict):
     """URL of the resource to get content for."""
 
 
-class GetResourceContentReturns(TypedDict):
+class GetResourceContentReturns(BaseModel):
     content: "str"
-    """Resource content."""
     base64Encoded: "bool"
-    """True, if content was served as base64."""
 
 
 
-class GetResourceTreeReturns(TypedDict):
+class GetResourceTreeReturns(BaseModel):
     frameTree: "FrameResourceTree"
-    """Present frame / resource tree structure."""
 
 
 
@@ -258,14 +232,10 @@ class NavigateParameters(TypedDict):
     """Referrer-policy used for the navigation."""
 
 
-class NavigateReturns(TypedDict):
+class NavigateReturns(BaseModel):
     frameId: "FrameId"
-    """Frame id that has navigated (or failed to navigate)"""
-    loaderId: "LoaderId"
-    """Loader identifier. This is omitted in case of same-document navigation,
-as the previously committed loaderId would not change."""
-    errorText: "str"
-    """User friendly error message, present if and only if navigation has failed."""
+    loaderId: "Optional[LoaderId]" = None
+    errorText: "Optional[str]" = None
 
 
 
@@ -330,11 +300,9 @@ in which case the content will be scaled to fit the paper size."""
     """Whether or not to embed the document outline into the PDF."""
 
 
-class PrintToPDFReturns(TypedDict):
+class PrintToPDFReturns(BaseModel):
     data: "str"
-    """Base64-encoded pdf data. Empty if |returnAsStream| is specified. (Encoded as a base64 string when passed over JSON)"""
-    stream: "StreamHandle"
-    """A handle of the stream that holds resulting PDF data."""
+    stream: "Optional[StreamHandle]" = None
 
 
 
@@ -388,9 +356,8 @@ class SearchInResourceParameters(TypedDict):
     """If true, treats string parameter as regex."""
 
 
-class SearchInResourceReturns(TypedDict):
+class SearchInResourceReturns(BaseModel):
     result: "List[SearchMatch]"
-    """List of search matches."""
 
 
 
@@ -414,7 +381,7 @@ class GetPermissionsPolicyStateParameters(TypedDict):
     frameId: "FrameId"
 
 
-class GetPermissionsPolicyStateReturns(TypedDict):
+class GetPermissionsPolicyStateReturns(BaseModel):
     states: "List[PermissionsPolicyFeatureState]"
 
 
@@ -423,7 +390,7 @@ class GetOriginTrialsParameters(TypedDict):
     frameId: "FrameId"
 
 
-class GetOriginTrialsReturns(TypedDict):
+class GetOriginTrialsReturns(BaseModel):
     originTrials: "List[OriginTrial]"
 
 
@@ -619,3 +586,60 @@ class SetPrerenderingAllowedParameters(TypedDict):
     isAllowed: "bool"
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..debugger.types import SearchMatch
+        from ..dom.types import Rect
+        from ..emulation.types import ScreenOrientation
+        from ..io.types import StreamHandle
+        from ..network.types import LoaderId
+        from ..runtime.types import ExecutionContextId
+        from .types import AdScriptAncestry
+        from .types import AppManifestError
+        from .types import AppManifestParsedProperties
+        from .types import CompilationCacheParams
+        from .types import FontFamilies
+        from .types import FontSizes
+        from .types import FrameId
+        from .types import FrameResourceTree
+        from .types import FrameTree
+        from .types import InstallabilityError
+        from .types import LayoutViewport
+        from .types import NavigationEntry
+        from .types import OriginTrial
+        from .types import PermissionsPolicyFeatureState
+        from .types import ReferrerPolicy
+        from .types import ScriptFontFamilies
+        from .types import ScriptIdentifier
+        from .types import TransitionType
+        from .types import Viewport
+        from .types import VisualViewport
+        from .types import WebAppManifest
+        # Rebuild models now that imports are available
+        AddScriptToEvaluateOnLoadReturns.model_rebuild()
+        AddScriptToEvaluateOnNewDocumentReturns.model_rebuild()
+        CaptureScreenshotReturns.model_rebuild()
+        CaptureSnapshotReturns.model_rebuild()
+        CreateIsolatedWorldReturns.model_rebuild()
+        GetAppManifestReturns.model_rebuild()
+        GetInstallabilityErrorsReturns.model_rebuild()
+        GetManifestIconsReturns.model_rebuild()
+        GetAppIdReturns.model_rebuild()
+        GetAdScriptAncestryReturns.model_rebuild()
+        GetFrameTreeReturns.model_rebuild()
+        GetLayoutMetricsReturns.model_rebuild()
+        GetNavigationHistoryReturns.model_rebuild()
+        GetResourceContentReturns.model_rebuild()
+        GetResourceTreeReturns.model_rebuild()
+        NavigateReturns.model_rebuild()
+        PrintToPDFReturns.model_rebuild()
+        SearchInResourceReturns.model_rebuild()
+        GetPermissionsPolicyStateReturns.model_rebuild()
+        GetOriginTrialsReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

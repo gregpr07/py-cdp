@@ -4,7 +4,7 @@
 
 """CDP WebAudio Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -25,11 +25,12 @@ class WebAudioClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables the WebAudio domain and starts sending context lifetime events."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="WebAudio.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def disable(
         self,
@@ -37,11 +38,12 @@ class WebAudioClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables the WebAudio domain."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="WebAudio.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getRealtimeData(
         self,
@@ -49,10 +51,12 @@ class WebAudioClient:
         session_id: Optional[str] = None,
     ) -> "GetRealtimeDataReturns":
         """Fetch the realtime data from the registered contexts."""
-        return cast("GetRealtimeDataReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="WebAudio.getRealtimeData",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetRealtimeDataReturns as _GetRealtimeDataReturns
+        return _GetRealtimeDataReturns.model_validate(raw_result)
 
 

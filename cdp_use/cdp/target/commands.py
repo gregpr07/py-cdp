@@ -4,6 +4,7 @@
 
 """CDP Target Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -33,15 +34,13 @@ We plan to make this the default, deprecate non-flattened mode,
 and eventually retire it. See crbug.com/991325."""
 
 
-class AttachToTargetReturns(TypedDict):
+class AttachToTargetReturns(BaseModel):
     sessionId: "SessionID"
-    """Id assigned to the session."""
 
 
 
-class AttachToBrowserTargetReturns(TypedDict):
+class AttachToBrowserTargetReturns(BaseModel):
     sessionId: "SessionID"
-    """Id assigned to the session."""
 
 
 
@@ -49,9 +48,8 @@ class CloseTargetParameters(TypedDict):
     targetId: "TargetID"
 
 
-class CloseTargetReturns(TypedDict):
+class CloseTargetReturns(BaseModel):
     success: "bool"
-    """Always set to true. If an error occurs, the response indicates protocol error."""
 
 
 
@@ -78,15 +76,13 @@ class CreateBrowserContextParameters(TypedDict, total=False):
 Parts of the URL other than those constituting origin are ignored."""
 
 
-class CreateBrowserContextReturns(TypedDict):
+class CreateBrowserContextReturns(BaseModel):
     browserContextId: "BrowserContextID"
-    """The id of the context created."""
 
 
 
-class GetBrowserContextsReturns(TypedDict):
+class GetBrowserContextsReturns(BaseModel):
     browserContextIds: "List[BrowserContextID]"
-    """An array of browser context ids."""
 
 
 
@@ -122,9 +118,8 @@ present in the tab UI strip. Cannot be created with `forTab: true`, `newWindow: 
 `background: false`. The life-time of the tab is limited to the life-time of the session."""
 
 
-class CreateTargetReturns(TypedDict):
+class CreateTargetReturns(BaseModel):
     targetId: "TargetID"
-    """The id of the page opened."""
 
 
 
@@ -149,7 +144,7 @@ class GetTargetInfoParameters(TypedDict, total=False):
     targetId: "TargetID"
 
 
-class GetTargetInfoReturns(TypedDict):
+class GetTargetInfoReturns(BaseModel):
     targetInfo: "TargetInfo"
 
 
@@ -161,9 +156,8 @@ and target discovery is currently enabled, a filter used for target discovery
 is used for consistency."""
 
 
-class GetTargetsReturns(TypedDict):
+class GetTargetsReturns(BaseModel):
     targetInfos: "List[TargetInfo]"
-    """The list of targets."""
 
 
 
@@ -223,3 +217,28 @@ class SetRemoteLocationsParameters(TypedDict):
     """List of remote locations."""
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..browser.types import BrowserContextID
+        from .types import RemoteLocation
+        from .types import SessionID
+        from .types import TargetFilter
+        from .types import TargetID
+        from .types import TargetInfo
+        from .types import WindowState
+        # Rebuild models now that imports are available
+        AttachToTargetReturns.model_rebuild()
+        AttachToBrowserTargetReturns.model_rebuild()
+        CloseTargetReturns.model_rebuild()
+        CreateBrowserContextReturns.model_rebuild()
+        GetBrowserContextsReturns.model_rebuild()
+        CreateTargetReturns.model_rebuild()
+        GetTargetInfoReturns.model_rebuild()
+        GetTargetsReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

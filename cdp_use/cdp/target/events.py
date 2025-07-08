@@ -4,8 +4,8 @@
 
 """CDP Target Domain Events"""
 
+from pydantic import BaseModel
 from typing import Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -14,59 +14,72 @@ if TYPE_CHECKING:
     from .types import TargetID
     from .types import TargetInfo
 
-"""Issued when attached to target because of auto-attach or `attachToTarget` command."""
-class AttachedToTargetEvent(TypedDict):
+class AttachedToTargetEvent(BaseModel):
+    """Issued when attached to target because of auto-attach or `attachToTarget` command."""
     sessionId: "SessionID"
-    """Identifier assigned to the session used to send/receive messages."""
     targetInfo: "TargetInfo"
     waitingForDebugger: "bool"
 
 
 
-"""Issued when detached from target for any reason (including `detachFromTarget` command). Can be
+class DetachedFromTargetEvent(BaseModel):
+    """Issued when detached from target for any reason (including `detachFromTarget` command). Can be
 issued multiple times per target if multiple sessions have been attached to it."""
-class DetachedFromTargetEvent(TypedDict):
     sessionId: "SessionID"
-    """Detached session identifier."""
-    targetId: "Optional[TargetID]"
-    """Deprecated."""
+    targetId: "Optional[TargetID]" = None
 
 
 
-"""Notifies about a new protocol message received from the session (as reported in
+class ReceivedMessageFromTargetEvent(BaseModel):
+    """Notifies about a new protocol message received from the session (as reported in
 `attachedToTarget` event)."""
-class ReceivedMessageFromTargetEvent(TypedDict):
     sessionId: "SessionID"
-    """Identifier of a session which sends a message."""
     message: "str"
-    targetId: "Optional[TargetID]"
-    """Deprecated."""
+    targetId: "Optional[TargetID]" = None
 
 
 
-"""Issued when a possible inspection target is created."""
-class TargetCreatedEvent(TypedDict):
+class TargetCreatedEvent(BaseModel):
+    """Issued when a possible inspection target is created."""
     targetInfo: "TargetInfo"
 
 
 
-"""Issued when a target is destroyed."""
-class TargetDestroyedEvent(TypedDict):
+class TargetDestroyedEvent(BaseModel):
+    """Issued when a target is destroyed."""
     targetId: "TargetID"
 
 
 
-"""Issued when a target has crashed."""
-class TargetCrashedEvent(TypedDict):
+class TargetCrashedEvent(BaseModel):
+    """Issued when a target has crashed."""
     targetId: "TargetID"
     status: "str"
-    """Termination status type."""
     errorCode: "int"
-    """Termination error code."""
 
 
 
-"""Issued when some information about a target has changed. This only happens between
+class TargetInfoChangedEvent(BaseModel):
+    """Issued when some information about a target has changed. This only happens between
 `targetCreated` and `targetDestroyed`."""
-class TargetInfoChangedEvent(TypedDict):
     targetInfo: "TargetInfo"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import SessionID
+        from .types import TargetID
+        from .types import TargetInfo
+        # Rebuild models now that imports are available
+        AttachedToTargetEvent.model_rebuild()
+        DetachedFromTargetEvent.model_rebuild()
+        ReceivedMessageFromTargetEvent.model_rebuild()
+        TargetCreatedEvent.model_rebuild()
+        TargetDestroyedEvent.model_rebuild()
+        TargetCrashedEvent.model_rebuild()
+        TargetInfoChangedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

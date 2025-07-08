@@ -5,8 +5,8 @@
 """CDP Debugger Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -24,122 +24,111 @@ CallFrameId = str
 
 
 
-"""Location in the source code."""
-class Location(TypedDict):
+class Location(BaseModel):
+    """Location in the source code."""
     scriptId: "ScriptId"
-    """Script identifier as reported in the `Debugger.scriptParsed`."""
     lineNumber: "int"
-    """Line number in the script (0-based)."""
-    columnNumber: "Optional[int]"
-    """Column number in the script (0-based)."""
+    columnNumber: "Optional[int]" = None
 
 
 
-"""Location in the source code."""
-class ScriptPosition(TypedDict):
+class ScriptPosition(BaseModel):
+    """Location in the source code."""
     lineNumber: "int"
     columnNumber: "int"
 
 
 
-"""Location range within one script."""
-class LocationRange(TypedDict):
+class LocationRange(BaseModel):
+    """Location range within one script."""
     scriptId: "ScriptId"
     start: "ScriptPosition"
     end: "ScriptPosition"
 
 
 
-"""JavaScript call frame. Array of call frames form the call stack."""
-class CallFrame(TypedDict):
+class CallFrame(BaseModel):
+    """JavaScript call frame. Array of call frames form the call stack."""
     callFrameId: "CallFrameId"
-    """Call frame identifier. This identifier is only valid while the virtual machine is paused."""
     functionName: "str"
-    """Name of the JavaScript function called on this call frame."""
-    functionLocation: "Optional[Location]"
-    """Location in the source code."""
     location: "Location"
-    """Location in the source code."""
     url: "str"
-    """JavaScript script name or url.
-Deprecated in favor of using the `location.scriptId` to resolve the URL via a previously
-sent `Debugger.scriptParsed` event."""
     scopeChain: "List[Scope]"
-    """Scope chain for this call frame."""
     this: "RemoteObject"
-    """`this` object for this call frame."""
-    returnValue: "Optional[RemoteObject]"
-    """The value being returned, if the function is at return point."""
-    canBeRestarted: "Optional[bool]"
-    """Valid only while the VM is paused and indicates whether this frame
-can be restarted or not. Note that a `true` value here does not
-guarantee that Debugger#restartFrame with this CallFrameId will be
-successful, but it is very likely."""
+    functionLocation: "Optional[Location]" = None
+    returnValue: "Optional[RemoteObject]" = None
+    canBeRestarted: "Optional[bool]" = None
 
 
 
-"""Scope description."""
-class Scope(TypedDict):
+class Scope(BaseModel):
+    """Scope description."""
     type: "str"
-    """Scope type."""
     object: "RemoteObject"
-    """Object representing the scope. For `global` and `with` scopes it represents the actual
-object; for the rest of the scopes, it is artificial transient object enumerating scope
-variables as its properties."""
-    name: "Optional[str]"
-    startLocation: "Optional[Location]"
-    """Location in the source code where scope starts"""
-    endLocation: "Optional[Location]"
-    """Location in the source code where scope ends"""
+    name: "Optional[str]" = None
+    startLocation: "Optional[Location]" = None
+    endLocation: "Optional[Location]" = None
 
 
 
-"""Search match for resource."""
-class SearchMatch(TypedDict):
+class SearchMatch(BaseModel):
+    """Search match for resource."""
     lineNumber: "float"
-    """Line number in resource content."""
     lineContent: "str"
-    """Line with match content."""
 
 
 
-class BreakLocation(TypedDict):
+class BreakLocation(BaseModel):
     scriptId: "ScriptId"
-    """Script identifier as reported in the `Debugger.scriptParsed`."""
     lineNumber: "int"
-    """Line number in the script (0-based)."""
-    columnNumber: "Optional[int]"
-    """Column number in the script (0-based)."""
-    type: "Optional[str]"
+    columnNumber: "Optional[int]" = None
+    type: "Optional[str]" = None
 
 
 
-class WasmDisassemblyChunk(TypedDict):
+class WasmDisassemblyChunk(BaseModel):
     lines: "List[str]"
-    """The next chunk of disassembled lines."""
     bytecodeOffsets: "List[int]"
-    """The bytecode offsets describing the start of each line."""
 
 
 
-"""Enum of possible script languages."""
 class ScriptLanguage(Enum):
+    """Enum of possible script languages."""
     JAVASCRIPT = "JavaScript"
     WEBASSEMBLY = "WebAssembly"
 
 
 
-"""Debug symbols available for a wasm script."""
-class DebugSymbols(TypedDict):
+class DebugSymbols(BaseModel):
+    """Debug symbols available for a wasm script."""
     type: "str"
-    """Type of the debug symbols."""
-    externalURL: "Optional[str]"
-    """URL of the external symbol source."""
+    externalURL: "Optional[str]" = None
 
 
 
-class ResolvedBreakpoint(TypedDict):
+class ResolvedBreakpoint(BaseModel):
     breakpointId: "BreakpointId"
-    """Breakpoint unique identifier."""
     location: "Location"
-    """Actual breakpoint location."""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..runtime.types import RemoteObject
+        from ..runtime.types import ScriptId
+        # Rebuild models now that imports are available
+        Location.model_rebuild()
+        ScriptPosition.model_rebuild()
+        LocationRange.model_rebuild()
+        CallFrame.model_rebuild()
+        Scope.model_rebuild()
+        SearchMatch.model_rebuild()
+        BreakLocation.model_rebuild()
+        WasmDisassemblyChunk.model_rebuild()
+        DebugSymbols.model_rebuild()
+        ResolvedBreakpoint.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

@@ -4,6 +4,7 @@
 
 """CDP IO Domain Commands"""
 
+from pydantic import BaseModel
 from typing import Optional
 from typing_extensions import TypedDict
 
@@ -31,13 +32,10 @@ following the last read). Some types of streams may only support sequential read
     """Maximum number of bytes to read (left upon the agent discretion if not specified)."""
 
 
-class ReadReturns(TypedDict):
-    base64Encoded: "bool"
-    """Set if the data is base64-encoded"""
+class ReadReturns(BaseModel):
     data: "str"
-    """Data that were read."""
     eof: "bool"
-    """Set if the end-of-file condition occurred while reading."""
+    base64Encoded: "Optional[bool]" = None
 
 
 
@@ -46,6 +44,19 @@ class ResolveBlobParameters(TypedDict):
     """Object id of a Blob object wrapper."""
 
 
-class ResolveBlobReturns(TypedDict):
+class ResolveBlobReturns(BaseModel):
     uuid: "str"
-    """UUID of the specified Blob."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..runtime.types import RemoteObjectId
+        from .types import StreamHandle
+        # Rebuild models now that imports are available
+        ReadReturns.model_rebuild()
+        ResolveBlobReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

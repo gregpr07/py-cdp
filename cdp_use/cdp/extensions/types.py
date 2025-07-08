@@ -6,8 +6,8 @@
 
 from enum import Enum
 
-"""Storage areas."""
 class StorageArea(Enum):
+    """Storage areas."""
     SESSION = "session"
     LOCAL = "local"
     SYNC = "sync"

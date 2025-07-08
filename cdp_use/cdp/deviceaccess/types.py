@@ -4,7 +4,7 @@
 
 """CDP DeviceAccess Domain Types"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
 """Device request id."""
 RequestId = str
@@ -16,8 +16,19 @@ DeviceId = str
 
 
 
-"""Device information displayed in a user prompt to select a device."""
-class PromptDevice(TypedDict):
+class PromptDevice(BaseModel):
+    """Device information displayed in a user prompt to select a device."""
     id: "DeviceId"
     name: "str"
-    """Display name as it appears in a device request user prompt."""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        PromptDevice.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

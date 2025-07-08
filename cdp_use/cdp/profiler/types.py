@@ -4,8 +4,8 @@
 
 """CDP Profiler Domain Types"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -13,76 +13,71 @@ if TYPE_CHECKING:
     from ..runtime.types import CallFrame
     from ..runtime.types import ScriptId
 
-"""Profile node. Holds callsite information, execution statistics and child nodes."""
-class ProfileNode(TypedDict):
+class ProfileNode(BaseModel):
+    """Profile node. Holds callsite information, execution statistics and child nodes."""
     id: "int"
-    """Unique id of the node."""
     callFrame: "CallFrame"
-    """Function location."""
-    hitCount: "Optional[int]"
-    """Number of samples where this node was on top of the call stack."""
-    children: "Optional[List[int]]"
-    """Child node ids."""
-    deoptReason: "Optional[str]"
-    """The reason of being not optimized. The function may be deoptimized or marked as don't
-optimize."""
-    positionTicks: "Optional[List[PositionTickInfo]]"
-    """An array of source position ticks."""
+    hitCount: "Optional[int]" = None
+    children: "Optional[List[int]]" = None
+    deoptReason: "Optional[str]" = None
+    positionTicks: "Optional[List[PositionTickInfo]]" = None
 
 
 
-"""Profile."""
-class Profile(TypedDict):
+class Profile(BaseModel):
+    """Profile."""
     nodes: "List[ProfileNode]"
-    """The list of profile nodes. First item is the root node."""
     startTime: "float"
-    """Profiling start timestamp in microseconds."""
     endTime: "float"
-    """Profiling end timestamp in microseconds."""
-    samples: "Optional[List[int]]"
-    """Ids of samples top nodes."""
-    timeDeltas: "Optional[List[int]]"
-    """Time intervals between adjacent samples in microseconds. The first delta is relative to the
-profile startTime."""
+    samples: "Optional[List[int]]" = None
+    timeDeltas: "Optional[List[int]]" = None
 
 
 
-"""Specifies a number of samples attributed to a certain source position."""
-class PositionTickInfo(TypedDict):
+class PositionTickInfo(BaseModel):
+    """Specifies a number of samples attributed to a certain source position."""
     line: "int"
-    """Source line number (1-based)."""
     ticks: "int"
-    """Number of samples attributed to the source line."""
 
 
 
-"""Coverage data for a source range."""
-class CoverageRange(TypedDict):
+class CoverageRange(BaseModel):
+    """Coverage data for a source range."""
     startOffset: "int"
-    """JavaScript script source offset for the range start."""
     endOffset: "int"
-    """JavaScript script source offset for the range end."""
     count: "int"
-    """Collected execution count of the source range."""
 
 
 
-"""Coverage data for a JavaScript function."""
-class FunctionCoverage(TypedDict):
+class FunctionCoverage(BaseModel):
+    """Coverage data for a JavaScript function."""
     functionName: "str"
-    """JavaScript function name."""
     ranges: "List[CoverageRange]"
-    """Source ranges inside the function with coverage data."""
     isBlockCoverage: "bool"
-    """Whether coverage data for this function has block granularity."""
 
 
 
-"""Coverage data for a JavaScript script."""
-class ScriptCoverage(TypedDict):
+class ScriptCoverage(BaseModel):
+    """Coverage data for a JavaScript script."""
     scriptId: "ScriptId"
-    """JavaScript script id."""
     url: "str"
-    """JavaScript script name or url."""
     functions: "List[FunctionCoverage]"
-    """Functions contained in the script that has coverage data."""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..runtime.types import CallFrame
+        from ..runtime.types import ScriptId
+        # Rebuild models now that imports are available
+        ProfileNode.model_rebuild()
+        Profile.model_rebuild()
+        PositionTickInfo.model_rebuild()
+        CoverageRange.model_rebuild()
+        FunctionCoverage.model_rebuild()
+        ScriptCoverage.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

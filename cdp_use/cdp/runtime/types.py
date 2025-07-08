@@ -4,35 +4,28 @@
 
 """CDP Runtime Domain Types"""
 
+from pydantic import BaseModel
 from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
 
 """Unique script identifier."""
 ScriptId = str
 
 
 
-"""Represents options for serialization. Overrides `generatePreview` and `returnByValue`."""
-class SerializationOptions(TypedDict):
+class SerializationOptions(BaseModel):
+    """Represents options for serialization. Overrides `generatePreview` and `returnByValue`."""
     serialization: "str"
-    maxDepth: "Optional[int]"
-    """Deep serialization depth. Default is full depth. Respected only in `deep` serialization mode."""
-    additionalParameters: "Optional[Dict[str, Any]]"
-    """Embedder-specific parameters. For example if connected to V8 in Chrome these control DOM
-serialization via `maxNodeDepth: integer` and `includeShadowTree: \"none\" | \"open\" | \"all\"`.
-Values can be only of type string or integer."""
+    maxDepth: "Optional[int]" = None
+    additionalParameters: "Optional[Dict[str, Any]]" = None
 
 
 
-"""Represents deep serialized value."""
-class DeepSerializedValue(TypedDict):
+class DeepSerializedValue(BaseModel):
+    """Represents deep serialized value."""
     type: "str"
-    value: "Optional[Any]"
-    objectId: "Optional[str]"
-    weakLocalObjectReference: "Optional[int]"
-    """Set if value reference met more then once during serialization. In such
-case, value is provided only to one of the serialized values. Unique
-per value in the scope of one CDP call."""
+    value: "Optional[Any]" = None
+    objectId: "Optional[str]" = None
+    weakLocalObjectReference: "Optional[int]" = None
 
 
 
@@ -47,145 +40,90 @@ UnserializableValue = str
 
 
 
-"""Mirror object referencing original JavaScript object."""
-class RemoteObject(TypedDict):
+class RemoteObject(BaseModel):
+    """Mirror object referencing original JavaScript object."""
     type: "str"
-    """Object type."""
-    subtype: "Optional[str]"
-    """Object subtype hint. Specified for `object` type values only.
-NOTE: If you change anything here, make sure to also update
-`subtype` in `ObjectPreview` and `PropertyPreview` below."""
-    className: "Optional[str]"
-    """Object class (constructor) name. Specified for `object` type values only."""
-    value: "Optional[Any]"
-    """Remote object value in case of primitive values or JSON values (if it was requested)."""
-    unserializableValue: "Optional[UnserializableValue]"
-    """Primitive value which can not be JSON-stringified does not have `value`, but gets this
-property."""
-    description: "Optional[str]"
-    """String representation of the object."""
-    deepSerializedValue: "Optional[DeepSerializedValue]"
-    """Deep serialized value."""
-    objectId: "Optional[RemoteObjectId]"
-    """Unique object identifier (for non-primitive values)."""
-    preview: "Optional[ObjectPreview]"
-    """Preview containing abbreviated property values. Specified for `object` type values only."""
-    customPreview: "Optional[CustomPreview]"
+    subtype: "Optional[str]" = None
+    className: "Optional[str]" = None
+    value: "Optional[Any]" = None
+    unserializableValue: "Optional[UnserializableValue]" = None
+    description: "Optional[str]" = None
+    deepSerializedValue: "Optional[DeepSerializedValue]" = None
+    objectId: "Optional[RemoteObjectId]" = None
+    preview: "Optional[ObjectPreview]" = None
+    customPreview: "Optional[CustomPreview]" = None
 
 
 
-class CustomPreview(TypedDict):
+class CustomPreview(BaseModel):
     header: "str"
-    """The JSON-stringified result of formatter.header(object, config) call.
-It contains json ML array that represents RemoteObject."""
-    bodyGetterId: "Optional[RemoteObjectId]"
-    """If formatter returns true as a result of formatter.hasBody call then bodyGetterId will
-contain RemoteObjectId for the function that returns result of formatter.body(object, config) call.
-The result value is json ML array."""
+    bodyGetterId: "Optional[RemoteObjectId]" = None
 
 
 
-"""Object containing abbreviated remote object value."""
-class ObjectPreview(TypedDict):
+class ObjectPreview(BaseModel):
+    """Object containing abbreviated remote object value."""
     type: "str"
-    """Object type."""
-    subtype: "Optional[str]"
-    """Object subtype hint. Specified for `object` type values only."""
-    description: "Optional[str]"
-    """String representation of the object."""
     overflow: "bool"
-    """True iff some of the properties or entries of the original object did not fit."""
     properties: "List[PropertyPreview]"
-    """List of the properties."""
-    entries: "Optional[List[EntryPreview]]"
-    """List of the entries. Specified for `map` and `set` subtype values only."""
+    subtype: "Optional[str]" = None
+    description: "Optional[str]" = None
+    entries: "Optional[List[EntryPreview]]" = None
 
 
 
-class PropertyPreview(TypedDict):
+class PropertyPreview(BaseModel):
     name: "str"
-    """Property name."""
     type: "str"
-    """Object type. Accessor means that the property itself is an accessor property."""
-    value: "Optional[str]"
-    """User-friendly property value string."""
-    valuePreview: "Optional[ObjectPreview]"
-    """Nested value preview."""
-    subtype: "Optional[str]"
-    """Object subtype hint. Specified for `object` type values only."""
+    value: "Optional[str]" = None
+    valuePreview: "Optional[ObjectPreview]" = None
+    subtype: "Optional[str]" = None
 
 
 
-class EntryPreview(TypedDict):
-    key: "Optional[ObjectPreview]"
-    """Preview of the key. Specified for map-like collection entries."""
+class EntryPreview(BaseModel):
     value: "ObjectPreview"
-    """Preview of the value."""
+    key: "Optional[ObjectPreview]" = None
 
 
 
-"""Object property descriptor."""
-class PropertyDescriptor(TypedDict):
+class PropertyDescriptor(BaseModel):
+    """Object property descriptor."""
     name: "str"
-    """Property name or symbol description."""
-    value: "Optional[RemoteObject]"
-    """The value associated with the property."""
-    writable: "Optional[bool]"
-    """True if the value associated with the property may be changed (data descriptors only)."""
-    get: "Optional[RemoteObject]"
-    """A function which serves as a getter for the property, or `undefined` if there is no getter
-(accessor descriptors only)."""
-    set: "Optional[RemoteObject]"
-    """A function which serves as a setter for the property, or `undefined` if there is no setter
-(accessor descriptors only)."""
     configurable: "bool"
-    """True if the type of this property descriptor may be changed and if the property may be
-deleted from the corresponding object."""
     enumerable: "bool"
-    """True if this property shows up during enumeration of the properties on the corresponding
-object."""
-    wasThrown: "Optional[bool]"
-    """True if the result was thrown during the evaluation."""
-    isOwn: "Optional[bool]"
-    """True if the property is owned for the object."""
-    symbol: "Optional[RemoteObject]"
-    """Property symbol object, if the property is of the `symbol` type."""
+    value: "Optional[RemoteObject]" = None
+    writable: "Optional[bool]" = None
+    get: "Optional[RemoteObject]" = None
+    set: "Optional[RemoteObject]" = None
+    wasThrown: "Optional[bool]" = None
+    isOwn: "Optional[bool]" = None
+    symbol: "Optional[RemoteObject]" = None
 
 
 
-"""Object internal property descriptor. This property isn't normally visible in JavaScript code."""
-class InternalPropertyDescriptor(TypedDict):
+class InternalPropertyDescriptor(BaseModel):
+    """Object internal property descriptor. This property isn't normally visible in JavaScript code."""
     name: "str"
-    """Conventional property name."""
-    value: "Optional[RemoteObject]"
-    """The value associated with the property."""
+    value: "Optional[RemoteObject]" = None
 
 
 
-"""Object private field descriptor."""
-class PrivatePropertyDescriptor(TypedDict):
+class PrivatePropertyDescriptor(BaseModel):
+    """Object private field descriptor."""
     name: "str"
-    """Private property name."""
-    value: "Optional[RemoteObject]"
-    """The value associated with the private property."""
-    get: "Optional[RemoteObject]"
-    """A function which serves as a getter for the private property,
-or `undefined` if there is no getter (accessor descriptors only)."""
-    set: "Optional[RemoteObject]"
-    """A function which serves as a setter for the private property,
-or `undefined` if there is no setter (accessor descriptors only)."""
+    value: "Optional[RemoteObject]" = None
+    get: "Optional[RemoteObject]" = None
+    set: "Optional[RemoteObject]" = None
 
 
 
-"""Represents function call argument. Either remote object id `objectId`, primitive `value`,
+class CallArgument(BaseModel):
+    """Represents function call argument. Either remote object id `objectId`, primitive `value`,
 unserializable primitive value or neither of (for undefined) them should be specified."""
-class CallArgument(TypedDict, total=False):
-    value: "Any"
-    """Primitive value or serializable javascript object."""
-    unserializableValue: "UnserializableValue"
-    """Primitive value which can not be JSON-stringified."""
-    objectId: "RemoteObjectId"
-    """Remote object handle."""
+    value: "Optional[Any]" = None
+    unserializableValue: "Optional[UnserializableValue]" = None
+    objectId: "Optional[RemoteObjectId]" = None
 
 
 
@@ -194,49 +132,29 @@ ExecutionContextId = int
 
 
 
-"""Description of an isolated world."""
-class ExecutionContextDescription(TypedDict):
+class ExecutionContextDescription(BaseModel):
+    """Description of an isolated world."""
     id: "ExecutionContextId"
-    """Unique id of the execution context. It can be used to specify in which execution context
-script evaluation should be performed."""
     origin: "str"
-    """Execution context origin."""
     name: "str"
-    """Human readable name describing given context."""
     uniqueId: "str"
-    """A system-unique execution context identifier. Unlike the id, this is unique across
-multiple processes, so can be reliably used to identify specific context while backend
-performs a cross-process navigation."""
-    auxData: "Optional[Dict[str, Any]]"
-    """Embedder-specific auxiliary data likely matching {isDefault: boolean, type: 'default'|'isolated'|'worker', frameId: string}"""
+    auxData: "Optional[Dict[str, Any]]" = None
 
 
 
-"""Detailed information about exception (or error) that was thrown during script compilation or
+class ExceptionDetails(BaseModel):
+    """Detailed information about exception (or error) that was thrown during script compilation or
 execution."""
-class ExceptionDetails(TypedDict):
     exceptionId: "int"
-    """Exception id."""
     text: "str"
-    """Exception text, which should be used together with exception object when available."""
     lineNumber: "int"
-    """Line number of the exception location (0-based)."""
     columnNumber: "int"
-    """Column number of the exception location (0-based)."""
-    scriptId: "Optional[ScriptId]"
-    """Script ID of the exception location."""
-    url: "Optional[str]"
-    """URL of the exception location, to be used when the script was not reported."""
-    stackTrace: "Optional[StackTrace]"
-    """JavaScript stack trace if available."""
-    exception: "Optional[RemoteObject]"
-    """Exception object if available."""
-    executionContextId: "Optional[ExecutionContextId]"
-    """Identifier of the context where exception happened."""
-    exceptionMetaData: "Optional[Dict[str, Any]]"
-    """Dictionary with entries of meta data that the client associated
-with this exception, such as information about associated network
-requests, etc."""
+    scriptId: "Optional[ScriptId]" = None
+    url: "Optional[str]" = None
+    stackTrace: "Optional[StackTrace]" = None
+    exception: "Optional[RemoteObject]" = None
+    executionContextId: "Optional[ExecutionContextId]" = None
+    exceptionMetaData: "Optional[Dict[str, Any]]" = None
 
 
 
@@ -250,32 +168,22 @@ TimeDelta = float
 
 
 
-"""Stack entry for runtime errors and assertions."""
-class CallFrame(TypedDict):
+class CallFrame(BaseModel):
+    """Stack entry for runtime errors and assertions."""
     functionName: "str"
-    """JavaScript function name."""
     scriptId: "ScriptId"
-    """JavaScript script id."""
     url: "str"
-    """JavaScript script name or url."""
     lineNumber: "int"
-    """JavaScript script line number (0-based)."""
     columnNumber: "int"
-    """JavaScript script column number (0-based)."""
 
 
 
-"""Call frames for assertions or error messages."""
-class StackTrace(TypedDict):
-    description: "Optional[str]"
-    """String label of this stack trace. For async traces this may be a name of the function that
-initiated the async call."""
+class StackTrace(BaseModel):
+    """Call frames for assertions or error messages."""
     callFrames: "List[CallFrame]"
-    """JavaScript function name."""
-    parent: "Optional[StackTrace]"
-    """Asynchronous JavaScript stack trace that preceded this stack, if available."""
-    parentId: "Optional[StackTraceId]"
-    """Asynchronous JavaScript stack trace that preceded this stack, if available."""
+    description: "Optional[str]" = None
+    parent: "Optional[StackTrace]" = None
+    parentId: "Optional[StackTraceId]" = None
 
 
 
@@ -284,8 +192,35 @@ UniqueDebuggerId = str
 
 
 
-"""If `debuggerId` is set stack trace comes from another debugger and can be resolved there. This
+class StackTraceId(BaseModel):
+    """If `debuggerId` is set stack trace comes from another debugger and can be resolved there. This
 allows to track cross-debugger calls. See `Runtime.StackTrace` and `Debugger.paused` for usages."""
-class StackTraceId(TypedDict):
     id: "str"
-    debuggerId: "Optional[UniqueDebuggerId]"
+    debuggerId: "Optional[UniqueDebuggerId]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        SerializationOptions.model_rebuild()
+        DeepSerializedValue.model_rebuild()
+        RemoteObject.model_rebuild()
+        CustomPreview.model_rebuild()
+        ObjectPreview.model_rebuild()
+        PropertyPreview.model_rebuild()
+        EntryPreview.model_rebuild()
+        PropertyDescriptor.model_rebuild()
+        InternalPropertyDescriptor.model_rebuild()
+        PrivatePropertyDescriptor.model_rebuild()
+        CallArgument.model_rebuild()
+        ExecutionContextDescription.model_rebuild()
+        ExceptionDetails.model_rebuild()
+        CallFrame.model_rebuild()
+        StackTrace.model_rebuild()
+        StackTraceId.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

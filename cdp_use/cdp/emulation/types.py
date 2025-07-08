@@ -5,105 +5,84 @@
 """CDP Emulation Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
-class SafeAreaInsets(TypedDict, total=False):
-    top: "int"
-    """Overrides safe-area-inset-top."""
-    topMax: "int"
-    """Overrides safe-area-max-inset-top."""
-    left: "int"
-    """Overrides safe-area-inset-left."""
-    leftMax: "int"
-    """Overrides safe-area-max-inset-left."""
-    bottom: "int"
-    """Overrides safe-area-inset-bottom."""
-    bottomMax: "int"
-    """Overrides safe-area-max-inset-bottom."""
-    right: "int"
-    """Overrides safe-area-inset-right."""
-    rightMax: "int"
-    """Overrides safe-area-max-inset-right."""
+class SafeAreaInsets(BaseModel):
+    top: "Optional[int]" = None
+    topMax: "Optional[int]" = None
+    left: "Optional[int]" = None
+    leftMax: "Optional[int]" = None
+    bottom: "Optional[int]" = None
+    bottomMax: "Optional[int]" = None
+    right: "Optional[int]" = None
+    rightMax: "Optional[int]" = None
 
 
 
-"""Screen orientation."""
-class ScreenOrientation(TypedDict):
+class ScreenOrientation(BaseModel):
+    """Screen orientation."""
     type: "str"
-    """Orientation type."""
     angle: "int"
-    """Orientation angle."""
 
 
 
-class DisplayFeature(TypedDict):
+class DisplayFeature(BaseModel):
     orientation: "str"
-    """Orientation of a display feature in relation to screen"""
     offset: "int"
-    """The offset from the screen origin in either the x (for vertical
-orientation) or y (for horizontal orientation) direction."""
     maskLength: "int"
-    """A display feature may mask content such that it is not physically
-displayed - this length along with the offset describes this area.
-A display feature that only splits content will have a 0 mask_length."""
 
 
 
-class DevicePosture(TypedDict):
+class DevicePosture(BaseModel):
     type: "str"
-    """Current posture of the device"""
 
 
 
-class MediaFeature(TypedDict):
+class MediaFeature(BaseModel):
     name: "str"
     value: "str"
 
 
 
-"""advance: If the scheduler runs out of immediate work, the virtual time base may fast forward to
+class VirtualTimePolicy(Enum):
+    """advance: If the scheduler runs out of immediate work, the virtual time base may fast forward to
 allow the next delayed task (if any) to run; pause: The virtual time base may not advance;
 pauseIfNetworkFetchesPending: The virtual time base may not advance if there are any pending
 resource fetches."""
-class VirtualTimePolicy(Enum):
     ADVANCE = "advance"
     PAUSE = "pause"
     PAUSEIFNETWORKFETCHESPENDING = "pauseIfNetworkFetchesPending"
 
 
 
-"""Used to specify User Agent Client Hints to emulate. See https://wicg.github.io/ua-client-hints"""
-class UserAgentBrandVersion(TypedDict):
+class UserAgentBrandVersion(BaseModel):
+    """Used to specify User Agent Client Hints to emulate. See https://wicg.github.io/ua-client-hints"""
     brand: "str"
     version: "str"
 
 
 
-"""Used to specify User Agent Client Hints to emulate. See https://wicg.github.io/ua-client-hints
+class UserAgentMetadata(BaseModel):
+    """Used to specify User Agent Client Hints to emulate. See https://wicg.github.io/ua-client-hints
 Missing optional values will be filled in by the target with what it would normally use."""
-class UserAgentMetadata(TypedDict):
-    brands: "Optional[List[UserAgentBrandVersion]]"
-    """Brands appearing in Sec-CH-UA."""
-    fullVersionList: "Optional[List[UserAgentBrandVersion]]"
-    """Brands appearing in Sec-CH-UA-Full-Version-List."""
-    fullVersion: "Optional[str]"
     platform: "str"
     platformVersion: "str"
     architecture: "str"
     model: "str"
     mobile: "bool"
-    bitness: "Optional[str]"
-    wow64: "Optional[bool]"
-    formFactors: "Optional[List[str]]"
-    """Used to specify User Agent form-factor values.
-See https://wicg.github.io/ua-client-hints/#sec-ch-ua-form-factors"""
+    brands: "Optional[List[UserAgentBrandVersion]]" = None
+    fullVersionList: "Optional[List[UserAgentBrandVersion]]" = None
+    fullVersion: "Optional[str]" = None
+    bitness: "Optional[str]" = None
+    wow64: "Optional[bool]" = None
+    formFactors: "Optional[List[str]]" = None
 
 
 
-"""Used to specify sensor types to emulate.
-See https://w3c.github.io/sensors/#automation for more information."""
 class SensorType(Enum):
+    """Used to specify sensor types to emulate.
+See https://w3c.github.io/sensors/#automation for more information."""
     ABSOLUTE_ORIENTATION = "absolute-orientation"
     ACCELEROMETER = "accelerometer"
     AMBIENT_LIGHT = "ambient-light"
@@ -115,26 +94,26 @@ class SensorType(Enum):
 
 
 
-class SensorMetadata(TypedDict, total=False):
-    available: "bool"
-    minimumFrequency: "float"
-    maximumFrequency: "float"
+class SensorMetadata(BaseModel):
+    available: "Optional[bool]" = None
+    minimumFrequency: "Optional[float]" = None
+    maximumFrequency: "Optional[float]" = None
 
 
 
-class SensorReadingSingle(TypedDict):
+class SensorReadingSingle(BaseModel):
     value: "float"
 
 
 
-class SensorReadingXYZ(TypedDict):
+class SensorReadingXYZ(BaseModel):
     x: "float"
     y: "float"
     z: "float"
 
 
 
-class SensorReadingQuaternion(TypedDict):
+class SensorReadingQuaternion(BaseModel):
     x: "float"
     y: "float"
     z: "float"
@@ -142,10 +121,10 @@ class SensorReadingQuaternion(TypedDict):
 
 
 
-class SensorReading(TypedDict, total=False):
-    single: "SensorReadingSingle"
-    xyz: "SensorReadingXYZ"
-    quaternion: "SensorReadingQuaternion"
+class SensorReading(BaseModel):
+    single: "Optional[SensorReadingSingle]" = None
+    xyz: "Optional[SensorReadingXYZ]" = None
+    quaternion: "Optional[SensorReadingQuaternion]" = None
 
 
 
@@ -162,12 +141,36 @@ class PressureState(Enum):
 
 
 
-class PressureMetadata(TypedDict, total=False):
-    available: "bool"
+class PressureMetadata(BaseModel):
+    available: "Optional[bool]" = None
 
 
 
-"""Enum of image types that can be disabled."""
 class DisabledImageType(Enum):
+    """Enum of image types that can be disabled."""
     AVIF = "avif"
     WEBP = "webp"
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        SafeAreaInsets.model_rebuild()
+        ScreenOrientation.model_rebuild()
+        DisplayFeature.model_rebuild()
+        DevicePosture.model_rebuild()
+        MediaFeature.model_rebuild()
+        UserAgentBrandVersion.model_rebuild()
+        UserAgentMetadata.model_rebuild()
+        SensorMetadata.model_rebuild()
+        SensorReadingSingle.model_rebuild()
+        SensorReadingXYZ.model_rebuild()
+        SensorReadingQuaternion.model_rebuild()
+        SensorReading.model_rebuild()
+        PressureMetadata.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

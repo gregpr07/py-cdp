@@ -4,6 +4,8 @@
 
 """CDP HeadlessExperimental Domain Commands"""
 
+from pydantic import BaseModel
+from typing import Optional
 from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
@@ -28,9 +30,18 @@ no screenshot will be captured. Note that capturing a screenshot can fail, for e
 during renderer initialization. In such a case, no screenshot data will be returned."""
 
 
-class BeginFrameReturns(TypedDict):
+class BeginFrameReturns(BaseModel):
     hasDamage: "bool"
-    """Whether the BeginFrame resulted in damage and, thus, a new frame was committed to the
-display. Reported for diagnostic uses, may be removed in the future."""
-    screenshotData: "str"
-    """Base64-encoded image data of the screenshot, if one was requested and successfully taken. (Encoded as a base64 string when passed over JSON)"""
+    screenshotData: "Optional[str]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import ScreenshotParams
+        # Rebuild models now that imports are available
+        BeginFrameReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

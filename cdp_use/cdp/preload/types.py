@@ -5,8 +5,8 @@
 """CDP Preload Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -20,37 +20,16 @@ RuleSetId = str
 
 
 
-"""Corresponds to SpeculationRuleSet"""
-class RuleSet(TypedDict):
+class RuleSet(BaseModel):
+    """Corresponds to SpeculationRuleSet"""
     id: "RuleSetId"
     loaderId: "LoaderId"
-    """Identifies a document which the rule set is associated with."""
     sourceText: "str"
-    """Source text of JSON representing the rule set. If it comes from
-`<script>` tag, it is the textContent of the node. Note that it is
-a JSON for valid case.
-
-See also:
-- https://wicg.github.io/nav-speculation/speculation-rules.html
-- https://github.com/WICG/nav-speculation/blob/main/triggers.md"""
-    backendNodeId: "Optional[BackendNodeId]"
-    """A speculation rule set is either added through an inline
-`<script>` tag or through an external resource via the
-'Speculation-Rules' HTTP header. For the first case, we include
-the BackendNodeId of the relevant `<script>` tag. For the second
-case, we include the external URL where the rule set was loaded
-from, and also RequestId if Network domain is enabled.
-
-See also:
-- https://wicg.github.io/nav-speculation/speculation-rules.html#speculation-rules-script
-- https://wicg.github.io/nav-speculation/speculation-rules.html#speculation-rules-header"""
-    url: "Optional[str]"
-    requestId: "Optional[RequestId]"
-    errorType: "Optional[RuleSetErrorType]"
-    """Error information
-`errorMessage` is null iff `errorType` is null."""
-    errorMessage: "Optional[str]"
-    """TODO(https://crbug.com/1425354): Replace this property with structured error."""
+    backendNodeId: "Optional[BackendNodeId]" = None
+    url: "Optional[str]" = None
+    requestId: "Optional[RequestId]" = None
+    errorType: "Optional[RuleSetErrorType]" = None
+    errorMessage: "Optional[str]" = None
 
 
 
@@ -60,43 +39,43 @@ class RuleSetErrorType(Enum):
 
 
 
-"""The type of preloading attempted. It corresponds to
+class SpeculationAction(Enum):
+    """The type of preloading attempted. It corresponds to
 mojom::SpeculationAction (although PrefetchWithSubresources is omitted as it
 isn't being used by clients)."""
-class SpeculationAction(Enum):
     PREFETCH = "Prefetch"
     PRERENDER = "Prerender"
 
 
 
-"""Corresponds to mojom::SpeculationTargetHint.
-See https://github.com/WICG/nav-speculation/blob/main/triggers.md#window-name-targeting-hints"""
 class SpeculationTargetHint(Enum):
+    """Corresponds to mojom::SpeculationTargetHint.
+See https://github.com/WICG/nav-speculation/blob/main/triggers.md#window-name-targeting-hints"""
     BLANK = "Blank"
     SELF = "Self"
 
 
 
-"""A key that identifies a preloading attempt.
+class PreloadingAttemptKey(BaseModel):
+    """A key that identifies a preloading attempt.
 
 The url used is the url specified by the trigger (i.e. the initial URL), and
 not the final url that is navigated to. For example, prerendering allows
 same-origin main frame navigations during the attempt, but the attempt is
 still keyed with the initial URL."""
-class PreloadingAttemptKey(TypedDict):
     loaderId: "LoaderId"
     action: "SpeculationAction"
     url: "str"
-    targetHint: "Optional[SpeculationTargetHint]"
+    targetHint: "Optional[SpeculationTargetHint]" = None
 
 
 
-"""Lists sources for a preloading attempt, specifically the ids of rule sets
+class PreloadingAttemptSource(BaseModel):
+    """Lists sources for a preloading attempt, specifically the ids of rule sets
 that had a speculation rule that triggered the attempt, and the
 BackendNodeIds of <a href> or <area href> elements that triggered the
 attempt (in the case of attempts triggered by a document rule). It is
 possible for multiple rule sets and links to trigger a single attempt."""
-class PreloadingAttemptSource(TypedDict):
     key: "PreloadingAttemptKey"
     ruleSetIds: "List[RuleSetId]"
     nodeIds: "List[BackendNodeId]"
@@ -114,8 +93,8 @@ PreloadPipelineId = str
 
 
 
-"""List of FinalStatus reasons for Prerender2."""
 class PrerenderFinalStatus(Enum):
+    """List of FinalStatus reasons for Prerender2."""
     ACTIVATED = "Activated"
     DESTROYED = "Destroyed"
     LOWENDDEVICE = "LowEndDevice"
@@ -192,9 +171,9 @@ class PrerenderFinalStatus(Enum):
 
 
 
-"""Preloading status values, see also PreloadingTriggeringOutcome. This
-status is shared by prefetchStatusUpdated and prerenderStatusUpdated."""
 class PreloadingStatus(Enum):
+    """Preloading status values, see also PreloadingTriggeringOutcome. This
+status is shared by prefetchStatusUpdated and prerenderStatusUpdated."""
     PENDING = "Pending"
     RUNNING = "Running"
     READY = "Ready"
@@ -204,9 +183,9 @@ class PreloadingStatus(Enum):
 
 
 
-"""TODO(https://crbug.com/1384419): revisit the list of PrefetchStatus and
-filter out the ones that aren't necessary to the developers."""
 class PrefetchStatus(Enum):
+    """TODO(https://crbug.com/1384419): revisit the list of PrefetchStatus and
+filter out the ones that aren't necessary to the developers."""
     PREFETCHALLOWED = "PrefetchAllowed"
     PREFETCHFAILEDINELIGIBLEREDIRECT = "PrefetchFailedIneligibleRedirect"
     PREFETCHFAILEDINVALIDREDIRECT = "PrefetchFailedInvalidRedirect"
@@ -244,8 +223,26 @@ class PrefetchStatus(Enum):
 
 
 
-"""Information of headers to be displayed when the header mismatch occurred."""
-class PrerenderMismatchedHeaders(TypedDict):
+class PrerenderMismatchedHeaders(BaseModel):
+    """Information of headers to be displayed when the header mismatch occurred."""
     headerName: "str"
-    initialValue: "Optional[str]"
-    activationValue: "Optional[str]"
+    initialValue: "Optional[str]" = None
+    activationValue: "Optional[str]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import BackendNodeId
+        from ..network.types import LoaderId
+        from ..network.types import RequestId
+        # Rebuild models now that imports are available
+        RuleSet.model_rebuild()
+        PreloadingAttemptKey.model_rebuild()
+        PreloadingAttemptSource.model_rebuild()
+        PrerenderMismatchedHeaders.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

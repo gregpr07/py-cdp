@@ -4,22 +4,35 @@
 
 """CDP Cast Domain Events"""
 
+from pydantic import BaseModel
 from typing import List
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .types import Sink
 
-"""This is fired whenever the list of available sinks changes. A sink is a
+class SinksUpdatedEvent(BaseModel):
+    """This is fired whenever the list of available sinks changes. A sink is a
 device or a software surface that you can cast to."""
-class SinksUpdatedEvent(TypedDict):
     sinks: "List[Sink]"
 
 
 
-"""This is fired whenever the outstanding issue/error message changes.
+class IssueUpdatedEvent(BaseModel):
+    """This is fired whenever the outstanding issue/error message changes.
 |issueMessage| is empty if there is no issue."""
-class IssueUpdatedEvent(TypedDict):
     issueMessage: "str"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import Sink
+        # Rebuild models now that imports are available
+        SinksUpdatedEvent.model_rebuild()
+        IssueUpdatedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

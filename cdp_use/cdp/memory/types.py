@@ -5,52 +5,56 @@
 """CDP Memory Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List
-from typing_extensions import TypedDict
 
-"""Memory pressure level."""
 class PressureLevel(Enum):
+    """Memory pressure level."""
     MODERATE = "moderate"
     CRITICAL = "critical"
 
 
 
-"""Heap profile sample."""
-class SamplingProfileNode(TypedDict):
+class SamplingProfileNode(BaseModel):
+    """Heap profile sample."""
     size: "float"
-    """Size of the sampled allocation."""
     total: "float"
-    """Total bytes attributed to this sample."""
     stack: "List[str]"
-    """Execution stack at the point of allocation."""
 
 
 
-"""Array of heap profile samples."""
-class SamplingProfile(TypedDict):
+class SamplingProfile(BaseModel):
+    """Array of heap profile samples."""
     samples: "List[SamplingProfileNode]"
     modules: "List[Module]"
 
 
 
-"""Executable module information"""
-class Module(TypedDict):
+class Module(BaseModel):
+    """Executable module information"""
     name: "str"
-    """Name of the module."""
     uuid: "str"
-    """UUID of the module."""
     baseAddress: "str"
-    """Base address where the module is loaded into memory. Encoded as a decimal
-or hexadecimal (0x prefixed) string."""
     size: "float"
-    """Size of the module in bytes."""
 
 
 
-"""DOM object counter data."""
-class DOMCounter(TypedDict):
+class DOMCounter(BaseModel):
+    """DOM object counter data."""
     name: "str"
-    """Object name. Note: object names should be presumed volatile and clients should not expect
-the returned names to be consistent across runs."""
     count: "int"
-    """Object count."""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        SamplingProfileNode.model_rebuild()
+        SamplingProfile.model_rebuild()
+        Module.model_rebuild()
+        DOMCounter.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

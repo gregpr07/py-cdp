@@ -4,8 +4,8 @@
 
 """CDP Security Domain Events"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -15,37 +15,44 @@ if TYPE_CHECKING:
     from .types import SecurityStateExplanation
     from .types import VisibleSecurityState
 
-"""There is a certificate error. If overriding certificate errors is enabled, then it should be
+class CertificateErrorEvent(BaseModel):
+    """There is a certificate error. If overriding certificate errors is enabled, then it should be
 handled with the `handleCertificateError` command. Note: this event does not fire if the
 certificate error has been allowed internally. Only one client per target should override
 certificate errors at the same time."""
-class CertificateErrorEvent(TypedDict):
     eventId: "int"
-    """The ID of the event."""
     errorType: "str"
-    """The type of the error."""
     requestURL: "str"
-    """The url that was requested."""
 
 
 
-"""The security state of the page changed."""
-class VisibleSecurityStateChangedEvent(TypedDict):
+class VisibleSecurityStateChangedEvent(BaseModel):
+    """The security state of the page changed."""
     visibleSecurityState: "VisibleSecurityState"
-    """Security state information about the page."""
 
 
 
-"""The security state of the page changed. No longer being sent."""
-class SecurityStateChangedEvent(TypedDict):
+class SecurityStateChangedEvent(BaseModel):
+    """The security state of the page changed. No longer being sent."""
     securityState: "SecurityState"
-    """Security state."""
     schemeIsCryptographic: "bool"
-    """True if the page was loaded over cryptographic transport such as HTTPS."""
     explanations: "List[SecurityStateExplanation]"
-    """Previously a list of explanations for the security state. Now always
-empty."""
     insecureContentStatus: "InsecureContentStatus"
-    """Information about insecure content on the page."""
-    summary: "Optional[str]"
-    """Overrides user-visible description of the state. Always omitted."""
+    summary: "Optional[str]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import InsecureContentStatus
+        from .types import SecurityState
+        from .types import SecurityStateExplanation
+        from .types import VisibleSecurityState
+        # Rebuild models now that imports are available
+        CertificateErrorEvent.model_rebuild()
+        VisibleSecurityStateChangedEvent.model_rebuild()
+        SecurityStateChangedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

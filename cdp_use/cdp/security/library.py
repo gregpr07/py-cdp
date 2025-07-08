@@ -4,7 +4,7 @@
 
 """CDP Security Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -26,11 +26,12 @@ class SecurityClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables tracking security state changes."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Security.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -38,11 +39,12 @@ class SecurityClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables tracking security state changes."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Security.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setIgnoreCertificateErrors(
         self,
@@ -50,11 +52,12 @@ class SecurityClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enable/disable whether all certificate errors should be ignored."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Security.setIgnoreCertificateErrors",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def handleCertificateError(
         self,
@@ -62,11 +65,12 @@ class SecurityClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Handles a certificate error that fired a certificateError event."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Security.handleCertificateError",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setOverrideCertificateErrors(
         self,
@@ -75,10 +79,11 @@ class SecurityClient:
     ) -> "Dict[str, Any]":
         """Enable/disable overriding certificate errors. If enabled, all certificate error events need to
 be handled by the DevTools client and should be answered with `handleCertificateError` commands."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Security.setOverrideCertificateErrors",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

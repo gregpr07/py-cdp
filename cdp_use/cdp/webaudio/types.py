@@ -5,23 +5,23 @@
 """CDP WebAudio Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import Optional
-from typing_extensions import TypedDict
 
 """An unique ID for a graph object (AudioContext, AudioNode, AudioParam) in Web Audio API"""
 GraphObjectId = str
 
 
 
-"""Enum of BaseAudioContext types"""
 class ContextType(Enum):
+    """Enum of BaseAudioContext types"""
     REALTIME = "realtime"
     OFFLINE = "offline"
 
 
 
-"""Enum of AudioContextState from the spec"""
 class ContextState(Enum):
+    """Enum of AudioContextState from the spec"""
     SUSPENDED = "suspended"
     RUNNING = "running"
     CLOSED = "closed"
@@ -34,16 +34,16 @@ NodeType = str
 
 
 
-"""Enum of AudioNode::ChannelCountMode from the spec"""
 class ChannelCountMode(Enum):
+    """Enum of AudioNode::ChannelCountMode from the spec"""
     CLAMPED_MAX = "clamped-max"
     EXPLICIT = "explicit"
     MAX = "max"
 
 
 
-"""Enum of AudioNode::ChannelInterpretation from the spec"""
 class ChannelInterpretation(Enum):
+    """Enum of AudioNode::ChannelInterpretation from the spec"""
     DISCRETE = "discrete"
     SPEAKERS = "speakers"
 
@@ -54,52 +54,43 @@ ParamType = str
 
 
 
-"""Enum of AudioParam::AutomationRate from the spec"""
 class AutomationRate(Enum):
+    """Enum of AudioParam::AutomationRate from the spec"""
     A_RATE = "a-rate"
     K_RATE = "k-rate"
 
 
 
-"""Fields in AudioContext that change in real-time."""
-class ContextRealtimeData(TypedDict):
+class ContextRealtimeData(BaseModel):
+    """Fields in AudioContext that change in real-time."""
     currentTime: "float"
-    """The current context time in second in BaseAudioContext."""
     renderCapacity: "float"
-    """The time spent on rendering graph divided by render quantum duration,
-and multiplied by 100. 100 means the audio renderer reached the full
-capacity and glitch may occur."""
     callbackIntervalMean: "float"
-    """A running mean of callback interval."""
     callbackIntervalVariance: "float"
-    """A running variance of callback interval."""
 
 
 
-"""Protocol object for BaseAudioContext"""
-class BaseAudioContext(TypedDict):
+class BaseAudioContext(BaseModel):
+    """Protocol object for BaseAudioContext"""
     contextId: "GraphObjectId"
     contextType: "ContextType"
     contextState: "ContextState"
-    realtimeData: "Optional[ContextRealtimeData]"
     callbackBufferSize: "float"
-    """Platform-dependent callback buffer size."""
     maxOutputChannelCount: "float"
-    """Number of output channels supported by audio hardware in use."""
     sampleRate: "float"
-    """Context sample rate."""
+    realtimeData: "Optional[ContextRealtimeData]" = None
 
 
 
-"""Protocol object for AudioListener"""
-class AudioListener(TypedDict):
+class AudioListener(BaseModel):
+    """Protocol object for AudioListener"""
     listenerId: "GraphObjectId"
     contextId: "GraphObjectId"
 
 
 
-"""Protocol object for AudioNode"""
-class AudioNode(TypedDict):
+class AudioNode(BaseModel):
+    """Protocol object for AudioNode"""
     nodeId: "GraphObjectId"
     contextId: "GraphObjectId"
     nodeType: "NodeType"
@@ -111,8 +102,8 @@ class AudioNode(TypedDict):
 
 
 
-"""Protocol object for AudioParam"""
-class AudioParam(TypedDict):
+class AudioParam(BaseModel):
+    """Protocol object for AudioParam"""
     paramId: "GraphObjectId"
     nodeId: "GraphObjectId"
     contextId: "GraphObjectId"
@@ -121,3 +112,19 @@ class AudioParam(TypedDict):
     defaultValue: "float"
     minValue: "float"
     maxValue: "float"
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        ContextRealtimeData.model_rebuild()
+        BaseAudioContext.model_rebuild()
+        AudioListener.model_rebuild()
+        AudioNode.model_rebuild()
+        AudioParam.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

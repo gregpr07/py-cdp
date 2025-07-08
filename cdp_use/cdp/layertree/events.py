@@ -4,8 +4,8 @@
 
 """CDP LayerTree Domain Events"""
 
-from typing import List
-from typing_extensions import TypedDict
+from pydantic import BaseModel
+from typing import List, Optional
 
 from typing import TYPE_CHECKING
 
@@ -14,14 +14,26 @@ if TYPE_CHECKING:
     from .types import Layer
     from .types import LayerId
 
-class LayerPaintedEvent(TypedDict):
+class LayerPaintedEvent(BaseModel):
     layerId: "LayerId"
-    """The id of the painted layer."""
     clip: "Rect"
-    """Clip rectangle."""
 
 
 
-class LayerTreeDidChangeEvent(TypedDict, total=False):
-    layers: "List[Layer]"
-    """Layer tree, absent if not in the compositing mode."""
+class LayerTreeDidChangeEvent(BaseModel):
+    layers: "Optional[List[Layer]]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import Rect
+        from .types import Layer
+        from .types import LayerId
+        # Rebuild models now that imports are available
+        LayerPaintedEvent.model_rebuild()
+        LayerTreeDidChangeEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

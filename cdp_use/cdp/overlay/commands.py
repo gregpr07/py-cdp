@@ -4,6 +4,7 @@
 
 """CDP Overlay Domain Commands"""
 
+from pydantic import BaseModel
 from typing import Any, Dict, List, Optional
 from typing_extensions import TypedDict
 
@@ -41,9 +42,8 @@ class GetHighlightObjectForTestParameters(TypedDict):
     """Whether to show accessibility info (default: true)."""
 
 
-class GetHighlightObjectForTestReturns(TypedDict):
+class GetHighlightObjectForTestReturns(BaseModel):
     highlight: "Dict[str, Any]"
-    """Highlight data for the node."""
 
 
 
@@ -52,9 +52,8 @@ class GetGridHighlightObjectsForTestParameters(TypedDict):
     """Ids of the node to get highlight object for."""
 
 
-class GetGridHighlightObjectsForTestReturns(TypedDict):
+class GetGridHighlightObjectsForTestReturns(BaseModel):
     highlights: "Dict[str, Any]"
-    """Grid Highlight data for the node ids provided."""
 
 
 
@@ -63,9 +62,8 @@ class GetSourceOrderHighlightObjectForTestParameters(TypedDict):
     """Id of the node to highlight."""
 
 
-class GetSourceOrderHighlightObjectForTestReturns(TypedDict):
+class GetSourceOrderHighlightObjectForTestReturns(BaseModel):
     highlight: "Dict[str, Any]"
-    """Source order highlight data for the node id provided."""
 
 
 
@@ -284,3 +282,33 @@ class SetShowWindowControlsOverlayParameters(TypedDict, total=False):
     """Window Controls Overlay data, null means hide Window Controls Overlay"""
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import BackendNodeId
+        from ..dom.types import NodeId
+        from ..dom.types import Quad
+        from ..dom.types import RGBA
+        from ..page.types import FrameId
+        from ..runtime.types import RemoteObjectId
+        from .types import ColorFormat
+        from .types import ContainerQueryHighlightConfig
+        from .types import FlexNodeHighlightConfig
+        from .types import GridNodeHighlightConfig
+        from .types import HighlightConfig
+        from .types import HingeConfig
+        from .types import InspectMode
+        from .types import IsolatedElementHighlightConfig
+        from .types import ScrollSnapHighlightConfig
+        from .types import SourceOrderConfig
+        from .types import WindowControlsOverlayConfig
+        # Rebuild models now that imports are available
+        GetHighlightObjectForTestReturns.model_rebuild()
+        GetGridHighlightObjectsForTestReturns.model_rebuild()
+        GetSourceOrderHighlightObjectForTestReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

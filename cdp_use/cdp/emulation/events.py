@@ -4,8 +4,19 @@
 
 """CDP Emulation Domain Events"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
-"""Notification sent after the virtual time budget for the current VirtualTimePolicy has run out."""
-class VirtualTimeBudgetExpiredEvent(TypedDict):
+class VirtualTimeBudgetExpiredEvent(BaseModel):
+    """Notification sent after the virtual time budget for the current VirtualTimePolicy has run out."""
     pass
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        VirtualTimeBudgetExpiredEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

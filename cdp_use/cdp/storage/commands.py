@@ -4,6 +4,7 @@
 
 """CDP Storage Domain Commands"""
 
+from pydantic import BaseModel
 from typing import Any, Dict, List, Optional
 from typing_extensions import TypedDict
 
@@ -26,7 +27,7 @@ class GetStorageKeyForFrameParameters(TypedDict):
     frameId: "FrameId"
 
 
-class GetStorageKeyForFrameReturns(TypedDict):
+class GetStorageKeyForFrameReturns(BaseModel):
     storageKey: "SerializedStorageKey"
 
 
@@ -56,9 +57,8 @@ class GetCookiesParameters(TypedDict, total=False):
     """Browser context to use when called on the browser endpoint."""
 
 
-class GetCookiesReturns(TypedDict):
+class GetCookiesReturns(BaseModel):
     cookies: "List[Cookie]"
-    """Array of cookie objects."""
 
 
 
@@ -85,15 +85,11 @@ class GetUsageAndQuotaParameters(TypedDict):
     """Security origin."""
 
 
-class GetUsageAndQuotaReturns(TypedDict):
+class GetUsageAndQuotaReturns(BaseModel):
     usage: "float"
-    """Storage usage (bytes)."""
     quota: "float"
-    """Storage quota (bytes)."""
     overrideActive: "bool"
-    """Whether or not the origin has an active storage quota override"""
     usageBreakdown: "List[UsageForType]"
-    """Storage usage per type (bytes)."""
 
 
 
@@ -177,7 +173,7 @@ class UntrackIndexedDBForStorageKeyParameters(TypedDict):
 
 
 
-class GetTrustTokensReturns(TypedDict):
+class GetTrustTokensReturns(BaseModel):
     tokens: "List[TrustTokens]"
 
 
@@ -186,9 +182,8 @@ class ClearTrustTokensParameters(TypedDict):
     issuerOrigin: "str"
 
 
-class ClearTrustTokensReturns(TypedDict):
+class ClearTrustTokensReturns(BaseModel):
     didDeleteTokens: "bool"
-    """True if any tokens were deleted, false otherwise."""
 
 
 
@@ -197,12 +192,8 @@ class GetInterestGroupDetailsParameters(TypedDict):
     name: "str"
 
 
-class GetInterestGroupDetailsReturns(TypedDict):
+class GetInterestGroupDetailsReturns(BaseModel):
     details: "Dict[str, Any]"
-    """This largely corresponds to:
-https://wicg.github.io/turtledove/#dictdef-generatebidinterestgroup
-but has absolute expirationTime instead of relative lifetimeMs and
-also adds joiningOrigin."""
 
 
 
@@ -224,7 +215,7 @@ class GetSharedStorageMetadataParameters(TypedDict):
     ownerOrigin: "str"
 
 
-class GetSharedStorageMetadataReturns(TypedDict):
+class GetSharedStorageMetadataReturns(BaseModel):
     metadata: "SharedStorageMetadata"
 
 
@@ -233,7 +224,7 @@ class GetSharedStorageEntriesParameters(TypedDict):
     ownerOrigin: "str"
 
 
-class GetSharedStorageEntriesReturns(TypedDict):
+class GetSharedStorageEntriesReturns(BaseModel):
     entries: "List[SharedStorageEntry]"
 
 
@@ -294,7 +285,7 @@ class DeleteStorageBucketParameters(TypedDict):
 
 
 
-class RunBounceTrackingMitigationsReturns(TypedDict):
+class RunBounceTrackingMitigationsReturns(BaseModel):
     deletedSites: "List[str]"
 
 
@@ -314,13 +305,12 @@ class SetAttributionReportingTrackingParameters(TypedDict):
 
 
 
-class SendPendingAttributionReportsReturns(TypedDict):
+class SendPendingAttributionReportsReturns(BaseModel):
     numSent: "int"
-    """The number of reports that were sent."""
 
 
 
-class GetRelatedWebsiteSetsReturns(TypedDict):
+class GetRelatedWebsiteSetsReturns(BaseModel):
     sets: "List[RelatedWebsiteSet]"
 
 
@@ -332,10 +322,8 @@ class GetAffectedUrlsForThirdPartyCookieMetadataParameters(TypedDict):
     """The list of embedded resource URLs from the page."""
 
 
-class GetAffectedUrlsForThirdPartyCookieMetadataReturns(TypedDict):
+class GetAffectedUrlsForThirdPartyCookieMetadataReturns(BaseModel):
     matchedUrls: "List[str]"
-    """Array of matching URLs. If there is a primary pattern match for the first-
-party URL, only the first-party URL is returned in the array."""
 
 
 
@@ -345,3 +333,36 @@ class SetProtectedAudienceKAnonymityParameters(TypedDict):
     hashes: "List[str]"
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..browser.types import BrowserContextID
+        from ..network.types import Cookie
+        from ..network.types import CookieParam
+        from ..page.types import FrameId
+        from .types import RelatedWebsiteSet
+        from .types import SerializedStorageKey
+        from .types import SharedStorageEntry
+        from .types import SharedStorageMetadata
+        from .types import StorageBucket
+        from .types import TrustTokens
+        from .types import UsageForType
+        # Rebuild models now that imports are available
+        GetStorageKeyForFrameReturns.model_rebuild()
+        GetCookiesReturns.model_rebuild()
+        GetUsageAndQuotaReturns.model_rebuild()
+        GetTrustTokensReturns.model_rebuild()
+        ClearTrustTokensReturns.model_rebuild()
+        GetInterestGroupDetailsReturns.model_rebuild()
+        GetSharedStorageMetadataReturns.model_rebuild()
+        GetSharedStorageEntriesReturns.model_rebuild()
+        RunBounceTrackingMitigationsReturns.model_rebuild()
+        SendPendingAttributionReportsReturns.model_rebuild()
+        GetRelatedWebsiteSetsReturns.model_rebuild()
+        GetAffectedUrlsForThirdPartyCookieMetadataReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

@@ -4,11 +4,21 @@
 
 """CDP Performance Domain Types"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
-"""Run-time execution metric."""
-class Metric(TypedDict):
+class Metric(BaseModel):
+    """Run-time execution metric."""
     name: "str"
-    """Metric name."""
     value: "float"
-    """Metric value."""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        Metric.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

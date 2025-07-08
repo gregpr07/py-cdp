@@ -4,14 +4,25 @@
 
 """CDP Log Domain Events"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .types import LogEntry
 
-"""Issued when new message was logged."""
-class EntryAddedEvent(TypedDict):
+class EntryAddedEvent(BaseModel):
+    """Issued when new message was logged."""
     entry: "LogEntry"
-    """The entry."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import LogEntry
+        # Rebuild models now that imports are available
+        EntryAddedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

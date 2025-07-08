@@ -4,7 +4,7 @@
 
 """CDP Autofill Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -26,11 +26,12 @@ class AutofillClient:
     ) -> "Dict[str, Any]":
         """Trigger autofill on a form identified by the fieldId.
 If the field and related form cannot be autofilled, returns an error."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Autofill.trigger",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setAddresses(
         self,
@@ -38,11 +39,12 @@ If the field and related form cannot be autofilled, returns an error."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Set addresses so that developers can verify their forms implementation."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Autofill.setAddresses",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def disable(
         self,
@@ -50,11 +52,12 @@ If the field and related form cannot be autofilled, returns an error."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables autofill domain notifications."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Autofill.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -62,10 +65,11 @@ If the field and related form cannot be autofilled, returns an error."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables autofill domain notifications."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Autofill.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

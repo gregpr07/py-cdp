@@ -4,7 +4,7 @@
 
 """CDP WebAuthn Domain Events"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
 from typing import TYPE_CHECKING
 
@@ -12,30 +12,46 @@ if TYPE_CHECKING:
     from .types import AuthenticatorId
     from .types import Credential
 
-"""Triggered when a credential is added to an authenticator."""
-class CredentialAddedEvent(TypedDict):
+class CredentialAddedEvent(BaseModel):
+    """Triggered when a credential is added to an authenticator."""
     authenticatorId: "AuthenticatorId"
     credential: "Credential"
 
 
 
-"""Triggered when a credential is deleted, e.g. through
+class CredentialDeletedEvent(BaseModel):
+    """Triggered when a credential is deleted, e.g. through
 PublicKeyCredential.signalUnknownCredential()."""
-class CredentialDeletedEvent(TypedDict):
     authenticatorId: "AuthenticatorId"
     credentialId: "str"
 
 
 
-"""Triggered when a credential is updated, e.g. through
+class CredentialUpdatedEvent(BaseModel):
+    """Triggered when a credential is updated, e.g. through
 PublicKeyCredential.signalCurrentUserDetails()."""
-class CredentialUpdatedEvent(TypedDict):
     authenticatorId: "AuthenticatorId"
     credential: "Credential"
 
 
 
-"""Triggered when a credential is used in a webauthn assertion."""
-class CredentialAssertedEvent(TypedDict):
+class CredentialAssertedEvent(BaseModel):
+    """Triggered when a credential is used in a webauthn assertion."""
     authenticatorId: "AuthenticatorId"
     credential: "Credential"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import AuthenticatorId
+        from .types import Credential
+        # Rebuild models now that imports are available
+        CredentialAddedEvent.model_rebuild()
+        CredentialDeletedEvent.model_rebuild()
+        CredentialUpdatedEvent.model_rebuild()
+        CredentialAssertedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

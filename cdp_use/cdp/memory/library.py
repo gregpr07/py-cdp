@@ -4,7 +4,7 @@
 
 """CDP Memory Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -31,11 +31,13 @@ class MemoryClient:
         session_id: Optional[str] = None,
     ) -> "GetDOMCountersReturns":
         """Retruns current DOM object counters."""
-        return cast("GetDOMCountersReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Memory.getDOMCounters",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetDOMCountersReturns as _GetDOMCountersReturns
+        return _GetDOMCountersReturns.model_validate(raw_result)
 
     async def getDOMCountersForLeakDetection(
         self,
@@ -43,11 +45,13 @@ class MemoryClient:
         session_id: Optional[str] = None,
     ) -> "GetDOMCountersForLeakDetectionReturns":
         """Retruns DOM object counters after preparing renderer for leak detection."""
-        return cast("GetDOMCountersForLeakDetectionReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Memory.getDOMCountersForLeakDetection",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetDOMCountersForLeakDetectionReturns as _GetDOMCountersForLeakDetectionReturns
+        return _GetDOMCountersForLeakDetectionReturns.model_validate(raw_result)
 
     async def prepareForLeakDetection(
         self,
@@ -56,11 +60,12 @@ class MemoryClient:
     ) -> "Dict[str, Any]":
         """Prepares for leak detection by terminating workers, stopping spellcheckers,
 dropping non-essential internal caches, running garbage collections, etc."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Memory.prepareForLeakDetection",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def forciblyPurgeJavaScriptMemory(
         self,
@@ -68,11 +73,12 @@ dropping non-essential internal caches, running garbage collections, etc."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Simulate OomIntervention by purging V8 memory."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Memory.forciblyPurgeJavaScriptMemory",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setPressureNotificationsSuppressed(
         self,
@@ -80,11 +86,12 @@ dropping non-essential internal caches, running garbage collections, etc."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enable/disable suppressing memory pressure notifications in all processes."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Memory.setPressureNotificationsSuppressed",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def simulatePressureNotification(
         self,
@@ -92,11 +99,12 @@ dropping non-essential internal caches, running garbage collections, etc."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Simulate a memory pressure notification in all processes."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Memory.simulatePressureNotification",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def startSampling(
         self,
@@ -104,11 +112,12 @@ dropping non-essential internal caches, running garbage collections, etc."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Start collecting native memory profile."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Memory.startSampling",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def stopSampling(
         self,
@@ -116,11 +125,12 @@ dropping non-essential internal caches, running garbage collections, etc."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Stop collecting native memory profile."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Memory.stopSampling",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getAllTimeSamplingProfile(
         self,
@@ -129,11 +139,13 @@ dropping non-essential internal caches, running garbage collections, etc."""
     ) -> "GetAllTimeSamplingProfileReturns":
         """Retrieve native memory allocations profile
 collected since renderer process startup."""
-        return cast("GetAllTimeSamplingProfileReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Memory.getAllTimeSamplingProfile",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetAllTimeSamplingProfileReturns as _GetAllTimeSamplingProfileReturns
+        return _GetAllTimeSamplingProfileReturns.model_validate(raw_result)
 
     async def getBrowserSamplingProfile(
         self,
@@ -142,11 +154,13 @@ collected since renderer process startup."""
     ) -> "GetBrowserSamplingProfileReturns":
         """Retrieve native memory allocations profile
 collected since browser process startup."""
-        return cast("GetBrowserSamplingProfileReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Memory.getBrowserSamplingProfile",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetBrowserSamplingProfileReturns as _GetBrowserSamplingProfileReturns
+        return _GetBrowserSamplingProfileReturns.model_validate(raw_result)
 
     async def getSamplingProfile(
         self,
@@ -155,10 +169,12 @@ collected since browser process startup."""
     ) -> "GetSamplingProfileReturns":
         """Retrieve native memory allocations profile collected since last
 `startSampling` call."""
-        return cast("GetSamplingProfileReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Memory.getSamplingProfile",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetSamplingProfileReturns as _GetSamplingProfileReturns
+        return _GetSamplingProfileReturns.model_validate(raw_result)
 
 

@@ -4,6 +4,7 @@
 
 """CDP Accessibility Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -28,10 +29,8 @@ class GetPartialAXTreeParameters(TypedDict, total=False):
     """Whether to fetch this node's ancestors, siblings and children. Defaults to true."""
 
 
-class GetPartialAXTreeReturns(TypedDict):
+class GetPartialAXTreeReturns(BaseModel):
     nodes: "List[AXNode]"
-    """The `Accessibility.AXNode` for this DOM node, if it exists, plus its ancestors, siblings and
-children, if requested."""
 
 
 
@@ -44,7 +43,7 @@ If omitted, the full tree is returned."""
 If omitted, the root frame is used."""
 
 
-class GetFullAXTreeReturns(TypedDict):
+class GetFullAXTreeReturns(BaseModel):
     nodes: "List[AXNode]"
 
 
@@ -55,7 +54,7 @@ class GetRootAXNodeParameters(TypedDict, total=False):
 If omitted, the root frame is used."""
 
 
-class GetRootAXNodeReturns(TypedDict):
+class GetRootAXNodeReturns(BaseModel):
     node: "AXNode"
 
 
@@ -69,7 +68,7 @@ class GetAXNodeAndAncestorsParameters(TypedDict, total=False):
     """JavaScript object id of the node wrapper to get."""
 
 
-class GetAXNodeAndAncestorsReturns(TypedDict):
+class GetAXNodeAndAncestorsReturns(BaseModel):
     nodes: "List[AXNode]"
 
 
@@ -81,7 +80,7 @@ class GetChildAXNodesParameters(TypedDict):
 If omitted, the root frame is used."""
 
 
-class GetChildAXNodesReturns(TypedDict):
+class GetChildAXNodesReturns(BaseModel):
     nodes: "List[AXNode]"
 
 
@@ -99,7 +98,27 @@ class QueryAXTreeParameters(TypedDict, total=False):
     """Find nodes with this computed role."""
 
 
-class QueryAXTreeReturns(TypedDict):
+class QueryAXTreeReturns(BaseModel):
     nodes: "List[AXNode]"
-    """A list of `Accessibility.AXNode` matching the specified attributes,
-including nodes that are ignored for accessibility."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import BackendNodeId
+        from ..dom.types import NodeId
+        from ..page.types import FrameId
+        from ..runtime.types import RemoteObjectId
+        from .types import AXNode
+        from .types import AXNodeId
+        # Rebuild models now that imports are available
+        GetPartialAXTreeReturns.model_rebuild()
+        GetFullAXTreeReturns.model_rebuild()
+        GetRootAXNodeReturns.model_rebuild()
+        GetAXNodeAndAncestorsReturns.model_rebuild()
+        GetChildAXNodesReturns.model_rebuild()
+        QueryAXTreeReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

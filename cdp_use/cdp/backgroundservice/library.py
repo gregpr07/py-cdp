@@ -4,7 +4,7 @@
 
 """CDP BackgroundService Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -27,11 +27,12 @@ class BackgroundServiceClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables event updates for the service."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="BackgroundService.startObserving",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def stopObserving(
         self,
@@ -39,11 +40,12 @@ class BackgroundServiceClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables event updates for the service."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="BackgroundService.stopObserving",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setRecording(
         self,
@@ -51,11 +53,12 @@ class BackgroundServiceClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Set the recording state for the service."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="BackgroundService.setRecording",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def clearEvents(
         self,
@@ -63,10 +66,11 @@ class BackgroundServiceClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears all stored data for the service."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="BackgroundService.clearEvents",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

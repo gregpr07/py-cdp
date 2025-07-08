@@ -4,8 +4,8 @@
 
 """CDP Autofill Domain Events"""
 
+from pydantic import BaseModel
 from typing import List
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -13,10 +13,20 @@ if TYPE_CHECKING:
     from .types import AddressUI
     from .types import FilledField
 
-"""Emitted when an address form is filled."""
-class AddressFormFilledEvent(TypedDict):
+class AddressFormFilledEvent(BaseModel):
+    """Emitted when an address form is filled."""
     filledFields: "List[FilledField]"
-    """Information about the fields that were filled"""
     addressUi: "AddressUI"
-    """An UI representation of the address used to fill the form.
-Consists of a 2D array where each child represents an address/profile line."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import AddressUI
+        from .types import FilledField
+        # Rebuild models now that imports are available
+        AddressFormFilledEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

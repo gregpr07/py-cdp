@@ -5,27 +5,38 @@
 """CDP PWA Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List
-from typing_extensions import TypedDict
 
-"""The following types are the replica of
+class FileHandlerAccept(BaseModel):
+    """The following types are the replica of
 https://crsrc.org/c/chrome/browser/web_applications/proto/web_app_os_integration_state.proto;drc=9910d3be894c8f142c977ba1023f30a656bc13fc;l=67"""
-class FileHandlerAccept(TypedDict):
     mediaType: "str"
-    """New name of the mimetype according to
-https://www.iana.org/assignments/media-types/media-types.xhtml"""
     fileExtensions: "List[str]"
 
 
 
-class FileHandler(TypedDict):
+class FileHandler(BaseModel):
     action: "str"
     accepts: "List[FileHandlerAccept]"
     displayName: "str"
 
 
 
-"""If user prefers opening the app in browser or an app window."""
 class DisplayMode(Enum):
+    """If user prefers opening the app in browser or an app window."""
     STANDALONE = "standalone"
     BROWSER = "browser"
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        FileHandlerAccept.model_rebuild()
+        FileHandler.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

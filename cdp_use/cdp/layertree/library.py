@@ -4,7 +4,7 @@
 
 """CDP LayerTree Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -36,11 +36,13 @@ class LayerTreeClient:
         session_id: Optional[str] = None,
     ) -> "CompositingReasonsReturns":
         """Provides the reasons why the given layer was composited."""
-        return cast("CompositingReasonsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="LayerTree.compositingReasons",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import CompositingReasonsReturns as _CompositingReasonsReturns
+        return _CompositingReasonsReturns.model_validate(raw_result)
 
     async def disable(
         self,
@@ -48,11 +50,12 @@ class LayerTreeClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables compositing tree inspection."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="LayerTree.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -60,11 +63,12 @@ class LayerTreeClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables compositing tree inspection."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="LayerTree.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def loadSnapshot(
         self,
@@ -72,11 +76,13 @@ class LayerTreeClient:
         session_id: Optional[str] = None,
     ) -> "LoadSnapshotReturns":
         """Returns the snapshot identifier."""
-        return cast("LoadSnapshotReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="LayerTree.loadSnapshot",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import LoadSnapshotReturns as _LoadSnapshotReturns
+        return _LoadSnapshotReturns.model_validate(raw_result)
 
     async def makeSnapshot(
         self,
@@ -84,22 +90,26 @@ class LayerTreeClient:
         session_id: Optional[str] = None,
     ) -> "MakeSnapshotReturns":
         """Returns the layer snapshot identifier."""
-        return cast("MakeSnapshotReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="LayerTree.makeSnapshot",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import MakeSnapshotReturns as _MakeSnapshotReturns
+        return _MakeSnapshotReturns.model_validate(raw_result)
 
     async def profileSnapshot(
         self,
         params: "ProfileSnapshotParameters",
         session_id: Optional[str] = None,
     ) -> "ProfileSnapshotReturns":
-        return cast("ProfileSnapshotReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="LayerTree.profileSnapshot",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import ProfileSnapshotReturns as _ProfileSnapshotReturns
+        return _ProfileSnapshotReturns.model_validate(raw_result)
 
     async def releaseSnapshot(
         self,
@@ -107,11 +117,12 @@ class LayerTreeClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Releases layer snapshot captured by the back-end."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="LayerTree.releaseSnapshot",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def replaySnapshot(
         self,
@@ -119,11 +130,13 @@ class LayerTreeClient:
         session_id: Optional[str] = None,
     ) -> "ReplaySnapshotReturns":
         """Replays the layer snapshot and returns the resulting bitmap."""
-        return cast("ReplaySnapshotReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="LayerTree.replaySnapshot",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import ReplaySnapshotReturns as _ReplaySnapshotReturns
+        return _ReplaySnapshotReturns.model_validate(raw_result)
 
     async def snapshotCommandLog(
         self,
@@ -131,10 +144,12 @@ class LayerTreeClient:
         session_id: Optional[str] = None,
     ) -> "SnapshotCommandLogReturns":
         """Replays the layer snapshot and returns canvas log."""
-        return cast("SnapshotCommandLogReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="LayerTree.snapshotCommandLog",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SnapshotCommandLogReturns as _SnapshotCommandLogReturns
+        return _SnapshotCommandLogReturns.model_validate(raw_result)
 
 

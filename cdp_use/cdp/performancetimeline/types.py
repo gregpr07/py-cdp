@@ -4,8 +4,8 @@
 
 """CDP PerformanceTimeline Domain Types"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -15,48 +15,57 @@ if TYPE_CHECKING:
     from ..network.types import TimeSinceEpoch
     from ..page.types import FrameId
 
-"""See https://github.com/WICG/LargestContentfulPaint and largest_contentful_paint.idl"""
-class LargestContentfulPaint(TypedDict):
+class LargestContentfulPaint(BaseModel):
+    """See https://github.com/WICG/LargestContentfulPaint and largest_contentful_paint.idl"""
     renderTime: "TimeSinceEpoch"
     loadTime: "TimeSinceEpoch"
     size: "float"
-    """The number of pixels being painted."""
-    elementId: "Optional[str]"
-    """The id attribute of the element, if available."""
-    url: "Optional[str]"
-    """The URL of the image (may be trimmed)."""
-    nodeId: "Optional[BackendNodeId]"
+    elementId: "Optional[str]" = None
+    url: "Optional[str]" = None
+    nodeId: "Optional[BackendNodeId]" = None
 
 
 
-class LayoutShiftAttribution(TypedDict):
+class LayoutShiftAttribution(BaseModel):
     previousRect: "Rect"
     currentRect: "Rect"
-    nodeId: "Optional[BackendNodeId]"
+    nodeId: "Optional[BackendNodeId]" = None
 
 
 
-"""See https://wicg.github.io/layout-instability/#sec-layout-shift and layout_shift.idl"""
-class LayoutShift(TypedDict):
+class LayoutShift(BaseModel):
+    """See https://wicg.github.io/layout-instability/#sec-layout-shift and layout_shift.idl"""
     value: "float"
-    """Score increment produced by this event."""
     hadRecentInput: "bool"
     lastInputTime: "TimeSinceEpoch"
     sources: "List[LayoutShiftAttribution]"
 
 
 
-class TimelineEvent(TypedDict):
+class TimelineEvent(BaseModel):
     frameId: "FrameId"
-    """Identifies the frame that this event is related to. Empty for non-frame targets."""
     type: "str"
-    """The event type, as specified in https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype
-This determines which of the optional \"details\" fields is present."""
     name: "str"
-    """Name may be empty depending on the type."""
     time: "TimeSinceEpoch"
-    """Time in seconds since Epoch, monotonically increasing within document lifetime."""
-    duration: "Optional[float]"
-    """Event duration, if applicable."""
-    lcpDetails: "Optional[LargestContentfulPaint]"
-    layoutShiftDetails: "Optional[LayoutShift]"
+    duration: "Optional[float]" = None
+    lcpDetails: "Optional[LargestContentfulPaint]" = None
+    layoutShiftDetails: "Optional[LayoutShift]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import BackendNodeId
+        from ..dom.types import Rect
+        from ..network.types import TimeSinceEpoch
+        from ..page.types import FrameId
+        # Rebuild models now that imports are available
+        LargestContentfulPaint.model_rebuild()
+        LayoutShiftAttribution.model_rebuild()
+        LayoutShift.model_rebuild()
+        TimelineEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

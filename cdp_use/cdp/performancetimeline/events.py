@@ -4,13 +4,25 @@
 
 """CDP PerformanceTimeline Domain Events"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .types import TimelineEvent
 
-"""Sent when a performance timeline event is added. See reportPerformanceTimeline method."""
-class TimelineEventAddedEvent(TypedDict):
+class TimelineEventAddedEvent(BaseModel):
+    """Sent when a performance timeline event is added. See reportPerformanceTimeline method."""
     event: "TimelineEvent"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import TimelineEvent
+        # Rebuild models now that imports are available
+        TimelineEventAddedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

@@ -4,7 +4,7 @@
 
 """CDP FileSystem Domain Library"""
 
-from typing import Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -24,10 +24,12 @@ class FileSystemClient:
         params: "GetDirectoryParameters",
         session_id: Optional[str] = None,
     ) -> "GetDirectoryReturns":
-        return cast("GetDirectoryReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="FileSystem.getDirectory",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetDirectoryReturns as _GetDirectoryReturns
+        return _GetDirectoryReturns.model_validate(raw_result)
 
 

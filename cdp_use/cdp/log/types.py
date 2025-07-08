@@ -4,8 +4,8 @@
 
 """CDP Log Domain Types"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -15,35 +15,40 @@ if TYPE_CHECKING:
     from ..runtime.types import StackTrace
     from ..runtime.types import Timestamp
 
-"""Log entry."""
-class LogEntry(TypedDict):
+class LogEntry(BaseModel):
+    """Log entry."""
     source: "str"
-    """Log entry source."""
     level: "str"
-    """Log entry severity."""
     text: "str"
-    """Logged text."""
-    category: "Optional[str]"
     timestamp: "Timestamp"
-    """Timestamp when this entry was added."""
-    url: "Optional[str]"
-    """URL of the resource if known."""
-    lineNumber: "Optional[int]"
-    """Line number in the resource."""
-    stackTrace: "Optional[StackTrace]"
-    """JavaScript stack trace."""
-    networkRequestId: "Optional[RequestId]"
-    """Identifier of the network request associated with this entry."""
-    workerId: "Optional[str]"
-    """Identifier of the worker associated with this entry."""
-    args: "Optional[List[RemoteObject]]"
-    """Call arguments."""
+    category: "Optional[str]" = None
+    url: "Optional[str]" = None
+    lineNumber: "Optional[int]" = None
+    stackTrace: "Optional[StackTrace]" = None
+    networkRequestId: "Optional[RequestId]" = None
+    workerId: "Optional[str]" = None
+    args: "Optional[List[RemoteObject]]" = None
 
 
 
-"""Violation configuration setting."""
-class ViolationSetting(TypedDict):
+class ViolationSetting(BaseModel):
+    """Violation configuration setting."""
     name: "str"
-    """Violation type."""
     threshold: "float"
-    """Time threshold to trigger upon."""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..network.types import RequestId
+        from ..runtime.types import RemoteObject
+        from ..runtime.types import StackTrace
+        from ..runtime.types import Timestamp
+        # Rebuild models now that imports are available
+        LogEntry.model_rebuild()
+        ViolationSetting.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

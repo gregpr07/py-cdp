@@ -4,7 +4,8 @@
 
 """CDP CSS Domain Events"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
+from typing import Optional
 
 from typing import TYPE_CHECKING
 
@@ -14,41 +15,57 @@ if TYPE_CHECKING:
     from .types import FontFace
     from .types import StyleSheetId
 
-"""Fires whenever a web font is updated.  A non-empty font parameter indicates a successfully loaded
+class FontsUpdatedEvent(BaseModel):
+    """Fires whenever a web font is updated.  A non-empty font parameter indicates a successfully loaded
 web font."""
-class FontsUpdatedEvent(TypedDict, total=False):
-    font: "FontFace"
-    """The web font that has loaded."""
+    font: "Optional[FontFace]" = None
 
 
 
-"""Fires whenever a MediaQuery result changes (for example, after a browser window has been
+class MediaQueryResultChangedEvent(BaseModel):
+    """Fires whenever a MediaQuery result changes (for example, after a browser window has been
 resized.) The current implementation considers only viewport-dependent media features."""
-class MediaQueryResultChangedEvent(TypedDict):
     pass
 
 
 
-"""Fired whenever an active document stylesheet is added."""
-class StyleSheetAddedEvent(TypedDict):
+class StyleSheetAddedEvent(BaseModel):
+    """Fired whenever an active document stylesheet is added."""
     header: "CSSStyleSheetHeader"
-    """Added stylesheet metainfo."""
 
 
 
-"""Fired whenever a stylesheet is changed as a result of the client operation."""
-class StyleSheetChangedEvent(TypedDict):
+class StyleSheetChangedEvent(BaseModel):
+    """Fired whenever a stylesheet is changed as a result of the client operation."""
     styleSheetId: "StyleSheetId"
 
 
 
-"""Fired whenever an active document stylesheet is removed."""
-class StyleSheetRemovedEvent(TypedDict):
+class StyleSheetRemovedEvent(BaseModel):
+    """Fired whenever an active document stylesheet is removed."""
     styleSheetId: "StyleSheetId"
-    """Identifier of the removed stylesheet."""
 
 
 
-class ComputedStyleUpdatedEvent(TypedDict):
+class ComputedStyleUpdatedEvent(BaseModel):
     nodeId: "NodeId"
-    """The node id that has updated computed styles."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import NodeId
+        from .types import CSSStyleSheetHeader
+        from .types import FontFace
+        from .types import StyleSheetId
+        # Rebuild models now that imports are available
+        FontsUpdatedEvent.model_rebuild()
+        MediaQueryResultChangedEvent.model_rebuild()
+        StyleSheetAddedEvent.model_rebuild()
+        StyleSheetChangedEvent.model_rebuild()
+        StyleSheetRemovedEvent.model_rebuild()
+        ComputedStyleUpdatedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

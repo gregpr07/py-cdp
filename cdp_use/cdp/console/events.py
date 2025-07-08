@@ -4,14 +4,25 @@
 
 """CDP Console Domain Events"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .types import ConsoleMessage
 
-"""Issued when new console message is added."""
-class MessageAddedEvent(TypedDict):
+class MessageAddedEvent(BaseModel):
+    """Issued when new console message is added."""
     message: "ConsoleMessage"
-    """Console message that has been added."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import ConsoleMessage
+        # Rebuild models now that imports are available
+        MessageAddedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

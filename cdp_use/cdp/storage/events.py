@@ -4,8 +4,8 @@
 
 """CDP Storage Domain Events"""
 
+from pydantic import BaseModel
 from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -29,181 +29,182 @@ if TYPE_CHECKING:
     from .types import SharedStorageAccessScope
     from .types import StorageBucketInfo
 
-"""A cache's contents have been modified."""
-class CacheStorageContentUpdatedEvent(TypedDict):
+class CacheStorageContentUpdatedEvent(BaseModel):
+    """A cache's contents have been modified."""
     origin: "str"
-    """Origin to update."""
     storageKey: "str"
-    """Storage key to update."""
     bucketId: "str"
-    """Storage bucket to update."""
     cacheName: "str"
-    """Name of cache in origin."""
 
 
 
-"""A cache has been added/deleted."""
-class CacheStorageListUpdatedEvent(TypedDict):
+class CacheStorageListUpdatedEvent(BaseModel):
+    """A cache has been added/deleted."""
     origin: "str"
-    """Origin to update."""
     storageKey: "str"
-    """Storage key to update."""
     bucketId: "str"
-    """Storage bucket to update."""
 
 
 
-"""The origin's IndexedDB object store has been modified."""
-class IndexedDBContentUpdatedEvent(TypedDict):
+class IndexedDBContentUpdatedEvent(BaseModel):
+    """The origin's IndexedDB object store has been modified."""
     origin: "str"
-    """Origin to update."""
     storageKey: "str"
-    """Storage key to update."""
     bucketId: "str"
-    """Storage bucket to update."""
     databaseName: "str"
-    """Database to update."""
     objectStoreName: "str"
-    """ObjectStore to update."""
 
 
 
-"""The origin's IndexedDB database list has been modified."""
-class IndexedDBListUpdatedEvent(TypedDict):
+class IndexedDBListUpdatedEvent(BaseModel):
+    """The origin's IndexedDB database list has been modified."""
     origin: "str"
-    """Origin to update."""
     storageKey: "str"
-    """Storage key to update."""
     bucketId: "str"
-    """Storage bucket to update."""
 
 
 
-"""One of the interest groups was accessed. Note that these events are global
+class InterestGroupAccessedEvent(BaseModel):
+    """One of the interest groups was accessed. Note that these events are global
 to all targets sharing an interest group store."""
-class InterestGroupAccessedEvent(TypedDict):
     accessTime: "TimeSinceEpoch"
     type: "InterestGroupAccessType"
     ownerOrigin: "str"
     name: "str"
-    componentSellerOrigin: "Optional[str]"
-    """For topLevelBid/topLevelAdditionalBid, and when appropriate,
-win and additionalBidWin"""
-    bid: "Optional[float]"
-    """For bid or somethingBid event, if done locally and not on a server."""
-    bidCurrency: "Optional[str]"
-    uniqueAuctionId: "Optional[InterestGroupAuctionId]"
-    """For non-global events --- links to interestGroupAuctionEvent"""
+    componentSellerOrigin: "Optional[str]" = None
+    bid: "Optional[float]" = None
+    bidCurrency: "Optional[str]" = None
+    uniqueAuctionId: "Optional[InterestGroupAuctionId]" = None
 
 
 
-"""An auction involving interest groups is taking place. These events are
+class InterestGroupAuctionEventOccurredEvent(BaseModel):
+    """An auction involving interest groups is taking place. These events are
 target-specific."""
-class InterestGroupAuctionEventOccurredEvent(TypedDict):
     eventTime: "TimeSinceEpoch"
     type: "InterestGroupAuctionEventType"
     uniqueAuctionId: "InterestGroupAuctionId"
-    parentAuctionId: "Optional[InterestGroupAuctionId]"
-    """Set for child auctions."""
-    auctionConfig: "Optional[Dict[str, Any]]"
-    """Set for started and configResolved"""
+    parentAuctionId: "Optional[InterestGroupAuctionId]" = None
+    auctionConfig: "Optional[Dict[str, Any]]" = None
 
 
 
-"""Specifies which auctions a particular network fetch may be related to, and
+class InterestGroupAuctionNetworkRequestCreatedEvent(BaseModel):
+    """Specifies which auctions a particular network fetch may be related to, and
 in what role. Note that it is not ordered with respect to
 Network.requestWillBeSent (but will happen before loadingFinished
 loadingFailed)."""
-class InterestGroupAuctionNetworkRequestCreatedEvent(TypedDict):
     type: "InterestGroupAuctionFetchType"
     requestId: "RequestId"
     auctions: "List[InterestGroupAuctionId]"
-    """This is the set of the auctions using the worklet that issued this
-request.  In the case of trusted signals, it's possible that only some of
-them actually care about the keys being queried."""
 
 
 
-"""Shared storage was accessed by the associated page.
+class SharedStorageAccessedEvent(BaseModel):
+    """Shared storage was accessed by the associated page.
 The following parameters are included in all events."""
-class SharedStorageAccessedEvent(TypedDict):
     accessTime: "TimeSinceEpoch"
-    """Time of the access."""
     scope: "SharedStorageAccessScope"
-    """Enum value indicating the access scope."""
     method: "SharedStorageAccessMethod"
-    """Enum value indicating the Shared Storage API method invoked."""
     mainFrameId: "FrameId"
-    """DevTools Frame Token for the primary frame tree's root."""
     ownerOrigin: "str"
-    """Serialization of the origin owning the Shared Storage data."""
     ownerSite: "str"
-    """Serialization of the site owning the Shared Storage data."""
     params: "SharedStorageAccessParams"
-    """The sub-parameters wrapped by `params` are all optional and their
-presence/absence depends on `type`."""
 
 
 
-"""A shared storage run or selectURL operation finished its execution.
+class SharedStorageWorkletOperationExecutionFinishedEvent(BaseModel):
+    """A shared storage run or selectURL operation finished its execution.
 The following parameters are included in all events."""
-class SharedStorageWorkletOperationExecutionFinishedEvent(TypedDict):
     finishedTime: "TimeSinceEpoch"
-    """Time that the operation finished."""
     executionTime: "int"
-    """Time, in microseconds, from start of shared storage JS API call until
-end of operation execution in the worklet."""
     method: "SharedStorageAccessMethod"
-    """Enum value indicating the Shared Storage API method invoked."""
     operationId: "str"
-    """ID of the operation call."""
     workletTargetId: "TargetID"
-    """Hex representation of the DevTools token used as the TargetID for the
-associated shared storage worklet."""
     mainFrameId: "FrameId"
-    """DevTools Frame Token for the primary frame tree's root."""
     ownerOrigin: "str"
-    """Serialization of the origin owning the Shared Storage data."""
 
 
 
-class StorageBucketCreatedOrUpdatedEvent(TypedDict):
+class StorageBucketCreatedOrUpdatedEvent(BaseModel):
     bucketInfo: "StorageBucketInfo"
 
 
 
-class StorageBucketDeletedEvent(TypedDict):
+class StorageBucketDeletedEvent(BaseModel):
     bucketId: "str"
 
 
 
-class AttributionReportingSourceRegisteredEvent(TypedDict):
+class AttributionReportingSourceRegisteredEvent(BaseModel):
     registration: "AttributionReportingSourceRegistration"
     result: "AttributionReportingSourceRegistrationResult"
 
 
 
-class AttributionReportingTriggerRegisteredEvent(TypedDict):
+class AttributionReportingTriggerRegisteredEvent(BaseModel):
     registration: "AttributionReportingTriggerRegistration"
     eventLevel: "AttributionReportingEventLevelResult"
     aggregatable: "AttributionReportingAggregatableResult"
 
 
 
-class AttributionReportingReportSentEvent(TypedDict):
+class AttributionReportingReportSentEvent(BaseModel):
     url: "str"
     body: "Dict[str, Any]"
     result: "AttributionReportingReportResult"
-    netError: "Optional[int]"
-    """If result is `sent`, populated with net/HTTP status."""
-    netErrorName: "Optional[str]"
-    httpStatusCode: "Optional[int]"
+    netError: "Optional[int]" = None
+    netErrorName: "Optional[str]" = None
+    httpStatusCode: "Optional[int]" = None
 
 
 
-class AttributionReportingVerboseDebugReportSentEvent(TypedDict):
+class AttributionReportingVerboseDebugReportSentEvent(BaseModel):
     url: "str"
-    body: "Optional[List[Dict[str, Any]]]"
-    netError: "Optional[int]"
-    netErrorName: "Optional[str]"
-    httpStatusCode: "Optional[int]"
+    body: "Optional[List[Dict[str, Any]]]" = None
+    netError: "Optional[int]" = None
+    netErrorName: "Optional[str]" = None
+    httpStatusCode: "Optional[int]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..network.types import RequestId
+        from ..network.types import TimeSinceEpoch
+        from ..page.types import FrameId
+        from ..target.types import TargetID
+        from .types import AttributionReportingAggregatableResult
+        from .types import AttributionReportingEventLevelResult
+        from .types import AttributionReportingReportResult
+        from .types import AttributionReportingSourceRegistration
+        from .types import AttributionReportingSourceRegistrationResult
+        from .types import AttributionReportingTriggerRegistration
+        from .types import InterestGroupAccessType
+        from .types import InterestGroupAuctionEventType
+        from .types import InterestGroupAuctionFetchType
+        from .types import InterestGroupAuctionId
+        from .types import SharedStorageAccessMethod
+        from .types import SharedStorageAccessParams
+        from .types import SharedStorageAccessScope
+        from .types import StorageBucketInfo
+        # Rebuild models now that imports are available
+        CacheStorageContentUpdatedEvent.model_rebuild()
+        CacheStorageListUpdatedEvent.model_rebuild()
+        IndexedDBContentUpdatedEvent.model_rebuild()
+        IndexedDBListUpdatedEvent.model_rebuild()
+        InterestGroupAccessedEvent.model_rebuild()
+        InterestGroupAuctionEventOccurredEvent.model_rebuild()
+        InterestGroupAuctionNetworkRequestCreatedEvent.model_rebuild()
+        SharedStorageAccessedEvent.model_rebuild()
+        SharedStorageWorkletOperationExecutionFinishedEvent.model_rebuild()
+        StorageBucketCreatedOrUpdatedEvent.model_rebuild()
+        StorageBucketDeletedEvent.model_rebuild()
+        AttributionReportingSourceRegisteredEvent.model_rebuild()
+        AttributionReportingTriggerRegisteredEvent.model_rebuild()
+        AttributionReportingReportSentEvent.model_rebuild()
+        AttributionReportingVerboseDebugReportSentEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

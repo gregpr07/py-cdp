@@ -4,6 +4,7 @@
 
 """CDP FileSystem Domain Commands"""
 
+from pydantic import BaseModel
 from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
@@ -16,6 +17,18 @@ class GetDirectoryParameters(TypedDict):
     bucketFileSystemLocator: "BucketFileSystemLocator"
 
 
-class GetDirectoryReturns(TypedDict):
+class GetDirectoryReturns(BaseModel):
     directory: "Directory"
-    """Returns the directory object at the path."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import BucketFileSystemLocator
+        from .types import Directory
+        # Rebuild models now that imports are available
+        GetDirectoryReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

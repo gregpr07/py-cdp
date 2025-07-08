@@ -4,6 +4,7 @@
 
 """CDP Network Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -41,21 +42,18 @@ class SetAcceptedEncodingsParameters(TypedDict):
 
 
 
-class CanClearBrowserCacheReturns(TypedDict):
+class CanClearBrowserCacheReturns(BaseModel):
     result: "bool"
-    """True if browser cache can be cleared."""
 
 
 
-class CanClearBrowserCookiesReturns(TypedDict):
+class CanClearBrowserCookiesReturns(BaseModel):
     result: "bool"
-    """True if browser cookies can be cleared."""
 
 
 
-class CanEmulateNetworkConditionsReturns(TypedDict):
+class CanEmulateNetworkConditionsReturns(BaseModel):
     result: "bool"
-    """True if emulation of network conditions is supported."""
 
 
 
@@ -140,9 +138,8 @@ class EnableParameters(TypedDict, total=False):
 
 
 
-class GetAllCookiesReturns(TypedDict):
+class GetAllCookiesReturns(BaseModel):
     cookies: "List[Cookie]"
-    """Array of cookie objects."""
 
 
 
@@ -151,7 +148,7 @@ class GetCertificateParameters(TypedDict):
     """Origin to get certificate for."""
 
 
-class GetCertificateReturns(TypedDict):
+class GetCertificateReturns(BaseModel):
     tableNames: "List[str]"
 
 
@@ -163,9 +160,8 @@ If not specified, it's assumed to be set to the list containing
 the URLs of the page and all of its subframes."""
 
 
-class GetCookiesReturns(TypedDict):
+class GetCookiesReturns(BaseModel):
     cookies: "List[Cookie]"
-    """Array of cookie objects."""
 
 
 
@@ -174,11 +170,9 @@ class GetResponseBodyParameters(TypedDict):
     """Identifier of the network request to get content for."""
 
 
-class GetResponseBodyReturns(TypedDict):
+class GetResponseBodyReturns(BaseModel):
     body: "str"
-    """Response body."""
     base64Encoded: "bool"
-    """True, if content was sent as base64."""
 
 
 
@@ -187,9 +181,8 @@ class GetRequestPostDataParameters(TypedDict):
     """Identifier of the network request to get content for."""
 
 
-class GetRequestPostDataReturns(TypedDict):
+class GetRequestPostDataReturns(BaseModel):
     postData: "str"
-    """Request body string, omitting files from multipart requests"""
 
 
 
@@ -198,11 +191,9 @@ class GetResponseBodyForInterceptionParameters(TypedDict):
     """Identifier for the intercepted request to get body for."""
 
 
-class GetResponseBodyForInterceptionReturns(TypedDict):
+class GetResponseBodyForInterceptionReturns(BaseModel):
     body: "str"
-    """Response body."""
     base64Encoded: "bool"
-    """True, if content was sent as base64."""
 
 
 
@@ -210,7 +201,7 @@ class TakeResponseBodyForInterceptionAsStreamParameters(TypedDict):
     interceptionId: "InterceptionId"
 
 
-class TakeResponseBodyForInterceptionAsStreamReturns(TypedDict):
+class TakeResponseBodyForInterceptionAsStreamReturns(BaseModel):
     stream: "StreamHandle"
 
 
@@ -234,9 +225,8 @@ class SearchInResponseBodyParameters(TypedDict):
     """If true, treats string parameter as regex."""
 
 
-class SearchInResponseBodyReturns(TypedDict):
+class SearchInResponseBodyReturns(BaseModel):
     result: "List[SearchMatch]"
-    """List of search matches."""
 
 
 
@@ -298,9 +288,8 @@ This is a temporary ability and it will be removed in the future."""
     """Cookie partition key. If not set, the cookie will be set as not partitioned."""
 
 
-class SetCookieReturns(TypedDict):
+class SetCookieReturns(BaseModel):
     success: "bool"
-    """Always set to true. If an error occurs, the response indicates protocol error."""
 
 
 
@@ -356,9 +345,8 @@ class StreamResourceContentParameters(TypedDict):
     """Identifier of the request to stream."""
 
 
-class StreamResourceContentReturns(TypedDict):
+class StreamResourceContentReturns(BaseModel):
     bufferedData: "str"
-    """Data that has been buffered until streaming is enabled. (Encoded as a base64 string when passed over JSON)"""
 
 
 
@@ -367,7 +355,7 @@ class GetSecurityIsolationStatusParameters(TypedDict, total=False):
     """If no frameId is provided, the status of the target is provided."""
 
 
-class GetSecurityIsolationStatusReturns(TypedDict):
+class GetSecurityIsolationStatusReturns(BaseModel):
     status: "SecurityIsolationStatus"
 
 
@@ -390,7 +378,7 @@ should be omitted for worker targets."""
     """Options for the request."""
 
 
-class LoadNetworkResourceReturns(TypedDict):
+class LoadNetworkResourceReturns(BaseModel):
     resource: "LoadNetworkResourcePageResult"
 
 
@@ -404,3 +392,50 @@ class SetCookieControlsParameters(TypedDict):
     """Whether 3pc heuristics exceptions should be enabled; false by default."""
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..debugger.types import SearchMatch
+        from ..emulation.types import UserAgentMetadata
+        from ..io.types import StreamHandle
+        from ..page.types import FrameId
+        from .types import AuthChallengeResponse
+        from .types import ConnectionType
+        from .types import ContentEncoding
+        from .types import Cookie
+        from .types import CookieParam
+        from .types import CookiePartitionKey
+        from .types import CookiePriority
+        from .types import CookieSameSite
+        from .types import CookieSourceScheme
+        from .types import ErrorReason
+        from .types import Headers
+        from .types import InterceptionId
+        from .types import LoadNetworkResourceOptions
+        from .types import LoadNetworkResourcePageResult
+        from .types import RequestId
+        from .types import RequestPattern
+        from .types import SecurityIsolationStatus
+        from .types import TimeSinceEpoch
+        # Rebuild models now that imports are available
+        CanClearBrowserCacheReturns.model_rebuild()
+        CanClearBrowserCookiesReturns.model_rebuild()
+        CanEmulateNetworkConditionsReturns.model_rebuild()
+        GetAllCookiesReturns.model_rebuild()
+        GetCertificateReturns.model_rebuild()
+        GetCookiesReturns.model_rebuild()
+        GetResponseBodyReturns.model_rebuild()
+        GetRequestPostDataReturns.model_rebuild()
+        GetResponseBodyForInterceptionReturns.model_rebuild()
+        TakeResponseBodyForInterceptionAsStreamReturns.model_rebuild()
+        SearchInResponseBodyReturns.model_rebuild()
+        SetCookieReturns.model_rebuild()
+        StreamResourceContentReturns.model_rebuild()
+        GetSecurityIsolationStatusReturns.model_rebuild()
+        LoadNetworkResourceReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

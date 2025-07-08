@@ -4,6 +4,7 @@
 
 """CDP Audits Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -24,13 +25,10 @@ class GetEncodedResponseParameters(TypedDict):
     """Whether to only return the size information (defaults to false)."""
 
 
-class GetEncodedResponseReturns(TypedDict):
-    body: "str"
-    """The encoded body as a base64 string. Omitted if sizeOnly is true. (Encoded as a base64 string when passed over JSON)"""
+class GetEncodedResponseReturns(BaseModel):
     originalSize: "int"
-    """Size before re-encoding."""
     encodedSize: "int"
-    """Size after re-encoding."""
+    body: "Optional[str]" = None
 
 
 
@@ -42,5 +40,19 @@ class CheckContrastParameters(TypedDict, total=False):
 
 
 
-class CheckFormsIssuesReturns(TypedDict):
+class CheckFormsIssuesReturns(BaseModel):
     formIssues: "List[GenericIssueDetails]"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..network.types import RequestId
+        from .types import GenericIssueDetails
+        # Rebuild models now that imports are available
+        GetEncodedResponseReturns.model_rebuild()
+        CheckFormsIssuesReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

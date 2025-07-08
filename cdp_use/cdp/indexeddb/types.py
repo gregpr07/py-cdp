@@ -4,96 +4,88 @@
 
 """CDP IndexedDB Domain Types"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..runtime.types import RemoteObject
 
-"""Database with an array of object stores."""
-class DatabaseWithObjectStores(TypedDict):
+class DatabaseWithObjectStores(BaseModel):
+    """Database with an array of object stores."""
     name: "str"
-    """Database name."""
     version: "float"
-    """Database version (type is not 'integer', as the standard
-requires the version number to be 'unsigned long long')"""
     objectStores: "List[ObjectStore]"
-    """Object stores in this database."""
 
 
 
-"""Object store."""
-class ObjectStore(TypedDict):
+class ObjectStore(BaseModel):
+    """Object store."""
     name: "str"
-    """Object store name."""
     keyPath: "KeyPath"
-    """Object store key path."""
     autoIncrement: "bool"
-    """If true, object store has auto increment flag set."""
     indexes: "List[ObjectStoreIndex]"
-    """Indexes in this object store."""
 
 
 
-"""Object store index."""
-class ObjectStoreIndex(TypedDict):
+class ObjectStoreIndex(BaseModel):
+    """Object store index."""
     name: "str"
-    """Index name."""
     keyPath: "KeyPath"
-    """Index key path."""
     unique: "bool"
-    """If true, index is unique."""
     multiEntry: "bool"
-    """If true, index allows multiple entries for a key."""
 
 
 
-"""Key."""
-class Key(TypedDict):
+class Key(BaseModel):
+    """Key."""
     type: "str"
-    """Key type."""
-    number: "Optional[float]"
-    """Number value."""
-    string: "Optional[str]"
-    """String value."""
-    date: "Optional[float]"
-    """Date value."""
-    array: "Optional[List[Key]]"
-    """Array value."""
+    number: "Optional[float]" = None
+    string: "Optional[str]" = None
+    date: "Optional[float]" = None
+    array: "Optional[List[Key]]" = None
 
 
 
-"""Key range."""
-class KeyRange(TypedDict):
-    lower: "Optional[Key]"
-    """Lower bound."""
-    upper: "Optional[Key]"
-    """Upper bound."""
+class KeyRange(BaseModel):
+    """Key range."""
     lowerOpen: "bool"
-    """If true lower bound is open."""
     upperOpen: "bool"
-    """If true upper bound is open."""
+    lower: "Optional[Key]" = None
+    upper: "Optional[Key]" = None
 
 
 
-"""Data entry."""
-class DataEntry(TypedDict):
+class DataEntry(BaseModel):
+    """Data entry."""
     key: "RemoteObject"
-    """Key object."""
     primaryKey: "RemoteObject"
-    """Primary key object."""
     value: "RemoteObject"
-    """Value object."""
 
 
 
-"""Key path."""
-class KeyPath(TypedDict):
+class KeyPath(BaseModel):
+    """Key path."""
     type: "str"
-    """Key path type."""
-    string: "Optional[str]"
-    """String value."""
-    array: "Optional[List[str]]"
-    """Array value."""
+    string: "Optional[str]" = None
+    array: "Optional[List[str]]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..runtime.types import RemoteObject
+        # Rebuild models now that imports are available
+        DatabaseWithObjectStores.model_rebuild()
+        ObjectStore.model_rebuild()
+        ObjectStoreIndex.model_rebuild()
+        Key.model_rebuild()
+        KeyRange.model_rebuild()
+        DataEntry.model_rebuild()
+        KeyPath.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

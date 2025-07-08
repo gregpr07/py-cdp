@@ -5,33 +5,21 @@
 """CDP Input Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
-class TouchPoint(TypedDict):
+class TouchPoint(BaseModel):
     x: "float"
-    """X coordinate of the event relative to the main frame's viewport in CSS pixels."""
     y: "float"
-    """Y coordinate of the event relative to the main frame's viewport in CSS pixels. 0 refers to
-the top of the viewport and Y increases as it proceeds towards the bottom of the viewport."""
-    radiusX: "Optional[float]"
-    """X radius of the touch area (default: 1.0)."""
-    radiusY: "Optional[float]"
-    """Y radius of the touch area (default: 1.0)."""
-    rotationAngle: "Optional[float]"
-    """Rotation angle (default: 0.0)."""
-    force: "Optional[float]"
-    """Force (default: 1.0)."""
-    tangentialPressure: "Optional[float]"
-    """The normalized tangential pressure, which has a range of [-1,1] (default: 0)."""
-    tiltX: "Optional[float]"
-    """The plane angle between the Y-Z plane and the plane containing both the stylus axis and the Y axis, in degrees of the range [-90,90], a positive tiltX is to the right (default: 0)"""
-    tiltY: "Optional[float]"
-    """The plane angle between the X-Z plane and the plane containing both the stylus axis and the X axis, in degrees of the range [-90,90], a positive tiltY is towards the user (default: 0)."""
-    twist: "Optional[int]"
-    """The clockwise rotation of a pen stylus around its own major axis, in degrees in the range [0,359] (default: 0)."""
-    id: "Optional[float]"
-    """Identifier used to track touch sources between events, must be unique within an event."""
+    radiusX: "Optional[float]" = None
+    radiusY: "Optional[float]" = None
+    rotationAngle: "Optional[float]" = None
+    force: "Optional[float]" = None
+    tangentialPressure: "Optional[float]" = None
+    tiltX: "Optional[float]" = None
+    tiltY: "Optional[float]" = None
+    twist: "Optional[int]" = None
+    id: "Optional[float]" = None
 
 
 
@@ -57,23 +45,29 @@ TimeSinceEpoch = float
 
 
 
-class DragDataItem(TypedDict):
+class DragDataItem(BaseModel):
     mimeType: "str"
-    """Mime type of the dragged data."""
     data: "str"
-    """Depending of the value of `mimeType`, it contains the dragged link,
-text, HTML markup or any other data."""
-    title: "Optional[str]"
-    """Title associated with a link. Only valid when `mimeType` == \"text/uri-list\"."""
-    baseURL: "Optional[str]"
-    """Stores the base URL for the contained markup. Only valid when `mimeType`
-== \"text/html\"."""
+    title: "Optional[str]" = None
+    baseURL: "Optional[str]" = None
 
 
 
-class DragData(TypedDict):
+class DragData(BaseModel):
     items: "List[DragDataItem]"
-    files: "Optional[List[str]]"
-    """List of filenames that should be included when dropping"""
     dragOperationsMask: "int"
-    """Bit field representing allowed drag operations. Copy = 1, Link = 2, Move = 16"""
+    files: "Optional[List[str]]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        TouchPoint.model_rebuild()
+        DragDataItem.model_rebuild()
+        DragData.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

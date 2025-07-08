@@ -4,7 +4,7 @@
 
 """CDP HeadlessExperimental Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -28,11 +28,13 @@ class HeadlessExperimentalClient:
 screenshot from the resulting frame. Requires that the target was created with enabled
 BeginFrameControl. Designed for use with --run-all-compositor-stages-before-draw, see also
 https://goo.gle/chrome-headless-rendering for more background."""
-        return cast("BeginFrameReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="HeadlessExperimental.beginFrame",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import BeginFrameReturns as _BeginFrameReturns
+        return _BeginFrameReturns.model_validate(raw_result)
 
     async def disable(
         self,
@@ -40,11 +42,12 @@ https://goo.gle/chrome-headless-rendering for more background."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables headless events for the target."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="HeadlessExperimental.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -52,10 +55,11 @@ https://goo.gle/chrome-headless-rendering for more background."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables headless events for the target."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="HeadlessExperimental.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

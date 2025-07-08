@@ -4,7 +4,7 @@
 
 """CDP Tracing Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -28,11 +28,12 @@ class TracingClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Stop trace events collection."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Tracing.end",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getCategories(
         self,
@@ -40,11 +41,13 @@ class TracingClient:
         session_id: Optional[str] = None,
     ) -> "GetCategoriesReturns":
         """Gets supported tracing categories."""
-        return cast("GetCategoriesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Tracing.getCategories",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetCategoriesReturns as _GetCategoriesReturns
+        return _GetCategoriesReturns.model_validate(raw_result)
 
     async def recordClockSyncMarker(
         self,
@@ -52,11 +55,12 @@ class TracingClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Record a clock sync marker in the trace."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Tracing.recordClockSyncMarker",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def requestMemoryDump(
         self,
@@ -64,11 +68,13 @@ class TracingClient:
         session_id: Optional[str] = None,
     ) -> "RequestMemoryDumpReturns":
         """Request a global memory dump."""
-        return cast("RequestMemoryDumpReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Tracing.requestMemoryDump",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import RequestMemoryDumpReturns as _RequestMemoryDumpReturns
+        return _RequestMemoryDumpReturns.model_validate(raw_result)
 
     async def start(
         self,
@@ -76,10 +82,11 @@ class TracingClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Start trace events collection."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Tracing.start",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

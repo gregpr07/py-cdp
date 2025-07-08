@@ -4,20 +4,26 @@
 
 """CDP Console Domain Types"""
 
+from pydantic import BaseModel
 from typing import Optional
-from typing_extensions import TypedDict
 
-"""Console message."""
-class ConsoleMessage(TypedDict):
+class ConsoleMessage(BaseModel):
+    """Console message."""
     source: "str"
-    """Message source."""
     level: "str"
-    """Message severity."""
     text: "str"
-    """Message text."""
-    url: "Optional[str]"
-    """URL of the message origin."""
-    line: "Optional[int]"
-    """Line number in the resource that generated this message (1-based)."""
-    column: "Optional[int]"
-    """Column number in the resource that generated this message (1-based)."""
+    url: "Optional[str]" = None
+    line: "Optional[int]" = None
+    column: "Optional[int]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        ConsoleMessage.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

@@ -4,6 +4,7 @@
 
 """CDP DOMStorage Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List
 from typing_extensions import TypedDict
 
@@ -24,7 +25,7 @@ class GetDOMStorageItemsParameters(TypedDict):
     storageId: "StorageId"
 
 
-class GetDOMStorageItemsReturns(TypedDict):
+class GetDOMStorageItemsReturns(BaseModel):
     entries: "List[Item]"
 
 
@@ -43,3 +44,16 @@ class SetDOMStorageItemParameters(TypedDict):
     value: "str"
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import Item
+        from .types import StorageId
+        # Rebuild models now that imports are available
+        GetDOMStorageItemsReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

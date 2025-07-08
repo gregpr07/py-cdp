@@ -5,121 +5,106 @@
 """CDP SystemInfo Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
 
-"""Describes a single graphics processor (GPU)."""
-class GPUDevice(TypedDict):
+class GPUDevice(BaseModel):
+    """Describes a single graphics processor (GPU)."""
     vendorId: "float"
-    """PCI ID of the GPU vendor, if available; 0 otherwise."""
     deviceId: "float"
-    """PCI ID of the GPU device, if available; 0 otherwise."""
-    subSysId: "Optional[float]"
-    """Sub sys ID of the GPU, only available on Windows."""
-    revision: "Optional[float]"
-    """Revision of the GPU, only available on Windows."""
     vendorString: "str"
-    """String description of the GPU vendor, if the PCI ID is not available."""
     deviceString: "str"
-    """String description of the GPU device, if the PCI ID is not available."""
     driverVendor: "str"
-    """String description of the GPU driver vendor."""
     driverVersion: "str"
-    """String description of the GPU driver version."""
+    subSysId: "Optional[float]" = None
+    revision: "Optional[float]" = None
 
 
 
-"""Describes the width and height dimensions of an entity."""
-class Size(TypedDict):
+class Size(BaseModel):
+    """Describes the width and height dimensions of an entity."""
     width: "int"
-    """Width in pixels."""
     height: "int"
-    """Height in pixels."""
 
 
 
-"""Describes a supported video decoding profile with its associated minimum and
+class VideoDecodeAcceleratorCapability(BaseModel):
+    """Describes a supported video decoding profile with its associated minimum and
 maximum resolutions."""
-class VideoDecodeAcceleratorCapability(TypedDict):
     profile: "str"
-    """Video codec profile that is supported, e.g. VP9 Profile 2."""
     maxResolution: "Size"
-    """Maximum video dimensions in pixels supported for this |profile|."""
     minResolution: "Size"
-    """Minimum video dimensions in pixels supported for this |profile|."""
 
 
 
-"""Describes a supported video encoding profile with its associated maximum
+class VideoEncodeAcceleratorCapability(BaseModel):
+    """Describes a supported video encoding profile with its associated maximum
 resolution and maximum framerate."""
-class VideoEncodeAcceleratorCapability(TypedDict):
     profile: "str"
-    """Video codec profile that is supported, e.g H264 Main."""
     maxResolution: "Size"
-    """Maximum video dimensions in pixels supported for this |profile|."""
     maxFramerateNumerator: "int"
-    """Maximum encoding framerate in frames per second supported for this
-|profile|, as fraction's numerator and denominator, e.g. 24/1 fps,
-24000/1001 fps, etc."""
     maxFramerateDenominator: "int"
 
 
 
-"""YUV subsampling type of the pixels of a given image."""
 class SubsamplingFormat(Enum):
+    """YUV subsampling type of the pixels of a given image."""
     YUV420 = "yuv420"
     YUV422 = "yuv422"
     YUV444 = "yuv444"
 
 
 
-"""Image format of a given image."""
 class ImageType(Enum):
+    """Image format of a given image."""
     JPEG = "jpeg"
     WEBP = "webp"
     UNKNOWN = "unknown"
 
 
 
-"""Describes a supported image decoding profile with its associated minimum and
+class ImageDecodeAcceleratorCapability(BaseModel):
+    """Describes a supported image decoding profile with its associated minimum and
 maximum resolutions and subsampling."""
-class ImageDecodeAcceleratorCapability(TypedDict):
     imageType: "ImageType"
-    """Image coded, e.g. Jpeg."""
     maxDimensions: "Size"
-    """Maximum supported dimensions of the image in pixels."""
     minDimensions: "Size"
-    """Minimum supported dimensions of the image in pixels."""
     subsamplings: "List[SubsamplingFormat]"
-    """Optional array of supported subsampling formats, e.g. 4:2:0, if known."""
 
 
 
-"""Provides information about the GPU(s) on the system."""
-class GPUInfo(TypedDict):
+class GPUInfo(BaseModel):
+    """Provides information about the GPU(s) on the system."""
     devices: "List[GPUDevice]"
-    """The graphics devices on the system. Element 0 is the primary GPU."""
-    auxAttributes: "Optional[Dict[str, Any]]"
-    """An optional dictionary of additional GPU related attributes."""
-    featureStatus: "Optional[Dict[str, Any]]"
-    """An optional dictionary of graphics features and their status."""
     driverBugWorkarounds: "List[str]"
-    """An optional array of GPU driver bug workarounds."""
     videoDecoding: "List[VideoDecodeAcceleratorCapability]"
-    """Supported accelerated video decoding capabilities."""
     videoEncoding: "List[VideoEncodeAcceleratorCapability]"
-    """Supported accelerated video encoding capabilities."""
     imageDecoding: "List[ImageDecodeAcceleratorCapability]"
-    """Supported accelerated image decoding capabilities."""
+    auxAttributes: "Optional[Dict[str, Any]]" = None
+    featureStatus: "Optional[Dict[str, Any]]" = None
 
 
 
-"""Represents process info."""
-class ProcessInfo(TypedDict):
+class ProcessInfo(BaseModel):
+    """Represents process info."""
     type: "str"
-    """Specifies process type."""
     id: "int"
-    """Specifies process id."""
     cpuTime: "float"
-    """Specifies cumulative CPU usage in seconds across all threads of the
-process since the process start."""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        GPUDevice.model_rebuild()
+        Size.model_rebuild()
+        VideoDecodeAcceleratorCapability.model_rebuild()
+        VideoEncodeAcceleratorCapability.model_rebuild()
+        ImageDecodeAcceleratorCapability.model_rebuild()
+        GPUInfo.model_rebuild()
+        ProcessInfo.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

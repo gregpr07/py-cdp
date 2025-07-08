@@ -4,6 +4,7 @@
 
 """CDP DOM Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -32,9 +33,8 @@ class CollectClassNamesFromSubtreeParameters(TypedDict):
     """Id of the node to collect class names."""
 
 
-class CollectClassNamesFromSubtreeReturns(TypedDict):
+class CollectClassNamesFromSubtreeReturns(BaseModel):
     classNames: "List[str]"
-    """Class name list."""
 
 
 
@@ -48,9 +48,8 @@ class CopyToParameters(TypedDict):
 `targetNodeId`)."""
 
 
-class CopyToReturns(TypedDict):
+class CopyToReturns(BaseModel):
     nodeId: "NodeId"
-    """Id of the node clone."""
 
 
 
@@ -69,9 +68,8 @@ entire subtree or provide an integer larger than 0."""
 (default is false)."""
 
 
-class DescribeNodeReturns(TypedDict):
+class DescribeNodeReturns(BaseModel):
     node: "Node"
-    """Node description."""
 
 
 
@@ -123,9 +121,8 @@ class GetAttributesParameters(TypedDict):
     """Id of the node to retrieve attributes for."""
 
 
-class GetAttributesReturns(TypedDict):
+class GetAttributesReturns(BaseModel):
     attributes: "List[str]"
-    """An interleaved array of node attribute names and values."""
 
 
 
@@ -138,9 +135,8 @@ class GetBoxModelParameters(TypedDict, total=False):
     """JavaScript object id of the node wrapper."""
 
 
-class GetBoxModelReturns(TypedDict):
+class GetBoxModelReturns(BaseModel):
     model: "BoxModel"
-    """Box model for the node."""
 
 
 
@@ -153,9 +149,8 @@ class GetContentQuadsParameters(TypedDict, total=False):
     """JavaScript object id of the node wrapper."""
 
 
-class GetContentQuadsReturns(TypedDict):
+class GetContentQuadsReturns(BaseModel):
     quads: "List[Quad]"
-    """Quads that describe node layout relative to viewport."""
 
 
 
@@ -168,9 +163,8 @@ entire subtree or provide an integer larger than 0."""
 (default is false)."""
 
 
-class GetDocumentReturns(TypedDict):
+class GetDocumentReturns(BaseModel):
     root: "Node"
-    """Resulting node."""
 
 
 
@@ -183,9 +177,8 @@ entire subtree or provide an integer larger than 0."""
 (default is false)."""
 
 
-class GetFlattenedDocumentReturns(TypedDict):
+class GetFlattenedDocumentReturns(BaseModel):
     nodes: "List[Node]"
-    """Resulting node."""
 
 
 
@@ -199,9 +192,8 @@ class GetNodesForSubtreeByStyleParameters(TypedDict):
 results (default is false)."""
 
 
-class GetNodesForSubtreeByStyleReturns(TypedDict):
+class GetNodesForSubtreeByStyleReturns(BaseModel):
     nodeIds: "List[NodeId]"
-    """Resulting nodes."""
 
 
 
@@ -216,13 +208,10 @@ class GetNodeForLocationParameters(TypedDict):
     """Whether to ignore pointer-events: none on elements and hit test them."""
 
 
-class GetNodeForLocationReturns(TypedDict):
+class GetNodeForLocationReturns(BaseModel):
     backendNodeId: "BackendNodeId"
-    """Resulting node."""
     frameId: "FrameId"
-    """Frame this node belongs to."""
-    nodeId: "NodeId"
-    """Id of the node at given coordinates, only when enabled and requested document."""
+    nodeId: "Optional[NodeId]" = None
 
 
 
@@ -233,11 +222,12 @@ class GetOuterHTMLParameters(TypedDict, total=False):
     """Identifier of the backend node."""
     objectId: "RemoteObjectId"
     """JavaScript object id of the node wrapper."""
+    includeShadowDOM: "bool"
+    """Include all shadow roots. Equals to false if not specified."""
 
 
-class GetOuterHTMLReturns(TypedDict):
+class GetOuterHTMLReturns(BaseModel):
     outerHTML: "str"
-    """Outer HTML markup."""
 
 
 
@@ -246,9 +236,8 @@ class GetRelayoutBoundaryParameters(TypedDict):
     """Id of the node."""
 
 
-class GetRelayoutBoundaryReturns(TypedDict):
+class GetRelayoutBoundaryReturns(BaseModel):
     nodeId: "NodeId"
-    """Relayout boundary node id for the given node."""
 
 
 
@@ -261,9 +250,8 @@ class GetSearchResultsParameters(TypedDict):
     """End index of the search result to be returned."""
 
 
-class GetSearchResultsReturns(TypedDict):
+class GetSearchResultsReturns(BaseModel):
     nodeIds: "List[NodeId]"
-    """Ids of the search result nodes."""
 
 
 
@@ -277,9 +265,8 @@ class MoveToParameters(TypedDict):
 `targetNodeId`)."""
 
 
-class MoveToReturns(TypedDict):
+class MoveToReturns(BaseModel):
     nodeId: "NodeId"
-    """New id of the moved node."""
 
 
 
@@ -290,11 +277,9 @@ class PerformSearchParameters(TypedDict):
     """True to search in user agent shadow DOM."""
 
 
-class PerformSearchReturns(TypedDict):
+class PerformSearchReturns(BaseModel):
     searchId: "str"
-    """Unique search session identifier."""
     resultCount: "int"
-    """Number of search results."""
 
 
 
@@ -303,9 +288,8 @@ class PushNodeByPathToFrontendParameters(TypedDict):
     """Path to node in the proprietary format."""
 
 
-class PushNodeByPathToFrontendReturns(TypedDict):
+class PushNodeByPathToFrontendReturns(BaseModel):
     nodeId: "NodeId"
-    """Id of the node for given path."""
 
 
 
@@ -314,10 +298,8 @@ class PushNodesByBackendIdsToFrontendParameters(TypedDict):
     """The array of backend node ids."""
 
 
-class PushNodesByBackendIdsToFrontendReturns(TypedDict):
+class PushNodesByBackendIdsToFrontendReturns(BaseModel):
     nodeIds: "List[NodeId]"
-    """The array of ids of pushed nodes that correspond to the backend ids specified in
-backendNodeIds."""
 
 
 
@@ -328,9 +310,8 @@ class QuerySelectorParameters(TypedDict):
     """Selector string."""
 
 
-class QuerySelectorReturns(TypedDict):
+class QuerySelectorReturns(BaseModel):
     nodeId: "NodeId"
-    """Query selector result."""
 
 
 
@@ -341,15 +322,13 @@ class QuerySelectorAllParameters(TypedDict):
     """Selector string."""
 
 
-class QuerySelectorAllReturns(TypedDict):
+class QuerySelectorAllReturns(BaseModel):
     nodeIds: "List[NodeId]"
-    """Query selector result."""
 
 
 
-class GetTopLayerElementsReturns(TypedDict):
+class GetTopLayerElementsReturns(BaseModel):
     nodeIds: "List[NodeId]"
-    """NodeIds of top layer elements"""
 
 
 
@@ -360,9 +339,8 @@ class GetElementByRelationParameters(TypedDict):
     """Type of relation to get."""
 
 
-class GetElementByRelationReturns(TypedDict):
+class GetElementByRelationReturns(BaseModel):
     nodeId: "NodeId"
-    """NodeId of the element matching the queried relation."""
 
 
 
@@ -403,9 +381,8 @@ class RequestNodeParameters(TypedDict):
     """JavaScript object id to convert into node."""
 
 
-class RequestNodeReturns(TypedDict):
+class RequestNodeReturns(BaseModel):
     nodeId: "NodeId"
-    """Node id for given object."""
 
 
 
@@ -420,9 +397,8 @@ class ResolveNodeParameters(TypedDict, total=False):
     """Execution context in which to resolve the node."""
 
 
-class ResolveNodeReturns(TypedDict):
+class ResolveNodeReturns(BaseModel):
     object: "RemoteObject"
-    """JavaScript object wrapper for given node."""
 
 
 
@@ -478,9 +454,8 @@ class GetNodeStackTracesParameters(TypedDict):
     """Id of the node to get stack traces for."""
 
 
-class GetNodeStackTracesReturns(TypedDict):
-    creation: "StackTrace"
-    """Creation stack trace, if available."""
+class GetNodeStackTracesReturns(BaseModel):
+    creation: "Optional[StackTrace]" = None
 
 
 
@@ -489,14 +464,13 @@ class GetFileInfoParameters(TypedDict):
     """JavaScript object id of the node wrapper."""
 
 
-class GetFileInfoReturns(TypedDict):
+class GetFileInfoReturns(BaseModel):
     path: "str"
 
 
 
-class GetDetachedDomNodesReturns(TypedDict):
+class GetDetachedDomNodesReturns(BaseModel):
     detachedNodes: "List[DetachedElementInfo]"
-    """The list of detached nodes"""
 
 
 
@@ -515,9 +489,8 @@ class SetNodeNameParameters(TypedDict):
     """New node's name."""
 
 
-class SetNodeNameReturns(TypedDict):
+class SetNodeNameReturns(BaseModel):
     nodeId: "NodeId"
-    """New node's id."""
 
 
 
@@ -545,11 +518,9 @@ class GetFrameOwnerParameters(TypedDict):
     frameId: "FrameId"
 
 
-class GetFrameOwnerReturns(TypedDict):
+class GetFrameOwnerReturns(BaseModel):
     backendNodeId: "BackendNodeId"
-    """Resulting node."""
-    nodeId: "NodeId"
-    """Id of the node at given coordinates, only when enabled and requested document."""
+    nodeId: "Optional[NodeId]" = None
 
 
 
@@ -561,9 +532,8 @@ class GetContainerForNodeParameters(TypedDict):
     queriesScrollState: "Optional[bool]"
 
 
-class GetContainerForNodeReturns(TypedDict):
-    nodeId: "NodeId"
-    """The container node for the given node, or null if not found."""
+class GetContainerForNodeReturns(BaseModel):
+    nodeId: "Optional[NodeId]" = None
 
 
 
@@ -572,9 +542,8 @@ class GetQueryingDescendantsForContainerParameters(TypedDict):
     """Id of the container node to find querying descendants from."""
 
 
-class GetQueryingDescendantsForContainerReturns(TypedDict):
+class GetQueryingDescendantsForContainerReturns(BaseModel):
     nodeIds: "List[NodeId]"
-    """Descendant nodes with container queries against the given container."""
 
 
 
@@ -588,6 +557,62 @@ If not provided, it will return the implicit anchor element for
 the given positioned element."""
 
 
-class GetAnchorElementReturns(TypedDict):
+class GetAnchorElementReturns(BaseModel):
     nodeId: "NodeId"
-    """The anchor element of the given anchor query."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import BackendNodeId
+        from ..page.types import FrameId
+        from ..runtime.types import ExecutionContextId
+        from ..runtime.types import RemoteObject
+        from ..runtime.types import RemoteObjectId
+        from ..runtime.types import StackTrace
+        from .types import BackendNodeId
+        from .types import BoxModel
+        from .types import CSSComputedStyleProperty
+        from .types import DetachedElementInfo
+        from .types import LogicalAxes
+        from .types import Node
+        from .types import NodeId
+        from .types import PhysicalAxes
+        from .types import Quad
+        from .types import Rect
+        # Rebuild models now that imports are available
+        CollectClassNamesFromSubtreeReturns.model_rebuild()
+        CopyToReturns.model_rebuild()
+        DescribeNodeReturns.model_rebuild()
+        GetAttributesReturns.model_rebuild()
+        GetBoxModelReturns.model_rebuild()
+        GetContentQuadsReturns.model_rebuild()
+        GetDocumentReturns.model_rebuild()
+        GetFlattenedDocumentReturns.model_rebuild()
+        GetNodesForSubtreeByStyleReturns.model_rebuild()
+        GetNodeForLocationReturns.model_rebuild()
+        GetOuterHTMLReturns.model_rebuild()
+        GetRelayoutBoundaryReturns.model_rebuild()
+        GetSearchResultsReturns.model_rebuild()
+        MoveToReturns.model_rebuild()
+        PerformSearchReturns.model_rebuild()
+        PushNodeByPathToFrontendReturns.model_rebuild()
+        PushNodesByBackendIdsToFrontendReturns.model_rebuild()
+        QuerySelectorReturns.model_rebuild()
+        QuerySelectorAllReturns.model_rebuild()
+        GetTopLayerElementsReturns.model_rebuild()
+        GetElementByRelationReturns.model_rebuild()
+        RequestNodeReturns.model_rebuild()
+        ResolveNodeReturns.model_rebuild()
+        GetNodeStackTracesReturns.model_rebuild()
+        GetFileInfoReturns.model_rebuild()
+        GetDetachedDomNodesReturns.model_rebuild()
+        SetNodeNameReturns.model_rebuild()
+        GetFrameOwnerReturns.model_rebuild()
+        GetContainerForNodeReturns.model_rebuild()
+        GetQueryingDescendantsForContainerReturns.model_rebuild()
+        GetAnchorElementReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

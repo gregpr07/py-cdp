@@ -4,8 +4,8 @@
 
 """CDP FedCm Domain Events"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -13,18 +13,30 @@ if TYPE_CHECKING:
     from .types import Account
     from .types import DialogType
 
-class DialogShownEvent(TypedDict):
+class DialogShownEvent(BaseModel):
     dialogId: "str"
     dialogType: "DialogType"
     accounts: "List[Account]"
     title: "str"
-    """These exist primarily so that the caller can verify the
-RP context was used appropriately."""
-    subtitle: "Optional[str]"
+    subtitle: "Optional[str]" = None
 
 
 
-"""Triggered when a dialog is closed, either by user action, JS abort,
+class DialogClosedEvent(BaseModel):
+    """Triggered when a dialog is closed, either by user action, JS abort,
 or a command below."""
-class DialogClosedEvent(TypedDict):
     dialogId: "str"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import Account
+        from .types import DialogType
+        # Rebuild models now that imports are available
+        DialogShownEvent.model_rebuild()
+        DialogClosedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

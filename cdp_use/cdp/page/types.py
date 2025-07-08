@@ -5,8 +5,8 @@
 """CDP Page Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -22,8 +22,8 @@ FrameId = str
 
 
 
-"""Indicates whether a frame has been identified as an ad."""
 class AdFrameType(Enum):
+    """Indicates whether a frame has been identified as an ad."""
     NONE = "none"
     CHILD = "child"
     ROOT = "root"
@@ -37,42 +37,32 @@ class AdFrameExplanation(Enum):
 
 
 
-"""Indicates whether a frame has been identified as an ad and why."""
-class AdFrameStatus(TypedDict):
+class AdFrameStatus(BaseModel):
+    """Indicates whether a frame has been identified as an ad and why."""
     adFrameType: "AdFrameType"
-    explanations: "Optional[List[AdFrameExplanation]]"
+    explanations: "Optional[List[AdFrameExplanation]]" = None
 
 
 
-"""Identifies the script which caused a script or frame to be labelled as an
+class AdScriptId(BaseModel):
+    """Identifies the script which caused a script or frame to be labelled as an
 ad."""
-class AdScriptId(TypedDict):
     scriptId: "ScriptId"
-    """Script Id of the script which caused a script or frame to be labelled as
-an ad."""
     debuggerId: "UniqueDebuggerId"
-    """Id of scriptId's debugger."""
 
 
 
-"""Encapsulates the script ancestry and the root script filterlist rule that
+class AdScriptAncestry(BaseModel):
+    """Encapsulates the script ancestry and the root script filterlist rule that
 caused the frame to be labelled as an ad. Only created when `ancestryChain`
 is not empty."""
-class AdScriptAncestry(TypedDict):
     ancestryChain: "List[AdScriptId]"
-    """A chain of `AdScriptId`s representing the ancestry of an ad script that
-led to the creation of a frame. The chain is ordered from the script
-itself (lower level) up to its root ancestor that was flagged by
-filterlist."""
-    rootScriptFilterlistRule: "Optional[str]"
-    """The filterlist rule that caused the root (last) script in
-`ancestryChain` to be ad-tagged. Only populated if the rule is
-available."""
+    rootScriptFilterlistRule: "Optional[str]" = None
 
 
 
-"""Indicates whether the frame is a secure context and why it is the case."""
 class SecureContextType(Enum):
+    """Indicates whether the frame is a secure context and why it is the case."""
     SECURE = "Secure"
     SECURELOCALHOST = "SecureLocalhost"
     INSECURESCHEME = "InsecureScheme"
@@ -80,8 +70,8 @@ class SecureContextType(Enum):
 
 
 
-"""Indicates whether the frame is cross-origin isolated and why it is the case."""
 class CrossOriginIsolatedContextType(Enum):
+    """Indicates whether the frame is cross-origin isolated and why it is the case."""
     ISOLATED = "Isolated"
     NOTISOLATED = "NotIsolated"
     NOTISOLATEDFEATUREDISABLED = "NotIsolatedFeatureDisabled"
@@ -96,10 +86,10 @@ class GatedAPIFeatures(Enum):
 
 
 
-"""All Permissions Policy features. This enum should match the one defined
+class PermissionsPolicyFeature(Enum):
+    """All Permissions Policy features. This enum should match the one defined
 in services/network/public/cpp/permissions_policy/permissions_policy_features.json5.
 LINT.IfChange(PermissionsPolicyFeature)"""
-class PermissionsPolicyFeature(Enum):
     ACCELEROMETER = "accelerometer"
     ALL_SCREENS_CAPTURE = "all-screens-capture"
     AMBIENT_LIGHT_SENSOR = "ambient-light-sensor"
@@ -208,8 +198,8 @@ class PermissionsPolicyFeature(Enum):
 
 
 
-"""Reason for a permissions policy feature to be disabled."""
 class PermissionsPolicyBlockReason(Enum):
+    """Reason for a permissions policy feature to be disabled."""
     HEADER = "Header"
     IFRAMEATTRIBUTE = "IframeAttribute"
     INFENCEDFRAMETREE = "InFencedFrameTree"
@@ -217,22 +207,22 @@ class PermissionsPolicyBlockReason(Enum):
 
 
 
-class PermissionsPolicyBlockLocator(TypedDict):
+class PermissionsPolicyBlockLocator(BaseModel):
     frameId: "FrameId"
     blockReason: "PermissionsPolicyBlockReason"
 
 
 
-class PermissionsPolicyFeatureState(TypedDict):
+class PermissionsPolicyFeatureState(BaseModel):
     feature: "PermissionsPolicyFeature"
     allowed: "bool"
-    locator: "Optional[PermissionsPolicyBlockLocator]"
+    locator: "Optional[PermissionsPolicyBlockLocator]" = None
 
 
 
-"""Origin Trial(https://www.chromium.org/blink/origin-trials) support.
-Status for an Origin Trial token."""
 class OriginTrialTokenStatus(Enum):
+    """Origin Trial(https://www.chromium.org/blink/origin-trials) support.
+Status for an Origin Trial token."""
     SUCCESS = "Success"
     NOTSUPPORTED = "NotSupported"
     INSECURE = "Insecure"
@@ -248,8 +238,8 @@ class OriginTrialTokenStatus(Enum):
 
 
 
-"""Status for an Origin Trial."""
 class OriginTrialStatus(Enum):
+    """Status for an Origin Trial."""
     ENABLED = "Enabled"
     VALIDTOKENNOTPROVIDED = "ValidTokenNotProvided"
     OSNOTSUPPORTED = "OSNotSupported"
@@ -263,7 +253,7 @@ class OriginTrialUsageRestriction(Enum):
 
 
 
-class OriginTrialToken(TypedDict):
+class OriginTrialToken(BaseModel):
     origin: "str"
     matchSubDomains: "bool"
     trialName: "str"
@@ -273,105 +263,70 @@ class OriginTrialToken(TypedDict):
 
 
 
-class OriginTrialTokenWithStatus(TypedDict):
+class OriginTrialTokenWithStatus(BaseModel):
     rawTokenText: "str"
-    parsedToken: "Optional[OriginTrialToken]"
-    """`parsedToken` is present only when the token is extractable and
-parsable."""
     status: "OriginTrialTokenStatus"
+    parsedToken: "Optional[OriginTrialToken]" = None
 
 
 
-class OriginTrial(TypedDict):
+class OriginTrial(BaseModel):
     trialName: "str"
     status: "OriginTrialStatus"
     tokensWithStatus: "List[OriginTrialTokenWithStatus]"
 
 
 
-"""Additional information about the frame document's security origin."""
-class SecurityOriginDetails(TypedDict):
+class SecurityOriginDetails(BaseModel):
+    """Additional information about the frame document's security origin."""
     isLocalhost: "bool"
-    """Indicates whether the frame document's security origin is one
-of the local hostnames (e.g. \"localhost\") or IP addresses (IPv4
-127.0.0.0/8 or IPv6 ::1)."""
 
 
 
-"""Information about the Frame on the page."""
-class Frame(TypedDict):
+class Frame(BaseModel):
+    """Information about the Frame on the page."""
     id: "FrameId"
-    """Frame unique identifier."""
-    parentId: "Optional[FrameId]"
-    """Parent frame identifier."""
     loaderId: "LoaderId"
-    """Identifier of the loader associated with this frame."""
-    name: "Optional[str]"
-    """Frame's name as specified in the tag."""
     url: "str"
-    """Frame document's URL without fragment."""
-    urlFragment: "Optional[str]"
-    """Frame document's URL fragment including the '#'."""
     domainAndRegistry: "str"
-    """Frame document's registered domain, taking the public suffixes list into account.
-Extracted from the Frame's url.
-Example URLs: http://www.google.com/file.html -> \"google.com\"
-              http://a.b.co.uk/file.html      -> \"b.co.uk\""""
     securityOrigin: "str"
-    """Frame document's security origin."""
-    securityOriginDetails: "Optional[SecurityOriginDetails]"
-    """Additional details about the frame document's security origin."""
     mimeType: "str"
-    """Frame document's mimeType as determined by the browser."""
-    unreachableUrl: "Optional[str]"
-    """If the frame failed to load, this contains the URL that could not be loaded. Note that unlike url above, this URL may contain a fragment."""
-    adFrameStatus: "Optional[AdFrameStatus]"
-    """Indicates whether this frame was tagged as an ad and why."""
     secureContextType: "SecureContextType"
-    """Indicates whether the main document is a secure context and explains why that is the case."""
     crossOriginIsolatedContextType: "CrossOriginIsolatedContextType"
-    """Indicates whether this is a cross origin isolated context."""
     gatedAPIFeatures: "List[GatedAPIFeatures]"
-    """Indicated which gated APIs / features are available."""
+    parentId: "Optional[FrameId]" = None
+    name: "Optional[str]" = None
+    urlFragment: "Optional[str]" = None
+    securityOriginDetails: "Optional[SecurityOriginDetails]" = None
+    unreachableUrl: "Optional[str]" = None
+    adFrameStatus: "Optional[AdFrameStatus]" = None
 
 
 
-"""Information about the Resource on the page."""
-class FrameResource(TypedDict):
+class FrameResource(BaseModel):
+    """Information about the Resource on the page."""
     url: "str"
-    """Resource URL."""
     type: "ResourceType"
-    """Type of this resource."""
     mimeType: "str"
-    """Resource mimeType as determined by the browser."""
-    lastModified: "Optional[TimeSinceEpoch]"
-    """last-modified timestamp as reported by server."""
-    contentSize: "Optional[float]"
-    """Resource content size."""
-    failed: "Optional[bool]"
-    """True if the resource failed to load."""
-    canceled: "Optional[bool]"
-    """True if the resource was canceled during loading."""
+    lastModified: "Optional[TimeSinceEpoch]" = None
+    contentSize: "Optional[float]" = None
+    failed: "Optional[bool]" = None
+    canceled: "Optional[bool]" = None
 
 
 
-"""Information about the Frame hierarchy along with their cached resources."""
-class FrameResourceTree(TypedDict):
+class FrameResourceTree(BaseModel):
+    """Information about the Frame hierarchy along with their cached resources."""
     frame: "Frame"
-    """Frame information for this tree item."""
-    childFrames: "Optional[List[FrameResourceTree]]"
-    """Child frames."""
     resources: "List[FrameResource]"
-    """Information about frame resources."""
+    childFrames: "Optional[List[FrameResourceTree]]" = None
 
 
 
-"""Information about the Frame hierarchy."""
-class FrameTree(TypedDict):
+class FrameTree(BaseModel):
+    """Information about the Frame hierarchy."""
     frame: "Frame"
-    """Frame information for this tree item."""
-    childFrames: "Optional[List[FrameTree]]"
-    """Child frames."""
+    childFrames: "Optional[List[FrameTree]]" = None
 
 
 
@@ -380,8 +335,8 @@ ScriptIdentifier = str
 
 
 
-"""Transition type."""
 class TransitionType(Enum):
+    """Transition type."""
     LINK = "link"
     TYPED = "typed"
     ADDRESS_BAR = "address_bar"
@@ -398,42 +353,30 @@ class TransitionType(Enum):
 
 
 
-"""Navigation history entry."""
-class NavigationEntry(TypedDict):
+class NavigationEntry(BaseModel):
+    """Navigation history entry."""
     id: "int"
-    """Unique id of the navigation history entry."""
     url: "str"
-    """URL of the navigation history entry."""
     userTypedURL: "str"
-    """URL that the user typed in the url bar."""
     title: "str"
-    """Title of the navigation history entry."""
     transitionType: "TransitionType"
-    """Transition type."""
 
 
 
-"""Screencast frame metadata."""
-class ScreencastFrameMetadata(TypedDict):
+class ScreencastFrameMetadata(BaseModel):
+    """Screencast frame metadata."""
     offsetTop: "float"
-    """Top offset in DIP."""
     pageScaleFactor: "float"
-    """Page scale factor."""
     deviceWidth: "float"
-    """Device screen width in DIP."""
     deviceHeight: "float"
-    """Device screen height in DIP."""
     scrollOffsetX: "float"
-    """Position of horizontal scroll in CSS pixels."""
     scrollOffsetY: "float"
-    """Position of vertical scroll in CSS pixels."""
-    timestamp: "Optional[TimeSinceEpoch]"
-    """Frame swap timestamp."""
+    timestamp: "Optional[TimeSinceEpoch]" = None
 
 
 
-"""Javascript dialog type."""
 class DialogType(Enum):
+    """Javascript dialog type."""
     ALERT = "alert"
     CONFIRM = "confirm"
     PROMPT = "prompt"
@@ -441,109 +384,76 @@ class DialogType(Enum):
 
 
 
-"""Error while paring app manifest."""
-class AppManifestError(TypedDict):
+class AppManifestError(BaseModel):
+    """Error while paring app manifest."""
     message: "str"
-    """Error message."""
     critical: "int"
-    """If critical, this is a non-recoverable parse error."""
     line: "int"
-    """Error line."""
     column: "int"
-    """Error column."""
 
 
 
-"""Parsed app manifest properties."""
-class AppManifestParsedProperties(TypedDict):
+class AppManifestParsedProperties(BaseModel):
+    """Parsed app manifest properties."""
     scope: "str"
-    """Computed scope value"""
 
 
 
-"""Layout viewport position and dimensions."""
-class LayoutViewport(TypedDict):
+class LayoutViewport(BaseModel):
+    """Layout viewport position and dimensions."""
     pageX: "int"
-    """Horizontal offset relative to the document (CSS pixels)."""
     pageY: "int"
-    """Vertical offset relative to the document (CSS pixels)."""
     clientWidth: "int"
-    """Width (CSS pixels), excludes scrollbar if present."""
     clientHeight: "int"
-    """Height (CSS pixels), excludes scrollbar if present."""
 
 
 
-"""Visual viewport position, dimensions, and scale."""
-class VisualViewport(TypedDict):
+class VisualViewport(BaseModel):
+    """Visual viewport position, dimensions, and scale."""
     offsetX: "float"
-    """Horizontal offset relative to the layout viewport (CSS pixels)."""
     offsetY: "float"
-    """Vertical offset relative to the layout viewport (CSS pixels)."""
     pageX: "float"
-    """Horizontal offset relative to the document (CSS pixels)."""
     pageY: "float"
-    """Vertical offset relative to the document (CSS pixels)."""
     clientWidth: "float"
-    """Width (CSS pixels), excludes scrollbar if present."""
     clientHeight: "float"
-    """Height (CSS pixels), excludes scrollbar if present."""
     scale: "float"
-    """Scale relative to the ideal viewport (size at width=device-width)."""
-    zoom: "Optional[float]"
-    """Page zoom factor (CSS to device independent pixels ratio)."""
+    zoom: "Optional[float]" = None
 
 
 
-"""Viewport for capturing screenshot."""
-class Viewport(TypedDict):
+class Viewport(BaseModel):
+    """Viewport for capturing screenshot."""
     x: "float"
-    """X offset in device independent pixels (dip)."""
     y: "float"
-    """Y offset in device independent pixels (dip)."""
     width: "float"
-    """Rectangle width in device independent pixels (dip)."""
     height: "float"
-    """Rectangle height in device independent pixels (dip)."""
     scale: "float"
-    """Page scale factor."""
 
 
 
-"""Generic font families collection."""
-class FontFamilies(TypedDict, total=False):
-    standard: "str"
-    """The standard font-family."""
-    fixed: "str"
-    """The fixed font-family."""
-    serif: "str"
-    """The serif font-family."""
-    sansSerif: "str"
-    """The sansSerif font-family."""
-    cursive: "str"
-    """The cursive font-family."""
-    fantasy: "str"
-    """The fantasy font-family."""
-    math: "str"
-    """The math font-family."""
+class FontFamilies(BaseModel):
+    """Generic font families collection."""
+    standard: "Optional[str]" = None
+    fixed: "Optional[str]" = None
+    serif: "Optional[str]" = None
+    sansSerif: "Optional[str]" = None
+    cursive: "Optional[str]" = None
+    fantasy: "Optional[str]" = None
+    math: "Optional[str]" = None
 
 
 
-"""Font families collection for a script."""
-class ScriptFontFamilies(TypedDict):
+class ScriptFontFamilies(BaseModel):
+    """Font families collection for a script."""
     script: "str"
-    """Name of the script which these font families are defined for."""
     fontFamilies: "FontFamilies"
-    """Generic font families collection for the script."""
 
 
 
-"""Default font sizes."""
-class FontSizes(TypedDict, total=False):
-    standard: "int"
-    """Default standard font size."""
-    fixed: "int"
-    """Default fixed font size."""
+class FontSizes(BaseModel):
+    """Default font sizes."""
+    standard: "Optional[int]" = None
+    fixed: "Optional[int]" = None
 
 
 
@@ -569,25 +479,21 @@ class ClientNavigationDisposition(Enum):
 
 
 
-class InstallabilityErrorArgument(TypedDict):
+class InstallabilityErrorArgument(BaseModel):
     name: "str"
-    """Argument name (e.g. name:'minimum-icon-size-in-pixels')."""
     value: "str"
-    """Argument value (e.g. value:'64')."""
 
 
 
-"""The installability error"""
-class InstallabilityError(TypedDict):
+class InstallabilityError(BaseModel):
+    """The installability error"""
     errorId: "str"
-    """The error id (e.g. 'manifest-missing-suitable-icon')."""
     errorArguments: "List[InstallabilityErrorArgument]"
-    """The list of error arguments (e.g. {name:'minimum-icon-size-in-pixels', value:'64'})."""
 
 
 
-"""The referring-policy used for the navigation."""
 class ReferrerPolicy(Enum):
+    """The referring-policy used for the navigation."""
     NOREFERRER = "noReferrer"
     NOREFERRERWHENDOWNGRADE = "noReferrerWhenDowngrade"
     ORIGIN = "origin"
@@ -599,140 +505,119 @@ class ReferrerPolicy(Enum):
 
 
 
-"""Per-script compilation cache parameters for `Page.produceCompilationCache`"""
-class CompilationCacheParams(TypedDict):
+class CompilationCacheParams(BaseModel):
+    """Per-script compilation cache parameters for `Page.produceCompilationCache`"""
     url: "str"
-    """The URL of the script to produce a compilation cache entry for."""
-    eager: "Optional[bool]"
-    """A hint to the backend whether eager compilation is recommended.
-(the actual compilation mode used is upon backend discretion)."""
+    eager: "Optional[bool]" = None
 
 
 
-class FileFilter(TypedDict, total=False):
-    name: "str"
-    accepts: "List[str]"
+class FileFilter(BaseModel):
+    name: "Optional[str]" = None
+    accepts: "Optional[List[str]]" = None
 
 
 
-class FileHandler(TypedDict):
+class FileHandler(BaseModel):
     action: "str"
     name: "str"
-    icons: "Optional[List[ImageResource]]"
-    accepts: "Optional[List[FileFilter]]"
-    """Mimic a map, name is the key, accepts is the value."""
     launchType: "str"
-    """Won't repeat the enums, using string for easy comparison. Same as the
-other enums below."""
+    icons: "Optional[List[ImageResource]]" = None
+    accepts: "Optional[List[FileFilter]]" = None
 
 
 
-"""The image definition used in both icon and screenshot."""
-class ImageResource(TypedDict):
+class ImageResource(BaseModel):
+    """The image definition used in both icon and screenshot."""
     url: "str"
-    """The src field in the definition, but changing to url in favor of
-consistency."""
-    sizes: "Optional[str]"
-    type: "Optional[str]"
+    sizes: "Optional[str]" = None
+    type: "Optional[str]" = None
 
 
 
-class LaunchHandler(TypedDict):
+class LaunchHandler(BaseModel):
     clientMode: "str"
 
 
 
-class ProtocolHandler(TypedDict):
+class ProtocolHandler(BaseModel):
     protocol: "str"
     url: "str"
 
 
 
-class RelatedApplication(TypedDict):
-    id: "Optional[str]"
+class RelatedApplication(BaseModel):
     url: "str"
+    id: "Optional[str]" = None
 
 
 
-class ScopeExtension(TypedDict):
+class ScopeExtension(BaseModel):
     origin: "str"
-    """Instead of using tuple, this field always returns the serialized string
-for easy understanding and comparison."""
     hasOriginWildcard: "bool"
 
 
 
-class Screenshot(TypedDict):
+class Screenshot(BaseModel):
     image: "ImageResource"
     formFactor: "str"
-    label: "Optional[str]"
+    label: "Optional[str]" = None
 
 
 
-class ShareTarget(TypedDict):
+class ShareTarget(BaseModel):
     action: "str"
     method: "str"
     enctype: "str"
-    title: "Optional[str]"
-    """Embed the ShareTargetParams"""
-    text: "Optional[str]"
-    url: "Optional[str]"
-    files: "Optional[List[FileFilter]]"
+    title: "Optional[str]" = None
+    text: "Optional[str]" = None
+    url: "Optional[str]" = None
+    files: "Optional[List[FileFilter]]" = None
 
 
 
-class Shortcut(TypedDict):
+class Shortcut(BaseModel):
     name: "str"
     url: "str"
 
 
 
-class WebAppManifest(TypedDict, total=False):
-    backgroundColor: "str"
-    description: "str"
-    """The extra description provided by the manifest."""
-    dir: "str"
-    display: "str"
-    displayOverrides: "List[str]"
-    """The overrided display mode controlled by the user."""
-    fileHandlers: "List[FileHandler]"
-    """The handlers to open files."""
-    icons: "List[ImageResource]"
-    id: "str"
-    lang: "str"
-    launchHandler: "LaunchHandler"
-    """TODO(crbug.com/1231886): This field is non-standard and part of a Chrome
-experiment. See:
-https://github.com/WICG/web-app-launch/blob/main/launch_handler.md"""
-    name: "str"
-    orientation: "str"
-    preferRelatedApplications: "bool"
-    protocolHandlers: "List[ProtocolHandler]"
-    """The handlers to open protocols."""
-    relatedApplications: "List[RelatedApplication]"
-    scope: "str"
-    scopeExtensions: "List[ScopeExtension]"
-    """Non-standard, see
-https://github.com/WICG/manifest-incubations/blob/gh-pages/scope_extensions-explainer.md"""
-    screenshots: "List[Screenshot]"
-    """The screenshots used by chromium."""
-    shareTarget: "ShareTarget"
-    shortName: "str"
-    shortcuts: "List[Shortcut]"
-    startUrl: "str"
-    themeColor: "str"
+class WebAppManifest(BaseModel):
+    backgroundColor: "Optional[str]" = None
+    description: "Optional[str]" = None
+    dir: "Optional[str]" = None
+    display: "Optional[str]" = None
+    displayOverrides: "Optional[List[str]]" = None
+    fileHandlers: "Optional[List[FileHandler]]" = None
+    icons: "Optional[List[ImageResource]]" = None
+    id: "Optional[str]" = None
+    lang: "Optional[str]" = None
+    launchHandler: "Optional[LaunchHandler]" = None
+    name: "Optional[str]" = None
+    orientation: "Optional[str]" = None
+    preferRelatedApplications: "Optional[bool]" = None
+    protocolHandlers: "Optional[List[ProtocolHandler]]" = None
+    relatedApplications: "Optional[List[RelatedApplication]]" = None
+    scope: "Optional[str]" = None
+    scopeExtensions: "Optional[List[ScopeExtension]]" = None
+    screenshots: "Optional[List[Screenshot]]" = None
+    shareTarget: "Optional[ShareTarget]" = None
+    shortName: "Optional[str]" = None
+    shortcuts: "Optional[List[Shortcut]]" = None
+    startUrl: "Optional[str]" = None
+    themeColor: "Optional[str]" = None
 
 
 
-"""The type of a frameNavigated event."""
 class NavigationType(Enum):
+    """The type of a frameNavigated event."""
     NAVIGATION = "Navigation"
     BACKFORWARDCACHERESTORE = "BackForwardCacheRestore"
 
 
 
-"""List of not restored reasons for back-forward cache."""
 class BackForwardCacheNotRestoredReason(Enum):
+    """List of not restored reasons for back-forward cache."""
     NOTPRIMARYMAINFRAME = "NotPrimaryMainFrame"
     BACKFORWARDCACHEDISABLED = "BackForwardCacheDisabled"
     RELATEDACTIVECONTENTSEXIST = "RelatedActiveContentsExist"
@@ -879,43 +764,87 @@ class BackForwardCacheNotRestoredReason(Enum):
 
 
 
-"""Types of not restored reasons for back-forward cache."""
 class BackForwardCacheNotRestoredReasonType(Enum):
+    """Types of not restored reasons for back-forward cache."""
     SUPPORTPENDING = "SupportPending"
     PAGESUPPORTNEEDED = "PageSupportNeeded"
     CIRCUMSTANTIAL = "Circumstantial"
 
 
 
-class BackForwardCacheBlockingDetails(TypedDict):
-    url: "Optional[str]"
-    """Url of the file where blockage happened. Optional because of tests."""
-    function: "Optional[str]"
-    """Function name where blockage happened. Optional because of anonymous functions and tests."""
+class BackForwardCacheBlockingDetails(BaseModel):
     lineNumber: "int"
-    """Line number in the script (0-based)."""
     columnNumber: "int"
-    """Column number in the script (0-based)."""
+    url: "Optional[str]" = None
+    function: "Optional[str]" = None
 
 
 
-class BackForwardCacheNotRestoredExplanation(TypedDict):
+class BackForwardCacheNotRestoredExplanation(BaseModel):
     type: "BackForwardCacheNotRestoredReasonType"
-    """Type of the reason"""
     reason: "BackForwardCacheNotRestoredReason"
-    """Not restored reason"""
-    context: "Optional[str]"
-    """Context associated with the reason. The meaning of this context is
-dependent on the reason:
-- EmbedderExtensionSentMessageToCachedFrame: the extension ID."""
-    details: "Optional[List[BackForwardCacheBlockingDetails]]"
+    context: "Optional[str]" = None
+    details: "Optional[List[BackForwardCacheBlockingDetails]]" = None
 
 
 
-class BackForwardCacheNotRestoredExplanationTree(TypedDict):
+class BackForwardCacheNotRestoredExplanationTree(BaseModel):
     url: "str"
-    """URL of each frame"""
     explanations: "List[BackForwardCacheNotRestoredExplanation]"
-    """Not restored reasons of each frame"""
     children: "List[BackForwardCacheNotRestoredExplanationTree]"
-    """Array of children frame"""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..network.types import LoaderId
+        from ..network.types import ResourceType
+        from ..network.types import TimeSinceEpoch
+        from ..runtime.types import ScriptId
+        from ..runtime.types import UniqueDebuggerId
+        # Rebuild models now that imports are available
+        AdFrameStatus.model_rebuild()
+        AdScriptId.model_rebuild()
+        AdScriptAncestry.model_rebuild()
+        PermissionsPolicyBlockLocator.model_rebuild()
+        PermissionsPolicyFeatureState.model_rebuild()
+        OriginTrialToken.model_rebuild()
+        OriginTrialTokenWithStatus.model_rebuild()
+        OriginTrial.model_rebuild()
+        SecurityOriginDetails.model_rebuild()
+        Frame.model_rebuild()
+        FrameResource.model_rebuild()
+        FrameResourceTree.model_rebuild()
+        FrameTree.model_rebuild()
+        NavigationEntry.model_rebuild()
+        ScreencastFrameMetadata.model_rebuild()
+        AppManifestError.model_rebuild()
+        AppManifestParsedProperties.model_rebuild()
+        LayoutViewport.model_rebuild()
+        VisualViewport.model_rebuild()
+        Viewport.model_rebuild()
+        FontFamilies.model_rebuild()
+        ScriptFontFamilies.model_rebuild()
+        FontSizes.model_rebuild()
+        InstallabilityErrorArgument.model_rebuild()
+        InstallabilityError.model_rebuild()
+        CompilationCacheParams.model_rebuild()
+        FileFilter.model_rebuild()
+        FileHandler.model_rebuild()
+        ImageResource.model_rebuild()
+        LaunchHandler.model_rebuild()
+        ProtocolHandler.model_rebuild()
+        RelatedApplication.model_rebuild()
+        ScopeExtension.model_rebuild()
+        Screenshot.model_rebuild()
+        ShareTarget.model_rebuild()
+        Shortcut.model_rebuild()
+        WebAppManifest.model_rebuild()
+        BackForwardCacheBlockingDetails.model_rebuild()
+        BackForwardCacheNotRestoredExplanation.model_rebuild()
+        BackForwardCacheNotRestoredExplanationTree.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

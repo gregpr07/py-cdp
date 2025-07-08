@@ -5,8 +5,8 @@
 """CDP Accessibility Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import Any, List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -19,8 +19,8 @@ AXNodeId = str
 
 
 
-"""Enum of possible property types."""
 class AXValueType(Enum):
+    """Enum of possible property types."""
     BOOLEAN = "boolean"
     TRISTATE = "tristate"
     BOOLEANORUNDEFINED = "booleanOrUndefined"
@@ -41,8 +41,8 @@ class AXValueType(Enum):
 
 
 
-"""Enum of possible property sources."""
 class AXValueSourceType(Enum):
+    """Enum of possible property sources."""
     ATTRIBUTE = "attribute"
     IMPLICIT = "implicit"
     STYLE = "style"
@@ -52,8 +52,8 @@ class AXValueSourceType(Enum):
 
 
 
-"""Enum of possible native property sources (as a subtype of a particular AXValueSourceType)."""
 class AXValueNativeSourceType(Enum):
+    """Enum of possible native property sources (as a subtype of a particular AXValueSourceType)."""
     DESCRIPTION = "description"
     FIGCAPTION = "figcaption"
     LABEL = "label"
@@ -67,67 +67,49 @@ class AXValueNativeSourceType(Enum):
 
 
 
-"""A single source for a computed AX property."""
-class AXValueSource(TypedDict):
+class AXValueSource(BaseModel):
+    """A single source for a computed AX property."""
     type: "AXValueSourceType"
-    """What type of source this is."""
-    value: "Optional[AXValue]"
-    """The value of this property source."""
-    attribute: "Optional[str]"
-    """The name of the relevant attribute, if any."""
-    attributeValue: "Optional[AXValue]"
-    """The value of the relevant attribute, if any."""
-    superseded: "Optional[bool]"
-    """Whether this source is superseded by a higher priority source."""
-    nativeSource: "Optional[AXValueNativeSourceType]"
-    """The native markup source for this value, e.g. a `<label>` element."""
-    nativeSourceValue: "Optional[AXValue]"
-    """The value, such as a node or node list, of the native source."""
-    invalid: "Optional[bool]"
-    """Whether the value for this property is invalid."""
-    invalidReason: "Optional[str]"
-    """Reason for the value being invalid, if it is."""
+    value: "Optional[AXValue]" = None
+    attribute: "Optional[str]" = None
+    attributeValue: "Optional[AXValue]" = None
+    superseded: "Optional[bool]" = None
+    nativeSource: "Optional[AXValueNativeSourceType]" = None
+    nativeSourceValue: "Optional[AXValue]" = None
+    invalid: "Optional[bool]" = None
+    invalidReason: "Optional[str]" = None
 
 
 
-class AXRelatedNode(TypedDict):
+class AXRelatedNode(BaseModel):
     backendDOMNodeId: "BackendNodeId"
-    """The BackendNodeId of the related DOM node."""
-    idref: "Optional[str]"
-    """The IDRef value provided, if any."""
-    text: "Optional[str]"
-    """The text alternative of this node in the current context."""
+    idref: "Optional[str]" = None
+    text: "Optional[str]" = None
 
 
 
-class AXProperty(TypedDict):
+class AXProperty(BaseModel):
     name: "AXPropertyName"
-    """The name of this property."""
     value: "AXValue"
-    """The value of this property."""
 
 
 
-"""A single computed AX property."""
-class AXValue(TypedDict):
+class AXValue(BaseModel):
+    """A single computed AX property."""
     type: "AXValueType"
-    """The type of this value."""
-    value: "Optional[Any]"
-    """The computed value of this property."""
-    relatedNodes: "Optional[List[AXRelatedNode]]"
-    """One or more related nodes, if applicable."""
-    sources: "Optional[List[AXValueSource]]"
-    """The sources which contributed to the computation of this property."""
+    value: "Optional[Any]" = None
+    relatedNodes: "Optional[List[AXRelatedNode]]" = None
+    sources: "Optional[List[AXValueSource]]" = None
 
 
 
-"""Values of AXProperty name:
+class AXPropertyName(Enum):
+    """Values of AXProperty name:
 - from 'busy' to 'roledescription': states which apply to every AX node
 - from 'live' to 'root': attributes which apply to nodes in live regions
 - from 'autocomplete' to 'valuetext': attributes which apply to widgets
 - from 'checked' to 'selected': states which apply to widgets
 - from 'activedescendant' to 'owns' - relationships between elements other than parent/child/sibling."""
-class AXPropertyName(Enum):
     ACTIONS = "actions"
     BUSY = "busy"
     DISABLED = "disabled"
@@ -172,31 +154,36 @@ class AXPropertyName(Enum):
 
 
 
-"""A node in the accessibility tree."""
-class AXNode(TypedDict):
+class AXNode(BaseModel):
+    """A node in the accessibility tree."""
     nodeId: "AXNodeId"
-    """Unique identifier for this node."""
     ignored: "bool"
-    """Whether this node is ignored for accessibility"""
-    ignoredReasons: "Optional[List[AXProperty]]"
-    """Collection of reasons why this node is hidden."""
-    role: "Optional[AXValue]"
-    """This `Node`'s role, whether explicit or implicit."""
-    chromeRole: "Optional[AXValue]"
-    """This `Node`'s Chrome raw role."""
-    name: "Optional[AXValue]"
-    """The accessible name for this `Node`."""
-    description: "Optional[AXValue]"
-    """The accessible description for this `Node`."""
-    value: "Optional[AXValue]"
-    """The value for this `Node`."""
-    properties: "Optional[List[AXProperty]]"
-    """All other properties"""
-    parentId: "Optional[AXNodeId]"
-    """ID for this node's parent."""
-    childIds: "Optional[List[AXNodeId]]"
-    """IDs for each of this node's child nodes."""
-    backendDOMNodeId: "Optional[BackendNodeId]"
-    """The backend ID for the associated DOM node, if any."""
-    frameId: "Optional[FrameId]"
-    """The frame ID for the frame associated with this nodes document."""
+    ignoredReasons: "Optional[List[AXProperty]]" = None
+    role: "Optional[AXValue]" = None
+    chromeRole: "Optional[AXValue]" = None
+    name: "Optional[AXValue]" = None
+    description: "Optional[AXValue]" = None
+    value: "Optional[AXValue]" = None
+    properties: "Optional[List[AXProperty]]" = None
+    parentId: "Optional[AXNodeId]" = None
+    childIds: "Optional[List[AXNodeId]]" = None
+    backendDOMNodeId: "Optional[BackendNodeId]" = None
+    frameId: "Optional[FrameId]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import BackendNodeId
+        from ..page.types import FrameId
+        # Rebuild models now that imports are available
+        AXValueSource.model_rebuild()
+        AXRelatedNode.model_rebuild()
+        AXProperty.model_rebuild()
+        AXValue.model_rebuild()
+        AXNode.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

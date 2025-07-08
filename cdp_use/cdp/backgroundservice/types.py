@@ -5,8 +5,8 @@
 """CDP BackgroundService Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -14,10 +14,10 @@ if TYPE_CHECKING:
     from ..network.types import TimeSinceEpoch
     from ..serviceworker.types import RegistrationID
 
-"""The Background Service that will be associated with the commands/events.
+class ServiceName(Enum):
+    """The Background Service that will be associated with the commands/events.
 Every Background Service operates independently, but they share the same
 API."""
-class ServiceName(Enum):
     BACKGROUNDFETCH = "backgroundFetch"
     BACKGROUNDSYNC = "backgroundSync"
     PUSHMESSAGING = "pushMessaging"
@@ -27,27 +27,34 @@ class ServiceName(Enum):
 
 
 
-"""A key-value pair for additional event information to pass along."""
-class EventMetadata(TypedDict):
+class EventMetadata(BaseModel):
+    """A key-value pair for additional event information to pass along."""
     key: "str"
     value: "str"
 
 
 
-class BackgroundServiceEvent(TypedDict):
+class BackgroundServiceEvent(BaseModel):
     timestamp: "TimeSinceEpoch"
-    """Timestamp of the event (in seconds)."""
     origin: "str"
-    """The origin this event belongs to."""
     serviceWorkerRegistrationId: "RegistrationID"
-    """The Service Worker ID that initiated the event."""
     service: "ServiceName"
-    """The Background Service this event belongs to."""
     eventName: "str"
-    """A description of the event."""
     instanceId: "str"
-    """An identifier that groups related events together."""
     eventMetadata: "List[EventMetadata]"
-    """A list of event-specific information."""
     storageKey: "str"
-    """Storage key this event belongs to."""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..network.types import TimeSinceEpoch
+        from ..serviceworker.types import RegistrationID
+        # Rebuild models now that imports are available
+        EventMetadata.model_rebuild()
+        BackgroundServiceEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

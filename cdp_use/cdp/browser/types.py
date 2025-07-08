@@ -5,8 +5,8 @@
 """CDP Browser Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 BrowserContextID = str
 
@@ -16,8 +16,8 @@ WindowID = int
 
 
 
-"""The state of the browser window."""
 class WindowState(Enum):
+    """The state of the browser window."""
     NORMAL = "normal"
     MINIMIZED = "minimized"
     MAXIMIZED = "maximized"
@@ -25,18 +25,13 @@ class WindowState(Enum):
 
 
 
-"""Browser window bounds information"""
-class Bounds(TypedDict, total=False):
-    left: "int"
-    """The offset from the left edge of the screen to the window in pixels."""
-    top: "int"
-    """The offset from the top edge of the screen to the window in pixels."""
-    width: "int"
-    """The window width in pixels."""
-    height: "int"
-    """The window height in pixels."""
-    windowState: "WindowState"
-    """The window state. Default to normal."""
+class Bounds(BaseModel):
+    """Browser window bounds information"""
+    left: "Optional[int]" = None
+    top: "Optional[int]" = None
+    width: "Optional[int]" = None
+    height: "Optional[int]" = None
+    windowState: "Optional[WindowState]" = None
 
 
 
@@ -88,58 +83,58 @@ class PermissionSetting(Enum):
 
 
 
-"""Definition of PermissionDescriptor defined in the Permissions API:
+class PermissionDescriptor(BaseModel):
+    """Definition of PermissionDescriptor defined in the Permissions API:
 https://w3c.github.io/permissions/#dom-permissiondescriptor."""
-class PermissionDescriptor(TypedDict):
     name: "str"
-    """Name of permission.
-See https://cs.chromium.org/chromium/src/third_party/blink/renderer/modules/permissions/permission_descriptor.idl for valid permission names."""
-    sysex: "Optional[bool]"
-    """For \"midi\" permission, may also specify sysex control."""
-    userVisibleOnly: "Optional[bool]"
-    """For \"push\" permission, may specify userVisibleOnly.
-Note that userVisibleOnly = true is the only currently supported type."""
-    allowWithoutSanitization: "Optional[bool]"
-    """For \"clipboard\" permission, may specify allowWithoutSanitization."""
-    allowWithoutGesture: "Optional[bool]"
-    """For \"fullscreen\" permission, must specify allowWithoutGesture:true."""
-    panTiltZoom: "Optional[bool]"
-    """For \"camera\" permission, may specify panTiltZoom."""
+    sysex: "Optional[bool]" = None
+    userVisibleOnly: "Optional[bool]" = None
+    allowWithoutSanitization: "Optional[bool]" = None
+    allowWithoutGesture: "Optional[bool]" = None
+    panTiltZoom: "Optional[bool]" = None
 
 
 
-"""Browser command ids used by executeBrowserCommand."""
 class BrowserCommandId(Enum):
+    """Browser command ids used by executeBrowserCommand."""
     OPENTABSEARCH = "openTabSearch"
     CLOSETABSEARCH = "closeTabSearch"
     OPENGLIC = "openGlic"
 
 
 
-"""Chrome histogram bucket."""
-class Bucket(TypedDict):
+class Bucket(BaseModel):
+    """Chrome histogram bucket."""
     low: "int"
-    """Minimum value (inclusive)."""
     high: "int"
-    """Maximum value (exclusive)."""
     count: "int"
-    """Number of samples."""
 
 
 
-"""Chrome histogram."""
-class Histogram(TypedDict):
+class Histogram(BaseModel):
+    """Chrome histogram."""
     name: "str"
-    """Name."""
     sum: "int"
-    """Sum of sample values."""
     count: "int"
-    """Total number of samples."""
     buckets: "List[Bucket]"
-    """Buckets."""
 
 
 
 class PrivacySandboxAPI(Enum):
     BIDDINGANDAUCTIONSERVICES = "BiddingAndAuctionServices"
     TRUSTEDKEYVALUE = "TrustedKeyValue"
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        Bounds.model_rebuild()
+        PermissionDescriptor.model_rebuild()
+        Bucket.model_rebuild()
+        Histogram.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

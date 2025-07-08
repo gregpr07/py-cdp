@@ -4,8 +4,8 @@
 
 """CDP Runtime Domain Events"""
 
+from pydantic import BaseModel
 from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -17,79 +17,85 @@ if TYPE_CHECKING:
     from .types import StackTrace
     from .types import Timestamp
 
-"""Notification is issued every time when binding is called."""
-class BindingCalledEvent(TypedDict):
+class BindingCalledEvent(BaseModel):
+    """Notification is issued every time when binding is called."""
     name: "str"
     payload: "str"
     executionContextId: "ExecutionContextId"
-    """Identifier of the context where the call was made."""
 
 
 
-"""Issued when console API was called."""
-class ConsoleAPICalledEvent(TypedDict):
+class ConsoleAPICalledEvent(BaseModel):
+    """Issued when console API was called."""
     type: "str"
-    """Type of the call."""
     args: "List[RemoteObject]"
-    """Call arguments."""
     executionContextId: "ExecutionContextId"
-    """Identifier of the context where the call was made."""
     timestamp: "Timestamp"
-    """Call timestamp."""
-    stackTrace: "Optional[StackTrace]"
-    """Stack trace captured when the call was made. The async stack chain is automatically reported for
-the following call types: `assert`, `error`, `trace`, `warning`. For other types the async call
-chain can be retrieved using `Debugger.getStackTrace` and `stackTrace.parentId` field."""
-    context: "Optional[str]"
-    """Console context descriptor for calls on non-default console context (not console.*):
-'anonymous#unique-logger-id' for call on unnamed context, 'name#unique-logger-id' for call
-on named context."""
+    stackTrace: "Optional[StackTrace]" = None
+    context: "Optional[str]" = None
 
 
 
-"""Issued when unhandled exception was revoked."""
-class ExceptionRevokedEvent(TypedDict):
+class ExceptionRevokedEvent(BaseModel):
+    """Issued when unhandled exception was revoked."""
     reason: "str"
-    """Reason describing why exception was revoked."""
     exceptionId: "int"
-    """The id of revoked exception, as reported in `exceptionThrown`."""
 
 
 
-"""Issued when exception was thrown and unhandled."""
-class ExceptionThrownEvent(TypedDict):
+class ExceptionThrownEvent(BaseModel):
+    """Issued when exception was thrown and unhandled."""
     timestamp: "Timestamp"
-    """Timestamp of the exception."""
     exceptionDetails: "ExceptionDetails"
 
 
 
-"""Issued when new execution context is created."""
-class ExecutionContextCreatedEvent(TypedDict):
+class ExecutionContextCreatedEvent(BaseModel):
+    """Issued when new execution context is created."""
     context: "ExecutionContextDescription"
-    """A newly created execution context."""
 
 
 
-"""Issued when execution context is destroyed."""
-class ExecutionContextDestroyedEvent(TypedDict):
+class ExecutionContextDestroyedEvent(BaseModel):
+    """Issued when execution context is destroyed."""
     executionContextId: "ExecutionContextId"
-    """Id of the destroyed context"""
     executionContextUniqueId: "str"
-    """Unique Id of the destroyed context"""
 
 
 
-"""Issued when all executionContexts were cleared in browser"""
-class ExecutionContextsClearedEvent(TypedDict):
+class ExecutionContextsClearedEvent(BaseModel):
+    """Issued when all executionContexts were cleared in browser"""
     pass
 
 
 
-"""Issued when object should be inspected (for example, as a result of inspect() command line API
+class InspectRequestedEvent(BaseModel):
+    """Issued when object should be inspected (for example, as a result of inspect() command line API
 call)."""
-class InspectRequestedEvent(TypedDict):
     object: "RemoteObject"
     hints: "Dict[str, Any]"
-    executionContextId: "Optional[ExecutionContextId]"
-    """Identifier of the context where the call was made."""
+    executionContextId: "Optional[ExecutionContextId]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import ExceptionDetails
+        from .types import ExecutionContextDescription
+        from .types import ExecutionContextId
+        from .types import RemoteObject
+        from .types import StackTrace
+        from .types import Timestamp
+        # Rebuild models now that imports are available
+        BindingCalledEvent.model_rebuild()
+        ConsoleAPICalledEvent.model_rebuild()
+        ExceptionRevokedEvent.model_rebuild()
+        ExceptionThrownEvent.model_rebuild()
+        ExecutionContextCreatedEvent.model_rebuild()
+        ExecutionContextDestroyedEvent.model_rebuild()
+        ExecutionContextsClearedEvent.model_rebuild()
+        InspectRequestedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

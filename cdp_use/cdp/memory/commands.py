@@ -4,6 +4,7 @@
 
 """CDP Memory Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List
 from typing_extensions import TypedDict
 
@@ -14,16 +15,15 @@ if TYPE_CHECKING:
     from .types import PressureLevel
     from .types import SamplingProfile
 
-class GetDOMCountersReturns(TypedDict):
+class GetDOMCountersReturns(BaseModel):
     documents: "int"
     nodes: "int"
     jsEventListeners: "int"
 
 
 
-class GetDOMCountersForLeakDetectionReturns(TypedDict):
+class GetDOMCountersForLeakDetectionReturns(BaseModel):
     counters: "List[DOMCounter]"
-    """DOM object counters."""
 
 
 
@@ -53,15 +53,33 @@ class StartSamplingParameters(TypedDict, total=False):
 
 
 
-class GetAllTimeSamplingProfileReturns(TypedDict):
+class GetAllTimeSamplingProfileReturns(BaseModel):
     profile: "SamplingProfile"
 
 
 
-class GetBrowserSamplingProfileReturns(TypedDict):
+class GetBrowserSamplingProfileReturns(BaseModel):
     profile: "SamplingProfile"
 
 
 
-class GetSamplingProfileReturns(TypedDict):
+class GetSamplingProfileReturns(BaseModel):
     profile: "SamplingProfile"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import DOMCounter
+        from .types import PressureLevel
+        from .types import SamplingProfile
+        # Rebuild models now that imports are available
+        GetDOMCountersReturns.model_rebuild()
+        GetDOMCountersForLeakDetectionReturns.model_rebuild()
+        GetAllTimeSamplingProfileReturns.model_rebuild()
+        GetBrowserSamplingProfileReturns.model_rebuild()
+        GetSamplingProfileReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

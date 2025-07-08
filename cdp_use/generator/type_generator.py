@@ -70,6 +70,31 @@ class TypeGenerator:
         # Add type definitions
         if type_definitions:
             content += "\n\n\n".join(type_definitions)
+
+            # Add model_rebuild() calls for Pydantic models
+            rebuild_calls = []
+            for type_def in types:
+                if type_def.get("type", "object") == "object":
+                    type_id = type_def["id"]
+                    rebuild_calls.append(f"{type_id}.model_rebuild()")
+
+            if rebuild_calls:
+                content += (
+                    "\n\n# Rebuild Pydantic models to resolve forward references\n"
+                )
+                # Add imports with try/except to handle circular imports
+                content += "# Import dependencies for model rebuilding\n"
+                content += "import sys\n"
+                content += "def _rebuild_models_when_ready():\n"
+                content += "    try:\n"
+                for imp in sorted(self.type_checking_imports):
+                    content += f"        {imp}\n"
+                content += "        # Rebuild models now that imports are available\n"
+                for call in rebuild_calls:
+                    content += f"        {call}\n"
+                content += "    except ImportError:\n"
+                content += "        pass  # Will be rebuilt later\n"
+                content += "\n_rebuild_models_when_ready()\n"
         else:
             content += "# No types defined for this domain"
 
@@ -178,12 +203,6 @@ class TypeGenerator:
 
                     content += f'    {prop_name}: "{prop_type}"\n'
 
-                    if prop_desc:
-                        escaped_desc = prop_desc.replace("\\", "\\\\").replace(
-                            '"', '\\"'
-                        )
-                        content += f'    """{escaped_desc}"""\n'
-
             for prop in properties:
                 if prop.get("optional", False):
                     prop_name = prop["name"]
@@ -191,12 +210,6 @@ class TypeGenerator:
                     prop_desc = prop.get("description", "")
 
                     content += f'    {prop_name}: "Optional[{prop_type}]" = None\n'
-
-                    if prop_desc:
-                        escaped_desc = prop_desc.replace("\\", "\\\\").replace(
-                            '"', '\\"'
-                        )
-                        content += f'    """{escaped_desc}"""\n'
 
         self.generated_types.add(type_id)
         return content

@@ -4,7 +4,7 @@
 
 """CDP Fetch Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -33,11 +33,12 @@ class FetchClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables the fetch domain."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Fetch.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -46,11 +47,12 @@ class FetchClient:
     ) -> "Dict[str, Any]":
         """Enables issuing of requestPaused events. A request will be paused until client
 calls one of failRequest, fulfillRequest or continueRequest/continueWithAuth."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Fetch.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def failRequest(
         self,
@@ -58,11 +60,12 @@ calls one of failRequest, fulfillRequest or continueRequest/continueWithAuth."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Causes the request to fail with specified reason."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Fetch.failRequest",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def fulfillRequest(
         self,
@@ -70,11 +73,12 @@ calls one of failRequest, fulfillRequest or continueRequest/continueWithAuth."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Provides response to the request."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Fetch.fulfillRequest",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def continueRequest(
         self,
@@ -82,11 +86,12 @@ calls one of failRequest, fulfillRequest or continueRequest/continueWithAuth."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Continues the request, optionally modifying some of its parameters."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Fetch.continueRequest",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def continueWithAuth(
         self,
@@ -94,11 +99,12 @@ calls one of failRequest, fulfillRequest or continueRequest/continueWithAuth."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Continues a request supplying authChallengeResponse following authRequired event."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Fetch.continueWithAuth",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def continueResponse(
         self,
@@ -108,11 +114,12 @@ calls one of failRequest, fulfillRequest or continueRequest/continueWithAuth."""
         """Continues loading of the paused response, optionally modifying the
 response headers. If either responseCode or headers are modified, all of them
 must be present."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Fetch.continueResponse",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getResponseBody(
         self,
@@ -129,11 +136,13 @@ Note that the response body is not available for redirects. Requests
 paused in the _redirect received_ state may be differentiated by
 `responseCode` and presence of `location` response header, see
 comments to `requestPaused` for details."""
-        return cast("GetResponseBodyReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Fetch.getResponseBody",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetResponseBodyReturns as _GetResponseBodyReturns
+        return _GetResponseBodyReturns.model_validate(raw_result)
 
     async def takeResponseBodyAsStream(
         self,
@@ -150,10 +159,12 @@ is specified.
 This method is mutually exclusive with getResponseBody.
 Calling other methods that affect the request or disabling fetch
 domain before body is received results in an undefined behavior."""
-        return cast("TakeResponseBodyAsStreamReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Fetch.takeResponseBodyAsStream",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import TakeResponseBodyAsStreamReturns as _TakeResponseBodyAsStreamReturns
+        return _TakeResponseBodyAsStreamReturns.model_validate(raw_result)
 
 

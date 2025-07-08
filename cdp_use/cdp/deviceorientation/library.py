@@ -4,7 +4,7 @@
 
 """CDP DeviceOrientation Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -24,11 +24,12 @@ class DeviceOrientationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears the overridden Device Orientation."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DeviceOrientation.clearDeviceOrientationOverride",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setDeviceOrientationOverride(
         self,
@@ -36,10 +37,11 @@ class DeviceOrientationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Overrides the Device Orientation."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DeviceOrientation.setDeviceOrientationOverride",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

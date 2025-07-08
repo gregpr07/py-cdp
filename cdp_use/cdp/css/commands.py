@@ -4,6 +4,7 @@
 
 """CDP CSS Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -55,9 +56,8 @@ validated. If omitted, declarations in the new rule text can only be validated s
 incorrect results if the declaration contains a var() for example."""
 
 
-class AddRuleReturns(TypedDict):
+class AddRuleReturns(BaseModel):
     rule: "CSSRule"
-    """The newly created rule."""
 
 
 
@@ -65,9 +65,8 @@ class CollectClassNamesParameters(TypedDict):
     styleSheetId: "StyleSheetId"
 
 
-class CollectClassNamesReturns(TypedDict):
+class CollectClassNamesReturns(BaseModel):
     classNames: "List[str]"
-    """Class name list."""
 
 
 
@@ -81,9 +80,8 @@ for the frame's document if it exists or creates a new stylesheet
 (default: false)."""
 
 
-class CreateStyleSheetReturns(TypedDict):
+class CreateStyleSheetReturns(BaseModel):
     styleSheetId: "StyleSheetId"
-    """Identifier of the created \"via-inspector\" stylesheet."""
 
 
 
@@ -112,18 +110,10 @@ class GetBackgroundColorsParameters(TypedDict):
     """Id of the node to get background colors for."""
 
 
-class GetBackgroundColorsReturns(TypedDict):
-    backgroundColors: "List[str]"
-    """The range of background colors behind this element, if it contains any visible text. If no
-visible text is present, this will be undefined. In the case of a flat background color,
-this will consist of simply that color. In the case of a gradient, this will consist of each
-of the color stops. For anything more complicated, this will be an empty array. Images will
-be ignored (as if the image had failed to load)."""
-    computedFontSize: "str"
-    """The computed font size for this node, as a CSS computed value string (e.g. '12px')."""
-    computedFontWeight: "str"
-    """The computed font weight for this node, as a CSS computed value string (e.g. 'normal' or
-'100')."""
+class GetBackgroundColorsReturns(BaseModel):
+    backgroundColors: "Optional[List[str]]" = None
+    computedFontSize: "Optional[str]" = None
+    computedFontWeight: "Optional[str]" = None
 
 
 
@@ -131,9 +121,8 @@ class GetComputedStyleForNodeParameters(TypedDict):
     nodeId: "NodeId"
 
 
-class GetComputedStyleForNodeReturns(TypedDict):
+class GetComputedStyleForNodeReturns(BaseModel):
     computedStyle: "List[CSSComputedStyleProperty]"
-    """Computed style for the specified DOM node."""
 
 
 
@@ -152,7 +141,7 @@ elements in the tree, such as ::before and ::after."""
     """Pseudo element custom ident."""
 
 
-class ResolveValuesReturns(TypedDict):
+class ResolveValuesReturns(BaseModel):
     results: "List[str]"
 
 
@@ -162,7 +151,7 @@ class GetLonghandPropertiesParameters(TypedDict):
     value: "str"
 
 
-class GetLonghandPropertiesReturns(TypedDict):
+class GetLonghandPropertiesReturns(BaseModel):
     longhandProperties: "List[CSSProperty]"
 
 
@@ -171,11 +160,9 @@ class GetInlineStylesForNodeParameters(TypedDict):
     nodeId: "NodeId"
 
 
-class GetInlineStylesForNodeReturns(TypedDict):
-    inlineStyle: "CSSStyle"
-    """Inline style for the specified DOM node."""
-    attributesStyle: "CSSStyle"
-    """Attribute-defined element style (e.g. resulting from \"width=20 height=100%\")."""
+class GetInlineStylesForNodeReturns(BaseModel):
+    inlineStyle: "Optional[CSSStyle]" = None
+    attributesStyle: "Optional[CSSStyle]" = None
 
 
 
@@ -183,14 +170,10 @@ class GetAnimatedStylesForNodeParameters(TypedDict):
     nodeId: "NodeId"
 
 
-class GetAnimatedStylesForNodeReturns(TypedDict):
-    animationStyles: "List[CSSAnimationStyle]"
-    """Styles coming from animations."""
-    transitionsStyle: "CSSStyle"
-    """Style coming from transitions."""
-    inherited: "List[InheritedAnimatedStyleEntry]"
-    """Inherited style entries for animationsStyle and transitionsStyle from
-the inheritance chain of the element."""
+class GetAnimatedStylesForNodeReturns(BaseModel):
+    animationStyles: "Optional[List[CSSAnimationStyle]]" = None
+    transitionsStyle: "Optional[CSSStyle]" = None
+    inherited: "Optional[List[InheritedAnimatedStyleEntry]]" = None
 
 
 
@@ -198,40 +181,25 @@ class GetMatchedStylesForNodeParameters(TypedDict):
     nodeId: "NodeId"
 
 
-class GetMatchedStylesForNodeReturns(TypedDict):
-    inlineStyle: "CSSStyle"
-    """Inline style for the specified DOM node."""
-    attributesStyle: "CSSStyle"
-    """Attribute-defined element style (e.g. resulting from \"width=20 height=100%\")."""
-    matchedCSSRules: "List[RuleMatch]"
-    """CSS rules matching this node, from all applicable stylesheets."""
-    pseudoElements: "List[PseudoElementMatches]"
-    """Pseudo style matches for this node."""
-    inherited: "List[InheritedStyleEntry]"
-    """A chain of inherited styles (from the immediate node parent up to the DOM tree root)."""
-    inheritedPseudoElements: "List[InheritedPseudoElementMatches]"
-    """A chain of inherited pseudo element styles (from the immediate node parent up to the DOM tree root)."""
-    cssKeyframesRules: "List[CSSKeyframesRule]"
-    """A list of CSS keyframed animations matching this node."""
-    cssPositionTryRules: "List[CSSPositionTryRule]"
-    """A list of CSS @position-try rules matching this node, based on the position-try-fallbacks property."""
-    activePositionFallbackIndex: "int"
-    """Index of the active fallback in the applied position-try-fallback property,
-will not be set if there is no active position-try fallback."""
-    cssPropertyRules: "List[CSSPropertyRule]"
-    """A list of CSS at-property rules matching this node."""
-    cssPropertyRegistrations: "List[CSSPropertyRegistration]"
-    """A list of CSS property registrations matching this node."""
-    cssFontPaletteValuesRule: "CSSFontPaletteValuesRule"
-    """A font-palette-values rule matching this node."""
-    parentLayoutNodeId: "NodeId"
-    """Id of the first parent element that does not have display: contents."""
-    cssFunctionRules: "List[CSSFunctionRule]"
-    """A list of CSS at-function rules referenced by styles of this node."""
+class GetMatchedStylesForNodeReturns(BaseModel):
+    inlineStyle: "Optional[CSSStyle]" = None
+    attributesStyle: "Optional[CSSStyle]" = None
+    matchedCSSRules: "Optional[List[RuleMatch]]" = None
+    pseudoElements: "Optional[List[PseudoElementMatches]]" = None
+    inherited: "Optional[List[InheritedStyleEntry]]" = None
+    inheritedPseudoElements: "Optional[List[InheritedPseudoElementMatches]]" = None
+    cssKeyframesRules: "Optional[List[CSSKeyframesRule]]" = None
+    cssPositionTryRules: "Optional[List[CSSPositionTryRule]]" = None
+    activePositionFallbackIndex: "Optional[int]" = None
+    cssPropertyRules: "Optional[List[CSSPropertyRule]]" = None
+    cssPropertyRegistrations: "Optional[List[CSSPropertyRegistration]]" = None
+    cssFontPaletteValuesRule: "Optional[CSSFontPaletteValuesRule]" = None
+    parentLayoutNodeId: "Optional[NodeId]" = None
+    cssFunctionRules: "Optional[List[CSSFunctionRule]]" = None
 
 
 
-class GetMediaQueriesReturns(TypedDict):
+class GetMediaQueriesReturns(BaseModel):
     medias: "List[CSSMedia]"
 
 
@@ -240,9 +208,8 @@ class GetPlatformFontsForNodeParameters(TypedDict):
     nodeId: "NodeId"
 
 
-class GetPlatformFontsForNodeReturns(TypedDict):
+class GetPlatformFontsForNodeReturns(BaseModel):
     fonts: "List[PlatformFontUsage]"
-    """Usage statistics for every employed platform font."""
 
 
 
@@ -250,9 +217,8 @@ class GetStyleSheetTextParameters(TypedDict):
     styleSheetId: "StyleSheetId"
 
 
-class GetStyleSheetTextReturns(TypedDict):
+class GetStyleSheetTextReturns(BaseModel):
     text: "str"
-    """The stylesheet text."""
 
 
 
@@ -260,7 +226,7 @@ class GetLayersForNodeParameters(TypedDict):
     nodeId: "NodeId"
 
 
-class GetLayersForNodeReturns(TypedDict):
+class GetLayersForNodeReturns(BaseModel):
     rootLayer: "CSSLayerData"
 
 
@@ -270,7 +236,7 @@ class GetLocationForSelectorParameters(TypedDict):
     selectorText: "str"
 
 
-class GetLocationForSelectorReturns(TypedDict):
+class GetLocationForSelectorReturns(BaseModel):
     ranges: "List[SourceRange]"
 
 
@@ -289,9 +255,8 @@ class TrackComputedStyleUpdatesParameters(TypedDict):
 
 
 
-class TakeComputedStyleUpdatesReturns(TypedDict):
+class TakeComputedStyleUpdatesReturns(BaseModel):
     nodeIds: "List[NodeId]"
-    """The list of node Ids that have their tracked computed styles updated."""
 
 
 
@@ -311,9 +276,8 @@ class SetPropertyRulePropertyNameParameters(TypedDict):
     propertyName: "str"
 
 
-class SetPropertyRulePropertyNameReturns(TypedDict):
+class SetPropertyRulePropertyNameReturns(BaseModel):
     propertyName: "Value"
-    """The resulting key text after modification."""
 
 
 
@@ -323,9 +287,8 @@ class SetKeyframeKeyParameters(TypedDict):
     keyText: "str"
 
 
-class SetKeyframeKeyReturns(TypedDict):
+class SetKeyframeKeyReturns(BaseModel):
     keyText: "Value"
-    """The resulting key text after modification."""
 
 
 
@@ -335,9 +298,8 @@ class SetMediaTextParameters(TypedDict):
     text: "str"
 
 
-class SetMediaTextReturns(TypedDict):
+class SetMediaTextReturns(BaseModel):
     media: "CSSMedia"
-    """The resulting CSS media rule after modification."""
 
 
 
@@ -347,9 +309,8 @@ class SetContainerQueryTextParameters(TypedDict):
     text: "str"
 
 
-class SetContainerQueryTextReturns(TypedDict):
+class SetContainerQueryTextReturns(BaseModel):
     containerQuery: "CSSContainerQuery"
-    """The resulting CSS container query rule after modification."""
 
 
 
@@ -359,9 +320,8 @@ class SetSupportsTextParameters(TypedDict):
     text: "str"
 
 
-class SetSupportsTextReturns(TypedDict):
+class SetSupportsTextReturns(BaseModel):
     supports: "CSSSupports"
-    """The resulting CSS Supports rule after modification."""
 
 
 
@@ -371,9 +331,8 @@ class SetScopeTextParameters(TypedDict):
     text: "str"
 
 
-class SetScopeTextReturns(TypedDict):
+class SetScopeTextReturns(BaseModel):
     scope: "CSSScope"
-    """The resulting CSS Scope rule after modification."""
 
 
 
@@ -383,9 +342,8 @@ class SetRuleSelectorParameters(TypedDict):
     selector: "str"
 
 
-class SetRuleSelectorReturns(TypedDict):
+class SetRuleSelectorReturns(BaseModel):
     selectorList: "SelectorList"
-    """The resulting selector list after modification."""
 
 
 
@@ -394,9 +352,8 @@ class SetStyleSheetTextParameters(TypedDict):
     text: "str"
 
 
-class SetStyleSheetTextReturns(TypedDict):
-    sourceMapURL: "str"
-    """URL of source map associated with script (if any)."""
+class SetStyleSheetTextReturns(BaseModel):
+    sourceMapURL: "Optional[str]" = None
 
 
 
@@ -408,21 +365,19 @@ validated. If omitted, declarations in the new rule text can only be validated s
 incorrect results if the declaration contains a var() for example."""
 
 
-class SetStyleTextsReturns(TypedDict):
+class SetStyleTextsReturns(BaseModel):
     styles: "List[CSSStyle]"
-    """The resulting styles after modification."""
 
 
 
-class StopRuleUsageTrackingReturns(TypedDict):
+class StopRuleUsageTrackingReturns(BaseModel):
     ruleUsage: "List[RuleUsage]"
 
 
 
-class TakeCoverageDeltaReturns(TypedDict):
+class TakeCoverageDeltaReturns(BaseModel):
     coverage: "List[RuleUsage]"
     timestamp: "float"
-    """Monotonically increasing time, in seconds."""
 
 
 
@@ -431,3 +386,71 @@ class SetLocalFontsEnabledParameters(TypedDict):
     """Whether rendering of local fonts is enabled."""
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import NodeId
+        from ..dom.types import PseudoType
+        from ..page.types import FrameId
+        from .types import CSSAnimationStyle
+        from .types import CSSComputedStyleProperty
+        from .types import CSSContainerQuery
+        from .types import CSSFontPaletteValuesRule
+        from .types import CSSFunctionRule
+        from .types import CSSKeyframesRule
+        from .types import CSSLayerData
+        from .types import CSSMedia
+        from .types import CSSPositionTryRule
+        from .types import CSSProperty
+        from .types import CSSPropertyRegistration
+        from .types import CSSPropertyRule
+        from .types import CSSRule
+        from .types import CSSScope
+        from .types import CSSStyle
+        from .types import CSSSupports
+        from .types import InheritedAnimatedStyleEntry
+        from .types import InheritedPseudoElementMatches
+        from .types import InheritedStyleEntry
+        from .types import PlatformFontUsage
+        from .types import PseudoElementMatches
+        from .types import RuleMatch
+        from .types import RuleUsage
+        from .types import SelectorList
+        from .types import SourceRange
+        from .types import StyleDeclarationEdit
+        from .types import StyleSheetId
+        from .types import Value
+        # Rebuild models now that imports are available
+        AddRuleReturns.model_rebuild()
+        CollectClassNamesReturns.model_rebuild()
+        CreateStyleSheetReturns.model_rebuild()
+        GetBackgroundColorsReturns.model_rebuild()
+        GetComputedStyleForNodeReturns.model_rebuild()
+        ResolveValuesReturns.model_rebuild()
+        GetLonghandPropertiesReturns.model_rebuild()
+        GetInlineStylesForNodeReturns.model_rebuild()
+        GetAnimatedStylesForNodeReturns.model_rebuild()
+        GetMatchedStylesForNodeReturns.model_rebuild()
+        GetMediaQueriesReturns.model_rebuild()
+        GetPlatformFontsForNodeReturns.model_rebuild()
+        GetStyleSheetTextReturns.model_rebuild()
+        GetLayersForNodeReturns.model_rebuild()
+        GetLocationForSelectorReturns.model_rebuild()
+        TakeComputedStyleUpdatesReturns.model_rebuild()
+        SetPropertyRulePropertyNameReturns.model_rebuild()
+        SetKeyframeKeyReturns.model_rebuild()
+        SetMediaTextReturns.model_rebuild()
+        SetContainerQueryTextReturns.model_rebuild()
+        SetSupportsTextReturns.model_rebuild()
+        SetScopeTextReturns.model_rebuild()
+        SetRuleSelectorReturns.model_rebuild()
+        SetStyleSheetTextReturns.model_rebuild()
+        SetStyleTextsReturns.model_rebuild()
+        StopRuleUsageTrackingReturns.model_rebuild()
+        TakeCoverageDeltaReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

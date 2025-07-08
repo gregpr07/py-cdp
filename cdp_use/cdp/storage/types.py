@@ -5,8 +5,8 @@
 """CDP Storage Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -18,8 +18,8 @@ SerializedStorageKey = str
 
 
 
-"""Enum of possible storage types."""
 class StorageType(Enum):
+    """Enum of possible storage types."""
     COOKIES = "cookies"
     FILE_SYSTEMS = "file_systems"
     INDEXEDDB = "indexeddb"
@@ -36,18 +36,16 @@ class StorageType(Enum):
 
 
 
-"""Usage for a storage type."""
-class UsageForType(TypedDict):
+class UsageForType(BaseModel):
+    """Usage for a storage type."""
     storageType: "StorageType"
-    """Name of storage type."""
     usage: "float"
-    """Storage usage (bytes)."""
 
 
 
-"""Pair of issuer origin and number of available (signed, but not used) Trust
+class TrustTokens(BaseModel):
+    """Pair of issuer origin and number of available (signed, but not used) Trust
 Tokens from that issuer."""
-class TrustTokens(TypedDict):
     issuerOrigin: "str"
     count: "float"
 
@@ -58,8 +56,8 @@ InterestGroupAuctionId = str
 
 
 
-"""Enum of interest group access types."""
 class InterestGroupAccessType(Enum):
+    """Enum of interest group access types."""
     JOIN = "join"
     LEAVE = "leave"
     UPDATE = "update"
@@ -74,15 +72,15 @@ class InterestGroupAccessType(Enum):
 
 
 
-"""Enum of auction events."""
 class InterestGroupAuctionEventType(Enum):
+    """Enum of auction events."""
     STARTED = "started"
     CONFIGRESOLVED = "configResolved"
 
 
 
-"""Enum of network fetches auctions can do."""
 class InterestGroupAuctionFetchType(Enum):
+    """Enum of network fetches auctions can do."""
     BIDDERJS = "bidderJs"
     BIDDERWASM = "bidderWasm"
     SELLERJS = "sellerJs"
@@ -91,8 +89,8 @@ class InterestGroupAuctionFetchType(Enum):
 
 
 
-"""Enum of shared storage access scopes."""
 class SharedStorageAccessScope(Enum):
+    """Enum of shared storage access scopes."""
     WINDOW = "window"
     SHAREDSTORAGEWORKLET = "sharedStorageWorklet"
     PROTECTEDAUDIENCEWORKLET = "protectedAudienceWorklet"
@@ -100,8 +98,8 @@ class SharedStorageAccessScope(Enum):
 
 
 
-"""Enum of shared storage access methods."""
 class SharedStorageAccessMethod(Enum):
+    """Enum of shared storage access methods."""
     ADDMODULE = "addModule"
     CREATEWORKLET = "createWorklet"
     SELECTURL = "selectURL"
@@ -120,124 +118,66 @@ class SharedStorageAccessMethod(Enum):
 
 
 
-"""Struct for a single key-value pair in an origin's shared storage."""
-class SharedStorageEntry(TypedDict):
+class SharedStorageEntry(BaseModel):
+    """Struct for a single key-value pair in an origin's shared storage."""
     key: "str"
     value: "str"
 
 
 
-"""Details for an origin's shared storage."""
-class SharedStorageMetadata(TypedDict):
+class SharedStorageMetadata(BaseModel):
+    """Details for an origin's shared storage."""
     creationTime: "TimeSinceEpoch"
-    """Time when the origin's shared storage was last created."""
     length: "int"
-    """Number of key-value pairs stored in origin's shared storage."""
     remainingBudget: "float"
-    """Current amount of bits of entropy remaining in the navigation budget."""
     bytesUsed: "int"
-    """Total number of bytes stored as key-value pairs in origin's shared
-storage."""
 
 
 
-"""Represents a dictionary object passed in as privateAggregationConfig to
+class SharedStoragePrivateAggregationConfig(BaseModel):
+    """Represents a dictionary object passed in as privateAggregationConfig to
 run or selectURL."""
-class SharedStoragePrivateAggregationConfig(TypedDict):
-    aggregationCoordinatorOrigin: "Optional[str]"
-    """The chosen aggregation service deployment."""
-    contextId: "Optional[str]"
-    """The context ID provided."""
     filteringIdMaxBytes: "int"
-    """Configures the maximum size allowed for filtering IDs."""
-    maxContributions: "Optional[int]"
-    """The limit on the number of contributions in the final report."""
+    aggregationCoordinatorOrigin: "Optional[str]" = None
+    contextId: "Optional[str]" = None
+    maxContributions: "Optional[int]" = None
 
 
 
-"""Pair of reporting metadata details for a candidate URL for `selectURL()`."""
-class SharedStorageReportingMetadata(TypedDict):
+class SharedStorageReportingMetadata(BaseModel):
+    """Pair of reporting metadata details for a candidate URL for `selectURL()`."""
     eventType: "str"
     reportingUrl: "str"
 
 
 
-"""Bundles a candidate URL with its reporting metadata."""
-class SharedStorageUrlWithMetadata(TypedDict):
+class SharedStorageUrlWithMetadata(BaseModel):
+    """Bundles a candidate URL with its reporting metadata."""
     url: "str"
-    """Spec of candidate URL."""
     reportingMetadata: "List[SharedStorageReportingMetadata]"
-    """Any associated reporting metadata."""
 
 
 
-"""Bundles the parameters for shared storage access events whose
+class SharedStorageAccessParams(BaseModel):
+    """Bundles the parameters for shared storage access events whose
 presence/absence can vary according to SharedStorageAccessType."""
-class SharedStorageAccessParams(TypedDict, total=False):
-    scriptSourceUrl: "str"
-    """Spec of the module script URL.
-Present only for SharedStorageAccessMethods: addModule and
-createWorklet."""
-    dataOrigin: "str"
-    """String denoting \"context-origin\", \"script-origin\", or a custom
-origin to be used as the worklet's data origin.
-Present only for SharedStorageAccessMethod: createWorklet."""
-    operationName: "str"
-    """Name of the registered operation to be run.
-Present only for SharedStorageAccessMethods: run and selectURL."""
-    operationId: "str"
-    """ID of the operation call.
-Present only for SharedStorageAccessMethods: run and selectURL."""
-    keepAlive: "bool"
-    """Whether or not to keep the worket alive for future run or selectURL
-calls.
-Present only for SharedStorageAccessMethods: run and selectURL."""
-    privateAggregationConfig: "SharedStoragePrivateAggregationConfig"
-    """Configures the private aggregation options.
-Present only for SharedStorageAccessMethods: run and selectURL."""
-    serializedData: "str"
-    """The operation's serialized data in bytes (converted to a string).
-Present only for SharedStorageAccessMethods: run and selectURL.
-TODO(crbug.com/401011862): Consider updating this parameter to binary."""
-    urlsWithMetadata: "List[SharedStorageUrlWithMetadata]"
-    """Array of candidate URLs' specs, along with any associated metadata.
-Present only for SharedStorageAccessMethod: selectURL."""
-    urnUuid: "str"
-    """Spec of the URN:UUID generated for a selectURL call.
-Present only for SharedStorageAccessMethod: selectURL."""
-    key: "str"
-    """Key for a specific entry in an origin's shared storage.
-Present only for SharedStorageAccessMethods: set, append, delete, and
-get."""
-    value: "str"
-    """Value for a specific entry in an origin's shared storage.
-Present only for SharedStorageAccessMethods: set and append."""
-    ignoreIfPresent: "bool"
-    """Whether or not to set an entry for a key if that key is already present.
-Present only for SharedStorageAccessMethod: set."""
-    workletOrdinal: "int"
-    """A number denoting the (0-based) order of the worklet's
-creation relative to all other shared storage worklets created by
-documents using the current storage partition.
-Present only for SharedStorageAccessMethods: addModule, createWorklet."""
-    workletTargetId: "TargetID"
-    """Hex representation of the DevTools token used as the TargetID for the
-associated shared storage worklet.
-Present only for SharedStorageAccessMethods: addModule, createWorklet,
-run, selectURL, and any other SharedStorageAccessMethod when the
-SharedStorageAccessScope is sharedStorageWorklet."""
-    withLock: "str"
-    """Name of the lock to be acquired, if present.
-Optionally present only for SharedStorageAccessMethods: batchUpdate,
-set, append, delete, and clear."""
-    batchUpdateId: "str"
-    """If the method has been called as part of a batchUpdate, then this
-number identifies the batch to which it belongs.
-Optionally present only for SharedStorageAccessMethods:
-batchUpdate (required), set, append, delete, and clear."""
-    batchSize: "int"
-    """Number of modifier methods sent in batch.
-Present only for SharedStorageAccessMethod: batchUpdate."""
+    scriptSourceUrl: "Optional[str]" = None
+    dataOrigin: "Optional[str]" = None
+    operationName: "Optional[str]" = None
+    operationId: "Optional[str]" = None
+    keepAlive: "Optional[bool]" = None
+    privateAggregationConfig: "Optional[SharedStoragePrivateAggregationConfig]" = None
+    serializedData: "Optional[str]" = None
+    urlsWithMetadata: "Optional[List[SharedStorageUrlWithMetadata]]" = None
+    urnUuid: "Optional[str]" = None
+    key: "Optional[str]" = None
+    value: "Optional[str]" = None
+    ignoreIfPresent: "Optional[bool]" = None
+    workletOrdinal: "Optional[int]" = None
+    workletTargetId: "Optional[TargetID]" = None
+    withLock: "Optional[str]" = None
+    batchUpdateId: "Optional[str]" = None
+    batchSize: "Optional[int]" = None
 
 
 
@@ -247,19 +187,17 @@ class StorageBucketsDurability(Enum):
 
 
 
-class StorageBucket(TypedDict):
+class StorageBucket(BaseModel):
     storageKey: "SerializedStorageKey"
-    name: "Optional[str]"
-    """If not specified, it is the default bucket of the storageKey."""
+    name: "Optional[str]" = None
 
 
 
-class StorageBucketInfo(TypedDict):
+class StorageBucketInfo(BaseModel):
     bucket: "StorageBucket"
     id: "str"
     expiration: "TimeSinceEpoch"
     quota: "float"
-    """Storage quota (bytes)."""
     persistent: "bool"
     durability: "StorageBucketsDurability"
 
@@ -283,36 +221,33 @@ SignedInt64AsBase10 = str
 
 
 
-class AttributionReportingFilterDataEntry(TypedDict):
+class AttributionReportingFilterDataEntry(BaseModel):
     key: "str"
     values: "List[str]"
 
 
 
-class AttributionReportingFilterConfig(TypedDict):
+class AttributionReportingFilterConfig(BaseModel):
     filterValues: "List[AttributionReportingFilterDataEntry]"
-    lookbackWindow: "Optional[int]"
-    """duration in seconds"""
+    lookbackWindow: "Optional[int]" = None
 
 
 
-class AttributionReportingFilterPair(TypedDict):
+class AttributionReportingFilterPair(BaseModel):
     filters: "List[AttributionReportingFilterConfig]"
     notFilters: "List[AttributionReportingFilterConfig]"
 
 
 
-class AttributionReportingAggregationKeysEntry(TypedDict):
+class AttributionReportingAggregationKeysEntry(BaseModel):
     key: "str"
     value: "UnsignedInt128AsBase16"
 
 
 
-class AttributionReportingEventReportWindows(TypedDict):
+class AttributionReportingEventReportWindows(BaseModel):
     start: "int"
-    """duration in seconds"""
     ends: "List[int]"
-    """duration in seconds"""
 
 
 
@@ -322,50 +257,40 @@ class AttributionReportingTriggerDataMatching(Enum):
 
 
 
-class AttributionReportingAggregatableDebugReportingData(TypedDict):
+class AttributionReportingAggregatableDebugReportingData(BaseModel):
     keyPiece: "UnsignedInt128AsBase16"
     value: "float"
-    """number instead of integer because not all uint32 can be represented by
-int"""
     types: "List[str]"
 
 
 
-class AttributionReportingAggregatableDebugReportingConfig(TypedDict):
-    budget: "Optional[float]"
-    """number instead of integer because not all uint32 can be represented by
-int, only present for source registrations"""
+class AttributionReportingAggregatableDebugReportingConfig(BaseModel):
     keyPiece: "UnsignedInt128AsBase16"
     debugData: "List[AttributionReportingAggregatableDebugReportingData]"
-    aggregationCoordinatorOrigin: "Optional[str]"
+    budget: "Optional[float]" = None
+    aggregationCoordinatorOrigin: "Optional[str]" = None
 
 
 
-class AttributionScopesData(TypedDict):
+class AttributionScopesData(BaseModel):
     values: "List[str]"
     limit: "float"
-    """number instead of integer because not all uint32 can be represented by
-int"""
     maxEventStates: "float"
 
 
 
-class AttributionReportingNamedBudgetDef(TypedDict):
+class AttributionReportingNamedBudgetDef(BaseModel):
     name: "str"
     budget: "int"
 
 
 
-class AttributionReportingSourceRegistration(TypedDict):
+class AttributionReportingSourceRegistration(BaseModel):
     time: "TimeSinceEpoch"
     expiry: "int"
-    """duration in seconds"""
     triggerData: "List[float]"
-    """number instead of integer because not all uint32 can be represented by
-int"""
     eventReportWindows: "AttributionReportingEventReportWindows"
     aggregatableReportWindow: "int"
-    """duration in seconds"""
     type: "AttributionReportingSourceType"
     sourceOrigin: "str"
     reportingOrigin: "str"
@@ -374,15 +299,15 @@ int"""
     priority: "SignedInt64AsBase10"
     filterData: "List[AttributionReportingFilterDataEntry]"
     aggregationKeys: "List[AttributionReportingAggregationKeysEntry]"
-    debugKey: "Optional[UnsignedInt64AsBase10]"
     triggerDataMatching: "AttributionReportingTriggerDataMatching"
     destinationLimitPriority: "SignedInt64AsBase10"
     aggregatableDebugReportingConfig: "AttributionReportingAggregatableDebugReportingConfig"
-    scopesData: "Optional[AttributionScopesData]"
     maxEventLevelReports: "int"
     namedBudgets: "List[AttributionReportingNamedBudgetDef]"
     debugReporting: "bool"
     eventLevelEpsilon: "float"
+    debugKey: "Optional[UnsignedInt64AsBase10]" = None
+    scopesData: "Optional[AttributionScopesData]" = None
 
 
 
@@ -412,63 +337,61 @@ class AttributionReportingSourceRegistrationTimeConfig(Enum):
 
 
 
-class AttributionReportingAggregatableValueDictEntry(TypedDict):
+class AttributionReportingAggregatableValueDictEntry(BaseModel):
     key: "str"
     value: "float"
-    """number instead of integer because not all uint32 can be represented by
-int"""
     filteringId: "UnsignedInt64AsBase10"
 
 
 
-class AttributionReportingAggregatableValueEntry(TypedDict):
+class AttributionReportingAggregatableValueEntry(BaseModel):
     values: "List[AttributionReportingAggregatableValueDictEntry]"
     filters: "AttributionReportingFilterPair"
 
 
 
-class AttributionReportingEventTriggerData(TypedDict):
+class AttributionReportingEventTriggerData(BaseModel):
     data: "UnsignedInt64AsBase10"
     priority: "SignedInt64AsBase10"
-    dedupKey: "Optional[UnsignedInt64AsBase10]"
     filters: "AttributionReportingFilterPair"
+    dedupKey: "Optional[UnsignedInt64AsBase10]" = None
 
 
 
-class AttributionReportingAggregatableTriggerData(TypedDict):
+class AttributionReportingAggregatableTriggerData(BaseModel):
     keyPiece: "UnsignedInt128AsBase16"
     sourceKeys: "List[str]"
     filters: "AttributionReportingFilterPair"
 
 
 
-class AttributionReportingAggregatableDedupKey(TypedDict):
-    dedupKey: "Optional[UnsignedInt64AsBase10]"
+class AttributionReportingAggregatableDedupKey(BaseModel):
     filters: "AttributionReportingFilterPair"
+    dedupKey: "Optional[UnsignedInt64AsBase10]" = None
 
 
 
-class AttributionReportingNamedBudgetCandidate(TypedDict):
-    name: "Optional[str]"
+class AttributionReportingNamedBudgetCandidate(BaseModel):
     filters: "AttributionReportingFilterPair"
+    name: "Optional[str]" = None
 
 
 
-class AttributionReportingTriggerRegistration(TypedDict):
+class AttributionReportingTriggerRegistration(BaseModel):
     filters: "AttributionReportingFilterPair"
-    debugKey: "Optional[UnsignedInt64AsBase10]"
     aggregatableDedupKeys: "List[AttributionReportingAggregatableDedupKey]"
     eventTriggerData: "List[AttributionReportingEventTriggerData]"
     aggregatableTriggerData: "List[AttributionReportingAggregatableTriggerData]"
     aggregatableValues: "List[AttributionReportingAggregatableValueEntry]"
     aggregatableFilteringIdMaxBytes: "int"
     debugReporting: "bool"
-    aggregationCoordinatorOrigin: "Optional[str]"
     sourceRegistrationTimeConfig: "AttributionReportingSourceRegistrationTimeConfig"
-    triggerContextId: "Optional[str]"
     aggregatableDebugReportingConfig: "AttributionReportingAggregatableDebugReportingConfig"
     scopes: "List[str]"
     namedBudgets: "List[AttributionReportingNamedBudgetCandidate]"
+    debugKey: "Optional[UnsignedInt64AsBase10]" = None
+    aggregationCoordinatorOrigin: "Optional[str]" = None
+    triggerContextId: "Optional[str]" = None
 
 
 
@@ -522,11 +445,49 @@ class AttributionReportingReportResult(Enum):
 
 
 
-"""A single Related Website Set object."""
-class RelatedWebsiteSet(TypedDict):
+class RelatedWebsiteSet(BaseModel):
+    """A single Related Website Set object."""
     primarySites: "List[str]"
-    """The primary site of this set, along with the ccTLDs if there is any."""
     associatedSites: "List[str]"
-    """The associated sites of this set, along with the ccTLDs if there is any."""
     serviceSites: "List[str]"
-    """The service sites of this set, along with the ccTLDs if there is any."""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..network.types import TimeSinceEpoch
+        from ..target.types import TargetID
+        # Rebuild models now that imports are available
+        UsageForType.model_rebuild()
+        TrustTokens.model_rebuild()
+        SharedStorageEntry.model_rebuild()
+        SharedStorageMetadata.model_rebuild()
+        SharedStoragePrivateAggregationConfig.model_rebuild()
+        SharedStorageReportingMetadata.model_rebuild()
+        SharedStorageUrlWithMetadata.model_rebuild()
+        SharedStorageAccessParams.model_rebuild()
+        StorageBucket.model_rebuild()
+        StorageBucketInfo.model_rebuild()
+        AttributionReportingFilterDataEntry.model_rebuild()
+        AttributionReportingFilterConfig.model_rebuild()
+        AttributionReportingFilterPair.model_rebuild()
+        AttributionReportingAggregationKeysEntry.model_rebuild()
+        AttributionReportingEventReportWindows.model_rebuild()
+        AttributionReportingAggregatableDebugReportingData.model_rebuild()
+        AttributionReportingAggregatableDebugReportingConfig.model_rebuild()
+        AttributionScopesData.model_rebuild()
+        AttributionReportingNamedBudgetDef.model_rebuild()
+        AttributionReportingSourceRegistration.model_rebuild()
+        AttributionReportingAggregatableValueDictEntry.model_rebuild()
+        AttributionReportingAggregatableValueEntry.model_rebuild()
+        AttributionReportingEventTriggerData.model_rebuild()
+        AttributionReportingAggregatableTriggerData.model_rebuild()
+        AttributionReportingAggregatableDedupKey.model_rebuild()
+        AttributionReportingNamedBudgetCandidate.model_rebuild()
+        AttributionReportingTriggerRegistration.model_rebuild()
+        RelatedWebsiteSet.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

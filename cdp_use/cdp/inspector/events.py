@@ -4,21 +4,33 @@
 
 """CDP Inspector Domain Events"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
-"""Fired when remote debugging connection is about to be terminated. Contains detach reason."""
-class DetachedEvent(TypedDict):
+class DetachedEvent(BaseModel):
+    """Fired when remote debugging connection is about to be terminated. Contains detach reason."""
     reason: "str"
-    """The reason why connection has been terminated."""
 
 
 
-"""Fired when debugging target has crashed"""
-class TargetCrashedEvent(TypedDict):
+class TargetCrashedEvent(BaseModel):
+    """Fired when debugging target has crashed"""
     pass
 
 
 
-"""Fired when debugging target has reloaded after crash"""
-class TargetReloadedAfterCrashEvent(TypedDict):
+class TargetReloadedAfterCrashEvent(BaseModel):
+    """Fired when debugging target has reloaded after crash"""
     pass
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        DetachedEvent.model_rebuild()
+        TargetCrashedEvent.model_rebuild()
+        TargetReloadedAfterCrashEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

@@ -5,8 +5,8 @@
 """CDP ServiceWorker Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -17,8 +17,8 @@ RegistrationID = str
 
 
 
-"""ServiceWorker registration."""
-class ServiceWorkerRegistration(TypedDict):
+class ServiceWorkerRegistration(BaseModel):
+    """ServiceWorker registration."""
     registrationId: "RegistrationID"
     scopeURL: "str"
     isDeleted: "bool"
@@ -43,29 +43,41 @@ class ServiceWorkerVersionStatus(Enum):
 
 
 
-"""ServiceWorker version."""
-class ServiceWorkerVersion(TypedDict):
+class ServiceWorkerVersion(BaseModel):
+    """ServiceWorker version."""
     versionId: "str"
     registrationId: "RegistrationID"
     scriptURL: "str"
     runningStatus: "ServiceWorkerVersionRunningStatus"
     status: "ServiceWorkerVersionStatus"
-    scriptLastModified: "Optional[float]"
-    """The Last-Modified header value of the main script."""
-    scriptResponseTime: "Optional[float]"
-    """The time at which the response headers of the main script were received from the server.
-For cached script it is the last time the cache entry was validated."""
-    controlledClients: "Optional[List[TargetID]]"
-    targetId: "Optional[TargetID]"
-    routerRules: "Optional[str]"
+    scriptLastModified: "Optional[float]" = None
+    scriptResponseTime: "Optional[float]" = None
+    controlledClients: "Optional[List[TargetID]]" = None
+    targetId: "Optional[TargetID]" = None
+    routerRules: "Optional[str]" = None
 
 
 
-"""ServiceWorker error message."""
-class ServiceWorkerErrorMessage(TypedDict):
+class ServiceWorkerErrorMessage(BaseModel):
+    """ServiceWorker error message."""
     errorMessage: "str"
     registrationId: "RegistrationID"
     versionId: "str"
     sourceURL: "str"
     lineNumber: "int"
     columnNumber: "int"
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..target.types import TargetID
+        # Rebuild models now that imports are available
+        ServiceWorkerRegistration.model_rebuild()
+        ServiceWorkerVersion.model_rebuild()
+        ServiceWorkerErrorMessage.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

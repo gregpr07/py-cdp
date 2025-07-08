@@ -5,8 +5,8 @@
 """CDP Fetch Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -20,55 +20,56 @@ RequestId = str
 
 
 
-"""Stages of the request to handle. Request will intercept before the request is
+class RequestStage(Enum):
+    """Stages of the request to handle. Request will intercept before the request is
 sent. Response will intercept after the response is received (but before response
 body is received)."""
-class RequestStage(Enum):
     REQUEST = "Request"
     RESPONSE = "Response"
 
 
 
-class RequestPattern(TypedDict, total=False):
-    urlPattern: "str"
-    """Wildcards (`'*'` -> zero or more, `'?'` -> exactly one) are allowed. Escape character is
-backslash. Omitting is equivalent to `\"*\"`."""
-    resourceType: "ResourceType"
-    """If set, only requests for matching resource types will be intercepted."""
-    requestStage: "RequestStage"
-    """Stage at which to begin intercepting requests. Default is Request."""
+class RequestPattern(BaseModel):
+    urlPattern: "Optional[str]" = None
+    resourceType: "Optional[ResourceType]" = None
+    requestStage: "Optional[RequestStage]" = None
 
 
 
-"""Response HTTP header entry"""
-class HeaderEntry(TypedDict):
+class HeaderEntry(BaseModel):
+    """Response HTTP header entry"""
     name: "str"
     value: "str"
 
 
 
-"""Authorization challenge for HTTP status code 401 or 407."""
-class AuthChallenge(TypedDict):
-    source: "Optional[str]"
-    """Source of the authentication challenge."""
+class AuthChallenge(BaseModel):
+    """Authorization challenge for HTTP status code 401 or 407."""
     origin: "str"
-    """Origin of the challenger."""
     scheme: "str"
-    """The authentication scheme used, such as basic or digest"""
     realm: "str"
-    """The realm of the challenge. May be empty."""
+    source: "Optional[str]" = None
 
 
 
-"""Response to an AuthChallenge."""
-class AuthChallengeResponse(TypedDict):
+class AuthChallengeResponse(BaseModel):
+    """Response to an AuthChallenge."""
     response: "str"
-    """The decision on what to do in response to the authorization challenge.  Default means
-deferring to the default behavior of the net stack, which will likely either the Cancel
-authentication or display a popup dialog box."""
-    username: "Optional[str]"
-    """The username to provide, possibly empty. Should only be set if response is
-ProvideCredentials."""
-    password: "Optional[str]"
-    """The password to provide, possibly empty. Should only be set if response is
-ProvideCredentials."""
+    username: "Optional[str]" = None
+    password: "Optional[str]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..network.types import ResourceType
+        # Rebuild models now that imports are available
+        RequestPattern.model_rebuild()
+        HeaderEntry.model_rebuild()
+        AuthChallenge.model_rebuild()
+        AuthChallengeResponse.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

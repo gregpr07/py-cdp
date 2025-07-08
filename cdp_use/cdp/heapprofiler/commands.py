@@ -4,6 +4,7 @@
 
 """CDP HeapProfiler Domain Commands"""
 
+from pydantic import BaseModel
 from typing import Optional
 from typing_extensions import TypedDict
 
@@ -28,9 +29,8 @@ class GetHeapObjectIdParameters(TypedDict):
     """Identifier of the object to get heap object id for."""
 
 
-class GetHeapObjectIdReturns(TypedDict):
+class GetHeapObjectIdReturns(BaseModel):
     heapSnapshotObjectId: "HeapSnapshotObjectId"
-    """Id of the heap snapshot object corresponding to the passed remote object id."""
 
 
 
@@ -40,15 +40,13 @@ class GetObjectByHeapObjectIdParameters(TypedDict):
     """Symbolic group name that can be used to release multiple objects."""
 
 
-class GetObjectByHeapObjectIdReturns(TypedDict):
+class GetObjectByHeapObjectIdReturns(BaseModel):
     result: "RemoteObject"
-    """Evaluation result."""
 
 
 
-class GetSamplingProfileReturns(TypedDict):
+class GetSamplingProfileReturns(BaseModel):
     profile: "SamplingHeapProfile"
-    """Return the sampling profile being collected."""
 
 
 
@@ -84,9 +82,8 @@ class StartTrackingHeapObjectsParameters(TypedDict, total=False):
 
 
 
-class StopSamplingReturns(TypedDict):
+class StopSamplingReturns(BaseModel):
     profile: "SamplingHeapProfile"
-    """Recorded sampling heap profile."""
 
 
 
@@ -117,3 +114,21 @@ Deprecated in favor of `exposeInternals`."""
     """If true, exposes internals of the snapshot."""
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..runtime.types import RemoteObject
+        from ..runtime.types import RemoteObjectId
+        from .types import HeapSnapshotObjectId
+        from .types import SamplingHeapProfile
+        # Rebuild models now that imports are available
+        GetHeapObjectIdReturns.model_rebuild()
+        GetObjectByHeapObjectIdReturns.model_rebuild()
+        GetSamplingProfileReturns.model_rebuild()
+        StopSamplingReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

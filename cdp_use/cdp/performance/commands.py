@@ -4,6 +4,7 @@
 
 """CDP Performance Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List
 from typing_extensions import TypedDict
 
@@ -28,6 +29,17 @@ class SetTimeDomainParameters(TypedDict):
 
 
 
-class GetMetricsReturns(TypedDict):
+class GetMetricsReturns(BaseModel):
     metrics: "List[Metric]"
-    """Current values for run-time metrics."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import Metric
+        # Rebuild models now that imports are available
+        GetMetricsReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

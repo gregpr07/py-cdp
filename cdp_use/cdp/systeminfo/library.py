@@ -4,7 +4,7 @@
 
 """CDP SystemInfo Domain Library"""
 
-from typing import Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -27,11 +27,13 @@ class SystemInfoClient:
         session_id: Optional[str] = None,
     ) -> "GetInfoReturns":
         """Returns information about the system."""
-        return cast("GetInfoReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="SystemInfo.getInfo",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetInfoReturns as _GetInfoReturns
+        return _GetInfoReturns.model_validate(raw_result)
 
     async def getFeatureState(
         self,
@@ -39,11 +41,13 @@ class SystemInfoClient:
         session_id: Optional[str] = None,
     ) -> "GetFeatureStateReturns":
         """Returns information about the feature state."""
-        return cast("GetFeatureStateReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="SystemInfo.getFeatureState",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetFeatureStateReturns as _GetFeatureStateReturns
+        return _GetFeatureStateReturns.model_validate(raw_result)
 
     async def getProcessInfo(
         self,
@@ -51,10 +55,12 @@ class SystemInfoClient:
         session_id: Optional[str] = None,
     ) -> "GetProcessInfoReturns":
         """Returns information about all running processes."""
-        return cast("GetProcessInfoReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="SystemInfo.getProcessInfo",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetProcessInfoReturns as _GetProcessInfoReturns
+        return _GetProcessInfoReturns.model_validate(raw_result)
 
 

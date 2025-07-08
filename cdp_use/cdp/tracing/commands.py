@@ -4,6 +4,7 @@
 
 """CDP Tracing Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List
 from typing_extensions import TypedDict
 
@@ -16,9 +17,8 @@ if TYPE_CHECKING:
     from .types import TraceConfig
     from .types import TracingBackend
 
-class GetCategoriesReturns(TypedDict):
+class GetCategoriesReturns(BaseModel):
     categories: "List[str]"
-    """A list of supported tracing categories."""
 
 
 
@@ -37,11 +37,9 @@ class RequestMemoryDumpParameters(TypedDict, total=False):
     """Specifies level of details in memory dump. Defaults to \"detailed\"."""
 
 
-class RequestMemoryDumpReturns(TypedDict):
+class RequestMemoryDumpReturns(BaseModel):
     dumpGuid: "str"
-    """GUID of the resulting global memory dump."""
     success: "bool"
-    """True iff the global memory dump succeeded."""
 
 
 
@@ -70,3 +68,20 @@ are ignored. (Encoded as a base64 string when passed over JSON)"""
     """Backend type (defaults to `auto`)"""
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import MemoryDumpLevelOfDetail
+        from .types import StreamCompression
+        from .types import StreamFormat
+        from .types import TraceConfig
+        from .types import TracingBackend
+        # Rebuild models now that imports are available
+        GetCategoriesReturns.model_rebuild()
+        RequestMemoryDumpReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

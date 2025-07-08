@@ -4,38 +4,50 @@
 
 """CDP HeapProfiler Domain Events"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
-class AddHeapSnapshotChunkEvent(TypedDict):
+class AddHeapSnapshotChunkEvent(BaseModel):
     chunk: "str"
 
 
 
-"""If heap objects tracking has been started then backend may send update for one or more fragments"""
-class HeapStatsUpdateEvent(TypedDict):
+class HeapStatsUpdateEvent(BaseModel):
+    """If heap objects tracking has been started then backend may send update for one or more fragments"""
     statsUpdate: "List[int]"
-    """An array of triplets. Each triplet describes a fragment. The first integer is the fragment
-index, the second integer is a total count of objects for the fragment, the third integer is
-a total size of the objects for the fragment."""
 
 
 
-"""If heap objects tracking has been started then backend regularly sends a current value for last
+class LastSeenObjectIdEvent(BaseModel):
+    """If heap objects tracking has been started then backend regularly sends a current value for last
 seen object id and corresponding timestamp. If the were changes in the heap since last event
 then one or more heapStatsUpdate events will be sent before a new lastSeenObjectId event."""
-class LastSeenObjectIdEvent(TypedDict):
     lastSeenObjectId: "int"
     timestamp: "float"
 
 
 
-class ReportHeapSnapshotProgressEvent(TypedDict):
+class ReportHeapSnapshotProgressEvent(BaseModel):
     done: "int"
     total: "int"
-    finished: "Optional[bool]"
+    finished: "Optional[bool]" = None
 
 
 
-class ResetProfilesEvent(TypedDict):
+class ResetProfilesEvent(BaseModel):
     pass
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        AddHeapSnapshotChunkEvent.model_rebuild()
+        HeapStatsUpdateEvent.model_rebuild()
+        LastSeenObjectIdEvent.model_rebuild()
+        ReportHeapSnapshotProgressEvent.model_rebuild()
+        ResetProfilesEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

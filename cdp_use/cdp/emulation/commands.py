@@ -4,6 +4,7 @@
 
 """CDP Emulation Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -28,9 +29,8 @@ if TYPE_CHECKING:
     from .types import UserAgentMetadata
     from .types import VirtualTimePolicy
 
-class CanEmulateReturns(TypedDict):
+class CanEmulateReturns(BaseModel):
     result: "bool"
-    """True if emulation is supported."""
 
 
 
@@ -205,7 +205,7 @@ class GetOverriddenSensorInformationParameters(TypedDict):
     type: "SensorType"
 
 
-class GetOverriddenSensorInformationReturns(TypedDict):
+class GetOverriddenSensorInformationReturns(BaseModel):
     requestedSamplingFrequency: "float"
 
 
@@ -309,9 +309,8 @@ forwards to prevent deadlock."""
     """If set, base::Time::Now will be overridden to initially return this value."""
 
 
-class SetVirtualTimePolicyReturns(TypedDict):
+class SetVirtualTimePolicyReturns(BaseModel):
     virtualTimeTicksBase: "float"
-    """Absolute timestamp at which virtual time was first enabled (up time in milliseconds)."""
 
 
 
@@ -347,6 +346,14 @@ class SetVisibleSizeParameters(TypedDict):
 class SetDisabledImageTypesParameters(TypedDict):
     imageTypes: "List[DisabledImageType]"
     """Image types to disable."""
+
+
+
+
+
+class SetDataSaverOverrideParameters(TypedDict, total=False):
+    dataSaverEnabled: "bool"
+    """Override value. Omitting the parameter disables the override."""
 
 
 
@@ -388,3 +395,33 @@ class SetSmallViewportHeightDifferenceOverrideParameters(TypedDict):
 of size 100lvh."""
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import RGBA
+        from ..network.types import TimeSinceEpoch
+        from ..page.types import Viewport
+        from .types import DevicePosture
+        from .types import DisabledImageType
+        from .types import DisplayFeature
+        from .types import MediaFeature
+        from .types import PressureMetadata
+        from .types import PressureSource
+        from .types import PressureState
+        from .types import SafeAreaInsets
+        from .types import ScreenOrientation
+        from .types import SensorMetadata
+        from .types import SensorReading
+        from .types import SensorType
+        from .types import UserAgentMetadata
+        from .types import VirtualTimePolicy
+        # Rebuild models now that imports are available
+        CanEmulateReturns.model_rebuild()
+        GetOverriddenSensorInformationReturns.model_rebuild()
+        SetVirtualTimePolicyReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

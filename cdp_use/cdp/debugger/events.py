@@ -4,8 +4,8 @@
 
 """CDP Debugger Domain Events"""
 
+from pydantic import BaseModel
 from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -21,126 +21,101 @@ if TYPE_CHECKING:
     from .types import Location
     from .types import ResolvedBreakpoint
 
-"""Fired when breakpoint is resolved to an actual script and location.
+class BreakpointResolvedEvent(BaseModel):
+    """Fired when breakpoint is resolved to an actual script and location.
 Deprecated in favor of `resolvedBreakpoints` in the `scriptParsed` event."""
-class BreakpointResolvedEvent(TypedDict):
     breakpointId: "BreakpointId"
-    """Breakpoint unique identifier."""
     location: "Location"
-    """Actual breakpoint location."""
 
 
 
-"""Fired when the virtual machine stopped on breakpoint or exception or any other stop criteria."""
-class PausedEvent(TypedDict):
+class PausedEvent(BaseModel):
+    """Fired when the virtual machine stopped on breakpoint or exception or any other stop criteria."""
     callFrames: "List[CallFrame]"
-    """Call stack the virtual machine stopped on."""
     reason: "str"
-    """Pause reason."""
-    data: "Optional[Dict[str, Any]]"
-    """Object containing break-specific auxiliary properties."""
-    hitBreakpoints: "Optional[List[str]]"
-    """Hit breakpoints IDs"""
-    asyncStackTrace: "Optional[StackTrace]"
-    """Async stack trace, if any."""
-    asyncStackTraceId: "Optional[StackTraceId]"
-    """Async stack trace, if any."""
-    asyncCallStackTraceId: "Optional[StackTraceId]"
-    """Never present, will be removed."""
+    data: "Optional[Dict[str, Any]]" = None
+    hitBreakpoints: "Optional[List[str]]" = None
+    asyncStackTrace: "Optional[StackTrace]" = None
+    asyncStackTraceId: "Optional[StackTraceId]" = None
+    asyncCallStackTraceId: "Optional[StackTraceId]" = None
 
 
 
-"""Fired when the virtual machine resumed execution."""
-class ResumedEvent(TypedDict):
+class ResumedEvent(BaseModel):
+    """Fired when the virtual machine resumed execution."""
     pass
 
 
 
-"""Fired when virtual machine fails to parse the script."""
-class ScriptFailedToParseEvent(TypedDict):
+class ScriptFailedToParseEvent(BaseModel):
+    """Fired when virtual machine fails to parse the script."""
     scriptId: "ScriptId"
-    """Identifier of the script parsed."""
     url: "str"
-    """URL or name of the script parsed (if any)."""
     startLine: "int"
-    """Line offset of the script within the resource with given URL (for script tags)."""
     startColumn: "int"
-    """Column offset of the script within the resource with given URL."""
     endLine: "int"
-    """Last line of the script."""
     endColumn: "int"
-    """Length of the last line of the script."""
     executionContextId: "ExecutionContextId"
-    """Specifies script creation context."""
     hash: "str"
-    """Content hash of the script, SHA-256."""
     buildId: "str"
-    """For Wasm modules, the content of the `build_id` custom section. For JavaScript the `debugId` magic comment."""
-    executionContextAuxData: "Optional[Dict[str, Any]]"
-    """Embedder-specific auxiliary data likely matching {isDefault: boolean, type: 'default'|'isolated'|'worker', frameId: string}"""
-    sourceMapURL: "Optional[str]"
-    """URL of source map associated with script (if any)."""
-    hasSourceURL: "Optional[bool]"
-    """True, if this script has sourceURL."""
-    isModule: "Optional[bool]"
-    """True, if this script is ES6 module."""
-    length: "Optional[int]"
-    """This script length."""
-    stackTrace: "Optional[StackTrace]"
-    """JavaScript top stack frame of where the script parsed event was triggered if available."""
-    codeOffset: "Optional[int]"
-    """If the scriptLanguage is WebAssembly, the code section offset in the module."""
-    scriptLanguage: "Optional[ScriptLanguage]"
-    """The language of the script."""
-    embedderName: "Optional[str]"
-    """The name the embedder supplied for this script."""
+    executionContextAuxData: "Optional[Dict[str, Any]]" = None
+    sourceMapURL: "Optional[str]" = None
+    hasSourceURL: "Optional[bool]" = None
+    isModule: "Optional[bool]" = None
+    length: "Optional[int]" = None
+    stackTrace: "Optional[StackTrace]" = None
+    codeOffset: "Optional[int]" = None
+    scriptLanguage: "Optional[ScriptLanguage]" = None
+    embedderName: "Optional[str]" = None
 
 
 
-"""Fired when virtual machine parses script. This event is also fired for all known and uncollected
+class ScriptParsedEvent(BaseModel):
+    """Fired when virtual machine parses script. This event is also fired for all known and uncollected
 scripts upon enabling debugger."""
-class ScriptParsedEvent(TypedDict):
     scriptId: "ScriptId"
-    """Identifier of the script parsed."""
     url: "str"
-    """URL or name of the script parsed (if any)."""
     startLine: "int"
-    """Line offset of the script within the resource with given URL (for script tags)."""
     startColumn: "int"
-    """Column offset of the script within the resource with given URL."""
     endLine: "int"
-    """Last line of the script."""
     endColumn: "int"
-    """Length of the last line of the script."""
     executionContextId: "ExecutionContextId"
-    """Specifies script creation context."""
     hash: "str"
-    """Content hash of the script, SHA-256."""
     buildId: "str"
-    """For Wasm modules, the content of the `build_id` custom section. For JavaScript the `debugId` magic comment."""
-    executionContextAuxData: "Optional[Dict[str, Any]]"
-    """Embedder-specific auxiliary data likely matching {isDefault: boolean, type: 'default'|'isolated'|'worker', frameId: string}"""
-    isLiveEdit: "Optional[bool]"
-    """True, if this script is generated as a result of the live edit operation."""
-    sourceMapURL: "Optional[str]"
-    """URL of source map associated with script (if any)."""
-    hasSourceURL: "Optional[bool]"
-    """True, if this script has sourceURL."""
-    isModule: "Optional[bool]"
-    """True, if this script is ES6 module."""
-    length: "Optional[int]"
-    """This script length."""
-    stackTrace: "Optional[StackTrace]"
-    """JavaScript top stack frame of where the script parsed event was triggered if available."""
-    codeOffset: "Optional[int]"
-    """If the scriptLanguage is WebAssembly, the code section offset in the module."""
-    scriptLanguage: "Optional[ScriptLanguage]"
-    """The language of the script."""
-    debugSymbols: "Optional[List[DebugSymbols]]"
-    """If the scriptLanguage is WebAssembly, the source of debug symbols for the module."""
-    embedderName: "Optional[str]"
-    """The name the embedder supplied for this script."""
-    resolvedBreakpoints: "Optional[List[ResolvedBreakpoint]]"
-    """The list of set breakpoints in this script if calls to `setBreakpointByUrl`
-matches this script's URL or hash. Clients that use this list can ignore the
-`breakpointResolved` event. They are equivalent."""
+    executionContextAuxData: "Optional[Dict[str, Any]]" = None
+    isLiveEdit: "Optional[bool]" = None
+    sourceMapURL: "Optional[str]" = None
+    hasSourceURL: "Optional[bool]" = None
+    isModule: "Optional[bool]" = None
+    length: "Optional[int]" = None
+    stackTrace: "Optional[StackTrace]" = None
+    codeOffset: "Optional[int]" = None
+    scriptLanguage: "Optional[ScriptLanguage]" = None
+    debugSymbols: "Optional[List[DebugSymbols]]" = None
+    embedderName: "Optional[str]" = None
+    resolvedBreakpoints: "Optional[List[ResolvedBreakpoint]]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..debugger.types import DebugSymbols
+        from ..debugger.types import ScriptLanguage
+        from ..runtime.types import ExecutionContextId
+        from ..runtime.types import ScriptId
+        from ..runtime.types import StackTrace
+        from ..runtime.types import StackTraceId
+        from .types import BreakpointId
+        from .types import CallFrame
+        from .types import Location
+        from .types import ResolvedBreakpoint
+        # Rebuild models now that imports are available
+        BreakpointResolvedEvent.model_rebuild()
+        PausedEvent.model_rebuild()
+        ResumedEvent.model_rebuild()
+        ScriptFailedToParseEvent.model_rebuild()
+        ScriptParsedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

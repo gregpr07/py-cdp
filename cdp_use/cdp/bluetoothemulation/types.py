@@ -5,34 +5,34 @@
 """CDP BluetoothEmulation Domain Types"""
 
 from enum import Enum
-from typing import List
-from typing_extensions import TypedDict
+from pydantic import BaseModel
+from typing import List, Optional
 
-"""Indicates the various states of Central."""
 class CentralState(Enum):
+    """Indicates the various states of Central."""
     ABSENT = "absent"
     POWERED_OFF = "powered-off"
     POWERED_ON = "powered-on"
 
 
 
-"""Indicates the various types of GATT event."""
 class GATTOperationType(Enum):
+    """Indicates the various types of GATT event."""
     CONNECTION = "connection"
     DISCOVERY = "discovery"
 
 
 
-"""Indicates the various types of characteristic write."""
 class CharacteristicWriteType(Enum):
+    """Indicates the various types of characteristic write."""
     WRITE_DEFAULT_DEPRECATED = "write-default-deprecated"
     WRITE_WITH_RESPONSE = "write-with-response"
     WRITE_WITHOUT_RESPONSE = "write-without-response"
 
 
 
-"""Indicates the various types of characteristic operation."""
 class CharacteristicOperationType(Enum):
+    """Indicates the various types of characteristic operation."""
     READ = "read"
     WRITE = "write"
     SUBSCRIBE_TO_NOTIFICATIONS = "subscribe-to-notifications"
@@ -40,54 +40,61 @@ class CharacteristicOperationType(Enum):
 
 
 
-"""Indicates the various types of descriptor operation."""
 class DescriptorOperationType(Enum):
+    """Indicates the various types of descriptor operation."""
     READ = "read"
     WRITE = "write"
 
 
 
-"""Stores the manufacturer data"""
-class ManufacturerData(TypedDict):
+class ManufacturerData(BaseModel):
+    """Stores the manufacturer data"""
     key: "int"
-    """Company identifier
-https://bitbucket.org/bluetooth-SIG/public/src/main/assigned_numbers/company_identifiers/company_identifiers.yaml
-https://usb.org/developers"""
     data: "str"
-    """Manufacturer-specific data (Encoded as a base64 string when passed over JSON)"""
 
 
 
-"""Stores the byte data of the advertisement packet sent by a Bluetooth device."""
-class ScanRecord(TypedDict, total=False):
-    name: "str"
-    uuids: "List[str]"
-    appearance: "int"
-    """Stores the external appearance description of the device."""
-    txPower: "int"
-    """Stores the transmission power of a broadcasting device."""
-    manufacturerData: "List[ManufacturerData]"
-    """Key is the company identifier and the value is an array of bytes of
-manufacturer specific data."""
+class ScanRecord(BaseModel):
+    """Stores the byte data of the advertisement packet sent by a Bluetooth device."""
+    name: "Optional[str]" = None
+    uuids: "Optional[List[str]]" = None
+    appearance: "Optional[int]" = None
+    txPower: "Optional[int]" = None
+    manufacturerData: "Optional[List[ManufacturerData]]" = None
 
 
 
-"""Stores the advertisement packet information that is sent by a Bluetooth device."""
-class ScanEntry(TypedDict):
+class ScanEntry(BaseModel):
+    """Stores the advertisement packet information that is sent by a Bluetooth device."""
     deviceAddress: "str"
     rssi: "int"
     scanRecord: "ScanRecord"
 
 
 
-"""Describes the properties of a characteristic. This follows Bluetooth Core
+class CharacteristicProperties(BaseModel):
+    """Describes the properties of a characteristic. This follows Bluetooth Core
 Specification BT 4.2 Vol 3 Part G 3.3.1. Characteristic Properties."""
-class CharacteristicProperties(TypedDict, total=False):
-    broadcast: "bool"
-    read: "bool"
-    writeWithoutResponse: "bool"
-    write: "bool"
-    notify: "bool"
-    indicate: "bool"
-    authenticatedSignedWrites: "bool"
-    extendedProperties: "bool"
+    broadcast: "Optional[bool]" = None
+    read: "Optional[bool]" = None
+    writeWithoutResponse: "Optional[bool]" = None
+    write: "Optional[bool]" = None
+    notify: "Optional[bool]" = None
+    indicate: "Optional[bool]" = None
+    authenticatedSignedWrites: "Optional[bool]" = None
+    extendedProperties: "Optional[bool]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        ManufacturerData.model_rebuild()
+        ScanRecord.model_rebuild()
+        ScanEntry.model_rebuild()
+        CharacteristicProperties.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

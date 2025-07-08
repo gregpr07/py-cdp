@@ -5,8 +5,8 @@
 """CDP CacheStorage Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -18,8 +18,8 @@ CacheId = str
 
 
 
-"""type of HTTP response cached"""
 class CachedResponseType(Enum):
+    """type of HTTP response cached"""
     BASIC = "basic"
     CORS = "cors"
     DEFAULT = "default"
@@ -29,49 +29,51 @@ class CachedResponseType(Enum):
 
 
 
-"""Data entry."""
-class DataEntry(TypedDict):
+class DataEntry(BaseModel):
+    """Data entry."""
     requestURL: "str"
-    """Request URL."""
     requestMethod: "str"
-    """Request method."""
     requestHeaders: "List[Header]"
-    """Request headers"""
     responseTime: "float"
-    """Number of seconds since epoch."""
     responseStatus: "int"
-    """HTTP response status code."""
     responseStatusText: "str"
-    """HTTP response status text."""
     responseType: "CachedResponseType"
-    """HTTP response type"""
     responseHeaders: "List[Header]"
-    """Response headers"""
 
 
 
-"""Cache identifier."""
-class Cache(TypedDict):
+class Cache(BaseModel):
+    """Cache identifier."""
     cacheId: "CacheId"
-    """An opaque unique id of the cache."""
     securityOrigin: "str"
-    """Security origin of the cache."""
     storageKey: "str"
-    """Storage key of the cache."""
-    storageBucket: "Optional[StorageBucket]"
-    """Storage bucket of the cache."""
     cacheName: "str"
-    """The name of the cache."""
+    storageBucket: "Optional[StorageBucket]" = None
 
 
 
-class Header(TypedDict):
+class Header(BaseModel):
     name: "str"
     value: "str"
 
 
 
-"""Cached response"""
-class CachedResponse(TypedDict):
+class CachedResponse(BaseModel):
+    """Cached response"""
     body: "str"
-    """Entry content, base64-encoded. (Encoded as a base64 string when passed over JSON)"""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..storage.types import StorageBucket
+        # Rebuild models now that imports are available
+        DataEntry.model_rebuild()
+        Cache.model_rebuild()
+        Header.model_rebuild()
+        CachedResponse.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

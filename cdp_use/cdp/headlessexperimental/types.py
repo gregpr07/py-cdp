@@ -4,13 +4,23 @@
 
 """CDP HeadlessExperimental Domain Types"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
+from typing import Optional
 
-"""Encoding options for a screenshot."""
-class ScreenshotParams(TypedDict, total=False):
-    format: "str"
-    """Image compression format (defaults to png)."""
-    quality: "int"
-    """Compression quality from range [0..100] (jpeg and webp only)."""
-    optimizeForSpeed: "bool"
-    """Optimize image encoding for speed, not for resulting size (defaults to false)"""
+class ScreenshotParams(BaseModel):
+    """Encoding options for a screenshot."""
+    format: "Optional[str]" = None
+    quality: "Optional[int]" = None
+    optimizeForSpeed: "Optional[bool]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        ScreenshotParams.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

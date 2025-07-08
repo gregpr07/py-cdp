@@ -4,7 +4,7 @@
 
 """CDP Console Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -23,11 +23,12 @@ class ConsoleClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Does nothing."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Console.clearMessages",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def disable(
         self,
@@ -35,11 +36,12 @@ class ConsoleClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables console domain, prevents further console messages from being reported to the client."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Console.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -48,10 +50,11 @@ class ConsoleClient:
     ) -> "Dict[str, Any]":
         """Enables console domain, sends the messages collected so far to the client by means of the
 `messageAdded` notification."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Console.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

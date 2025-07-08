@@ -4,6 +4,7 @@
 
 """CDP LayerTree Domain Commands"""
 
+from pydantic import BaseModel
 from typing import Any, Dict, List, Optional
 from typing_extensions import TypedDict
 
@@ -21,11 +22,9 @@ class CompositingReasonsParameters(TypedDict):
     """The id of the layer for which we want to get the reasons it was composited."""
 
 
-class CompositingReasonsReturns(TypedDict):
+class CompositingReasonsReturns(BaseModel):
     compositingReasons: "List[str]"
-    """A list of strings specifying reasons for the given layer to become composited."""
     compositingReasonIds: "List[str]"
-    """A list of strings specifying reason IDs for the given layer to become composited."""
 
 
 
@@ -34,9 +33,8 @@ class LoadSnapshotParameters(TypedDict):
     """An array of tiles composing the snapshot."""
 
 
-class LoadSnapshotReturns(TypedDict):
+class LoadSnapshotReturns(BaseModel):
     snapshotId: "SnapshotId"
-    """The id of the snapshot."""
 
 
 
@@ -45,9 +43,8 @@ class MakeSnapshotParameters(TypedDict):
     """The id of the layer."""
 
 
-class MakeSnapshotReturns(TypedDict):
+class MakeSnapshotReturns(BaseModel):
     snapshotId: "SnapshotId"
-    """The id of the layer snapshot."""
 
 
 
@@ -62,9 +59,8 @@ class ProfileSnapshotParameters(TypedDict):
     """The clip rectangle to apply when replaying the snapshot."""
 
 
-class ProfileSnapshotReturns(TypedDict):
+class ProfileSnapshotReturns(BaseModel):
     timings: "List[PaintProfile]"
-    """The array of paint profiles, one per run."""
 
 
 
@@ -87,9 +83,8 @@ class ReplaySnapshotParameters(TypedDict):
     """The scale to apply while replaying (defaults to 1)."""
 
 
-class ReplaySnapshotReturns(TypedDict):
+class ReplaySnapshotReturns(BaseModel):
     dataURL: "str"
-    """A data: URL for resulting image."""
 
 
 
@@ -98,6 +93,26 @@ class SnapshotCommandLogParameters(TypedDict):
     """The id of the layer snapshot."""
 
 
-class SnapshotCommandLogReturns(TypedDict):
+class SnapshotCommandLogReturns(BaseModel):
     commandLog: "List[Dict[str, Any]]"
-    """The array of canvas function calls."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import Rect
+        from .types import LayerId
+        from .types import PaintProfile
+        from .types import PictureTile
+        from .types import SnapshotId
+        # Rebuild models now that imports are available
+        CompositingReasonsReturns.model_rebuild()
+        LoadSnapshotReturns.model_rebuild()
+        MakeSnapshotReturns.model_rebuild()
+        ProfileSnapshotReturns.model_rebuild()
+        ReplaySnapshotReturns.model_rebuild()
+        SnapshotCommandLogReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

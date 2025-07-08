@@ -4,8 +4,8 @@
 
 """CDP Profiler Domain Events"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -14,34 +14,43 @@ if TYPE_CHECKING:
     from .types import Profile
     from .types import ScriptCoverage
 
-class ConsoleProfileFinishedEvent(TypedDict):
+class ConsoleProfileFinishedEvent(BaseModel):
     id: "str"
     location: "Location"
-    """Location of console.profileEnd()."""
     profile: "Profile"
-    title: "Optional[str]"
-    """Profile title passed as an argument to console.profile()."""
+    title: "Optional[str]" = None
 
 
 
-"""Sent when new profile recording is started using console.profile() call."""
-class ConsoleProfileStartedEvent(TypedDict):
+class ConsoleProfileStartedEvent(BaseModel):
+    """Sent when new profile recording is started using console.profile() call."""
     id: "str"
     location: "Location"
-    """Location of console.profile()."""
-    title: "Optional[str]"
-    """Profile title passed as an argument to console.profile()."""
+    title: "Optional[str]" = None
 
 
 
-"""Reports coverage delta since the last poll (either from an event like this, or from
+class PreciseCoverageDeltaUpdateEvent(BaseModel):
+    """Reports coverage delta since the last poll (either from an event like this, or from
 `takePreciseCoverage` for the current isolate. May only be sent if precise code
 coverage has been started. This event can be trigged by the embedder to, for example,
 trigger collection of coverage data immediately at a certain point in time."""
-class PreciseCoverageDeltaUpdateEvent(TypedDict):
     timestamp: "float"
-    """Monotonically increasing time (in seconds) when the coverage update was taken in the backend."""
     occasion: "str"
-    """Identifier for distinguishing coverage events."""
     result: "List[ScriptCoverage]"
-    """Coverage data for the current isolate."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..debugger.types import Location
+        from .types import Profile
+        from .types import ScriptCoverage
+        # Rebuild models now that imports are available
+        ConsoleProfileFinishedEvent.model_rebuild()
+        ConsoleProfileStartedEvent.model_rebuild()
+        PreciseCoverageDeltaUpdateEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

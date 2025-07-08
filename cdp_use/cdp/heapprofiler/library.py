@@ -4,7 +4,7 @@
 
 """CDP HeapProfiler Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -35,131 +35,147 @@ class HeapProfilerClient:
     ) -> "Dict[str, Any]":
         """Enables console to refer to the node with given id via $x (see Command Line API for more details
 $x functions)."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="HeapProfiler.addInspectedHeapObject",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def collectGarbage(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="HeapProfiler.collectGarbage",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def disable(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="HeapProfiler.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="HeapProfiler.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getHeapObjectId(
         self,
         params: "GetHeapObjectIdParameters",
         session_id: Optional[str] = None,
     ) -> "GetHeapObjectIdReturns":
-        return cast("GetHeapObjectIdReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="HeapProfiler.getHeapObjectId",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetHeapObjectIdReturns as _GetHeapObjectIdReturns
+        return _GetHeapObjectIdReturns.model_validate(raw_result)
 
     async def getObjectByHeapObjectId(
         self,
         params: "GetObjectByHeapObjectIdParameters",
         session_id: Optional[str] = None,
     ) -> "GetObjectByHeapObjectIdReturns":
-        return cast("GetObjectByHeapObjectIdReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="HeapProfiler.getObjectByHeapObjectId",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetObjectByHeapObjectIdReturns as _GetObjectByHeapObjectIdReturns
+        return _GetObjectByHeapObjectIdReturns.model_validate(raw_result)
 
     async def getSamplingProfile(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "GetSamplingProfileReturns":
-        return cast("GetSamplingProfileReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="HeapProfiler.getSamplingProfile",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetSamplingProfileReturns as _GetSamplingProfileReturns
+        return _GetSamplingProfileReturns.model_validate(raw_result)
 
     async def startSampling(
         self,
         params: Optional["StartSamplingParameters"] = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="HeapProfiler.startSampling",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def startTrackingHeapObjects(
         self,
         params: Optional["StartTrackingHeapObjectsParameters"] = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="HeapProfiler.startTrackingHeapObjects",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def stopSampling(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "StopSamplingReturns":
-        return cast("StopSamplingReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="HeapProfiler.stopSampling",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import StopSamplingReturns as _StopSamplingReturns
+        return _StopSamplingReturns.model_validate(raw_result)
 
     async def stopTrackingHeapObjects(
         self,
         params: Optional["StopTrackingHeapObjectsParameters"] = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="HeapProfiler.stopTrackingHeapObjects",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def takeHeapSnapshot(
         self,
         params: Optional["TakeHeapSnapshotParameters"] = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="HeapProfiler.takeHeapSnapshot",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

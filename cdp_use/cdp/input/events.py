@@ -4,14 +4,26 @@
 
 """CDP Input Domain Events"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .types import DragData
 
-"""Emitted only when `Input.setInterceptDrags` is enabled. Use this data with `Input.dispatchDragEvent` to
+class DragInterceptedEvent(BaseModel):
+    """Emitted only when `Input.setInterceptDrags` is enabled. Use this data with `Input.dispatchDragEvent` to
 restore normal drag and drop behavior."""
-class DragInterceptedEvent(TypedDict):
     data: "DragData"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import DragData
+        # Rebuild models now that imports are available
+        DragInterceptedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

@@ -4,7 +4,7 @@
 
 """CDP EventBreakpoints Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -25,11 +25,12 @@ class EventBreakpointsClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets breakpoint on particular native event."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="EventBreakpoints.setInstrumentationBreakpoint",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def removeInstrumentationBreakpoint(
         self,
@@ -37,11 +38,12 @@ class EventBreakpointsClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Removes breakpoint on particular native event."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="EventBreakpoints.removeInstrumentationBreakpoint",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def disable(
         self,
@@ -49,10 +51,11 @@ class EventBreakpointsClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Removes all breakpoints"""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="EventBreakpoints.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

@@ -4,8 +4,8 @@
 
 """CDP Media Domain Types"""
 
+from pydantic import BaseModel
 from typing import Any, Dict, List
-from typing_extensions import TypedDict
 
 """Players will get an ID that is unique within the agent context."""
 PlayerId = str
@@ -16,55 +16,56 @@ Timestamp = float
 
 
 
-"""Have one type per entry in MediaLogRecord::Type
+class PlayerMessage(BaseModel):
+    """Have one type per entry in MediaLogRecord::Type
 Corresponds to kMessage"""
-class PlayerMessage(TypedDict):
     level: "str"
-    """Keep in sync with MediaLogMessageLevel
-We are currently keeping the message level 'error' separate from the
-PlayerError type because right now they represent different things,
-this one being a DVLOG(ERROR) style log message that gets printed
-based on what log level is selected in the UI, and the other is a
-representation of a media::PipelineStatus object. Soon however we're
-going to be moving away from using PipelineStatus for errors and
-introducing a new error type which should hopefully let us integrate
-the error log level into the PlayerError type."""
     message: "str"
 
 
 
-"""Corresponds to kMediaPropertyChange"""
-class PlayerProperty(TypedDict):
+class PlayerProperty(BaseModel):
+    """Corresponds to kMediaPropertyChange"""
     name: "str"
     value: "str"
 
 
 
-"""Corresponds to kMediaEventTriggered"""
-class PlayerEvent(TypedDict):
+class PlayerEvent(BaseModel):
+    """Corresponds to kMediaEventTriggered"""
     timestamp: "Timestamp"
     value: "str"
 
 
 
-"""Represents logged source line numbers reported in an error.
+class PlayerErrorSourceLocation(BaseModel):
+    """Represents logged source line numbers reported in an error.
 NOTE: file and line are from chromium c++ implementation code, not js."""
-class PlayerErrorSourceLocation(TypedDict):
     file: "str"
     line: "int"
 
 
 
-"""Corresponds to kMediaError"""
-class PlayerError(TypedDict):
+class PlayerError(BaseModel):
+    """Corresponds to kMediaError"""
     errorType: "str"
     code: "int"
-    """Code is the numeric enum entry for a specific set of error codes, such
-as PipelineStatusCodes in media/base/pipeline_status.h"""
     stack: "List[PlayerErrorSourceLocation]"
-    """A trace of where this error was caused / where it passed through."""
     cause: "List[PlayerError]"
-    """Errors potentially have a root cause error, ie, a DecoderError might be
-caused by an WindowsError"""
     data: "Dict[str, Any]"
-    """Extra data attached to an error, such as an HRESULT, Video Codec, etc."""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        PlayerMessage.model_rebuild()
+        PlayerProperty.model_rebuild()
+        PlayerEvent.model_rebuild()
+        PlayerErrorSourceLocation.model_rebuild()
+        PlayerError.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

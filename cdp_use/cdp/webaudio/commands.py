@@ -4,6 +4,7 @@
 
 """CDP WebAudio Domain Commands"""
 
+from pydantic import BaseModel
 from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
@@ -16,5 +17,18 @@ class GetRealtimeDataParameters(TypedDict):
     contextId: "GraphObjectId"
 
 
-class GetRealtimeDataReturns(TypedDict):
+class GetRealtimeDataReturns(BaseModel):
     realtimeData: "ContextRealtimeData"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import ContextRealtimeData
+        from .types import GraphObjectId
+        # Rebuild models now that imports are available
+        GetRealtimeDataReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

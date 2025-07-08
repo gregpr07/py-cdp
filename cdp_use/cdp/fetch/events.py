@@ -4,8 +4,8 @@
 
 """CDP Fetch Domain Events"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -19,7 +19,8 @@ if TYPE_CHECKING:
     from .types import HeaderEntry
     from .types import RequestId
 
-"""Issued when the domain is enabled and the request URL matches the
+class RequestPausedEvent(BaseModel):
+    """Issued when the domain is enabled and the request URL matches the
 specified filter. The request is paused until the client responds
 with one of continueRequest, failRequest or fulfillRequest.
 The stage of the request can be determined by presence of responseErrorReason
@@ -30,44 +31,44 @@ responses and requests. Redirect responses may be distinguished by the value
 of `responseStatusCode` (which is one of 301, 302, 303, 307, 308) along with
 presence of the `location` header. Requests resulting from a redirect will
 have `redirectedRequestId` field set."""
-class RequestPausedEvent(TypedDict):
     requestId: "RequestId"
-    """Each request the page makes will have a unique id."""
     request: "Request"
-    """The details of the request."""
     frameId: "FrameId"
-    """The id of the frame that initiated the request."""
     resourceType: "ResourceType"
-    """How the requested resource will be used."""
-    responseErrorReason: "Optional[ErrorReason]"
-    """Response error if intercepted at response stage."""
-    responseStatusCode: "Optional[int]"
-    """Response code if intercepted at response stage."""
-    responseStatusText: "Optional[str]"
-    """Response status text if intercepted at response stage."""
-    responseHeaders: "Optional[List[HeaderEntry]]"
-    """Response headers if intercepted at the response stage."""
-    networkId: "Optional[RequestId]"
-    """If the intercepted request had a corresponding Network.requestWillBeSent event fired for it,
-then this networkId will be the same as the requestId present in the requestWillBeSent event."""
-    redirectedRequestId: "Optional[RequestId]"
-    """If the request is due to a redirect response from the server, the id of the request that
-has caused the redirect."""
+    responseErrorReason: "Optional[ErrorReason]" = None
+    responseStatusCode: "Optional[int]" = None
+    responseStatusText: "Optional[str]" = None
+    responseHeaders: "Optional[List[HeaderEntry]]" = None
+    networkId: "Optional[RequestId]" = None
+    redirectedRequestId: "Optional[RequestId]" = None
 
 
 
-"""Issued when the domain is enabled with handleAuthRequests set to true.
+class AuthRequiredEvent(BaseModel):
+    """Issued when the domain is enabled with handleAuthRequests set to true.
 The request is paused until client responds with continueWithAuth."""
-class AuthRequiredEvent(TypedDict):
     requestId: "RequestId"
-    """Each request the page makes will have a unique id."""
     request: "Request"
-    """The details of the request."""
     frameId: "FrameId"
-    """The id of the frame that initiated the request."""
     resourceType: "ResourceType"
-    """How the requested resource will be used."""
     authChallenge: "AuthChallenge"
-    """Details of the Authorization Challenge encountered.
-If this is set, client should respond with continueRequest that
-contains AuthChallengeResponse."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..network.types import ErrorReason
+        from ..network.types import Request
+        from ..network.types import RequestId
+        from ..network.types import ResourceType
+        from ..page.types import FrameId
+        from .types import AuthChallenge
+        from .types import HeaderEntry
+        from .types import RequestId
+        # Rebuild models now that imports are available
+        RequestPausedEvent.model_rebuild()
+        AuthRequiredEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

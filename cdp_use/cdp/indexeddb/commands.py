@@ -4,6 +4,7 @@
 
 """CDP IndexedDB Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -86,11 +87,9 @@ Security origin."""
     """Key range."""
 
 
-class RequestDataReturns(TypedDict):
+class RequestDataReturns(BaseModel):
     objectStoreDataEntries: "List[DataEntry]"
-    """Array of object store data entries."""
     hasMore: "bool"
-    """If true, there are more entries to fetch in the given range."""
 
 
 
@@ -108,13 +107,9 @@ Security origin."""
     """Object store name."""
 
 
-class GetMetadataReturns(TypedDict):
+class GetMetadataReturns(BaseModel):
     entriesCount: "float"
-    """the entries count"""
     keyGeneratorValue: "float"
-    """the current value of key generator, to become the next inserted
-key into the object store. Valid if objectStore.autoIncrement
-is true."""
 
 
 
@@ -130,9 +125,8 @@ Security origin."""
     """Database name."""
 
 
-class RequestDatabaseReturns(TypedDict):
+class RequestDatabaseReturns(BaseModel):
     databaseWithObjectStores: "DatabaseWithObjectStores"
-    """Database with an array of object stores."""
 
 
 
@@ -146,6 +140,23 @@ Security origin."""
     """Storage bucket. If not specified, it uses the default bucket."""
 
 
-class RequestDatabaseNamesReturns(TypedDict):
+class RequestDatabaseNamesReturns(BaseModel):
     databaseNames: "List[str]"
-    """Database names for origin."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..storage.types import StorageBucket
+        from .types import DataEntry
+        from .types import DatabaseWithObjectStores
+        from .types import KeyRange
+        # Rebuild models now that imports are available
+        RequestDataReturns.model_rebuild()
+        GetMetadataReturns.model_rebuild()
+        RequestDatabaseReturns.model_rebuild()
+        RequestDatabaseNamesReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

@@ -4,23 +4,34 @@
 
 """CDP Accessibility Domain Events"""
 
+from pydantic import BaseModel
 from typing import List
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .types import AXNode
 
-"""The loadComplete event mirrors the load complete event sent by the browser to assistive
+class LoadCompleteEvent(BaseModel):
+    """The loadComplete event mirrors the load complete event sent by the browser to assistive
 technology when the web page has finished loading."""
-class LoadCompleteEvent(TypedDict):
     root: "AXNode"
-    """New document root node."""
 
 
 
-"""The nodesUpdated event is sent every time a previously requested node has changed the in tree."""
-class NodesUpdatedEvent(TypedDict):
+class NodesUpdatedEvent(BaseModel):
+    """The nodesUpdated event is sent every time a previously requested node has changed the in tree."""
     nodes: "List[AXNode]"
-    """Updated node data."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import AXNode
+        # Rebuild models now that imports are available
+        LoadCompleteEvent.model_rebuild()
+        NodesUpdatedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

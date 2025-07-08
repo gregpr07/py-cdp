@@ -5,8 +5,8 @@
 """CDP CSS Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -21,10 +21,10 @@ StyleSheetId = str
 
 
 
-"""Stylesheet type: \"injected\" for stylesheets injected via extension, \"user-agent\" for user-agent
+class StyleSheetOrigin(Enum):
+    """Stylesheet type: \"injected\" for stylesheets injected via extension, \"user-agent\" for user-agent
 stylesheets, \"inspector\" for stylesheets created by the inspector (i.e. those holding the \"via
 inspector\" rules), \"regular\" for regular stylesheets."""
-class StyleSheetOrigin(Enum):
     INJECTED = "injected"
     USER_AGENT = "user-agent"
     INSPECTOR = "inspector"
@@ -32,180 +32,115 @@ class StyleSheetOrigin(Enum):
 
 
 
-"""CSS rule collection for a single pseudo style."""
-class PseudoElementMatches(TypedDict):
+class PseudoElementMatches(BaseModel):
+    """CSS rule collection for a single pseudo style."""
     pseudoType: "PseudoType"
-    """Pseudo element type."""
-    pseudoIdentifier: "Optional[str]"
-    """Pseudo element custom ident."""
     matches: "List[RuleMatch]"
-    """Matches of CSS rules applicable to the pseudo style."""
+    pseudoIdentifier: "Optional[str]" = None
 
 
 
-"""CSS style coming from animations with the name of the animation."""
-class CSSAnimationStyle(TypedDict):
-    name: "Optional[str]"
-    """The name of the animation."""
+class CSSAnimationStyle(BaseModel):
+    """CSS style coming from animations with the name of the animation."""
     style: "CSSStyle"
-    """The style coming from the animation."""
+    name: "Optional[str]" = None
 
 
 
-"""Inherited CSS rule collection from ancestor node."""
-class InheritedStyleEntry(TypedDict):
-    inlineStyle: "Optional[CSSStyle]"
-    """The ancestor node's inline style, if any, in the style inheritance chain."""
+class InheritedStyleEntry(BaseModel):
+    """Inherited CSS rule collection from ancestor node."""
     matchedCSSRules: "List[RuleMatch]"
-    """Matches of CSS rules matching the ancestor node in the style inheritance chain."""
+    inlineStyle: "Optional[CSSStyle]" = None
 
 
 
-"""Inherited CSS style collection for animated styles from ancestor node."""
-class InheritedAnimatedStyleEntry(TypedDict, total=False):
-    animationStyles: "List[CSSAnimationStyle]"
-    """Styles coming from the animations of the ancestor, if any, in the style inheritance chain."""
-    transitionsStyle: "CSSStyle"
-    """The style coming from the transitions of the ancestor, if any, in the style inheritance chain."""
+class InheritedAnimatedStyleEntry(BaseModel):
+    """Inherited CSS style collection for animated styles from ancestor node."""
+    animationStyles: "Optional[List[CSSAnimationStyle]]" = None
+    transitionsStyle: "Optional[CSSStyle]" = None
 
 
 
-"""Inherited pseudo element matches from pseudos of an ancestor node."""
-class InheritedPseudoElementMatches(TypedDict):
+class InheritedPseudoElementMatches(BaseModel):
+    """Inherited pseudo element matches from pseudos of an ancestor node."""
     pseudoElements: "List[PseudoElementMatches]"
-    """Matches of pseudo styles from the pseudos of an ancestor node."""
 
 
 
-"""Match data for a CSS rule."""
-class RuleMatch(TypedDict):
+class RuleMatch(BaseModel):
+    """Match data for a CSS rule."""
     rule: "CSSRule"
-    """CSS rule in the match."""
     matchingSelectors: "List[int]"
-    """Matching selector indices in the rule's selectorList selectors (0-based)."""
 
 
 
-"""Data for a simple selector (these are delimited by commas in a selector list)."""
-class Value(TypedDict):
+class Value(BaseModel):
+    """Data for a simple selector (these are delimited by commas in a selector list)."""
     text: "str"
-    """Value text."""
-    range: "Optional[SourceRange]"
-    """Value range in the underlying resource (if available)."""
-    specificity: "Optional[Specificity]"
-    """Specificity of the selector."""
+    range: "Optional[SourceRange]" = None
+    specificity: "Optional[Specificity]" = None
 
 
 
-"""Specificity:
+class Specificity(BaseModel):
+    """Specificity:
 https://drafts.csswg.org/selectors/#specificity-rules"""
-class Specificity(TypedDict):
     a: "int"
-    """The a component, which represents the number of ID selectors."""
     b: "int"
-    """The b component, which represents the number of class selectors, attributes selectors, and
-pseudo-classes."""
     c: "int"
-    """The c component, which represents the number of type selectors and pseudo-elements."""
 
 
 
-"""Selector list data."""
-class SelectorList(TypedDict):
+class SelectorList(BaseModel):
+    """Selector list data."""
     selectors: "List[Value]"
-    """Selectors in the list."""
     text: "str"
-    """Rule selector text."""
 
 
 
-"""CSS stylesheet metainformation."""
-class CSSStyleSheetHeader(TypedDict):
+class CSSStyleSheetHeader(BaseModel):
+    """CSS stylesheet metainformation."""
     styleSheetId: "StyleSheetId"
-    """The stylesheet identifier."""
     frameId: "FrameId"
-    """Owner frame identifier."""
     sourceURL: "str"
-    """Stylesheet resource URL. Empty if this is a constructed stylesheet created using
-new CSSStyleSheet() (but non-empty if this is a constructed stylesheet imported
-as a CSS module script)."""
-    sourceMapURL: "Optional[str]"
-    """URL of source map associated with the stylesheet (if any)."""
     origin: "StyleSheetOrigin"
-    """Stylesheet origin."""
     title: "str"
-    """Stylesheet title."""
-    ownerNode: "Optional[BackendNodeId]"
-    """The backend id for the owner node of the stylesheet."""
     disabled: "bool"
-    """Denotes whether the stylesheet is disabled."""
-    hasSourceURL: "Optional[bool]"
-    """Whether the sourceURL field value comes from the sourceURL comment."""
     isInline: "bool"
-    """Whether this stylesheet is created for STYLE tag by parser. This flag is not set for
-document.written STYLE tags."""
     isMutable: "bool"
-    """Whether this stylesheet is mutable. Inline stylesheets become mutable
-after they have been modified via CSSOM API.
-`<link>` element's stylesheets become mutable only if DevTools modifies them.
-Constructed stylesheets (new CSSStyleSheet()) are mutable immediately after creation."""
     isConstructed: "bool"
-    """True if this stylesheet is created through new CSSStyleSheet() or imported as a
-CSS module script."""
     startLine: "float"
-    """Line offset of the stylesheet within the resource (zero based)."""
     startColumn: "float"
-    """Column offset of the stylesheet within the resource (zero based)."""
     length: "float"
-    """Size of the content (in characters)."""
     endLine: "float"
-    """Line offset of the end of the stylesheet within the resource (zero based)."""
     endColumn: "float"
-    """Column offset of the end of the stylesheet within the resource (zero based)."""
-    loadingFailed: "Optional[bool]"
-    """If the style sheet was loaded from a network resource, this indicates when the resource failed to load"""
+    sourceMapURL: "Optional[str]" = None
+    ownerNode: "Optional[BackendNodeId]" = None
+    hasSourceURL: "Optional[bool]" = None
+    loadingFailed: "Optional[bool]" = None
 
 
 
-"""CSS rule representation."""
-class CSSRule(TypedDict):
-    styleSheetId: "Optional[StyleSheetId]"
-    """The css style sheet identifier (absent for user agent stylesheet and user-specified
-stylesheet rules) this rule came from."""
+class CSSRule(BaseModel):
+    """CSS rule representation."""
     selectorList: "SelectorList"
-    """Rule selector data."""
-    nestingSelectors: "Optional[List[str]]"
-    """Array of selectors from ancestor style rules, sorted by distance from the current rule."""
     origin: "StyleSheetOrigin"
-    """Parent stylesheet's origin."""
     style: "CSSStyle"
-    """Associated style declaration."""
-    media: "Optional[List[CSSMedia]]"
-    """Media list array (for rules involving media queries). The array enumerates media queries
-starting with the innermost one, going outwards."""
-    containerQueries: "Optional[List[CSSContainerQuery]]"
-    """Container query list array (for rules involving container queries).
-The array enumerates container queries starting with the innermost one, going outwards."""
-    supports: "Optional[List[CSSSupports]]"
-    """@supports CSS at-rule array.
-The array enumerates @supports at-rules starting with the innermost one, going outwards."""
-    layers: "Optional[List[CSSLayer]]"
-    """Cascade layer array. Contains the layer hierarchy that this rule belongs to starting
-with the innermost layer and going outwards."""
-    scopes: "Optional[List[CSSScope]]"
-    """@scope CSS at-rule array.
-The array enumerates @scope at-rules starting with the innermost one, going outwards."""
-    ruleTypes: "Optional[List[CSSRuleType]]"
-    """The array keeps the types of ancestor CSSRules from the innermost going outwards."""
-    startingStyles: "Optional[List[CSSStartingStyle]]"
-    """@starting-style CSS at-rule array.
-The array enumerates @starting-style at-rules starting with the innermost one, going outwards."""
+    styleSheetId: "Optional[StyleSheetId]" = None
+    nestingSelectors: "Optional[List[str]]" = None
+    media: "Optional[List[CSSMedia]]" = None
+    containerQueries: "Optional[List[CSSContainerQuery]]" = None
+    supports: "Optional[List[CSSSupports]]" = None
+    layers: "Optional[List[CSSLayer]]" = None
+    scopes: "Optional[List[CSSScope]]" = None
+    ruleTypes: "Optional[List[CSSRuleType]]" = None
+    startingStyles: "Optional[List[CSSStartingStyle]]" = None
 
 
 
-"""Enum indicating the type of a CSS rule, used to represent the order of a style rule's ancestors.
-This list only contains rule types that are collected during the ancestor rule collection."""
 class CSSRuleType(Enum):
+    """Enum indicating the type of a CSS rule, used to represent the order of a style rule's ancestors.
+This list only contains rule types that are collected during the ancestor rule collection."""
     MEDIARULE = "MediaRule"
     SUPPORTSRULE = "SupportsRule"
     CONTAINERRULE = "ContainerRule"
@@ -216,411 +151,330 @@ class CSSRuleType(Enum):
 
 
 
-"""CSS coverage information."""
-class RuleUsage(TypedDict):
+class RuleUsage(BaseModel):
+    """CSS coverage information."""
     styleSheetId: "StyleSheetId"
-    """The css style sheet identifier (absent for user agent stylesheet and user-specified
-stylesheet rules) this rule came from."""
     startOffset: "float"
-    """Offset of the start of the rule (including selector) from the beginning of the stylesheet."""
     endOffset: "float"
-    """Offset of the end of the rule body from the beginning of the stylesheet."""
     used: "bool"
-    """Indicates whether the rule was actually used by some element in the page."""
 
 
 
-"""Text range within a resource. All numbers are zero-based."""
-class SourceRange(TypedDict):
+class SourceRange(BaseModel):
+    """Text range within a resource. All numbers are zero-based."""
     startLine: "int"
-    """Start line of range."""
     startColumn: "int"
-    """Start column of range (inclusive)."""
     endLine: "int"
-    """End line of range"""
     endColumn: "int"
-    """End column of range (exclusive)."""
 
 
 
-class ShorthandEntry(TypedDict):
+class ShorthandEntry(BaseModel):
     name: "str"
-    """Shorthand name."""
     value: "str"
-    """Shorthand value."""
-    important: "Optional[bool]"
-    """Whether the property has \"!important\" annotation (implies `false` if absent)."""
+    important: "Optional[bool]" = None
 
 
 
-class CSSComputedStyleProperty(TypedDict):
+class CSSComputedStyleProperty(BaseModel):
     name: "str"
-    """Computed style property name."""
     value: "str"
-    """Computed style property value."""
 
 
 
-"""CSS style representation."""
-class CSSStyle(TypedDict):
-    styleSheetId: "Optional[StyleSheetId]"
-    """The css style sheet identifier (absent for user agent stylesheet and user-specified
-stylesheet rules) this rule came from."""
+class CSSStyle(BaseModel):
+    """CSS style representation."""
     cssProperties: "List[CSSProperty]"
-    """CSS properties in the style."""
     shorthandEntries: "List[ShorthandEntry]"
-    """Computed values for all shorthands found in the style."""
-    cssText: "Optional[str]"
-    """Style declaration text (if available)."""
-    range: "Optional[SourceRange]"
-    """Style declaration range in the enclosing stylesheet (if available)."""
+    styleSheetId: "Optional[StyleSheetId]" = None
+    cssText: "Optional[str]" = None
+    range: "Optional[SourceRange]" = None
 
 
 
-"""CSS property declaration data."""
-class CSSProperty(TypedDict):
+class CSSProperty(BaseModel):
+    """CSS property declaration data."""
     name: "str"
-    """The property name."""
     value: "str"
-    """The property value."""
-    important: "Optional[bool]"
-    """Whether the property has \"!important\" annotation (implies `false` if absent)."""
-    implicit: "Optional[bool]"
-    """Whether the property is implicit (implies `false` if absent)."""
-    text: "Optional[str]"
-    """The full property text as specified in the style."""
-    parsedOk: "Optional[bool]"
-    """Whether the property is understood by the browser (implies `true` if absent)."""
-    disabled: "Optional[bool]"
-    """Whether the property is disabled by the user (present for source-based properties only)."""
-    range: "Optional[SourceRange]"
-    """The entire property range in the enclosing style declaration (if available)."""
-    longhandProperties: "Optional[List[CSSProperty]]"
-    """Parsed longhand components of this property if it is a shorthand.
-This field will be empty if the given property is not a shorthand."""
+    important: "Optional[bool]" = None
+    implicit: "Optional[bool]" = None
+    text: "Optional[str]" = None
+    parsedOk: "Optional[bool]" = None
+    disabled: "Optional[bool]" = None
+    range: "Optional[SourceRange]" = None
+    longhandProperties: "Optional[List[CSSProperty]]" = None
 
 
 
-"""CSS media rule descriptor."""
-class CSSMedia(TypedDict):
+class CSSMedia(BaseModel):
+    """CSS media rule descriptor."""
     text: "str"
-    """Media query text."""
     source: "str"
-    """Source of the media query: \"mediaRule\" if specified by a @media rule, \"importRule\" if
-specified by an @import rule, \"linkedSheet\" if specified by a \"media\" attribute in a linked
-stylesheet's LINK tag, \"inlineSheet\" if specified by a \"media\" attribute in an inline
-stylesheet's STYLE tag."""
-    sourceURL: "Optional[str]"
-    """URL of the document containing the media query description."""
-    range: "Optional[SourceRange]"
-    """The associated rule (@media or @import) header range in the enclosing stylesheet (if
-available)."""
-    styleSheetId: "Optional[StyleSheetId]"
-    """Identifier of the stylesheet containing this object (if exists)."""
-    mediaList: "Optional[List[MediaQuery]]"
-    """Array of media queries."""
+    sourceURL: "Optional[str]" = None
+    range: "Optional[SourceRange]" = None
+    styleSheetId: "Optional[StyleSheetId]" = None
+    mediaList: "Optional[List[MediaQuery]]" = None
 
 
 
-"""Media query descriptor."""
-class MediaQuery(TypedDict):
+class MediaQuery(BaseModel):
+    """Media query descriptor."""
     expressions: "List[MediaQueryExpression]"
-    """Array of media query expressions."""
     active: "bool"
-    """Whether the media query condition is satisfied."""
 
 
 
-"""Media query expression descriptor."""
-class MediaQueryExpression(TypedDict):
+class MediaQueryExpression(BaseModel):
+    """Media query expression descriptor."""
     value: "float"
-    """Media query expression value."""
     unit: "str"
-    """Media query expression units."""
     feature: "str"
-    """Media query expression feature."""
-    valueRange: "Optional[SourceRange]"
-    """The associated range of the value text in the enclosing stylesheet (if available)."""
-    computedLength: "Optional[float]"
-    """Computed length of media query expression (if applicable)."""
+    valueRange: "Optional[SourceRange]" = None
+    computedLength: "Optional[float]" = None
 
 
 
-"""CSS container query rule descriptor."""
-class CSSContainerQuery(TypedDict):
+class CSSContainerQuery(BaseModel):
+    """CSS container query rule descriptor."""
     text: "str"
-    """Container query text."""
-    range: "Optional[SourceRange]"
-    """The associated rule header range in the enclosing stylesheet (if
-available)."""
-    styleSheetId: "Optional[StyleSheetId]"
-    """Identifier of the stylesheet containing this object (if exists)."""
-    name: "Optional[str]"
-    """Optional name for the container."""
-    physicalAxes: "Optional[PhysicalAxes]"
-    """Optional physical axes queried for the container."""
-    logicalAxes: "Optional[LogicalAxes]"
-    """Optional logical axes queried for the container."""
-    queriesScrollState: "Optional[bool]"
-    """true if the query contains scroll-state() queries."""
+    range: "Optional[SourceRange]" = None
+    styleSheetId: "Optional[StyleSheetId]" = None
+    name: "Optional[str]" = None
+    physicalAxes: "Optional[PhysicalAxes]" = None
+    logicalAxes: "Optional[LogicalAxes]" = None
+    queriesScrollState: "Optional[bool]" = None
 
 
 
-"""CSS Supports at-rule descriptor."""
-class CSSSupports(TypedDict):
+class CSSSupports(BaseModel):
+    """CSS Supports at-rule descriptor."""
     text: "str"
-    """Supports rule text."""
     active: "bool"
-    """Whether the supports condition is satisfied."""
-    range: "Optional[SourceRange]"
-    """The associated rule header range in the enclosing stylesheet (if
-available)."""
-    styleSheetId: "Optional[StyleSheetId]"
-    """Identifier of the stylesheet containing this object (if exists)."""
+    range: "Optional[SourceRange]" = None
+    styleSheetId: "Optional[StyleSheetId]" = None
 
 
 
-"""CSS Scope at-rule descriptor."""
-class CSSScope(TypedDict):
+class CSSScope(BaseModel):
+    """CSS Scope at-rule descriptor."""
     text: "str"
-    """Scope rule text."""
-    range: "Optional[SourceRange]"
-    """The associated rule header range in the enclosing stylesheet (if
-available)."""
-    styleSheetId: "Optional[StyleSheetId]"
-    """Identifier of the stylesheet containing this object (if exists)."""
+    range: "Optional[SourceRange]" = None
+    styleSheetId: "Optional[StyleSheetId]" = None
 
 
 
-"""CSS Layer at-rule descriptor."""
-class CSSLayer(TypedDict):
+class CSSLayer(BaseModel):
+    """CSS Layer at-rule descriptor."""
     text: "str"
-    """Layer name."""
-    range: "Optional[SourceRange]"
-    """The associated rule header range in the enclosing stylesheet (if
-available)."""
-    styleSheetId: "Optional[StyleSheetId]"
-    """Identifier of the stylesheet containing this object (if exists)."""
+    range: "Optional[SourceRange]" = None
+    styleSheetId: "Optional[StyleSheetId]" = None
 
 
 
-"""CSS Starting Style at-rule descriptor."""
-class CSSStartingStyle(TypedDict, total=False):
-    range: "SourceRange"
-    """The associated rule header range in the enclosing stylesheet (if
-available)."""
-    styleSheetId: "StyleSheetId"
-    """Identifier of the stylesheet containing this object (if exists)."""
+class CSSStartingStyle(BaseModel):
+    """CSS Starting Style at-rule descriptor."""
+    range: "Optional[SourceRange]" = None
+    styleSheetId: "Optional[StyleSheetId]" = None
 
 
 
-"""CSS Layer data."""
-class CSSLayerData(TypedDict):
+class CSSLayerData(BaseModel):
+    """CSS Layer data."""
     name: "str"
-    """Layer name."""
-    subLayers: "Optional[List[CSSLayerData]]"
-    """Direct sub-layers"""
     order: "float"
-    """Layer order. The order determines the order of the layer in the cascade order.
-A higher number has higher priority in the cascade order."""
+    subLayers: "Optional[List[CSSLayerData]]" = None
 
 
 
-"""Information about amount of glyphs that were rendered with given font."""
-class PlatformFontUsage(TypedDict):
+class PlatformFontUsage(BaseModel):
+    """Information about amount of glyphs that were rendered with given font."""
     familyName: "str"
-    """Font's family name reported by platform."""
     postScriptName: "str"
-    """Font's PostScript name reported by platform."""
     isCustomFont: "bool"
-    """Indicates if the font was downloaded or resolved locally."""
     glyphCount: "float"
-    """Amount of glyphs that were rendered with this font."""
 
 
 
-"""Information about font variation axes for variable fonts"""
-class FontVariationAxis(TypedDict):
+class FontVariationAxis(BaseModel):
+    """Information about font variation axes for variable fonts"""
     tag: "str"
-    """The font-variation-setting tag (a.k.a. \"axis tag\")."""
     name: "str"
-    """Human-readable variation name in the default language (normally, \"en\")."""
     minValue: "float"
-    """The minimum value (inclusive) the font supports for this tag."""
     maxValue: "float"
-    """The maximum value (inclusive) the font supports for this tag."""
     defaultValue: "float"
-    """The default value."""
 
 
 
-"""Properties of a web font: https://www.w3.org/TR/2008/REC-CSS2-20080411/fonts.html#font-descriptions
+class FontFace(BaseModel):
+    """Properties of a web font: https://www.w3.org/TR/2008/REC-CSS2-20080411/fonts.html#font-descriptions
 and additional information such as platformFontFamily and fontVariationAxes."""
-class FontFace(TypedDict):
     fontFamily: "str"
-    """The font-family."""
     fontStyle: "str"
-    """The font-style."""
     fontVariant: "str"
-    """The font-variant."""
     fontWeight: "str"
-    """The font-weight."""
     fontStretch: "str"
-    """The font-stretch."""
     fontDisplay: "str"
-    """The font-display."""
     unicodeRange: "str"
-    """The unicode-range."""
     src: "str"
-    """The src."""
     platformFontFamily: "str"
-    """The resolved platform font family"""
-    fontVariationAxes: "Optional[List[FontVariationAxis]]"
-    """Available variation settings (a.k.a. \"axes\")."""
+    fontVariationAxes: "Optional[List[FontVariationAxis]]" = None
 
 
 
-"""CSS try rule representation."""
-class CSSTryRule(TypedDict):
-    styleSheetId: "Optional[StyleSheetId]"
-    """The css style sheet identifier (absent for user agent stylesheet and user-specified
-stylesheet rules) this rule came from."""
+class CSSTryRule(BaseModel):
+    """CSS try rule representation."""
     origin: "StyleSheetOrigin"
-    """Parent stylesheet's origin."""
     style: "CSSStyle"
-    """Associated style declaration."""
+    styleSheetId: "Optional[StyleSheetId]" = None
 
 
 
-"""CSS @position-try rule representation."""
-class CSSPositionTryRule(TypedDict):
+class CSSPositionTryRule(BaseModel):
+    """CSS @position-try rule representation."""
     name: "Value"
-    """The prelude dashed-ident name"""
-    styleSheetId: "Optional[StyleSheetId]"
-    """The css style sheet identifier (absent for user agent stylesheet and user-specified
-stylesheet rules) this rule came from."""
     origin: "StyleSheetOrigin"
-    """Parent stylesheet's origin."""
     style: "CSSStyle"
-    """Associated style declaration."""
     active: "bool"
+    styleSheetId: "Optional[StyleSheetId]" = None
 
 
 
-"""CSS keyframes rule representation."""
-class CSSKeyframesRule(TypedDict):
+class CSSKeyframesRule(BaseModel):
+    """CSS keyframes rule representation."""
     animationName: "Value"
-    """Animation name."""
     keyframes: "List[CSSKeyframeRule]"
-    """List of keyframes."""
 
 
 
-"""Representation of a custom property registration through CSS.registerProperty"""
-class CSSPropertyRegistration(TypedDict):
+class CSSPropertyRegistration(BaseModel):
+    """Representation of a custom property registration through CSS.registerProperty"""
     propertyName: "str"
-    initialValue: "Optional[Value]"
     inherits: "bool"
     syntax: "str"
+    initialValue: "Optional[Value]" = None
 
 
 
-"""CSS font-palette-values rule representation."""
-class CSSFontPaletteValuesRule(TypedDict):
-    styleSheetId: "Optional[StyleSheetId]"
-    """The css style sheet identifier (absent for user agent stylesheet and user-specified
-stylesheet rules) this rule came from."""
+class CSSFontPaletteValuesRule(BaseModel):
+    """CSS font-palette-values rule representation."""
     origin: "StyleSheetOrigin"
-    """Parent stylesheet's origin."""
     fontPaletteName: "Value"
-    """Associated font palette name."""
     style: "CSSStyle"
-    """Associated style declaration."""
+    styleSheetId: "Optional[StyleSheetId]" = None
 
 
 
-"""CSS property at-rule representation."""
-class CSSPropertyRule(TypedDict):
-    styleSheetId: "Optional[StyleSheetId]"
-    """The css style sheet identifier (absent for user agent stylesheet and user-specified
-stylesheet rules) this rule came from."""
+class CSSPropertyRule(BaseModel):
+    """CSS property at-rule representation."""
     origin: "StyleSheetOrigin"
-    """Parent stylesheet's origin."""
     propertyName: "Value"
-    """Associated property name."""
     style: "CSSStyle"
-    """Associated style declaration."""
+    styleSheetId: "Optional[StyleSheetId]" = None
 
 
 
-"""CSS function argument representation."""
-class CSSFunctionParameter(TypedDict):
+class CSSFunctionParameter(BaseModel):
+    """CSS function argument representation."""
     name: "str"
-    """The parameter name."""
     type: "str"
-    """The parameter type."""
 
 
 
-"""CSS function conditional block representation."""
-class CSSFunctionConditionNode(TypedDict):
-    media: "Optional[CSSMedia]"
-    """Media query for this conditional block. Only one type of condition should be set."""
-    containerQueries: "Optional[CSSContainerQuery]"
-    """Container query for this conditional block. Only one type of condition should be set."""
-    supports: "Optional[CSSSupports]"
-    """@supports CSS at-rule condition. Only one type of condition should be set."""
+class CSSFunctionConditionNode(BaseModel):
+    """CSS function conditional block representation."""
     children: "List[CSSFunctionNode]"
-    """Block body."""
     conditionText: "str"
-    """The condition text."""
+    media: "Optional[CSSMedia]" = None
+    containerQueries: "Optional[CSSContainerQuery]" = None
+    supports: "Optional[CSSSupports]" = None
 
 
 
-"""Section of the body of a CSS function rule."""
-class CSSFunctionNode(TypedDict, total=False):
-    condition: "CSSFunctionConditionNode"
-    """A conditional block. If set, style should not be set."""
-    style: "CSSStyle"
-    """Values set by this node. If set, condition should not be set."""
+class CSSFunctionNode(BaseModel):
+    """Section of the body of a CSS function rule."""
+    condition: "Optional[CSSFunctionConditionNode]" = None
+    style: "Optional[CSSStyle]" = None
 
 
 
-"""CSS function at-rule representation."""
-class CSSFunctionRule(TypedDict):
+class CSSFunctionRule(BaseModel):
+    """CSS function at-rule representation."""
     name: "Value"
-    """Name of the function."""
-    styleSheetId: "Optional[StyleSheetId]"
-    """The css style sheet identifier (absent for user agent stylesheet and user-specified
-stylesheet rules) this rule came from."""
     origin: "StyleSheetOrigin"
-    """Parent stylesheet's origin."""
     parameters: "List[CSSFunctionParameter]"
-    """List of parameters."""
     children: "List[CSSFunctionNode]"
-    """Function body."""
+    styleSheetId: "Optional[StyleSheetId]" = None
 
 
 
-"""CSS keyframe rule representation."""
-class CSSKeyframeRule(TypedDict):
-    styleSheetId: "Optional[StyleSheetId]"
-    """The css style sheet identifier (absent for user agent stylesheet and user-specified
-stylesheet rules) this rule came from."""
+class CSSKeyframeRule(BaseModel):
+    """CSS keyframe rule representation."""
     origin: "StyleSheetOrigin"
-    """Parent stylesheet's origin."""
     keyText: "Value"
-    """Associated key text."""
     style: "CSSStyle"
-    """Associated style declaration."""
+    styleSheetId: "Optional[StyleSheetId]" = None
 
 
 
-"""A descriptor of operation to mutate style declaration text."""
-class StyleDeclarationEdit(TypedDict):
+class StyleDeclarationEdit(BaseModel):
+    """A descriptor of operation to mutate style declaration text."""
     styleSheetId: "StyleSheetId"
-    """The css style sheet identifier."""
     range: "SourceRange"
-    """The range of the style text in the enclosing stylesheet."""
     text: "str"
-    """New style text."""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import BackendNodeId
+        from ..dom.types import LogicalAxes
+        from ..dom.types import PhysicalAxes
+        from ..dom.types import PseudoType
+        from ..page.types import FrameId
+        # Rebuild models now that imports are available
+        PseudoElementMatches.model_rebuild()
+        CSSAnimationStyle.model_rebuild()
+        InheritedStyleEntry.model_rebuild()
+        InheritedAnimatedStyleEntry.model_rebuild()
+        InheritedPseudoElementMatches.model_rebuild()
+        RuleMatch.model_rebuild()
+        Value.model_rebuild()
+        Specificity.model_rebuild()
+        SelectorList.model_rebuild()
+        CSSStyleSheetHeader.model_rebuild()
+        CSSRule.model_rebuild()
+        RuleUsage.model_rebuild()
+        SourceRange.model_rebuild()
+        ShorthandEntry.model_rebuild()
+        CSSComputedStyleProperty.model_rebuild()
+        CSSStyle.model_rebuild()
+        CSSProperty.model_rebuild()
+        CSSMedia.model_rebuild()
+        MediaQuery.model_rebuild()
+        MediaQueryExpression.model_rebuild()
+        CSSContainerQuery.model_rebuild()
+        CSSSupports.model_rebuild()
+        CSSScope.model_rebuild()
+        CSSLayer.model_rebuild()
+        CSSStartingStyle.model_rebuild()
+        CSSLayerData.model_rebuild()
+        PlatformFontUsage.model_rebuild()
+        FontVariationAxis.model_rebuild()
+        FontFace.model_rebuild()
+        CSSTryRule.model_rebuild()
+        CSSPositionTryRule.model_rebuild()
+        CSSKeyframesRule.model_rebuild()
+        CSSPropertyRegistration.model_rebuild()
+        CSSFontPaletteValuesRule.model_rebuild()
+        CSSPropertyRule.model_rebuild()
+        CSSFunctionParameter.model_rebuild()
+        CSSFunctionConditionNode.model_rebuild()
+        CSSFunctionNode.model_rebuild()
+        CSSFunctionRule.model_rebuild()
+        CSSKeyframeRule.model_rebuild()
+        StyleDeclarationEdit.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

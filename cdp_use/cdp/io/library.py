@@ -4,7 +4,7 @@
 
 """CDP IO Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -28,11 +28,12 @@ class IOClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Close the stream, discard any temporary backing storage."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="IO.close",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def read(
         self,
@@ -40,11 +41,13 @@ class IOClient:
         session_id: Optional[str] = None,
     ) -> "ReadReturns":
         """Read a chunk of the stream"""
-        return cast("ReadReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="IO.read",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import ReadReturns as _ReadReturns
+        return _ReadReturns.model_validate(raw_result)
 
     async def resolveBlob(
         self,
@@ -52,10 +55,12 @@ class IOClient:
         session_id: Optional[str] = None,
     ) -> "ResolveBlobReturns":
         """Return UUID of Blob object specified by a remote object id."""
-        return cast("ResolveBlobReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="IO.resolveBlob",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import ResolveBlobReturns as _ResolveBlobReturns
+        return _ResolveBlobReturns.model_validate(raw_result)
 
 

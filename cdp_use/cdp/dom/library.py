@@ -4,7 +4,7 @@
 
 """CDP DOM Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -97,11 +97,13 @@ class DOMClient:
         session_id: Optional[str] = None,
     ) -> "CollectClassNamesFromSubtreeReturns":
         """Collects class names for the node with given id and all of it's child nodes."""
-        return cast("CollectClassNamesFromSubtreeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.collectClassNamesFromSubtree",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import CollectClassNamesFromSubtreeReturns as _CollectClassNamesFromSubtreeReturns
+        return _CollectClassNamesFromSubtreeReturns.model_validate(raw_result)
 
     async def copyTo(
         self,
@@ -110,11 +112,13 @@ class DOMClient:
     ) -> "CopyToReturns":
         """Creates a deep copy of the specified node and places it into the target container before the
 given anchor."""
-        return cast("CopyToReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.copyTo",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import CopyToReturns as _CopyToReturns
+        return _CopyToReturns.model_validate(raw_result)
 
     async def describeNode(
         self,
@@ -123,11 +127,13 @@ given anchor."""
     ) -> "DescribeNodeReturns":
         """Describes node given its id, does not require domain to be enabled. Does not start tracking any
 objects, can be used for automation."""
-        return cast("DescribeNodeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.describeNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import DescribeNodeReturns as _DescribeNodeReturns
+        return _DescribeNodeReturns.model_validate(raw_result)
 
     async def scrollIntoViewIfNeeded(
         self,
@@ -137,11 +143,12 @@ objects, can be used for automation."""
         """Scrolls the specified rect of the given node into view if not already visible.
 Note: exactly one between nodeId, backendNodeId and objectId should be passed
 to identify the node."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.scrollIntoViewIfNeeded",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def disable(
         self,
@@ -149,11 +156,12 @@ to identify the node."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables DOM agent for the given page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def discardSearchResults(
         self,
@@ -162,11 +170,12 @@ to identify the node."""
     ) -> "Dict[str, Any]":
         """Discards search results from the session with the given id. `getSearchResults` should no longer
 be called for that search."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.discardSearchResults",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -174,11 +183,12 @@ be called for that search."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables DOM agent for the given page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def focus(
         self,
@@ -186,11 +196,12 @@ be called for that search."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Focuses the given element."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.focus",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getAttributes(
         self,
@@ -198,11 +209,13 @@ be called for that search."""
         session_id: Optional[str] = None,
     ) -> "GetAttributesReturns":
         """Returns attributes for the specified node."""
-        return cast("GetAttributesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getAttributes",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetAttributesReturns as _GetAttributesReturns
+        return _GetAttributesReturns.model_validate(raw_result)
 
     async def getBoxModel(
         self,
@@ -210,11 +223,13 @@ be called for that search."""
         session_id: Optional[str] = None,
     ) -> "GetBoxModelReturns":
         """Returns boxes for the given node."""
-        return cast("GetBoxModelReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getBoxModel",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetBoxModelReturns as _GetBoxModelReturns
+        return _GetBoxModelReturns.model_validate(raw_result)
 
     async def getContentQuads(
         self,
@@ -223,11 +238,13 @@ be called for that search."""
     ) -> "GetContentQuadsReturns":
         """Returns quads that describe node position on the page. This method
 might return multiple quads for inline nodes."""
-        return cast("GetContentQuadsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getContentQuads",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetContentQuadsReturns as _GetContentQuadsReturns
+        return _GetContentQuadsReturns.model_validate(raw_result)
 
     async def getDocument(
         self,
@@ -236,11 +253,13 @@ might return multiple quads for inline nodes."""
     ) -> "GetDocumentReturns":
         """Returns the root DOM node (and optionally the subtree) to the caller.
 Implicitly enables the DOM domain events for the current target."""
-        return cast("GetDocumentReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getDocument",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetDocumentReturns as _GetDocumentReturns
+        return _GetDocumentReturns.model_validate(raw_result)
 
     async def getFlattenedDocument(
         self,
@@ -250,11 +269,13 @@ Implicitly enables the DOM domain events for the current target."""
         """Returns the root DOM node (and optionally the subtree) to the caller.
 Deprecated, as it is not designed to work well with the rest of the DOM agent.
 Use DOMSnapshot.captureSnapshot instead."""
-        return cast("GetFlattenedDocumentReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getFlattenedDocument",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetFlattenedDocumentReturns as _GetFlattenedDocumentReturns
+        return _GetFlattenedDocumentReturns.model_validate(raw_result)
 
     async def getNodesForSubtreeByStyle(
         self,
@@ -262,11 +283,13 @@ Use DOMSnapshot.captureSnapshot instead."""
         session_id: Optional[str] = None,
     ) -> "GetNodesForSubtreeByStyleReturns":
         """Finds nodes with a given computed style in a subtree."""
-        return cast("GetNodesForSubtreeByStyleReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getNodesForSubtreeByStyle",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetNodesForSubtreeByStyleReturns as _GetNodesForSubtreeByStyleReturns
+        return _GetNodesForSubtreeByStyleReturns.model_validate(raw_result)
 
     async def getNodeForLocation(
         self,
@@ -275,11 +298,13 @@ Use DOMSnapshot.captureSnapshot instead."""
     ) -> "GetNodeForLocationReturns":
         """Returns node id at given location. Depending on whether DOM domain is enabled, nodeId is
 either returned or not."""
-        return cast("GetNodeForLocationReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getNodeForLocation",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetNodeForLocationReturns as _GetNodeForLocationReturns
+        return _GetNodeForLocationReturns.model_validate(raw_result)
 
     async def getOuterHTML(
         self,
@@ -287,11 +312,13 @@ either returned or not."""
         session_id: Optional[str] = None,
     ) -> "GetOuterHTMLReturns":
         """Returns node's HTML markup."""
-        return cast("GetOuterHTMLReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getOuterHTML",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetOuterHTMLReturns as _GetOuterHTMLReturns
+        return _GetOuterHTMLReturns.model_validate(raw_result)
 
     async def getRelayoutBoundary(
         self,
@@ -299,11 +326,13 @@ either returned or not."""
         session_id: Optional[str] = None,
     ) -> "GetRelayoutBoundaryReturns":
         """Returns the id of the nearest ancestor that is a relayout boundary."""
-        return cast("GetRelayoutBoundaryReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getRelayoutBoundary",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetRelayoutBoundaryReturns as _GetRelayoutBoundaryReturns
+        return _GetRelayoutBoundaryReturns.model_validate(raw_result)
 
     async def getSearchResults(
         self,
@@ -312,11 +341,13 @@ either returned or not."""
     ) -> "GetSearchResultsReturns":
         """Returns search results from given `fromIndex` to given `toIndex` from the search with the given
 identifier."""
-        return cast("GetSearchResultsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getSearchResults",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetSearchResultsReturns as _GetSearchResultsReturns
+        return _GetSearchResultsReturns.model_validate(raw_result)
 
     async def hideHighlight(
         self,
@@ -324,11 +355,12 @@ identifier."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Hides any highlight."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.hideHighlight",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def highlightNode(
         self,
@@ -336,11 +368,12 @@ identifier."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Highlights DOM node."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.highlightNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def highlightRect(
         self,
@@ -348,11 +381,12 @@ identifier."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Highlights given rectangle."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.highlightRect",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def markUndoableState(
         self,
@@ -360,11 +394,12 @@ identifier."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Marks last undoable state."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.markUndoableState",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def moveTo(
         self,
@@ -372,11 +407,13 @@ identifier."""
         session_id: Optional[str] = None,
     ) -> "MoveToReturns":
         """Moves node into the new container, places it before the given anchor."""
-        return cast("MoveToReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.moveTo",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import MoveToReturns as _MoveToReturns
+        return _MoveToReturns.model_validate(raw_result)
 
     async def performSearch(
         self,
@@ -385,11 +422,13 @@ identifier."""
     ) -> "PerformSearchReturns":
         """Searches for a given string in the DOM tree. Use `getSearchResults` to access search results or
 `cancelSearch` to end this search session."""
-        return cast("PerformSearchReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.performSearch",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import PerformSearchReturns as _PerformSearchReturns
+        return _PerformSearchReturns.model_validate(raw_result)
 
     async def pushNodeByPathToFrontend(
         self,
@@ -397,11 +436,13 @@ identifier."""
         session_id: Optional[str] = None,
     ) -> "PushNodeByPathToFrontendReturns":
         """Requests that the node is sent to the caller given its path. // FIXME, use XPath"""
-        return cast("PushNodeByPathToFrontendReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.pushNodeByPathToFrontend",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import PushNodeByPathToFrontendReturns as _PushNodeByPathToFrontendReturns
+        return _PushNodeByPathToFrontendReturns.model_validate(raw_result)
 
     async def pushNodesByBackendIdsToFrontend(
         self,
@@ -409,11 +450,13 @@ identifier."""
         session_id: Optional[str] = None,
     ) -> "PushNodesByBackendIdsToFrontendReturns":
         """Requests that a batch of nodes is sent to the caller given their backend node ids."""
-        return cast("PushNodesByBackendIdsToFrontendReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.pushNodesByBackendIdsToFrontend",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import PushNodesByBackendIdsToFrontendReturns as _PushNodesByBackendIdsToFrontendReturns
+        return _PushNodesByBackendIdsToFrontendReturns.model_validate(raw_result)
 
     async def querySelector(
         self,
@@ -421,11 +464,13 @@ identifier."""
         session_id: Optional[str] = None,
     ) -> "QuerySelectorReturns":
         """Executes `querySelector` on a given node."""
-        return cast("QuerySelectorReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.querySelector",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import QuerySelectorReturns as _QuerySelectorReturns
+        return _QuerySelectorReturns.model_validate(raw_result)
 
     async def querySelectorAll(
         self,
@@ -433,11 +478,13 @@ identifier."""
         session_id: Optional[str] = None,
     ) -> "QuerySelectorAllReturns":
         """Executes `querySelectorAll` on a given node."""
-        return cast("QuerySelectorAllReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.querySelectorAll",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import QuerySelectorAllReturns as _QuerySelectorAllReturns
+        return _QuerySelectorAllReturns.model_validate(raw_result)
 
     async def getTopLayerElements(
         self,
@@ -447,11 +494,13 @@ identifier."""
         """Returns NodeIds of current top layer elements.
 Top layer is rendered closest to the user within a viewport, therefore its elements always
 appear on top of all other content."""
-        return cast("GetTopLayerElementsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getTopLayerElements",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetTopLayerElementsReturns as _GetTopLayerElementsReturns
+        return _GetTopLayerElementsReturns.model_validate(raw_result)
 
     async def getElementByRelation(
         self,
@@ -459,11 +508,13 @@ appear on top of all other content."""
         session_id: Optional[str] = None,
     ) -> "GetElementByRelationReturns":
         """Returns the NodeId of the matched element according to certain relations."""
-        return cast("GetElementByRelationReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getElementByRelation",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetElementByRelationReturns as _GetElementByRelationReturns
+        return _GetElementByRelationReturns.model_validate(raw_result)
 
     async def redo(
         self,
@@ -471,11 +522,12 @@ appear on top of all other content."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Re-does the last undone action."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.redo",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def removeAttribute(
         self,
@@ -483,11 +535,12 @@ appear on top of all other content."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Removes attribute with given name from an element with given id."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.removeAttribute",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def removeNode(
         self,
@@ -495,11 +548,12 @@ appear on top of all other content."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Removes node with given id."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.removeNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def requestChildNodes(
         self,
@@ -509,11 +563,12 @@ appear on top of all other content."""
         """Requests that children of the node with given id are returned to the caller in form of
 `setChildNodes` events where not only immediate children are retrieved, but all children down to
 the specified depth."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.requestChildNodes",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def requestNode(
         self,
@@ -523,11 +578,13 @@ the specified depth."""
         """Requests that the node is sent to the caller given the JavaScript node object reference. All
 nodes that form the path from the node to the root are also sent to the client as a series of
 `setChildNodes` notifications."""
-        return cast("RequestNodeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.requestNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import RequestNodeReturns as _RequestNodeReturns
+        return _RequestNodeReturns.model_validate(raw_result)
 
     async def resolveNode(
         self,
@@ -535,11 +592,13 @@ nodes that form the path from the node to the root are also sent to the client a
         session_id: Optional[str] = None,
     ) -> "ResolveNodeReturns":
         """Resolves the JavaScript node object for a given NodeId or BackendNodeId."""
-        return cast("ResolveNodeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.resolveNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import ResolveNodeReturns as _ResolveNodeReturns
+        return _ResolveNodeReturns.model_validate(raw_result)
 
     async def setAttributeValue(
         self,
@@ -547,11 +606,12 @@ nodes that form the path from the node to the root are also sent to the client a
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets attribute for an element with given id."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.setAttributeValue",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setAttributesAsText(
         self,
@@ -560,11 +620,12 @@ nodes that form the path from the node to the root are also sent to the client a
     ) -> "Dict[str, Any]":
         """Sets attributes on element with given id. This method is useful when user edits some existing
 attribute value and types in several attribute name/value pairs."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.setAttributesAsText",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setFileInputFiles(
         self,
@@ -572,11 +633,12 @@ attribute value and types in several attribute name/value pairs."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets files for the given file input element."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.setFileInputFiles",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setNodeStackTracesEnabled(
         self,
@@ -584,11 +646,12 @@ attribute value and types in several attribute name/value pairs."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets if stack traces should be captured for Nodes. See `Node.getNodeStackTraces`. Default is disabled."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.setNodeStackTracesEnabled",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getNodeStackTraces(
         self,
@@ -596,11 +659,13 @@ attribute value and types in several attribute name/value pairs."""
         session_id: Optional[str] = None,
     ) -> "GetNodeStackTracesReturns":
         """Gets stack traces associated with a Node. As of now, only provides stack trace for Node creation."""
-        return cast("GetNodeStackTracesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getNodeStackTraces",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetNodeStackTracesReturns as _GetNodeStackTracesReturns
+        return _GetNodeStackTracesReturns.model_validate(raw_result)
 
     async def getFileInfo(
         self,
@@ -609,11 +674,13 @@ attribute value and types in several attribute name/value pairs."""
     ) -> "GetFileInfoReturns":
         """Returns file information for the given
 File wrapper."""
-        return cast("GetFileInfoReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getFileInfo",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetFileInfoReturns as _GetFileInfoReturns
+        return _GetFileInfoReturns.model_validate(raw_result)
 
     async def getDetachedDomNodes(
         self,
@@ -621,11 +688,13 @@ File wrapper."""
         session_id: Optional[str] = None,
     ) -> "GetDetachedDomNodesReturns":
         """Returns list of detached nodes"""
-        return cast("GetDetachedDomNodesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getDetachedDomNodes",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetDetachedDomNodesReturns as _GetDetachedDomNodesReturns
+        return _GetDetachedDomNodesReturns.model_validate(raw_result)
 
     async def setInspectedNode(
         self,
@@ -634,11 +703,12 @@ File wrapper."""
     ) -> "Dict[str, Any]":
         """Enables console to refer to the node with given id via $x (see Command Line API for more details
 $x functions)."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.setInspectedNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setNodeName(
         self,
@@ -646,11 +716,13 @@ $x functions)."""
         session_id: Optional[str] = None,
     ) -> "SetNodeNameReturns":
         """Sets node name for a node with given id."""
-        return cast("SetNodeNameReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.setNodeName",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetNodeNameReturns as _SetNodeNameReturns
+        return _SetNodeNameReturns.model_validate(raw_result)
 
     async def setNodeValue(
         self,
@@ -658,11 +730,12 @@ $x functions)."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets node value for a node with given id."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.setNodeValue",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setOuterHTML(
         self,
@@ -670,11 +743,12 @@ $x functions)."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets node HTML markup, returns new node id."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.setOuterHTML",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def undo(
         self,
@@ -682,11 +756,12 @@ $x functions)."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Undoes the last performed action."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.undo",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getFrameOwner(
         self,
@@ -694,11 +769,13 @@ $x functions)."""
         session_id: Optional[str] = None,
     ) -> "GetFrameOwnerReturns":
         """Returns iframe node that owns iframe with the given domain."""
-        return cast("GetFrameOwnerReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getFrameOwner",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetFrameOwnerReturns as _GetFrameOwnerReturns
+        return _GetFrameOwnerReturns.model_validate(raw_result)
 
     async def getContainerForNode(
         self,
@@ -710,11 +787,13 @@ conditions: containerName, physical and logical axes, and whether it queries
 scroll-state. If no axes are provided and queriesScrollState is false, the
 style container is returned, which is the direct parent or the closest
 element with a matching container-name."""
-        return cast("GetContainerForNodeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getContainerForNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetContainerForNodeReturns as _GetContainerForNodeReturns
+        return _GetContainerForNodeReturns.model_validate(raw_result)
 
     async def getQueryingDescendantsForContainer(
         self,
@@ -723,11 +802,13 @@ element with a matching container-name."""
     ) -> "GetQueryingDescendantsForContainerReturns":
         """Returns the descendants of a container query container that have
 container queries against this container."""
-        return cast("GetQueryingDescendantsForContainerReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getQueryingDescendantsForContainer",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetQueryingDescendantsForContainerReturns as _GetQueryingDescendantsForContainerReturns
+        return _GetQueryingDescendantsForContainerReturns.model_validate(raw_result)
 
     async def getAnchorElement(
         self,
@@ -736,10 +817,12 @@ container queries against this container."""
     ) -> "GetAnchorElementReturns":
         """Returns the target anchor element of the given anchor query according to
 https://www.w3.org/TR/css-anchor-position-1/#target."""
-        return cast("GetAnchorElementReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DOM.getAnchorElement",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetAnchorElementReturns as _GetAnchorElementReturns
+        return _GetAnchorElementReturns.model_validate(raw_result)
 
 

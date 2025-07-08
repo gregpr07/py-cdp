@@ -4,35 +4,46 @@
 
 """CDP Animation Domain Events"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .types import Animation
 
-"""Event for when an animation has been cancelled."""
-class AnimationCanceledEvent(TypedDict):
+class AnimationCanceledEvent(BaseModel):
+    """Event for when an animation has been cancelled."""
     id: "str"
-    """Id of the animation that was cancelled."""
 
 
 
-"""Event for each animation that has been created."""
-class AnimationCreatedEvent(TypedDict):
+class AnimationCreatedEvent(BaseModel):
+    """Event for each animation that has been created."""
     id: "str"
-    """Id of the animation that was created."""
 
 
 
-"""Event for animation that has been started."""
-class AnimationStartedEvent(TypedDict):
+class AnimationStartedEvent(BaseModel):
+    """Event for animation that has been started."""
     animation: "Animation"
-    """Animation that was started."""
 
 
 
-"""Event for animation that has been updated."""
-class AnimationUpdatedEvent(TypedDict):
+class AnimationUpdatedEvent(BaseModel):
+    """Event for animation that has been updated."""
     animation: "Animation"
-    """Animation that was updated."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import Animation
+        # Rebuild models now that imports are available
+        AnimationCanceledEvent.model_rebuild()
+        AnimationCreatedEvent.model_rebuild()
+        AnimationStartedEvent.model_rebuild()
+        AnimationUpdatedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

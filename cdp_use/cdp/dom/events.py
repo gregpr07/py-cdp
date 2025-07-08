@@ -4,8 +4,8 @@
 
 """CDP DOM Domain Events"""
 
+from pydantic import BaseModel
 from typing import List
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -15,141 +15,142 @@ if TYPE_CHECKING:
     from .types import Node
     from .types import NodeId
 
-"""Fired when `Element`'s attribute is modified."""
-class AttributeModifiedEvent(TypedDict):
+class AttributeModifiedEvent(BaseModel):
+    """Fired when `Element`'s attribute is modified."""
     nodeId: "NodeId"
-    """Id of the node that has changed."""
     name: "str"
-    """Attribute name."""
     value: "str"
-    """Attribute value."""
 
 
 
-"""Fired when `Element`'s attribute is removed."""
-class AttributeRemovedEvent(TypedDict):
+class AttributeRemovedEvent(BaseModel):
+    """Fired when `Element`'s attribute is removed."""
     nodeId: "NodeId"
-    """Id of the node that has changed."""
     name: "str"
-    """A ttribute name."""
 
 
 
-"""Mirrors `DOMCharacterDataModified` event."""
-class CharacterDataModifiedEvent(TypedDict):
+class CharacterDataModifiedEvent(BaseModel):
+    """Mirrors `DOMCharacterDataModified` event."""
     nodeId: "NodeId"
-    """Id of the node that has changed."""
     characterData: "str"
-    """New text value."""
 
 
 
-"""Fired when `Container`'s child node count has changed."""
-class ChildNodeCountUpdatedEvent(TypedDict):
+class ChildNodeCountUpdatedEvent(BaseModel):
+    """Fired when `Container`'s child node count has changed."""
     nodeId: "NodeId"
-    """Id of the node that has changed."""
     childNodeCount: "int"
-    """New node count."""
 
 
 
-"""Mirrors `DOMNodeInserted` event."""
-class ChildNodeInsertedEvent(TypedDict):
+class ChildNodeInsertedEvent(BaseModel):
+    """Mirrors `DOMNodeInserted` event."""
     parentNodeId: "NodeId"
-    """Id of the node that has changed."""
     previousNodeId: "NodeId"
-    """Id of the previous sibling."""
     node: "Node"
-    """Inserted node data."""
 
 
 
-"""Mirrors `DOMNodeRemoved` event."""
-class ChildNodeRemovedEvent(TypedDict):
+class ChildNodeRemovedEvent(BaseModel):
+    """Mirrors `DOMNodeRemoved` event."""
     parentNodeId: "NodeId"
-    """Parent id."""
     nodeId: "NodeId"
-    """Id of the node that has been removed."""
 
 
 
-"""Called when distribution is changed."""
-class DistributedNodesUpdatedEvent(TypedDict):
+class DistributedNodesUpdatedEvent(BaseModel):
+    """Called when distribution is changed."""
     insertionPointId: "NodeId"
-    """Insertion point where distributed nodes were updated."""
     distributedNodes: "List[BackendNode]"
-    """Distributed nodes for given insertion point."""
 
 
 
-"""Fired when `Document` has been totally updated. Node ids are no longer valid."""
-class DocumentUpdatedEvent(TypedDict):
+class DocumentUpdatedEvent(BaseModel):
+    """Fired when `Document` has been totally updated. Node ids are no longer valid."""
     pass
 
 
 
-"""Fired when `Element`'s inline style is modified via a CSS property modification."""
-class InlineStyleInvalidatedEvent(TypedDict):
+class InlineStyleInvalidatedEvent(BaseModel):
+    """Fired when `Element`'s inline style is modified via a CSS property modification."""
     nodeIds: "List[NodeId]"
-    """Ids of the nodes for which the inline styles have been invalidated."""
 
 
 
-"""Called when a pseudo element is added to an element."""
-class PseudoElementAddedEvent(TypedDict):
+class PseudoElementAddedEvent(BaseModel):
+    """Called when a pseudo element is added to an element."""
     parentId: "NodeId"
-    """Pseudo element's parent element id."""
     pseudoElement: "Node"
-    """The added pseudo element."""
 
 
 
-"""Called when top layer elements are changed."""
-class TopLayerElementsUpdatedEvent(TypedDict):
+class TopLayerElementsUpdatedEvent(BaseModel):
+    """Called when top layer elements are changed."""
     pass
 
 
 
-"""Fired when a node's scrollability state changes."""
-class ScrollableFlagUpdatedEvent(TypedDict):
+class ScrollableFlagUpdatedEvent(BaseModel):
+    """Fired when a node's scrollability state changes."""
     nodeId: "NodeId"
-    """The id of the node."""
     isScrollable: "bool"
-    """If the node is scrollable."""
 
 
 
-"""Called when a pseudo element is removed from an element."""
-class PseudoElementRemovedEvent(TypedDict):
+class PseudoElementRemovedEvent(BaseModel):
+    """Called when a pseudo element is removed from an element."""
     parentId: "NodeId"
-    """Pseudo element's parent element id."""
     pseudoElementId: "NodeId"
-    """The removed pseudo element id."""
 
 
 
-"""Fired when backend wants to provide client with the missing DOM structure. This happens upon
+class SetChildNodesEvent(BaseModel):
+    """Fired when backend wants to provide client with the missing DOM structure. This happens upon
 most of the calls requesting node ids."""
-class SetChildNodesEvent(TypedDict):
     parentId: "NodeId"
-    """Parent node id to populate with children."""
     nodes: "List[Node]"
-    """Child nodes array."""
 
 
 
-"""Called when shadow root is popped from the element."""
-class ShadowRootPoppedEvent(TypedDict):
+class ShadowRootPoppedEvent(BaseModel):
+    """Called when shadow root is popped from the element."""
     hostId: "NodeId"
-    """Host element id."""
     rootId: "NodeId"
-    """Shadow root id."""
 
 
 
-"""Called when shadow root is pushed into the element."""
-class ShadowRootPushedEvent(TypedDict):
+class ShadowRootPushedEvent(BaseModel):
+    """Called when shadow root is pushed into the element."""
     hostId: "NodeId"
-    """Host element id."""
     root: "Node"
-    """Shadow root."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import NodeId
+        from .types import BackendNode
+        from .types import Node
+        from .types import NodeId
+        # Rebuild models now that imports are available
+        AttributeModifiedEvent.model_rebuild()
+        AttributeRemovedEvent.model_rebuild()
+        CharacterDataModifiedEvent.model_rebuild()
+        ChildNodeCountUpdatedEvent.model_rebuild()
+        ChildNodeInsertedEvent.model_rebuild()
+        ChildNodeRemovedEvent.model_rebuild()
+        DistributedNodesUpdatedEvent.model_rebuild()
+        DocumentUpdatedEvent.model_rebuild()
+        InlineStyleInvalidatedEvent.model_rebuild()
+        PseudoElementAddedEvent.model_rebuild()
+        TopLayerElementsUpdatedEvent.model_rebuild()
+        ScrollableFlagUpdatedEvent.model_rebuild()
+        PseudoElementRemovedEvent.model_rebuild()
+        SetChildNodesEvent.model_rebuild()
+        ShadowRootPoppedEvent.model_rebuild()
+        ShadowRootPushedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

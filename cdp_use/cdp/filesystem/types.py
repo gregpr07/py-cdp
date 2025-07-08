@@ -4,8 +4,8 @@
 
 """CDP FileSystem Domain Types"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -13,28 +13,38 @@ if TYPE_CHECKING:
     from ..network.types import TimeSinceEpoch
     from ..storage.types import SerializedStorageKey
 
-class File(TypedDict):
+class File(BaseModel):
     name: "str"
     lastModified: "TimeSinceEpoch"
-    """Timestamp"""
     size: "float"
-    """Size in bytes"""
     type: "str"
 
 
 
-class Directory(TypedDict):
+class Directory(BaseModel):
     name: "str"
     nestedDirectories: "List[str]"
     nestedFiles: "List[File]"
-    """Files that are directly nested under this directory."""
 
 
 
-class BucketFileSystemLocator(TypedDict):
+class BucketFileSystemLocator(BaseModel):
     storageKey: "SerializedStorageKey"
-    """Storage key"""
-    bucketName: "Optional[str]"
-    """Bucket name. Not passing a `bucketName` will retrieve the default Bucket. (https://developer.mozilla.org/en-US/docs/Web/API/Storage_API#storage_buckets)"""
     pathComponents: "List[str]"
-    """Path to the directory using each path component as an array item."""
+    bucketName: "Optional[str]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..network.types import TimeSinceEpoch
+        from ..storage.types import SerializedStorageKey
+        # Rebuild models now that imports are available
+        File.model_rebuild()
+        Directory.model_rebuild()
+        BucketFileSystemLocator.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

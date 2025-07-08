@@ -4,7 +4,7 @@
 
 """CDP Cast Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -32,11 +32,12 @@ sinks compatible with |presentationUrl| as well. When sinks are found, a
 |sinksUpdated| event is fired.
 Also starts observing for issue messages. When an issue is added or removed,
 an |issueUpdated| event is fired."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Cast.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def disable(
         self,
@@ -44,11 +45,12 @@ an |issueUpdated| event is fired."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Stops observing for sinks and issues."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Cast.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setSinkToUse(
         self,
@@ -57,11 +59,12 @@ an |issueUpdated| event is fired."""
     ) -> "Dict[str, Any]":
         """Sets a sink to be used when the web page requests the browser to choose a
 sink via Presentation API, Remote Playback API, or Cast SDK."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Cast.setSinkToUse",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def startDesktopMirroring(
         self,
@@ -69,11 +72,12 @@ sink via Presentation API, Remote Playback API, or Cast SDK."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Starts mirroring the desktop to the sink."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Cast.startDesktopMirroring",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def startTabMirroring(
         self,
@@ -81,11 +85,12 @@ sink via Presentation API, Remote Playback API, or Cast SDK."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Starts mirroring the tab to the sink."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Cast.startTabMirroring",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def stopCasting(
         self,
@@ -93,10 +98,11 @@ sink via Presentation API, Remote Playback API, or Cast SDK."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Stops the active Cast session on the sink."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Cast.stopCasting",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

@@ -4,6 +4,7 @@
 
 """CDP Extensions Domain Commands"""
 
+from pydantic import BaseModel
 from typing import Any, Dict, List, Optional
 from typing_extensions import TypedDict
 
@@ -17,9 +18,8 @@ class LoadUnpackedParameters(TypedDict):
     """Absolute file path."""
 
 
-class LoadUnpackedReturns(TypedDict):
+class LoadUnpackedReturns(BaseModel):
     id: "str"
-    """Extension id."""
 
 
 
@@ -40,7 +40,7 @@ class GetStorageItemsParameters(TypedDict):
     """Keys to retrieve."""
 
 
-class GetStorageItemsReturns(TypedDict):
+class GetStorageItemsReturns(BaseModel):
     data: "Dict[str, Any]"
 
 
@@ -76,3 +76,16 @@ class SetStorageItemsParameters(TypedDict):
     """Values to set."""
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import StorageArea
+        # Rebuild models now that imports are available
+        LoadUnpackedReturns.model_rebuild()
+        GetStorageItemsReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

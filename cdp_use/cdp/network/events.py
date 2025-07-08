@@ -4,8 +4,8 @@
 
 """CDP Network Domain Events"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -44,558 +44,489 @@ if TYPE_CHECKING:
     from .types import WebSocketRequest
     from .types import WebSocketResponse
 
-"""Fired when data chunk was received over the network."""
-class DataReceivedEvent(TypedDict):
+class DataReceivedEvent(BaseModel):
+    """Fired when data chunk was received over the network."""
     requestId: "RequestId"
-    """Request identifier."""
     timestamp: "MonotonicTime"
-    """Timestamp."""
     dataLength: "int"
-    """Data chunk length."""
     encodedDataLength: "int"
-    """Actual bytes received (might be less than dataLength for compressed encodings)."""
-    data: "Optional[str]"
-    """Data that was received. (Encoded as a base64 string when passed over JSON)"""
+    data: "Optional[str]" = None
 
 
 
-"""Fired when EventSource message is received."""
-class EventSourceMessageReceivedEvent(TypedDict):
+class EventSourceMessageReceivedEvent(BaseModel):
+    """Fired when EventSource message is received."""
     requestId: "RequestId"
-    """Request identifier."""
     timestamp: "MonotonicTime"
-    """Timestamp."""
     eventName: "str"
-    """Message type."""
     eventId: "str"
-    """Message identifier."""
     data: "str"
-    """Message content."""
 
 
 
-"""Fired when HTTP request has failed to load."""
-class LoadingFailedEvent(TypedDict):
+class LoadingFailedEvent(BaseModel):
+    """Fired when HTTP request has failed to load."""
     requestId: "RequestId"
-    """Request identifier."""
     timestamp: "MonotonicTime"
-    """Timestamp."""
     type: "ResourceType"
-    """Resource type."""
     errorText: "str"
-    """Error message. List of network errors: https://cs.chromium.org/chromium/src/net/base/net_error_list.h"""
-    canceled: "Optional[bool]"
-    """True if loading was canceled."""
-    blockedReason: "Optional[BlockedReason]"
-    """The reason why loading was blocked, if any."""
-    corsErrorStatus: "Optional[CorsErrorStatus]"
-    """The reason why loading was blocked by CORS, if any."""
+    canceled: "Optional[bool]" = None
+    blockedReason: "Optional[BlockedReason]" = None
+    corsErrorStatus: "Optional[CorsErrorStatus]" = None
 
 
 
-"""Fired when HTTP request has finished loading."""
-class LoadingFinishedEvent(TypedDict):
+class LoadingFinishedEvent(BaseModel):
+    """Fired when HTTP request has finished loading."""
     requestId: "RequestId"
-    """Request identifier."""
     timestamp: "MonotonicTime"
-    """Timestamp."""
     encodedDataLength: "float"
-    """Total number of bytes received for this request."""
 
 
 
-"""Details of an intercepted HTTP request, which must be either allowed, blocked, modified or
+class RequestInterceptedEvent(BaseModel):
+    """Details of an intercepted HTTP request, which must be either allowed, blocked, modified or
 mocked.
 Deprecated, use Fetch.requestPaused instead."""
-class RequestInterceptedEvent(TypedDict):
     interceptionId: "InterceptionId"
-    """Each request the page makes will have a unique id, however if any redirects are encountered
-while processing that fetch, they will be reported with the same id as the original fetch.
-Likewise if HTTP authentication is needed then the same fetch id will be used."""
     request: "Request"
     frameId: "FrameId"
-    """The id of the frame that initiated the request."""
     resourceType: "ResourceType"
-    """How the requested resource will be used."""
     isNavigationRequest: "bool"
-    """Whether this is a navigation request, which can abort the navigation completely."""
-    isDownload: "Optional[bool]"
-    """Set if the request is a navigation that will result in a download.
-Only present after response is received from the server (i.e. HeadersReceived stage)."""
-    redirectUrl: "Optional[str]"
-    """Redirect location, only sent if a redirect was intercepted."""
-    authChallenge: "Optional[AuthChallenge]"
-    """Details of the Authorization Challenge encountered. If this is set then
-continueInterceptedRequest must contain an authChallengeResponse."""
-    responseErrorReason: "Optional[ErrorReason]"
-    """Response error if intercepted at response stage or if redirect occurred while intercepting
-request."""
-    responseStatusCode: "Optional[int]"
-    """Response code if intercepted at response stage or if redirect occurred while intercepting
-request or auth retry occurred."""
-    responseHeaders: "Optional[Headers]"
-    """Response headers if intercepted at the response stage or if redirect occurred while
-intercepting request or auth retry occurred."""
-    requestId: "Optional[RequestId]"
-    """If the intercepted request had a corresponding requestWillBeSent event fired for it, then
-this requestId will be the same as the requestId present in the requestWillBeSent event."""
+    isDownload: "Optional[bool]" = None
+    redirectUrl: "Optional[str]" = None
+    authChallenge: "Optional[AuthChallenge]" = None
+    responseErrorReason: "Optional[ErrorReason]" = None
+    responseStatusCode: "Optional[int]" = None
+    responseHeaders: "Optional[Headers]" = None
+    requestId: "Optional[RequestId]" = None
 
 
 
-"""Fired if request ended up loading from cache."""
-class RequestServedFromCacheEvent(TypedDict):
+class RequestServedFromCacheEvent(BaseModel):
+    """Fired if request ended up loading from cache."""
     requestId: "RequestId"
-    """Request identifier."""
 
 
 
-"""Fired when page is about to send HTTP request."""
-class RequestWillBeSentEvent(TypedDict):
+class RequestWillBeSentEvent(BaseModel):
+    """Fired when page is about to send HTTP request."""
     requestId: "RequestId"
-    """Request identifier."""
     loaderId: "LoaderId"
-    """Loader identifier. Empty string if the request is fetched from worker."""
     documentURL: "str"
-    """URL of the document this request is loaded for."""
     request: "Request"
-    """Request data."""
     timestamp: "MonotonicTime"
-    """Timestamp."""
     wallTime: "TimeSinceEpoch"
-    """Timestamp."""
     initiator: "Initiator"
-    """Request initiator."""
     redirectHasExtraInfo: "bool"
-    """In the case that redirectResponse is populated, this flag indicates whether
-requestWillBeSentExtraInfo and responseReceivedExtraInfo events will be or were emitted
-for the request which was just redirected."""
-    redirectResponse: "Optional[Response]"
-    """Redirect response data."""
-    type: "Optional[ResourceType]"
-    """Type of this resource."""
-    frameId: "Optional[FrameId]"
-    """Frame identifier."""
-    hasUserGesture: "Optional[bool]"
-    """Whether the request is initiated by a user gesture. Defaults to false."""
+    redirectResponse: "Optional[Response]" = None
+    type: "Optional[ResourceType]" = None
+    frameId: "Optional[FrameId]" = None
+    hasUserGesture: "Optional[bool]" = None
 
 
 
-"""Fired when resource loading priority is changed"""
-class ResourceChangedPriorityEvent(TypedDict):
+class ResourceChangedPriorityEvent(BaseModel):
+    """Fired when resource loading priority is changed"""
     requestId: "RequestId"
-    """Request identifier."""
     newPriority: "ResourcePriority"
-    """New priority"""
     timestamp: "MonotonicTime"
-    """Timestamp."""
 
 
 
-"""Fired when a signed exchange was received over the network"""
-class SignedExchangeReceivedEvent(TypedDict):
+class SignedExchangeReceivedEvent(BaseModel):
+    """Fired when a signed exchange was received over the network"""
     requestId: "RequestId"
-    """Request identifier."""
     info: "SignedExchangeInfo"
-    """Information about the signed exchange response."""
 
 
 
-"""Fired when HTTP response is available."""
-class ResponseReceivedEvent(TypedDict):
+class ResponseReceivedEvent(BaseModel):
+    """Fired when HTTP response is available."""
     requestId: "RequestId"
-    """Request identifier."""
     loaderId: "LoaderId"
-    """Loader identifier. Empty string if the request is fetched from worker."""
     timestamp: "MonotonicTime"
-    """Timestamp."""
     type: "ResourceType"
-    """Resource type."""
     response: "Response"
-    """Response data."""
     hasExtraInfo: "bool"
-    """Indicates whether requestWillBeSentExtraInfo and responseReceivedExtraInfo events will be
-or were emitted for this request."""
-    frameId: "Optional[FrameId]"
-    """Frame identifier."""
+    frameId: "Optional[FrameId]" = None
 
 
 
-"""Fired when WebSocket is closed."""
-class WebSocketClosedEvent(TypedDict):
+class WebSocketClosedEvent(BaseModel):
+    """Fired when WebSocket is closed."""
     requestId: "RequestId"
-    """Request identifier."""
     timestamp: "MonotonicTime"
-    """Timestamp."""
 
 
 
-"""Fired upon WebSocket creation."""
-class WebSocketCreatedEvent(TypedDict):
+class WebSocketCreatedEvent(BaseModel):
+    """Fired upon WebSocket creation."""
     requestId: "RequestId"
-    """Request identifier."""
     url: "str"
-    """WebSocket request URL."""
-    initiator: "Optional[Initiator]"
-    """Request initiator."""
+    initiator: "Optional[Initiator]" = None
 
 
 
-"""Fired when WebSocket message error occurs."""
-class WebSocketFrameErrorEvent(TypedDict):
+class WebSocketFrameErrorEvent(BaseModel):
+    """Fired when WebSocket message error occurs."""
     requestId: "RequestId"
-    """Request identifier."""
     timestamp: "MonotonicTime"
-    """Timestamp."""
     errorMessage: "str"
-    """WebSocket error message."""
 
 
 
-"""Fired when WebSocket message is received."""
-class WebSocketFrameReceivedEvent(TypedDict):
+class WebSocketFrameReceivedEvent(BaseModel):
+    """Fired when WebSocket message is received."""
     requestId: "RequestId"
-    """Request identifier."""
     timestamp: "MonotonicTime"
-    """Timestamp."""
     response: "WebSocketFrame"
-    """WebSocket response data."""
 
 
 
-"""Fired when WebSocket message is sent."""
-class WebSocketFrameSentEvent(TypedDict):
+class WebSocketFrameSentEvent(BaseModel):
+    """Fired when WebSocket message is sent."""
     requestId: "RequestId"
-    """Request identifier."""
     timestamp: "MonotonicTime"
-    """Timestamp."""
     response: "WebSocketFrame"
-    """WebSocket response data."""
 
 
 
-"""Fired when WebSocket handshake response becomes available."""
-class WebSocketHandshakeResponseReceivedEvent(TypedDict):
+class WebSocketHandshakeResponseReceivedEvent(BaseModel):
+    """Fired when WebSocket handshake response becomes available."""
     requestId: "RequestId"
-    """Request identifier."""
     timestamp: "MonotonicTime"
-    """Timestamp."""
     response: "WebSocketResponse"
-    """WebSocket response data."""
 
 
 
-"""Fired when WebSocket is about to initiate handshake."""
-class WebSocketWillSendHandshakeRequestEvent(TypedDict):
+class WebSocketWillSendHandshakeRequestEvent(BaseModel):
+    """Fired when WebSocket is about to initiate handshake."""
     requestId: "RequestId"
-    """Request identifier."""
     timestamp: "MonotonicTime"
-    """Timestamp."""
     wallTime: "TimeSinceEpoch"
-    """UTC Timestamp."""
     request: "WebSocketRequest"
-    """WebSocket request data."""
 
 
 
-"""Fired upon WebTransport creation."""
-class WebTransportCreatedEvent(TypedDict):
+class WebTransportCreatedEvent(BaseModel):
+    """Fired upon WebTransport creation."""
     transportId: "RequestId"
-    """WebTransport identifier."""
     url: "str"
-    """WebTransport request URL."""
     timestamp: "MonotonicTime"
-    """Timestamp."""
-    initiator: "Optional[Initiator]"
-    """Request initiator."""
+    initiator: "Optional[Initiator]" = None
 
 
 
-"""Fired when WebTransport handshake is finished."""
-class WebTransportConnectionEstablishedEvent(TypedDict):
+class WebTransportConnectionEstablishedEvent(BaseModel):
+    """Fired when WebTransport handshake is finished."""
     transportId: "RequestId"
-    """WebTransport identifier."""
     timestamp: "MonotonicTime"
-    """Timestamp."""
 
 
 
-"""Fired when WebTransport is disposed."""
-class WebTransportClosedEvent(TypedDict):
+class WebTransportClosedEvent(BaseModel):
+    """Fired when WebTransport is disposed."""
     transportId: "RequestId"
-    """WebTransport identifier."""
     timestamp: "MonotonicTime"
-    """Timestamp."""
 
 
 
-"""Fired upon direct_socket.TCPSocket creation."""
-class DirectTCPSocketCreatedEvent(TypedDict):
+class DirectTCPSocketCreatedEvent(BaseModel):
+    """Fired upon direct_socket.TCPSocket creation."""
     identifier: "RequestId"
     remoteAddr: "str"
     remotePort: "int"
-    """Unsigned int 16."""
     options: "DirectTCPSocketOptions"
     timestamp: "MonotonicTime"
-    initiator: "Optional[Initiator]"
+    initiator: "Optional[Initiator]" = None
 
 
 
-"""Fired when direct_socket.TCPSocket connection is opened."""
-class DirectTCPSocketOpenedEvent(TypedDict):
+class DirectTCPSocketOpenedEvent(BaseModel):
+    """Fired when direct_socket.TCPSocket connection is opened."""
     identifier: "RequestId"
     remoteAddr: "str"
     remotePort: "int"
-    """Expected to be unsigned integer."""
     timestamp: "MonotonicTime"
-    localAddr: "Optional[str]"
-    localPort: "Optional[int]"
-    """Expected to be unsigned integer."""
+    localAddr: "Optional[str]" = None
+    localPort: "Optional[int]" = None
 
 
 
-"""Fired when direct_socket.TCPSocket is aborted."""
-class DirectTCPSocketAbortedEvent(TypedDict):
+class DirectTCPSocketAbortedEvent(BaseModel):
+    """Fired when direct_socket.TCPSocket is aborted."""
     identifier: "RequestId"
     errorMessage: "str"
     timestamp: "MonotonicTime"
 
 
 
-"""Fired when direct_socket.TCPSocket is closed."""
-class DirectTCPSocketClosedEvent(TypedDict):
+class DirectTCPSocketClosedEvent(BaseModel):
+    """Fired when direct_socket.TCPSocket is closed."""
     identifier: "RequestId"
     timestamp: "MonotonicTime"
 
 
 
-"""Fired when data is sent to tcp direct socket stream."""
-class DirectTCPSocketChunkSentEvent(TypedDict):
-    identifier: "RequestId"
-    data: "str"
-    timestamp: "MonotonicTime"
-
-
-
-"""Fired when data is received from tcp direct socket stream."""
-class DirectTCPSocketChunkReceivedEvent(TypedDict):
+class DirectTCPSocketChunkSentEvent(BaseModel):
+    """Fired when data is sent to tcp direct socket stream."""
     identifier: "RequestId"
     data: "str"
     timestamp: "MonotonicTime"
 
 
 
-"""Fired upon direct_socket.UDPSocket creation."""
-class DirectUDPSocketCreatedEvent(TypedDict):
+class DirectTCPSocketChunkReceivedEvent(BaseModel):
+    """Fired when data is received from tcp direct socket stream."""
+    identifier: "RequestId"
+    data: "str"
+    timestamp: "MonotonicTime"
+
+
+
+class DirectUDPSocketCreatedEvent(BaseModel):
+    """Fired upon direct_socket.UDPSocket creation."""
     identifier: "RequestId"
     options: "DirectUDPSocketOptions"
     timestamp: "MonotonicTime"
-    initiator: "Optional[Initiator]"
+    initiator: "Optional[Initiator]" = None
 
 
 
-"""Fired when direct_socket.UDPSocket connection is opened."""
-class DirectUDPSocketOpenedEvent(TypedDict):
+class DirectUDPSocketOpenedEvent(BaseModel):
+    """Fired when direct_socket.UDPSocket connection is opened."""
     identifier: "RequestId"
     localAddr: "str"
     localPort: "int"
-    """Expected to be unsigned integer."""
     timestamp: "MonotonicTime"
-    remoteAddr: "Optional[str]"
-    remotePort: "Optional[int]"
-    """Expected to be unsigned integer."""
+    remoteAddr: "Optional[str]" = None
+    remotePort: "Optional[int]" = None
 
 
 
-"""Fired when direct_socket.UDPSocket is aborted."""
-class DirectUDPSocketAbortedEvent(TypedDict):
+class DirectUDPSocketAbortedEvent(BaseModel):
+    """Fired when direct_socket.UDPSocket is aborted."""
     identifier: "RequestId"
     errorMessage: "str"
     timestamp: "MonotonicTime"
 
 
 
-"""Fired when direct_socket.UDPSocket is closed."""
-class DirectUDPSocketClosedEvent(TypedDict):
+class DirectUDPSocketClosedEvent(BaseModel):
+    """Fired when direct_socket.UDPSocket is closed."""
     identifier: "RequestId"
     timestamp: "MonotonicTime"
 
 
 
-"""Fired when message is sent to udp direct socket stream."""
-class DirectUDPSocketChunkSentEvent(TypedDict):
-    identifier: "RequestId"
-    message: "DirectUDPMessage"
-    timestamp: "MonotonicTime"
-
-
-
-"""Fired when message is received from udp direct socket stream."""
-class DirectUDPSocketChunkReceivedEvent(TypedDict):
+class DirectUDPSocketChunkSentEvent(BaseModel):
+    """Fired when message is sent to udp direct socket stream."""
     identifier: "RequestId"
     message: "DirectUDPMessage"
     timestamp: "MonotonicTime"
 
 
 
-"""Fired when additional information about a requestWillBeSent event is available from the
+class DirectUDPSocketChunkReceivedEvent(BaseModel):
+    """Fired when message is received from udp direct socket stream."""
+    identifier: "RequestId"
+    message: "DirectUDPMessage"
+    timestamp: "MonotonicTime"
+
+
+
+class RequestWillBeSentExtraInfoEvent(BaseModel):
+    """Fired when additional information about a requestWillBeSent event is available from the
 network stack. Not every requestWillBeSent event will have an additional
 requestWillBeSentExtraInfo fired for it, and there is no guarantee whether requestWillBeSent
 or requestWillBeSentExtraInfo will be fired first for the same request."""
-class RequestWillBeSentExtraInfoEvent(TypedDict):
     requestId: "RequestId"
-    """Request identifier. Used to match this information to an existing requestWillBeSent event."""
     associatedCookies: "List[AssociatedCookie]"
-    """A list of cookies potentially associated to the requested URL. This includes both cookies sent with
-the request and the ones not sent; the latter are distinguished by having blockedReasons field set."""
     headers: "Headers"
-    """Raw request headers as they will be sent over the wire."""
     connectTiming: "ConnectTiming"
-    """Connection timing information for the request."""
-    clientSecurityState: "Optional[ClientSecurityState]"
-    """The client security state set for the request."""
-    siteHasCookieInOtherPartition: "Optional[bool]"
-    """Whether the site has partitioned cookies stored in a partition different than the current one."""
+    clientSecurityState: "Optional[ClientSecurityState]" = None
+    siteHasCookieInOtherPartition: "Optional[bool]" = None
 
 
 
-"""Fired when additional information about a responseReceived event is available from the network
+class ResponseReceivedExtraInfoEvent(BaseModel):
+    """Fired when additional information about a responseReceived event is available from the network
 stack. Not every responseReceived event will have an additional responseReceivedExtraInfo for
 it, and responseReceivedExtraInfo may be fired before or after responseReceived."""
-class ResponseReceivedExtraInfoEvent(TypedDict):
     requestId: "RequestId"
-    """Request identifier. Used to match this information to another responseReceived event."""
     blockedCookies: "List[BlockedSetCookieWithReason]"
-    """A list of cookies which were not stored from the response along with the corresponding
-reasons for blocking. The cookies here may not be valid due to syntax errors, which
-are represented by the invalid cookie line string instead of a proper cookie."""
     headers: "Headers"
-    """Raw response headers as they were received over the wire.
-Duplicate headers in the response are represented as a single key with their values
-concatentated using `\\n` as the separator.
-See also `headersText` that contains verbatim text for HTTP/1.*."""
     resourceIPAddressSpace: "IPAddressSpace"
-    """The IP address space of the resource. The address space can only be determined once the transport
-established the connection, so we can't send it in `requestWillBeSentExtraInfo`."""
     statusCode: "int"
-    """The status code of the response. This is useful in cases the request failed and no responseReceived
-event is triggered, which is the case for, e.g., CORS errors. This is also the correct status code
-for cached requests, where the status in responseReceived is a 200 and this will be 304."""
-    headersText: "Optional[str]"
-    """Raw response header text as it was received over the wire. The raw text may not always be
-available, such as in the case of HTTP/2 or QUIC."""
-    cookiePartitionKey: "Optional[CookiePartitionKey]"
-    """The cookie partition key that will be used to store partitioned cookies set in this response.
-Only sent when partitioned cookies are enabled."""
-    cookiePartitionKeyOpaque: "Optional[bool]"
-    """True if partitioned cookies are enabled, but the partition key is not serializable to string."""
-    exemptedCookies: "Optional[List[ExemptedSetCookieWithReason]]"
-    """A list of cookies which should have been blocked by 3PCD but are exempted and stored from
-the response with the corresponding reason."""
+    headersText: "Optional[str]" = None
+    cookiePartitionKey: "Optional[CookiePartitionKey]" = None
+    cookiePartitionKeyOpaque: "Optional[bool]" = None
+    exemptedCookies: "Optional[List[ExemptedSetCookieWithReason]]" = None
 
 
 
-"""Fired when 103 Early Hints headers is received in addition to the common response.
+class ResponseReceivedEarlyHintsEvent(BaseModel):
+    """Fired when 103 Early Hints headers is received in addition to the common response.
 Not every responseReceived event will have an responseReceivedEarlyHints fired.
 Only one responseReceivedEarlyHints may be fired for eached responseReceived event."""
-class ResponseReceivedEarlyHintsEvent(TypedDict):
     requestId: "RequestId"
-    """Request identifier. Used to match this information to another responseReceived event."""
     headers: "Headers"
-    """Raw response headers as they were received over the wire.
-Duplicate headers in the response are represented as a single key with their values
-concatentated using `\\n` as the separator.
-See also `headersText` that contains verbatim text for HTTP/1.*."""
 
 
 
-"""Fired exactly once for each Trust Token operation. Depending on
+class TrustTokenOperationDoneEvent(BaseModel):
+    """Fired exactly once for each Trust Token operation. Depending on
 the type of the operation and whether the operation succeeded or
 failed, the event is fired before the corresponding request was sent
 or after the response was received."""
-class TrustTokenOperationDoneEvent(TypedDict):
     status: "str"
-    """Detailed success or error status of the operation.
-'AlreadyExists' also signifies a successful operation, as the result
-of the operation already exists und thus, the operation was abort
-preemptively (e.g. a cache hit)."""
     type: "TrustTokenOperationType"
     requestId: "RequestId"
-    topLevelOrigin: "Optional[str]"
-    """Top level origin. The context in which the operation was attempted."""
-    issuerOrigin: "Optional[str]"
-    """Origin of the issuer in case of a \"Issuance\" or \"Redemption\" operation."""
-    issuedTokenCount: "Optional[int]"
-    """The number of obtained Trust Tokens on a successful \"Issuance\" operation."""
+    topLevelOrigin: "Optional[str]" = None
+    issuerOrigin: "Optional[str]" = None
+    issuedTokenCount: "Optional[int]" = None
 
 
 
-"""Fired once security policy has been updated."""
-class PolicyUpdatedEvent(TypedDict):
+class PolicyUpdatedEvent(BaseModel):
+    """Fired once security policy has been updated."""
     pass
 
 
 
-"""Fired once when parsing the .wbn file has succeeded.
+class SubresourceWebBundleMetadataReceivedEvent(BaseModel):
+    """Fired once when parsing the .wbn file has succeeded.
 The event contains the information about the web bundle contents."""
-class SubresourceWebBundleMetadataReceivedEvent(TypedDict):
     requestId: "RequestId"
-    """Request identifier. Used to match this information to another event."""
     urls: "List[str]"
-    """A list of URLs of resources in the subresource Web Bundle."""
 
 
 
-"""Fired once when parsing the .wbn file has failed."""
-class SubresourceWebBundleMetadataErrorEvent(TypedDict):
+class SubresourceWebBundleMetadataErrorEvent(BaseModel):
+    """Fired once when parsing the .wbn file has failed."""
     requestId: "RequestId"
-    """Request identifier. Used to match this information to another event."""
     errorMessage: "str"
-    """Error message"""
 
 
 
-"""Fired when handling requests for resources within a .wbn file.
+class SubresourceWebBundleInnerResponseParsedEvent(BaseModel):
+    """Fired when handling requests for resources within a .wbn file.
 Note: this will only be fired for resources that are requested by the webpage."""
-class SubresourceWebBundleInnerResponseParsedEvent(TypedDict):
     innerRequestId: "RequestId"
-    """Request identifier of the subresource request"""
     innerRequestURL: "str"
-    """URL of the subresource resource."""
-    bundleRequestId: "Optional[RequestId]"
-    """Bundle request identifier. Used to match this information to another event.
-This made be absent in case when the instrumentation was enabled only
-after webbundle was parsed."""
+    bundleRequestId: "Optional[RequestId]" = None
 
 
 
-"""Fired when request for resources within a .wbn file failed."""
-class SubresourceWebBundleInnerResponseErrorEvent(TypedDict):
+class SubresourceWebBundleInnerResponseErrorEvent(BaseModel):
+    """Fired when request for resources within a .wbn file failed."""
     innerRequestId: "RequestId"
-    """Request identifier of the subresource request"""
     innerRequestURL: "str"
-    """URL of the subresource resource."""
     errorMessage: "str"
-    """Error message"""
-    bundleRequestId: "Optional[RequestId]"
-    """Bundle request identifier. Used to match this information to another event.
-This made be absent in case when the instrumentation was enabled only
-after webbundle was parsed."""
+    bundleRequestId: "Optional[RequestId]" = None
 
 
 
-"""Is sent whenever a new report is added.
+class ReportingApiReportAddedEvent(BaseModel):
+    """Is sent whenever a new report is added.
 And after 'enableReportingApi' for all existing reports."""
-class ReportingApiReportAddedEvent(TypedDict):
     report: "ReportingApiReport"
 
 
 
-class ReportingApiReportUpdatedEvent(TypedDict):
+class ReportingApiReportUpdatedEvent(BaseModel):
     report: "ReportingApiReport"
 
 
 
-class ReportingApiEndpointsChangedForOriginEvent(TypedDict):
+class ReportingApiEndpointsChangedForOriginEvent(BaseModel):
     origin: "str"
-    """Origin of the document(s) which configured the endpoints."""
     endpoints: "List[ReportingApiEndpoint]"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..page.types import FrameId
+        from .types import AssociatedCookie
+        from .types import AuthChallenge
+        from .types import BlockedReason
+        from .types import BlockedSetCookieWithReason
+        from .types import ClientSecurityState
+        from .types import ConnectTiming
+        from .types import CookiePartitionKey
+        from .types import CorsErrorStatus
+        from .types import DirectTCPSocketOptions
+        from .types import DirectUDPMessage
+        from .types import DirectUDPSocketOptions
+        from .types import ErrorReason
+        from .types import ExemptedSetCookieWithReason
+        from .types import Headers
+        from .types import IPAddressSpace
+        from .types import Initiator
+        from .types import InterceptionId
+        from .types import LoaderId
+        from .types import MonotonicTime
+        from .types import ReportingApiEndpoint
+        from .types import ReportingApiReport
+        from .types import Request
+        from .types import RequestId
+        from .types import ResourcePriority
+        from .types import ResourceType
+        from .types import Response
+        from .types import SignedExchangeInfo
+        from .types import TimeSinceEpoch
+        from .types import TrustTokenOperationType
+        from .types import WebSocketFrame
+        from .types import WebSocketRequest
+        from .types import WebSocketResponse
+        # Rebuild models now that imports are available
+        DataReceivedEvent.model_rebuild()
+        EventSourceMessageReceivedEvent.model_rebuild()
+        LoadingFailedEvent.model_rebuild()
+        LoadingFinishedEvent.model_rebuild()
+        RequestInterceptedEvent.model_rebuild()
+        RequestServedFromCacheEvent.model_rebuild()
+        RequestWillBeSentEvent.model_rebuild()
+        ResourceChangedPriorityEvent.model_rebuild()
+        SignedExchangeReceivedEvent.model_rebuild()
+        ResponseReceivedEvent.model_rebuild()
+        WebSocketClosedEvent.model_rebuild()
+        WebSocketCreatedEvent.model_rebuild()
+        WebSocketFrameErrorEvent.model_rebuild()
+        WebSocketFrameReceivedEvent.model_rebuild()
+        WebSocketFrameSentEvent.model_rebuild()
+        WebSocketHandshakeResponseReceivedEvent.model_rebuild()
+        WebSocketWillSendHandshakeRequestEvent.model_rebuild()
+        WebTransportCreatedEvent.model_rebuild()
+        WebTransportConnectionEstablishedEvent.model_rebuild()
+        WebTransportClosedEvent.model_rebuild()
+        DirectTCPSocketCreatedEvent.model_rebuild()
+        DirectTCPSocketOpenedEvent.model_rebuild()
+        DirectTCPSocketAbortedEvent.model_rebuild()
+        DirectTCPSocketClosedEvent.model_rebuild()
+        DirectTCPSocketChunkSentEvent.model_rebuild()
+        DirectTCPSocketChunkReceivedEvent.model_rebuild()
+        DirectUDPSocketCreatedEvent.model_rebuild()
+        DirectUDPSocketOpenedEvent.model_rebuild()
+        DirectUDPSocketAbortedEvent.model_rebuild()
+        DirectUDPSocketClosedEvent.model_rebuild()
+        DirectUDPSocketChunkSentEvent.model_rebuild()
+        DirectUDPSocketChunkReceivedEvent.model_rebuild()
+        RequestWillBeSentExtraInfoEvent.model_rebuild()
+        ResponseReceivedExtraInfoEvent.model_rebuild()
+        ResponseReceivedEarlyHintsEvent.model_rebuild()
+        TrustTokenOperationDoneEvent.model_rebuild()
+        PolicyUpdatedEvent.model_rebuild()
+        SubresourceWebBundleMetadataReceivedEvent.model_rebuild()
+        SubresourceWebBundleMetadataErrorEvent.model_rebuild()
+        SubresourceWebBundleInnerResponseParsedEvent.model_rebuild()
+        SubresourceWebBundleInnerResponseErrorEvent.model_rebuild()
+        ReportingApiReportAddedEvent.model_rebuild()
+        ReportingApiReportUpdatedEvent.model_rebuild()
+        ReportingApiEndpointsChangedForOriginEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

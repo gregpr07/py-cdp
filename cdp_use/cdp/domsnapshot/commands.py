@@ -4,6 +4,7 @@
 
 """CDP DOMSnapshot Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -26,13 +27,10 @@ class GetSnapshotParameters(TypedDict):
     """Whether to include UA shadow tree in the snapshot (default false)."""
 
 
-class GetSnapshotReturns(TypedDict):
+class GetSnapshotReturns(BaseModel):
     domNodes: "List[DOMNode]"
-    """The nodes in the DOM tree. The DOMNode at index 0 corresponds to the root document."""
     layoutTreeNodes: "List[LayoutTreeNode]"
-    """The nodes in the layout tree."""
     computedStyles: "List[ComputedStyle]"
-    """Whitelisted ComputedStyle properties for each node in the layout tree."""
 
 
 
@@ -53,8 +51,22 @@ An element might have the opacity property set that affects the text color of th
 The final text color opacity is computed based on the opacity of all overlapping elements."""
 
 
-class CaptureSnapshotReturns(TypedDict):
+class CaptureSnapshotReturns(BaseModel):
     documents: "List[DocumentSnapshot]"
-    """The nodes in the DOM tree. The DOMNode at index 0 corresponds to the root document."""
     strings: "List[str]"
-    """Shared string table that all string properties refer to with indexes."""
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import ComputedStyle
+        from .types import DOMNode
+        from .types import DocumentSnapshot
+        from .types import LayoutTreeNode
+        # Rebuild models now that imports are available
+        GetSnapshotReturns.model_rebuild()
+        CaptureSnapshotReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

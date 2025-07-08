@@ -4,7 +4,7 @@
 
 """CDP CSS Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -80,11 +80,13 @@ class CSSClient:
     ) -> "AddRuleReturns":
         """Inserts a new rule with the given `ruleText` in a stylesheet with given `styleSheetId`, at the
 position specified by `location`."""
-        return cast("AddRuleReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.addRule",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import AddRuleReturns as _AddRuleReturns
+        return _AddRuleReturns.model_validate(raw_result)
 
     async def collectClassNames(
         self,
@@ -92,11 +94,13 @@ position specified by `location`."""
         session_id: Optional[str] = None,
     ) -> "CollectClassNamesReturns":
         """Returns all class names from specified stylesheet."""
-        return cast("CollectClassNamesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.collectClassNames",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import CollectClassNamesReturns as _CollectClassNamesReturns
+        return _CollectClassNamesReturns.model_validate(raw_result)
 
     async def createStyleSheet(
         self,
@@ -104,11 +108,13 @@ position specified by `location`."""
         session_id: Optional[str] = None,
     ) -> "CreateStyleSheetReturns":
         """Creates a new special \"via-inspector\" stylesheet in the frame with given `frameId`."""
-        return cast("CreateStyleSheetReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.createStyleSheet",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import CreateStyleSheetReturns as _CreateStyleSheetReturns
+        return _CreateStyleSheetReturns.model_validate(raw_result)
 
     async def disable(
         self,
@@ -116,11 +122,12 @@ position specified by `location`."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables the CSS agent for the given page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -129,11 +136,12 @@ position specified by `location`."""
     ) -> "Dict[str, Any]":
         """Enables the CSS agent for the given page. Clients should not assume that the CSS agent has been
 enabled until the result of this command is received."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def forcePseudoState(
         self,
@@ -142,11 +150,12 @@ enabled until the result of this command is received."""
     ) -> "Dict[str, Any]":
         """Ensures that the given node will have specified pseudo-classes whenever its style is computed by
 the browser."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.forcePseudoState",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def forceStartingStyle(
         self,
@@ -154,22 +163,25 @@ the browser."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Ensures that the given node is in its starting-style state."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.forceStartingStyle",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getBackgroundColors(
         self,
         params: "GetBackgroundColorsParameters",
         session_id: Optional[str] = None,
     ) -> "GetBackgroundColorsReturns":
-        return cast("GetBackgroundColorsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.getBackgroundColors",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetBackgroundColorsReturns as _GetBackgroundColorsReturns
+        return _GetBackgroundColorsReturns.model_validate(raw_result)
 
     async def getComputedStyleForNode(
         self,
@@ -177,11 +189,13 @@ the browser."""
         session_id: Optional[str] = None,
     ) -> "GetComputedStyleForNodeReturns":
         """Returns the computed style for a DOM node identified by `nodeId`."""
-        return cast("GetComputedStyleForNodeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.getComputedStyleForNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetComputedStyleForNodeReturns as _GetComputedStyleForNodeReturns
+        return _GetComputedStyleForNodeReturns.model_validate(raw_result)
 
     async def resolveValues(
         self,
@@ -197,22 +211,26 @@ they were property's declaration. If a value cannot be parsed according
 to the provided property syntax, the value is parsed using combined
 syntax as if null `propertyName` was provided. If the value cannot be
 resolved even then, return the provided value without any changes."""
-        return cast("ResolveValuesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.resolveValues",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import ResolveValuesReturns as _ResolveValuesReturns
+        return _ResolveValuesReturns.model_validate(raw_result)
 
     async def getLonghandProperties(
         self,
         params: "GetLonghandPropertiesParameters",
         session_id: Optional[str] = None,
     ) -> "GetLonghandPropertiesReturns":
-        return cast("GetLonghandPropertiesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.getLonghandProperties",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetLonghandPropertiesReturns as _GetLonghandPropertiesReturns
+        return _GetLonghandPropertiesReturns.model_validate(raw_result)
 
     async def getInlineStylesForNode(
         self,
@@ -221,11 +239,13 @@ resolved even then, return the provided value without any changes."""
     ) -> "GetInlineStylesForNodeReturns":
         """Returns the styles defined inline (explicitly in the \"style\" attribute and implicitly, using DOM
 attributes) for a DOM node identified by `nodeId`."""
-        return cast("GetInlineStylesForNodeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.getInlineStylesForNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetInlineStylesForNodeReturns as _GetInlineStylesForNodeReturns
+        return _GetInlineStylesForNodeReturns.model_validate(raw_result)
 
     async def getAnimatedStylesForNode(
         self,
@@ -234,11 +254,13 @@ attributes) for a DOM node identified by `nodeId`."""
     ) -> "GetAnimatedStylesForNodeReturns":
         """Returns the styles coming from animations & transitions
 including the animation & transition styles coming from inheritance chain."""
-        return cast("GetAnimatedStylesForNodeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.getAnimatedStylesForNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetAnimatedStylesForNodeReturns as _GetAnimatedStylesForNodeReturns
+        return _GetAnimatedStylesForNodeReturns.model_validate(raw_result)
 
     async def getMatchedStylesForNode(
         self,
@@ -246,11 +268,13 @@ including the animation & transition styles coming from inheritance chain."""
         session_id: Optional[str] = None,
     ) -> "GetMatchedStylesForNodeReturns":
         """Returns requested styles for a DOM node identified by `nodeId`."""
-        return cast("GetMatchedStylesForNodeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.getMatchedStylesForNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetMatchedStylesForNodeReturns as _GetMatchedStylesForNodeReturns
+        return _GetMatchedStylesForNodeReturns.model_validate(raw_result)
 
     async def getMediaQueries(
         self,
@@ -258,11 +282,13 @@ including the animation & transition styles coming from inheritance chain."""
         session_id: Optional[str] = None,
     ) -> "GetMediaQueriesReturns":
         """Returns all media queries parsed by the rendering engine."""
-        return cast("GetMediaQueriesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.getMediaQueries",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetMediaQueriesReturns as _GetMediaQueriesReturns
+        return _GetMediaQueriesReturns.model_validate(raw_result)
 
     async def getPlatformFontsForNode(
         self,
@@ -271,11 +297,13 @@ including the animation & transition styles coming from inheritance chain."""
     ) -> "GetPlatformFontsForNodeReturns":
         """Requests information about platform fonts which we used to render child TextNodes in the given
 node."""
-        return cast("GetPlatformFontsForNodeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.getPlatformFontsForNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetPlatformFontsForNodeReturns as _GetPlatformFontsForNodeReturns
+        return _GetPlatformFontsForNodeReturns.model_validate(raw_result)
 
     async def getStyleSheetText(
         self,
@@ -283,11 +311,13 @@ node."""
         session_id: Optional[str] = None,
     ) -> "GetStyleSheetTextReturns":
         """Returns the current textual content for a stylesheet."""
-        return cast("GetStyleSheetTextReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.getStyleSheetText",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetStyleSheetTextReturns as _GetStyleSheetTextReturns
+        return _GetStyleSheetTextReturns.model_validate(raw_result)
 
     async def getLayersForNode(
         self,
@@ -298,11 +328,13 @@ node."""
 Given a DOM element identified by nodeId, getLayersForNode returns the root
 layer for the nearest ancestor document or shadow root. The layer root contains
 the full layer tree for the tree scope and their ordering."""
-        return cast("GetLayersForNodeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.getLayersForNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetLayersForNodeReturns as _GetLayersForNodeReturns
+        return _GetLayersForNodeReturns.model_validate(raw_result)
 
     async def getLocationForSelector(
         self,
@@ -311,11 +343,13 @@ the full layer tree for the tree scope and their ordering."""
     ) -> "GetLocationForSelectorReturns":
         """Given a CSS selector text and a style sheet ID, getLocationForSelector
 returns an array of locations of the CSS selector in the style sheet."""
-        return cast("GetLocationForSelectorReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.getLocationForSelector",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetLocationForSelectorReturns as _GetLocationForSelectorReturns
+        return _GetLocationForSelectorReturns.model_validate(raw_result)
 
     async def trackComputedStyleUpdatesForNode(
         self,
@@ -328,11 +362,12 @@ a `computedStyleUpdated` event with throttling.
 There can only be 1 node tracked for computed style updates
 so passing a new node id removes tracking from the previous node.
 Pass `undefined` to disable tracking."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.trackComputedStyleUpdatesForNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def trackComputedStyleUpdates(
         self,
@@ -345,11 +380,12 @@ Use takeComputedStyleUpdates to retrieve the list of nodes that had properties m
 The changes to computed style properties are only tracked for nodes pushed to the front-end
 by the DOM agent. If no changes to the tracked properties occur after the node has been pushed
 to the front-end, no updates will be issued for the node."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.trackComputedStyleUpdates",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def takeComputedStyleUpdates(
         self,
@@ -357,11 +393,13 @@ to the front-end, no updates will be issued for the node."""
         session_id: Optional[str] = None,
     ) -> "TakeComputedStyleUpdatesReturns":
         """Polls the next batch of computed style updates."""
-        return cast("TakeComputedStyleUpdatesReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.takeComputedStyleUpdates",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import TakeComputedStyleUpdatesReturns as _TakeComputedStyleUpdatesReturns
+        return _TakeComputedStyleUpdatesReturns.model_validate(raw_result)
 
     async def setEffectivePropertyValueForNode(
         self,
@@ -370,11 +408,12 @@ to the front-end, no updates will be issued for the node."""
     ) -> "Dict[str, Any]":
         """Find a rule with the given active property for the given node and set the new value for this
 property"""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.setEffectivePropertyValueForNode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setPropertyRulePropertyName(
         self,
@@ -382,11 +421,13 @@ property"""
         session_id: Optional[str] = None,
     ) -> "SetPropertyRulePropertyNameReturns":
         """Modifies the property rule property name."""
-        return cast("SetPropertyRulePropertyNameReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.setPropertyRulePropertyName",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetPropertyRulePropertyNameReturns as _SetPropertyRulePropertyNameReturns
+        return _SetPropertyRulePropertyNameReturns.model_validate(raw_result)
 
     async def setKeyframeKey(
         self,
@@ -394,11 +435,13 @@ property"""
         session_id: Optional[str] = None,
     ) -> "SetKeyframeKeyReturns":
         """Modifies the keyframe rule key text."""
-        return cast("SetKeyframeKeyReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.setKeyframeKey",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetKeyframeKeyReturns as _SetKeyframeKeyReturns
+        return _SetKeyframeKeyReturns.model_validate(raw_result)
 
     async def setMediaText(
         self,
@@ -406,11 +449,13 @@ property"""
         session_id: Optional[str] = None,
     ) -> "SetMediaTextReturns":
         """Modifies the rule selector."""
-        return cast("SetMediaTextReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.setMediaText",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetMediaTextReturns as _SetMediaTextReturns
+        return _SetMediaTextReturns.model_validate(raw_result)
 
     async def setContainerQueryText(
         self,
@@ -418,11 +463,13 @@ property"""
         session_id: Optional[str] = None,
     ) -> "SetContainerQueryTextReturns":
         """Modifies the expression of a container query."""
-        return cast("SetContainerQueryTextReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.setContainerQueryText",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetContainerQueryTextReturns as _SetContainerQueryTextReturns
+        return _SetContainerQueryTextReturns.model_validate(raw_result)
 
     async def setSupportsText(
         self,
@@ -430,11 +477,13 @@ property"""
         session_id: Optional[str] = None,
     ) -> "SetSupportsTextReturns":
         """Modifies the expression of a supports at-rule."""
-        return cast("SetSupportsTextReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.setSupportsText",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetSupportsTextReturns as _SetSupportsTextReturns
+        return _SetSupportsTextReturns.model_validate(raw_result)
 
     async def setScopeText(
         self,
@@ -442,11 +491,13 @@ property"""
         session_id: Optional[str] = None,
     ) -> "SetScopeTextReturns":
         """Modifies the expression of a scope at-rule."""
-        return cast("SetScopeTextReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.setScopeText",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetScopeTextReturns as _SetScopeTextReturns
+        return _SetScopeTextReturns.model_validate(raw_result)
 
     async def setRuleSelector(
         self,
@@ -454,11 +505,13 @@ property"""
         session_id: Optional[str] = None,
     ) -> "SetRuleSelectorReturns":
         """Modifies the rule selector."""
-        return cast("SetRuleSelectorReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.setRuleSelector",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetRuleSelectorReturns as _SetRuleSelectorReturns
+        return _SetRuleSelectorReturns.model_validate(raw_result)
 
     async def setStyleSheetText(
         self,
@@ -466,11 +519,13 @@ property"""
         session_id: Optional[str] = None,
     ) -> "SetStyleSheetTextReturns":
         """Sets the new stylesheet text."""
-        return cast("SetStyleSheetTextReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.setStyleSheetText",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetStyleSheetTextReturns as _SetStyleSheetTextReturns
+        return _SetStyleSheetTextReturns.model_validate(raw_result)
 
     async def setStyleTexts(
         self,
@@ -478,11 +533,13 @@ property"""
         session_id: Optional[str] = None,
     ) -> "SetStyleTextsReturns":
         """Applies specified style edits one after another in the given order."""
-        return cast("SetStyleTextsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.setStyleTexts",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SetStyleTextsReturns as _SetStyleTextsReturns
+        return _SetStyleTextsReturns.model_validate(raw_result)
 
     async def startRuleUsageTracking(
         self,
@@ -490,11 +547,12 @@ property"""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables the selector recording."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.startRuleUsageTracking",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def stopRuleUsageTracking(
         self,
@@ -503,11 +561,13 @@ property"""
     ) -> "StopRuleUsageTrackingReturns":
         """Stop tracking rule usage and return the list of rules that were used since last call to
 `takeCoverageDelta` (or since start of coverage instrumentation)."""
-        return cast("StopRuleUsageTrackingReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.stopRuleUsageTracking",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import StopRuleUsageTrackingReturns as _StopRuleUsageTrackingReturns
+        return _StopRuleUsageTrackingReturns.model_validate(raw_result)
 
     async def takeCoverageDelta(
         self,
@@ -516,11 +576,13 @@ property"""
     ) -> "TakeCoverageDeltaReturns":
         """Obtain list of rules that became used since last call to this method (or since start of coverage
 instrumentation)."""
-        return cast("TakeCoverageDeltaReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.takeCoverageDelta",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import TakeCoverageDeltaReturns as _TakeCoverageDeltaReturns
+        return _TakeCoverageDeltaReturns.model_validate(raw_result)
 
     async def setLocalFontsEnabled(
         self,
@@ -528,10 +590,11 @@ instrumentation)."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables/disables rendering of local CSS fonts (enabled by default)."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="CSS.setLocalFontsEnabled",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

@@ -4,23 +4,32 @@
 
 """CDP DOMStorage Domain Types"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 SerializedStorageKey = str
 
 
 
-"""DOM Storage identifier."""
-class StorageId(TypedDict):
-    securityOrigin: "Optional[str]"
-    """Security origin for the storage."""
-    storageKey: "Optional[SerializedStorageKey]"
-    """Represents a key by which DOM Storage keys its CachedStorageAreas"""
+class StorageId(BaseModel):
+    """DOM Storage identifier."""
     isLocalStorage: "bool"
-    """Whether the storage is local storage (not session storage)."""
+    securityOrigin: "Optional[str]" = None
+    storageKey: "Optional[SerializedStorageKey]" = None
 
 
 
 """DOM Storage item."""
 Item = List[str]
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        StorageId.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

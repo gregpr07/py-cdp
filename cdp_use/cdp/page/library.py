@@ -4,7 +4,7 @@
 
 """CDP Page Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -84,11 +84,13 @@ class PageClient:
         session_id: Optional[str] = None,
     ) -> "AddScriptToEvaluateOnLoadReturns":
         """Deprecated, please use addScriptToEvaluateOnNewDocument instead."""
-        return cast("AddScriptToEvaluateOnLoadReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.addScriptToEvaluateOnLoad",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import AddScriptToEvaluateOnLoadReturns as _AddScriptToEvaluateOnLoadReturns
+        return _AddScriptToEvaluateOnLoadReturns.model_validate(raw_result)
 
     async def addScriptToEvaluateOnNewDocument(
         self,
@@ -96,11 +98,13 @@ class PageClient:
         session_id: Optional[str] = None,
     ) -> "AddScriptToEvaluateOnNewDocumentReturns":
         """Evaluates given script in every frame upon creation (before loading frame's scripts)."""
-        return cast("AddScriptToEvaluateOnNewDocumentReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.addScriptToEvaluateOnNewDocument",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import AddScriptToEvaluateOnNewDocumentReturns as _AddScriptToEvaluateOnNewDocumentReturns
+        return _AddScriptToEvaluateOnNewDocumentReturns.model_validate(raw_result)
 
     async def bringToFront(
         self,
@@ -108,11 +112,12 @@ class PageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Brings page to front (activates tab)."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.bringToFront",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def captureScreenshot(
         self,
@@ -120,11 +125,13 @@ class PageClient:
         session_id: Optional[str] = None,
     ) -> "CaptureScreenshotReturns":
         """Capture page screenshot."""
-        return cast("CaptureScreenshotReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.captureScreenshot",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import CaptureScreenshotReturns as _CaptureScreenshotReturns
+        return _CaptureScreenshotReturns.model_validate(raw_result)
 
     async def captureSnapshot(
         self,
@@ -133,11 +140,13 @@ class PageClient:
     ) -> "CaptureSnapshotReturns":
         """Returns a snapshot of the page as a string. For MHTML format, the serialization includes
 iframes, shadow DOM, external resources, and element-inline styles."""
-        return cast("CaptureSnapshotReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.captureSnapshot",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import CaptureSnapshotReturns as _CaptureSnapshotReturns
+        return _CaptureSnapshotReturns.model_validate(raw_result)
 
     async def clearDeviceMetricsOverride(
         self,
@@ -145,11 +154,12 @@ iframes, shadow DOM, external resources, and element-inline styles."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears the overridden device metrics."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.clearDeviceMetricsOverride",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def clearDeviceOrientationOverride(
         self,
@@ -157,11 +167,12 @@ iframes, shadow DOM, external resources, and element-inline styles."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears the overridden Device Orientation."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.clearDeviceOrientationOverride",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def clearGeolocationOverride(
         self,
@@ -169,11 +180,12 @@ iframes, shadow DOM, external resources, and element-inline styles."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears the overridden Geolocation Position and Error."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.clearGeolocationOverride",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def createIsolatedWorld(
         self,
@@ -181,11 +193,13 @@ iframes, shadow DOM, external resources, and element-inline styles."""
         session_id: Optional[str] = None,
     ) -> "CreateIsolatedWorldReturns":
         """Creates an isolated world for the given frame."""
-        return cast("CreateIsolatedWorldReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.createIsolatedWorld",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import CreateIsolatedWorldReturns as _CreateIsolatedWorldReturns
+        return _CreateIsolatedWorldReturns.model_validate(raw_result)
 
     async def deleteCookie(
         self,
@@ -193,11 +207,12 @@ iframes, shadow DOM, external resources, and element-inline styles."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Deletes browser cookie with given name, domain and path."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.deleteCookie",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def disable(
         self,
@@ -205,11 +220,12 @@ iframes, shadow DOM, external resources, and element-inline styles."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables page domain notifications."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -217,11 +233,12 @@ iframes, shadow DOM, external resources, and element-inline styles."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables page domain notifications."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getAppManifest(
         self,
@@ -233,22 +250,26 @@ iframes, shadow DOM, external resources, and element-inline styles."""
   If manifestId is provided, and it does not match the manifest of the
     current document, this API errors out.
   If there is not a loaded page, this API errors out immediately."""
-        return cast("GetAppManifestReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.getAppManifest",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetAppManifestReturns as _GetAppManifestReturns
+        return _GetAppManifestReturns.model_validate(raw_result)
 
     async def getInstallabilityErrors(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "GetInstallabilityErrorsReturns":
-        return cast("GetInstallabilityErrorsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.getInstallabilityErrors",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetInstallabilityErrorsReturns as _GetInstallabilityErrorsReturns
+        return _GetInstallabilityErrorsReturns.model_validate(raw_result)
 
     async def getManifestIcons(
         self,
@@ -256,11 +277,13 @@ iframes, shadow DOM, external resources, and element-inline styles."""
         session_id: Optional[str] = None,
     ) -> "GetManifestIconsReturns":
         """Deprecated because it's not guaranteed that the returned icon is in fact the one used for PWA installation."""
-        return cast("GetManifestIconsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.getManifestIcons",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetManifestIconsReturns as _GetManifestIconsReturns
+        return _GetManifestIconsReturns.model_validate(raw_result)
 
     async def getAppId(
         self,
@@ -269,22 +292,26 @@ iframes, shadow DOM, external resources, and element-inline styles."""
     ) -> "GetAppIdReturns":
         """Returns the unique (PWA) app id.
 Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
-        return cast("GetAppIdReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.getAppId",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetAppIdReturns as _GetAppIdReturns
+        return _GetAppIdReturns.model_validate(raw_result)
 
     async def getAdScriptAncestry(
         self,
         params: "GetAdScriptAncestryParameters",
         session_id: Optional[str] = None,
     ) -> "GetAdScriptAncestryReturns":
-        return cast("GetAdScriptAncestryReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.getAdScriptAncestry",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetAdScriptAncestryReturns as _GetAdScriptAncestryReturns
+        return _GetAdScriptAncestryReturns.model_validate(raw_result)
 
     async def getFrameTree(
         self,
@@ -292,11 +319,13 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "GetFrameTreeReturns":
         """Returns present frame tree structure."""
-        return cast("GetFrameTreeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.getFrameTree",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetFrameTreeReturns as _GetFrameTreeReturns
+        return _GetFrameTreeReturns.model_validate(raw_result)
 
     async def getLayoutMetrics(
         self,
@@ -304,11 +333,13 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "GetLayoutMetricsReturns":
         """Returns metrics relating to the layouting of the page, such as viewport bounds/scale."""
-        return cast("GetLayoutMetricsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.getLayoutMetrics",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetLayoutMetricsReturns as _GetLayoutMetricsReturns
+        return _GetLayoutMetricsReturns.model_validate(raw_result)
 
     async def getNavigationHistory(
         self,
@@ -316,11 +347,13 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "GetNavigationHistoryReturns":
         """Returns navigation history for the current page."""
-        return cast("GetNavigationHistoryReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.getNavigationHistory",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetNavigationHistoryReturns as _GetNavigationHistoryReturns
+        return _GetNavigationHistoryReturns.model_validate(raw_result)
 
     async def resetNavigationHistory(
         self,
@@ -328,11 +361,12 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Resets navigation history for the current page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.resetNavigationHistory",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getResourceContent(
         self,
@@ -340,11 +374,13 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "GetResourceContentReturns":
         """Returns content of the given resource."""
-        return cast("GetResourceContentReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.getResourceContent",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetResourceContentReturns as _GetResourceContentReturns
+        return _GetResourceContentReturns.model_validate(raw_result)
 
     async def getResourceTree(
         self,
@@ -352,11 +388,13 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "GetResourceTreeReturns":
         """Returns present frame / resource tree structure."""
-        return cast("GetResourceTreeReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.getResourceTree",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetResourceTreeReturns as _GetResourceTreeReturns
+        return _GetResourceTreeReturns.model_validate(raw_result)
 
     async def handleJavaScriptDialog(
         self,
@@ -364,11 +402,12 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Accepts or dismisses a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload)."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.handleJavaScriptDialog",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def navigate(
         self,
@@ -376,11 +415,13 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "NavigateReturns":
         """Navigates current page to the given URL."""
-        return cast("NavigateReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.navigate",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import NavigateReturns as _NavigateReturns
+        return _NavigateReturns.model_validate(raw_result)
 
     async def navigateToHistoryEntry(
         self,
@@ -388,11 +429,12 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Navigates current page to the given history entry."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.navigateToHistoryEntry",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def printToPDF(
         self,
@@ -400,11 +442,13 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "PrintToPDFReturns":
         """Print page as PDF."""
-        return cast("PrintToPDFReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.printToPDF",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import PrintToPDFReturns as _PrintToPDFReturns
+        return _PrintToPDFReturns.model_validate(raw_result)
 
     async def reload(
         self,
@@ -412,11 +456,12 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Reloads given page optionally ignoring the cache."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.reload",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def removeScriptToEvaluateOnLoad(
         self,
@@ -424,11 +469,12 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Deprecated, please use removeScriptToEvaluateOnNewDocument instead."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.removeScriptToEvaluateOnLoad",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def removeScriptToEvaluateOnNewDocument(
         self,
@@ -436,11 +482,12 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Removes given script from the list."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.removeScriptToEvaluateOnNewDocument",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def screencastFrameAck(
         self,
@@ -448,11 +495,12 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Acknowledges that a screencast frame has been received by the frontend."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.screencastFrameAck",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def searchInResource(
         self,
@@ -460,11 +508,13 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "SearchInResourceReturns":
         """Searches for given string in resource content."""
-        return cast("SearchInResourceReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.searchInResource",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import SearchInResourceReturns as _SearchInResourceReturns
+        return _SearchInResourceReturns.model_validate(raw_result)
 
     async def setAdBlockingEnabled(
         self,
@@ -472,11 +522,12 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enable Chrome's experimental ad filter on all sites."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setAdBlockingEnabled",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setBypassCSP(
         self,
@@ -484,11 +535,12 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enable page Content Security Policy by-passing."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setBypassCSP",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getPermissionsPolicyState(
         self,
@@ -496,11 +548,13 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "GetPermissionsPolicyStateReturns":
         """Get Permissions Policy state on given frame."""
-        return cast("GetPermissionsPolicyStateReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.getPermissionsPolicyState",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetPermissionsPolicyStateReturns as _GetPermissionsPolicyStateReturns
+        return _GetPermissionsPolicyStateReturns.model_validate(raw_result)
 
     async def getOriginTrials(
         self,
@@ -508,11 +562,13 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         session_id: Optional[str] = None,
     ) -> "GetOriginTrialsReturns":
         """Get Origin Trials on given frame."""
-        return cast("GetOriginTrialsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.getOriginTrials",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetOriginTrialsReturns as _GetOriginTrialsReturns
+        return _GetOriginTrialsReturns.model_validate(raw_result)
 
     async def setDeviceMetricsOverride(
         self,
@@ -522,11 +578,12 @@ Only returns values if the feature flag 'WebAppEnableManifestId' is enabled"""
         """Overrides the values of device screen dimensions (window.screen.width, window.screen.height,
 window.innerWidth, window.innerHeight, and \"device-width\"/\"device-height\"-related CSS media
 query results)."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setDeviceMetricsOverride",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setDeviceOrientationOverride(
         self,
@@ -534,11 +591,12 @@ query results)."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Overrides the Device Orientation."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setDeviceOrientationOverride",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setFontFamilies(
         self,
@@ -546,11 +604,12 @@ query results)."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Set generic font families."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setFontFamilies",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setFontSizes(
         self,
@@ -558,11 +617,12 @@ query results)."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Set default font sizes."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setFontSizes",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setDocumentContent(
         self,
@@ -570,11 +630,12 @@ query results)."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets given markup as the document's HTML."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setDocumentContent",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setDownloadBehavior(
         self,
@@ -582,11 +643,12 @@ query results)."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Set the behavior when downloading a file."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setDownloadBehavior",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setGeolocationOverride(
         self,
@@ -595,11 +657,12 @@ query results)."""
     ) -> "Dict[str, Any]":
         """Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position
 unavailable."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setGeolocationOverride",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setLifecycleEventsEnabled(
         self,
@@ -607,11 +670,12 @@ unavailable."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Controls whether page will emit lifecycle events."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setLifecycleEventsEnabled",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setTouchEmulationEnabled(
         self,
@@ -619,11 +683,12 @@ unavailable."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Toggles mouse event-based touch event emulation."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setTouchEmulationEnabled",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def startScreencast(
         self,
@@ -631,11 +696,12 @@ unavailable."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Starts sending each frame using the `screencastFrame` event."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.startScreencast",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def stopLoading(
         self,
@@ -643,11 +709,12 @@ unavailable."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Force the page stop all navigations and pending resource fetches."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.stopLoading",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def crash(
         self,
@@ -655,11 +722,12 @@ unavailable."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Crashes renderer on the IO thread, generates minidumps."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.crash",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def close(
         self,
@@ -667,11 +735,12 @@ unavailable."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Tries to close page, running its beforeunload hooks, if any."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.close",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setWebLifecycleState(
         self,
@@ -681,11 +750,12 @@ unavailable."""
         """Tries to update the web lifecycle state of the page.
 It will transition the page to the given state according to:
 https://github.com/WICG/web-lifecycle/"""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setWebLifecycleState",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def stopScreencast(
         self,
@@ -693,11 +763,12 @@ https://github.com/WICG/web-lifecycle/"""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Stops sending each frame in the `screencastFrame`."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.stopScreencast",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def produceCompilationCache(
         self,
@@ -710,11 +781,12 @@ would be produced. The list may be reset during page navigation.
 When script with a matching URL is encountered, the cache is optionally
 produced upon backend discretion, based on internal heuristics.
 See also: `Page.compilationCacheProduced`."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.produceCompilationCache",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def addCompilationCache(
         self,
@@ -723,11 +795,12 @@ See also: `Page.compilationCacheProduced`."""
     ) -> "Dict[str, Any]":
         """Seeds compilation cache for given url. Compilation cache does not survive
 cross-process navigation."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.addCompilationCache",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def clearCompilationCache(
         self,
@@ -735,11 +808,12 @@ cross-process navigation."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears seeded compilation cache."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.clearCompilationCache",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setSPCTransactionMode(
         self,
@@ -748,11 +822,12 @@ cross-process navigation."""
     ) -> "Dict[str, Any]":
         """Sets the Secure Payment Confirmation transaction mode.
 https://w3c.github.io/secure-payment-confirmation/#sctn-automation-set-spc-transaction-mode"""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setSPCTransactionMode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setRPHRegistrationMode(
         self,
@@ -761,11 +836,12 @@ https://w3c.github.io/secure-payment-confirmation/#sctn-automation-set-spc-trans
     ) -> "Dict[str, Any]":
         """Extensions for Custom Handlers API:
 https://html.spec.whatwg.org/multipage/system-state.html#rph-automation"""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setRPHRegistrationMode",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def generateTestReport(
         self,
@@ -773,11 +849,12 @@ https://html.spec.whatwg.org/multipage/system-state.html#rph-automation"""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Generates a report for testing."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.generateTestReport",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def waitForDebugger(
         self,
@@ -785,11 +862,12 @@ https://html.spec.whatwg.org/multipage/system-state.html#rph-automation"""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Pauses page execution. Can be resumed using generic Runtime.runIfWaitingForDebugger."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.waitForDebugger",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setInterceptFileChooserDialog(
         self,
@@ -799,11 +877,12 @@ https://html.spec.whatwg.org/multipage/system-state.html#rph-automation"""
         """Intercept file chooser requests and transfer control to protocol clients.
 When file chooser interception is enabled, native file chooser dialog is not shown.
 Instead, a protocol event `Page.fileChooserOpened` is emitted."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setInterceptFileChooserDialog",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setPrerenderingAllowed(
         self,
@@ -817,10 +896,11 @@ See https://docs.google.com/document/d/12HVmFxYj5Jc-eJr5OmWsa2bqTJsbgGLKI6ZIyx0_
 for more details.
 
 TODO(https://crbug.com/1440085): Remove this once Puppeteer supports tab targets."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Page.setPrerenderingAllowed",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

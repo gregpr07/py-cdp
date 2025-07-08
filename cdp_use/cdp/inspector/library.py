@@ -4,7 +4,7 @@
 
 """CDP Inspector Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -23,11 +23,12 @@ class InspectorClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables inspector domain notifications."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Inspector.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -35,10 +36,11 @@ class InspectorClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables inspector domain notifications."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Inspector.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

@@ -4,7 +4,7 @@
 
 """CDP Performance Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -26,11 +26,12 @@ class PerformanceClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disable collecting and reporting metrics."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Performance.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def enable(
         self,
@@ -38,11 +39,12 @@ class PerformanceClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enable collecting and reporting metrics."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Performance.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def setTimeDomain(
         self,
@@ -52,11 +54,12 @@ class PerformanceClient:
         """Sets time domain to use for collecting and reporting duration metrics.
 Note that this must be called before enabling metrics collection. Calling
 this method while metrics collection is enabled returns an error."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Performance.setTimeDomain",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def getMetrics(
         self,
@@ -64,10 +67,12 @@ this method while metrics collection is enabled returns an error."""
         session_id: Optional[str] = None,
     ) -> "GetMetricsReturns":
         """Retrieve current values of run-time metrics."""
-        return cast("GetMetricsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Performance.getMetrics",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetMetricsReturns as _GetMetricsReturns
+        return _GetMetricsReturns.model_validate(raw_result)
 
 

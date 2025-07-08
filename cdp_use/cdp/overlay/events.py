@@ -4,7 +4,7 @@
 
 """CDP Overlay Domain Events"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
 from typing import TYPE_CHECKING
 
@@ -13,27 +13,42 @@ if TYPE_CHECKING:
     from ..dom.types import NodeId
     from ..page.types import Viewport
 
-"""Fired when the node should be inspected. This happens after call to `setInspectMode` or when
+class InspectNodeRequestedEvent(BaseModel):
+    """Fired when the node should be inspected. This happens after call to `setInspectMode` or when
 user manually inspects an element."""
-class InspectNodeRequestedEvent(TypedDict):
     backendNodeId: "BackendNodeId"
-    """Id of the node to inspect."""
 
 
 
-"""Fired when the node should be highlighted. This happens after call to `setInspectMode`."""
-class NodeHighlightRequestedEvent(TypedDict):
+class NodeHighlightRequestedEvent(BaseModel):
+    """Fired when the node should be highlighted. This happens after call to `setInspectMode`."""
     nodeId: "NodeId"
 
 
 
-"""Fired when user asks to capture screenshot of some area on the page."""
-class ScreenshotRequestedEvent(TypedDict):
+class ScreenshotRequestedEvent(BaseModel):
+    """Fired when user asks to capture screenshot of some area on the page."""
     viewport: "Viewport"
-    """Viewport to capture, in device independent pixels (dip)."""
 
 
 
-"""Fired when user cancels the inspect mode."""
-class InspectModeCanceledEvent(TypedDict):
+class InspectModeCanceledEvent(BaseModel):
+    """Fired when user cancels the inspect mode."""
     pass
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import BackendNodeId
+        from ..dom.types import NodeId
+        from ..page.types import Viewport
+        # Rebuild models now that imports are available
+        InspectNodeRequestedEvent.model_rebuild()
+        NodeHighlightRequestedEvent.model_rebuild()
+        ScreenshotRequestedEvent.model_rebuild()
+        InspectModeCanceledEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

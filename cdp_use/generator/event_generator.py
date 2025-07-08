@@ -61,6 +61,28 @@ class EventGenerator:
         # Add event definitions
         if event_definitions:
             content += "\n\n\n".join(event_definitions)
+
+            # Add model_rebuild() calls for Pydantic event models
+            rebuild_calls = []
+            for event in events:
+                event_name = event["name"]
+                class_name = self.to_class_name(event_name) + "Event"
+                rebuild_calls.append(f"{class_name}.model_rebuild()")
+
+            if rebuild_calls:
+                content += (
+                    "\n\n# Rebuild Pydantic models to resolve forward references\n"
+                )
+                content += "def _rebuild_models_when_ready():\n"
+                content += "    try:\n"
+                for imp in sorted(self.type_checking_imports):
+                    content += f"        {imp}\n"
+                content += "        # Rebuild models now that imports are available\n"
+                for call in rebuild_calls:
+                    content += f"        {call}\n"
+                content += "    except ImportError:\n"
+                content += "        pass  # Will be rebuilt later\n"
+                content += "\n_rebuild_models_when_ready()\n"
         else:
             content += "# No events defined for this domain"
 
@@ -108,10 +130,6 @@ class EventGenerator:
 
                 content += f'    {param_name}: "{param_type}"\n'
 
-                if param_desc:
-                    escaped_desc = param_desc.replace("\\", "\\\\").replace('"', '\\"')
-                    content += f'    """{escaped_desc}"""\n'
-
             # Optional params
             for param in optional_params:
                 param_name = param["name"]
@@ -119,10 +137,6 @@ class EventGenerator:
                 param_desc = param.get("description", "")
 
                 content += f'    {param_name}: "Optional[{param_type}]" = None\n'
-
-                if param_desc:
-                    escaped_desc = param_desc.replace("\\", "\\\\").replace('"', '\\"')
-                    content += f'    """{escaped_desc}"""\n'
 
         self.generated_events.add(class_name)
         return content

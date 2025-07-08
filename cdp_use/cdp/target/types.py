@@ -5,8 +5,8 @@
 """CDP Target Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -23,33 +23,24 @@ SessionID = str
 
 
 
-class TargetInfo(TypedDict):
+class TargetInfo(BaseModel):
     targetId: "TargetID"
     type: "str"
-    """List of types: https://source.chromium.org/chromium/chromium/src/+/main:content/browser/devtools/devtools_agent_host_impl.cc?ss=chromium&q=f:devtools%20-f:out%20%22::kTypeTab%5B%5D%22"""
     title: "str"
     url: "str"
     attached: "bool"
-    """Whether the target has an attached client."""
-    openerId: "Optional[TargetID]"
-    """Opener target Id"""
     canAccessOpener: "bool"
-    """Whether the target has access to the originating window."""
-    openerFrameId: "Optional[FrameId]"
-    """Frame id of originating window (is only set if target has an opener)."""
-    browserContextId: "Optional[BrowserContextID]"
-    subtype: "Optional[str]"
-    """Provides additional details for specific target types. For example, for
-the type of \"page\", this may be set to \"prerender\"."""
+    openerId: "Optional[TargetID]" = None
+    openerFrameId: "Optional[FrameId]" = None
+    browserContextId: "Optional[BrowserContextID]" = None
+    subtype: "Optional[str]" = None
 
 
 
-"""A filter used by target query/discovery/auto-attach operations."""
-class FilterEntry(TypedDict, total=False):
-    exclude: "bool"
-    """If set, causes exclusion of matching targets from the list."""
-    type: "str"
-    """If not present, matches any type."""
+class FilterEntry(BaseModel):
+    """A filter used by target query/discovery/auto-attach operations."""
+    exclude: "Optional[bool]" = None
+    type: "Optional[str]" = None
 
 
 
@@ -63,15 +54,31 @@ TargetFilter = List[FilterEntry]
 
 
 
-class RemoteLocation(TypedDict):
+class RemoteLocation(BaseModel):
     host: "str"
     port: "int"
 
 
 
-"""The state of the target window."""
 class WindowState(Enum):
+    """The state of the target window."""
     NORMAL = "normal"
     MINIMIZED = "minimized"
     MAXIMIZED = "maximized"
     FULLSCREEN = "fullscreen"
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..browser.types import BrowserContextID
+        from ..page.types import FrameId
+        # Rebuild models now that imports are available
+        TargetInfo.model_rebuild()
+        FilterEntry.model_rebuild()
+        RemoteLocation.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

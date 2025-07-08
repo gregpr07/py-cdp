@@ -5,19 +5,19 @@
 """CDP FedCm Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import Optional
-from typing_extensions import TypedDict
 
-"""Whether this is a sign-up or sign-in action for this account, i.e.
-whether this account has ever been used to sign in to this RP before."""
 class LoginState(Enum):
+    """Whether this is a sign-up or sign-in action for this account, i.e.
+whether this account has ever been used to sign in to this RP before."""
     SIGNIN = "SignIn"
     SIGNUP = "SignUp"
 
 
 
-"""The types of FedCM dialogs."""
 class DialogType(Enum):
+    """The types of FedCM dialogs."""
     ACCOUNTCHOOSER = "AccountChooser"
     AUTOREAUTHN = "AutoReauthn"
     CONFIRMIDPLOGIN = "ConfirmIdpLogin"
@@ -25,23 +25,23 @@ class DialogType(Enum):
 
 
 
-"""The buttons on the FedCM dialog."""
 class DialogButton(Enum):
+    """The buttons on the FedCM dialog."""
     CONFIRMIDPLOGINCONTINUE = "ConfirmIdpLoginContinue"
     ERRORGOTIT = "ErrorGotIt"
     ERRORMOREDETAILS = "ErrorMoreDetails"
 
 
 
-"""The URLs that each account has"""
 class AccountUrlType(Enum):
+    """The URLs that each account has"""
     TERMSOFSERVICE = "TermsOfService"
     PRIVACYPOLICY = "PrivacyPolicy"
 
 
 
-"""Corresponds to IdentityRequestAccount"""
-class Account(TypedDict):
+class Account(BaseModel):
+    """Corresponds to IdentityRequestAccount"""
     accountId: "str"
     email: "str"
     name: "str"
@@ -50,6 +50,17 @@ class Account(TypedDict):
     idpConfigUrl: "str"
     idpLoginUrl: "str"
     loginState: "LoginState"
-    termsOfServiceUrl: "Optional[str]"
-    """These two are only set if the loginState is signUp"""
-    privacyPolicyUrl: "Optional[str]"
+    termsOfServiceUrl: "Optional[str]" = None
+    privacyPolicyUrl: "Optional[str]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        # Rebuild models now that imports are available
+        Account.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

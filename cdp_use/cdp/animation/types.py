@@ -4,8 +4,8 @@
 
 """CDP Animation Domain Types"""
 
+from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -13,96 +13,73 @@ if TYPE_CHECKING:
     from ..dom.types import BackendNodeId
     from ..dom.types import ScrollOrientation
 
-"""Animation instance."""
-class Animation(TypedDict):
+class Animation(BaseModel):
+    """Animation instance."""
     id: "str"
-    """`Animation`'s id."""
     name: "str"
-    """`Animation`'s name."""
     pausedState: "bool"
-    """`Animation`'s internal paused state."""
     playState: "str"
-    """`Animation`'s play state."""
     playbackRate: "float"
-    """`Animation`'s playback rate."""
     startTime: "float"
-    """`Animation`'s start time.
-Milliseconds for time based animations and
-percentage [0 - 100] for scroll driven animations
-(i.e. when viewOrScrollTimeline exists)."""
     currentTime: "float"
-    """`Animation`'s current time."""
     type: "str"
-    """Animation type of `Animation`."""
-    source: "Optional[AnimationEffect]"
-    """`Animation`'s source animation node."""
-    cssId: "Optional[str]"
-    """A unique ID for `Animation` representing the sources that triggered this CSS
-animation/transition."""
-    viewOrScrollTimeline: "Optional[ViewOrScrollTimeline]"
-    """View or scroll timeline"""
+    source: "Optional[AnimationEffect]" = None
+    cssId: "Optional[str]" = None
+    viewOrScrollTimeline: "Optional[ViewOrScrollTimeline]" = None
 
 
 
-"""Timeline instance"""
-class ViewOrScrollTimeline(TypedDict):
-    sourceNodeId: "Optional[BackendNodeId]"
-    """Scroll container node"""
-    startOffset: "Optional[float]"
-    """Represents the starting scroll position of the timeline
-as a length offset in pixels from scroll origin."""
-    endOffset: "Optional[float]"
-    """Represents the ending scroll position of the timeline
-as a length offset in pixels from scroll origin."""
-    subjectNodeId: "Optional[BackendNodeId]"
-    """The element whose principal box's visibility in the
-scrollport defined the progress of the timeline.
-Does not exist for animations with ScrollTimeline"""
+class ViewOrScrollTimeline(BaseModel):
+    """Timeline instance"""
     axis: "ScrollOrientation"
-    """Orientation of the scroll"""
+    sourceNodeId: "Optional[BackendNodeId]" = None
+    startOffset: "Optional[float]" = None
+    endOffset: "Optional[float]" = None
+    subjectNodeId: "Optional[BackendNodeId]" = None
 
 
 
-"""AnimationEffect instance"""
-class AnimationEffect(TypedDict):
+class AnimationEffect(BaseModel):
+    """AnimationEffect instance"""
     delay: "float"
-    """`AnimationEffect`'s delay."""
     endDelay: "float"
-    """`AnimationEffect`'s end delay."""
     iterationStart: "float"
-    """`AnimationEffect`'s iteration start."""
     iterations: "float"
-    """`AnimationEffect`'s iterations."""
     duration: "float"
-    """`AnimationEffect`'s iteration duration.
-Milliseconds for time based animations and
-percentage [0 - 100] for scroll driven animations
-(i.e. when viewOrScrollTimeline exists)."""
     direction: "str"
-    """`AnimationEffect`'s playback direction."""
     fill: "str"
-    """`AnimationEffect`'s fill mode."""
-    backendNodeId: "Optional[BackendNodeId]"
-    """`AnimationEffect`'s target node."""
-    keyframesRule: "Optional[KeyframesRule]"
-    """`AnimationEffect`'s keyframes."""
     easing: "str"
-    """`AnimationEffect`'s timing function."""
+    backendNodeId: "Optional[BackendNodeId]" = None
+    keyframesRule: "Optional[KeyframesRule]" = None
 
 
 
-"""Keyframes Rule"""
-class KeyframesRule(TypedDict):
-    name: "Optional[str]"
-    """CSS keyframed animation's name."""
+class KeyframesRule(BaseModel):
+    """Keyframes Rule"""
     keyframes: "List[KeyframeStyle]"
-    """List of animation keyframes."""
+    name: "Optional[str]" = None
 
 
 
-"""Keyframe Style"""
-class KeyframeStyle(TypedDict):
+class KeyframeStyle(BaseModel):
+    """Keyframe Style"""
     offset: "str"
-    """Keyframe's time offset."""
     easing: "str"
-    """`AnimationEffect`'s timing function."""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import BackendNodeId
+        from ..dom.types import ScrollOrientation
+        # Rebuild models now that imports are available
+        Animation.model_rebuild()
+        ViewOrScrollTimeline.model_rebuild()
+        AnimationEffect.model_rebuild()
+        KeyframesRule.model_rebuild()
+        KeyframeStyle.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

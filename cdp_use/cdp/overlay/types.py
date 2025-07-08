@@ -5,8 +5,8 @@
 """CDP Overlay Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -15,107 +15,70 @@ if TYPE_CHECKING:
     from ..dom.types import RGBA
     from ..dom.types import Rect
 
-"""Configuration data for drawing the source order of an elements children."""
-class SourceOrderConfig(TypedDict):
+class SourceOrderConfig(BaseModel):
+    """Configuration data for drawing the source order of an elements children."""
     parentOutlineColor: "RGBA"
-    """the color to outline the given element in."""
     childOutlineColor: "RGBA"
-    """the color to outline the child elements in."""
 
 
 
-"""Configuration data for the highlighting of Grid elements."""
-class GridHighlightConfig(TypedDict, total=False):
-    showGridExtensionLines: "bool"
-    """Whether the extension lines from grid cells to the rulers should be shown (default: false)."""
-    showPositiveLineNumbers: "bool"
-    """Show Positive line number labels (default: false)."""
-    showNegativeLineNumbers: "bool"
-    """Show Negative line number labels (default: false)."""
-    showAreaNames: "bool"
-    """Show area name labels (default: false)."""
-    showLineNames: "bool"
-    """Show line name labels (default: false)."""
-    showTrackSizes: "bool"
-    """Show track size labels (default: false)."""
-    gridBorderColor: "RGBA"
-    """The grid container border highlight color (default: transparent)."""
-    cellBorderColor: "RGBA"
-    """The cell border color (default: transparent). Deprecated, please use rowLineColor and columnLineColor instead."""
-    rowLineColor: "RGBA"
-    """The row line color (default: transparent)."""
-    columnLineColor: "RGBA"
-    """The column line color (default: transparent)."""
-    gridBorderDash: "bool"
-    """Whether the grid border is dashed (default: false)."""
-    cellBorderDash: "bool"
-    """Whether the cell border is dashed (default: false). Deprecated, please us rowLineDash and columnLineDash instead."""
-    rowLineDash: "bool"
-    """Whether row lines are dashed (default: false)."""
-    columnLineDash: "bool"
-    """Whether column lines are dashed (default: false)."""
-    rowGapColor: "RGBA"
-    """The row gap highlight fill color (default: transparent)."""
-    rowHatchColor: "RGBA"
-    """The row gap hatching fill color (default: transparent)."""
-    columnGapColor: "RGBA"
-    """The column gap highlight fill color (default: transparent)."""
-    columnHatchColor: "RGBA"
-    """The column gap hatching fill color (default: transparent)."""
-    areaBorderColor: "RGBA"
-    """The named grid areas border color (Default: transparent)."""
-    gridBackgroundColor: "RGBA"
-    """The grid container background color (Default: transparent)."""
+class GridHighlightConfig(BaseModel):
+    """Configuration data for the highlighting of Grid elements."""
+    showGridExtensionLines: "Optional[bool]" = None
+    showPositiveLineNumbers: "Optional[bool]" = None
+    showNegativeLineNumbers: "Optional[bool]" = None
+    showAreaNames: "Optional[bool]" = None
+    showLineNames: "Optional[bool]" = None
+    showTrackSizes: "Optional[bool]" = None
+    gridBorderColor: "Optional[RGBA]" = None
+    cellBorderColor: "Optional[RGBA]" = None
+    rowLineColor: "Optional[RGBA]" = None
+    columnLineColor: "Optional[RGBA]" = None
+    gridBorderDash: "Optional[bool]" = None
+    cellBorderDash: "Optional[bool]" = None
+    rowLineDash: "Optional[bool]" = None
+    columnLineDash: "Optional[bool]" = None
+    rowGapColor: "Optional[RGBA]" = None
+    rowHatchColor: "Optional[RGBA]" = None
+    columnGapColor: "Optional[RGBA]" = None
+    columnHatchColor: "Optional[RGBA]" = None
+    areaBorderColor: "Optional[RGBA]" = None
+    gridBackgroundColor: "Optional[RGBA]" = None
 
 
 
-"""Configuration data for the highlighting of Flex container elements."""
-class FlexContainerHighlightConfig(TypedDict, total=False):
-    containerBorder: "LineStyle"
-    """The style of the container border"""
-    lineSeparator: "LineStyle"
-    """The style of the separator between lines"""
-    itemSeparator: "LineStyle"
-    """The style of the separator between items"""
-    mainDistributedSpace: "BoxStyle"
-    """Style of content-distribution space on the main axis (justify-content)."""
-    crossDistributedSpace: "BoxStyle"
-    """Style of content-distribution space on the cross axis (align-content)."""
-    rowGapSpace: "BoxStyle"
-    """Style of empty space caused by row gaps (gap/row-gap)."""
-    columnGapSpace: "BoxStyle"
-    """Style of empty space caused by columns gaps (gap/column-gap)."""
-    crossAlignment: "LineStyle"
-    """Style of the self-alignment line (align-items)."""
+class FlexContainerHighlightConfig(BaseModel):
+    """Configuration data for the highlighting of Flex container elements."""
+    containerBorder: "Optional[LineStyle]" = None
+    lineSeparator: "Optional[LineStyle]" = None
+    itemSeparator: "Optional[LineStyle]" = None
+    mainDistributedSpace: "Optional[BoxStyle]" = None
+    crossDistributedSpace: "Optional[BoxStyle]" = None
+    rowGapSpace: "Optional[BoxStyle]" = None
+    columnGapSpace: "Optional[BoxStyle]" = None
+    crossAlignment: "Optional[LineStyle]" = None
 
 
 
-"""Configuration data for the highlighting of Flex item elements."""
-class FlexItemHighlightConfig(TypedDict, total=False):
-    baseSizeBox: "BoxStyle"
-    """Style of the box representing the item's base size"""
-    baseSizeBorder: "LineStyle"
-    """Style of the border around the box representing the item's base size"""
-    flexibilityArrow: "LineStyle"
-    """Style of the arrow representing if the item grew or shrank"""
+class FlexItemHighlightConfig(BaseModel):
+    """Configuration data for the highlighting of Flex item elements."""
+    baseSizeBox: "Optional[BoxStyle]" = None
+    baseSizeBorder: "Optional[LineStyle]" = None
+    flexibilityArrow: "Optional[LineStyle]" = None
 
 
 
-"""Style information for drawing a line."""
-class LineStyle(TypedDict, total=False):
-    color: "RGBA"
-    """The color of the line (default: transparent)"""
-    pattern: "str"
-    """The line pattern (default: solid)"""
+class LineStyle(BaseModel):
+    """Style information for drawing a line."""
+    color: "Optional[RGBA]" = None
+    pattern: "Optional[str]" = None
 
 
 
-"""Style information for drawing a box."""
-class BoxStyle(TypedDict, total=False):
-    fillColor: "RGBA"
-    """The background color for the box (default: transparent)"""
-    hatchColor: "RGBA"
-    """The hatching color for the box (default: transparent)"""
+class BoxStyle(BaseModel):
+    """Style information for drawing a box."""
+    fillColor: "Optional[RGBA]" = None
+    hatchColor: "Optional[RGBA]" = None
 
 
 
@@ -126,46 +89,27 @@ class ContrastAlgorithm(Enum):
 
 
 
-"""Configuration data for the highlighting of page elements."""
-class HighlightConfig(TypedDict, total=False):
-    showInfo: "bool"
-    """Whether the node info tooltip should be shown (default: false)."""
-    showStyles: "bool"
-    """Whether the node styles in the tooltip (default: false)."""
-    showRulers: "bool"
-    """Whether the rulers should be shown (default: false)."""
-    showAccessibilityInfo: "bool"
-    """Whether the a11y info should be shown (default: true)."""
-    showExtensionLines: "bool"
-    """Whether the extension lines from node to the rulers should be shown (default: false)."""
-    contentColor: "RGBA"
-    """The content box highlight fill color (default: transparent)."""
-    paddingColor: "RGBA"
-    """The padding highlight fill color (default: transparent)."""
-    borderColor: "RGBA"
-    """The border highlight fill color (default: transparent)."""
-    marginColor: "RGBA"
-    """The margin highlight fill color (default: transparent)."""
-    eventTargetColor: "RGBA"
-    """The event target element highlight fill color (default: transparent)."""
-    shapeColor: "RGBA"
-    """The shape outside fill color (default: transparent)."""
-    shapeMarginColor: "RGBA"
-    """The shape margin fill color (default: transparent)."""
-    cssGridColor: "RGBA"
-    """The grid layout color (default: transparent)."""
-    colorFormat: "ColorFormat"
-    """The color format used to format color styles (default: hex)."""
-    gridHighlightConfig: "GridHighlightConfig"
-    """The grid layout highlight configuration (default: all transparent)."""
-    flexContainerHighlightConfig: "FlexContainerHighlightConfig"
-    """The flex container highlight configuration (default: all transparent)."""
-    flexItemHighlightConfig: "FlexItemHighlightConfig"
-    """The flex item highlight configuration (default: all transparent)."""
-    contrastAlgorithm: "ContrastAlgorithm"
-    """The contrast algorithm to use for the contrast ratio (default: aa)."""
-    containerQueryContainerHighlightConfig: "ContainerQueryContainerHighlightConfig"
-    """The container query container highlight configuration (default: all transparent)."""
+class HighlightConfig(BaseModel):
+    """Configuration data for the highlighting of page elements."""
+    showInfo: "Optional[bool]" = None
+    showStyles: "Optional[bool]" = None
+    showRulers: "Optional[bool]" = None
+    showAccessibilityInfo: "Optional[bool]" = None
+    showExtensionLines: "Optional[bool]" = None
+    contentColor: "Optional[RGBA]" = None
+    paddingColor: "Optional[RGBA]" = None
+    borderColor: "Optional[RGBA]" = None
+    marginColor: "Optional[RGBA]" = None
+    eventTargetColor: "Optional[RGBA]" = None
+    shapeColor: "Optional[RGBA]" = None
+    shapeMarginColor: "Optional[RGBA]" = None
+    cssGridColor: "Optional[RGBA]" = None
+    colorFormat: "Optional[ColorFormat]" = None
+    gridHighlightConfig: "Optional[GridHighlightConfig]" = None
+    flexContainerHighlightConfig: "Optional[FlexContainerHighlightConfig]" = None
+    flexItemHighlightConfig: "Optional[FlexItemHighlightConfig]" = None
+    contrastAlgorithm: "Optional[ContrastAlgorithm]" = None
+    containerQueryContainerHighlightConfig: "Optional[ContainerQueryContainerHighlightConfig]" = None
 
 
 
@@ -177,96 +121,71 @@ class ColorFormat(Enum):
 
 
 
-"""Configurations for Persistent Grid Highlight"""
-class GridNodeHighlightConfig(TypedDict):
+class GridNodeHighlightConfig(BaseModel):
+    """Configurations for Persistent Grid Highlight"""
     gridHighlightConfig: "GridHighlightConfig"
-    """A descriptor for the highlight appearance."""
     nodeId: "NodeId"
-    """Identifier of the node to highlight."""
 
 
 
-class FlexNodeHighlightConfig(TypedDict):
+class FlexNodeHighlightConfig(BaseModel):
     flexContainerHighlightConfig: "FlexContainerHighlightConfig"
-    """A descriptor for the highlight appearance of flex containers."""
     nodeId: "NodeId"
-    """Identifier of the node to highlight."""
 
 
 
-class ScrollSnapContainerHighlightConfig(TypedDict, total=False):
-    snapportBorder: "LineStyle"
-    """The style of the snapport border (default: transparent)"""
-    snapAreaBorder: "LineStyle"
-    """The style of the snap area border (default: transparent)"""
-    scrollMarginColor: "RGBA"
-    """The margin highlight fill color (default: transparent)."""
-    scrollPaddingColor: "RGBA"
-    """The padding highlight fill color (default: transparent)."""
+class ScrollSnapContainerHighlightConfig(BaseModel):
+    snapportBorder: "Optional[LineStyle]" = None
+    snapAreaBorder: "Optional[LineStyle]" = None
+    scrollMarginColor: "Optional[RGBA]" = None
+    scrollPaddingColor: "Optional[RGBA]" = None
 
 
 
-class ScrollSnapHighlightConfig(TypedDict):
+class ScrollSnapHighlightConfig(BaseModel):
     scrollSnapContainerHighlightConfig: "ScrollSnapContainerHighlightConfig"
-    """A descriptor for the highlight appearance of scroll snap containers."""
     nodeId: "NodeId"
-    """Identifier of the node to highlight."""
 
 
 
-"""Configuration for dual screen hinge"""
-class HingeConfig(TypedDict):
+class HingeConfig(BaseModel):
+    """Configuration for dual screen hinge"""
     rect: "Rect"
-    """A rectangle represent hinge"""
-    contentColor: "Optional[RGBA]"
-    """The content box highlight fill color (default: a dark color)."""
-    outlineColor: "Optional[RGBA]"
-    """The content box highlight outline color (default: transparent)."""
+    contentColor: "Optional[RGBA]" = None
+    outlineColor: "Optional[RGBA]" = None
 
 
 
-"""Configuration for Window Controls Overlay"""
-class WindowControlsOverlayConfig(TypedDict):
+class WindowControlsOverlayConfig(BaseModel):
+    """Configuration for Window Controls Overlay"""
     showCSS: "bool"
-    """Whether the title bar CSS should be shown when emulating the Window Controls Overlay."""
     selectedPlatform: "str"
-    """Selected platforms to show the overlay."""
     themeColor: "str"
-    """The theme color defined in app manifest."""
 
 
 
-class ContainerQueryHighlightConfig(TypedDict):
+class ContainerQueryHighlightConfig(BaseModel):
     containerQueryContainerHighlightConfig: "ContainerQueryContainerHighlightConfig"
-    """A descriptor for the highlight appearance of container query containers."""
     nodeId: "NodeId"
-    """Identifier of the container node to highlight."""
 
 
 
-class ContainerQueryContainerHighlightConfig(TypedDict, total=False):
-    containerBorder: "LineStyle"
-    """The style of the container border."""
-    descendantBorder: "LineStyle"
-    """The style of the descendants' borders."""
+class ContainerQueryContainerHighlightConfig(BaseModel):
+    containerBorder: "Optional[LineStyle]" = None
+    descendantBorder: "Optional[LineStyle]" = None
 
 
 
-class IsolatedElementHighlightConfig(TypedDict):
+class IsolatedElementHighlightConfig(BaseModel):
     isolationModeHighlightConfig: "IsolationModeHighlightConfig"
-    """A descriptor for the highlight appearance of an element in isolation mode."""
     nodeId: "NodeId"
-    """Identifier of the isolated element to highlight."""
 
 
 
-class IsolationModeHighlightConfig(TypedDict, total=False):
-    resizerColor: "RGBA"
-    """The fill color of the resizers (default: transparent)."""
-    resizerHandleColor: "RGBA"
-    """The fill color for resizer handles (default: transparent)."""
-    maskColor: "RGBA"
-    """The fill color for the mask covering non-isolated elements (default: transparent)."""
+class IsolationModeHighlightConfig(BaseModel):
+    resizerColor: "Optional[RGBA]" = None
+    resizerHandleColor: "Optional[RGBA]" = None
+    maskColor: "Optional[RGBA]" = None
 
 
 
@@ -275,3 +194,34 @@ class InspectMode(Enum):
     SEARCHFORUASHADOWDOM = "searchForUAShadowDOM"
     CAPTUREAREASCREENSHOT = "captureAreaScreenshot"
     NONE = "none"
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import NodeId
+        from ..dom.types import RGBA
+        from ..dom.types import Rect
+        # Rebuild models now that imports are available
+        SourceOrderConfig.model_rebuild()
+        GridHighlightConfig.model_rebuild()
+        FlexContainerHighlightConfig.model_rebuild()
+        FlexItemHighlightConfig.model_rebuild()
+        LineStyle.model_rebuild()
+        BoxStyle.model_rebuild()
+        HighlightConfig.model_rebuild()
+        GridNodeHighlightConfig.model_rebuild()
+        FlexNodeHighlightConfig.model_rebuild()
+        ScrollSnapContainerHighlightConfig.model_rebuild()
+        ScrollSnapHighlightConfig.model_rebuild()
+        HingeConfig.model_rebuild()
+        WindowControlsOverlayConfig.model_rebuild()
+        ContainerQueryHighlightConfig.model_rebuild()
+        ContainerQueryContainerHighlightConfig.model_rebuild()
+        IsolatedElementHighlightConfig.model_rebuild()
+        IsolationModeHighlightConfig.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

@@ -4,6 +4,7 @@
 
 """CDP DOMDebugger Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -27,9 +28,8 @@ entire subtree or provide an integer larger than 0."""
 (default is false). Reports listeners for all contexts if pierce is enabled."""
 
 
-class GetEventListenersReturns(TypedDict):
+class GetEventListenersReturns(BaseModel):
     listeners: "List[EventListener]"
-    """Array of relevant listeners."""
 
 
 
@@ -111,3 +111,19 @@ class SetXHRBreakpointParameters(TypedDict):
     """Resource URL substring. All XHRs having this substring in the URL will get stopped upon."""
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import NodeId
+        from ..runtime.types import RemoteObjectId
+        from .types import CSPViolationType
+        from .types import DOMBreakpointType
+        from .types import EventListener
+        # Rebuild models now that imports are available
+        GetEventListenersReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

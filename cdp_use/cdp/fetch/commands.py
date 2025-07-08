@@ -4,6 +4,7 @@
 
 """CDP Fetch Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -119,11 +120,9 @@ class GetResponseBodyParameters(TypedDict):
     """Identifier for the intercepted request to get body for."""
 
 
-class GetResponseBodyReturns(TypedDict):
+class GetResponseBodyReturns(BaseModel):
     body: "str"
-    """Response body."""
     base64Encoded: "bool"
-    """True, if content was sent as base64."""
 
 
 
@@ -131,5 +130,23 @@ class TakeResponseBodyAsStreamParameters(TypedDict):
     requestId: "RequestId"
 
 
-class TakeResponseBodyAsStreamReturns(TypedDict):
+class TakeResponseBodyAsStreamReturns(BaseModel):
     stream: "StreamHandle"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..io.types import StreamHandle
+        from ..network.types import ErrorReason
+        from .types import AuthChallengeResponse
+        from .types import HeaderEntry
+        from .types import RequestId
+        from .types import RequestPattern
+        # Rebuild models now that imports are available
+        GetResponseBodyReturns.model_rebuild()
+        TakeResponseBodyAsStreamReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

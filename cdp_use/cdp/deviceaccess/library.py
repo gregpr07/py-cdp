@@ -4,7 +4,7 @@
 
 """CDP DeviceAccess Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -25,11 +25,12 @@ class DeviceAccessClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enable events in this domain."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DeviceAccess.enable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def disable(
         self,
@@ -37,11 +38,12 @@ class DeviceAccessClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disable events in this domain."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DeviceAccess.disable",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def selectPrompt(
         self,
@@ -49,11 +51,12 @@ class DeviceAccessClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Select a device in response to a DeviceAccess.deviceRequestPrompted event."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DeviceAccess.selectPrompt",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def cancelPrompt(
         self,
@@ -61,10 +64,11 @@ class DeviceAccessClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Cancel a prompt in response to a DeviceAccess.deviceRequestPrompted event."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="DeviceAccess.cancelPrompt",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

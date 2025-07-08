@@ -4,8 +4,8 @@
 
 """CDP ServiceWorker Domain Events"""
 
+from pydantic import BaseModel
 from typing import List
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -14,15 +14,31 @@ if TYPE_CHECKING:
     from .types import ServiceWorkerRegistration
     from .types import ServiceWorkerVersion
 
-class WorkerErrorReportedEvent(TypedDict):
+class WorkerErrorReportedEvent(BaseModel):
     errorMessage: "ServiceWorkerErrorMessage"
 
 
 
-class WorkerRegistrationUpdatedEvent(TypedDict):
+class WorkerRegistrationUpdatedEvent(BaseModel):
     registrations: "List[ServiceWorkerRegistration]"
 
 
 
-class WorkerVersionUpdatedEvent(TypedDict):
+class WorkerVersionUpdatedEvent(BaseModel):
     versions: "List[ServiceWorkerVersion]"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import ServiceWorkerErrorMessage
+        from .types import ServiceWorkerRegistration
+        from .types import ServiceWorkerVersion
+        # Rebuild models now that imports are available
+        WorkerErrorReportedEvent.model_rebuild()
+        WorkerRegistrationUpdatedEvent.model_rebuild()
+        WorkerVersionUpdatedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

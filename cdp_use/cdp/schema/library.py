@@ -4,7 +4,7 @@
 
 """CDP Schema Domain Library"""
 
-from typing import Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -24,10 +24,12 @@ class SchemaClient:
         session_id: Optional[str] = None,
     ) -> "GetDomainsReturns":
         """Returns supported domains."""
-        return cast("GetDomainsReturns", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Schema.getDomains",
             params=params,
             session_id=session_id,
-        ))
+        )
+        from .commands import GetDomainsReturns as _GetDomainsReturns
+        return _GetDomainsReturns.model_validate(raw_result)
 
 

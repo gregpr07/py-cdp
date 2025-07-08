@@ -4,6 +4,7 @@
 
 """CDP Animation Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List
 from typing_extensions import TypedDict
 
@@ -17,15 +18,13 @@ class GetCurrentTimeParameters(TypedDict):
     """Id of animation."""
 
 
-class GetCurrentTimeReturns(TypedDict):
+class GetCurrentTimeReturns(BaseModel):
     currentTime: "float"
-    """Current time of the page."""
 
 
 
-class GetPlaybackRateReturns(TypedDict):
+class GetPlaybackRateReturns(BaseModel):
     playbackRate: "float"
-    """Playback rate for animations on page."""
 
 
 
@@ -42,9 +41,8 @@ class ResolveAnimationParameters(TypedDict):
     """Animation id."""
 
 
-class ResolveAnimationReturns(TypedDict):
+class ResolveAnimationReturns(BaseModel):
     remoteObject: "RemoteObject"
-    """Corresponding remote object."""
 
 
 
@@ -85,3 +83,17 @@ class SetTimingParameters(TypedDict):
     """Delay of the animation."""
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..runtime.types import RemoteObject
+        # Rebuild models now that imports are available
+        GetCurrentTimeReturns.model_rebuild()
+        GetPlaybackRateReturns.model_rebuild()
+        ResolveAnimationReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

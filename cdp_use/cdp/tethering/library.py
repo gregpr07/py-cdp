@@ -4,7 +4,7 @@
 
 """CDP Tethering Domain Library"""
 
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Optional
 
 from typing import TYPE_CHECKING
 
@@ -25,11 +25,12 @@ class TetheringClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Request browser port binding."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Tethering.bind",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
     async def unbind(
         self,
@@ -37,10 +38,11 @@ class TetheringClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Request browser port unbinding."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
+        raw_result: Dict[str, Any] = await self._client.send_raw(
             method="Tethering.unbind",
             params=params,
             session_id=session_id,
-        ))
+        )
+        return raw_result
 
 

@@ -4,27 +4,27 @@
 
 """CDP DOMStorage Domain Events"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .types import StorageId
 
-class DomStorageItemAddedEvent(TypedDict):
+class DomStorageItemAddedEvent(BaseModel):
     storageId: "StorageId"
     key: "str"
     newValue: "str"
 
 
 
-class DomStorageItemRemovedEvent(TypedDict):
+class DomStorageItemRemovedEvent(BaseModel):
     storageId: "StorageId"
     key: "str"
 
 
 
-class DomStorageItemUpdatedEvent(TypedDict):
+class DomStorageItemUpdatedEvent(BaseModel):
     storageId: "StorageId"
     key: "str"
     oldValue: "str"
@@ -32,5 +32,20 @@ class DomStorageItemUpdatedEvent(TypedDict):
 
 
 
-class DomStorageItemsClearedEvent(TypedDict):
+class DomStorageItemsClearedEvent(BaseModel):
     storageId: "StorageId"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import StorageId
+        # Rebuild models now that imports are available
+        DomStorageItemAddedEvent.model_rebuild()
+        DomStorageItemRemovedEvent.model_rebuild()
+        DomStorageItemUpdatedEvent.model_rebuild()
+        DomStorageItemsClearedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

@@ -5,8 +5,8 @@
 """CDP DOM Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import Any, List, Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -24,18 +24,16 @@ BackendNodeId = int
 
 
 
-"""Backend node with a friendly name."""
-class BackendNode(TypedDict):
+class BackendNode(BaseModel):
+    """Backend node with a friendly name."""
     nodeType: "int"
-    """`Node`'s nodeType."""
     nodeName: "str"
-    """`Node`'s nodeName."""
     backendNodeId: "BackendNodeId"
 
 
 
-"""Pseudo element type."""
 class PseudoType(Enum):
+    """Pseudo element type."""
     FIRST_LINE = "first-line"
     FIRST_LETTER = "first-letter"
     CHECKMARK = "checkmark"
@@ -77,134 +75,96 @@ class PseudoType(Enum):
 
 
 
-"""Shadow root type."""
 class ShadowRootType(Enum):
+    """Shadow root type."""
     USER_AGENT = "user-agent"
     OPEN = "open"
     CLOSED = "closed"
 
 
 
-"""Document compatibility mode."""
 class CompatibilityMode(Enum):
+    """Document compatibility mode."""
     QUIRKSMODE = "QuirksMode"
     LIMITEDQUIRKSMODE = "LimitedQuirksMode"
     NOQUIRKSMODE = "NoQuirksMode"
 
 
 
-"""ContainerSelector physical axes"""
 class PhysicalAxes(Enum):
+    """ContainerSelector physical axes"""
     HORIZONTAL = "Horizontal"
     VERTICAL = "Vertical"
     BOTH = "Both"
 
 
 
-"""ContainerSelector logical axes"""
 class LogicalAxes(Enum):
+    """ContainerSelector logical axes"""
     INLINE = "Inline"
     BLOCK = "Block"
     BOTH = "Both"
 
 
 
-"""Physical scroll orientation"""
 class ScrollOrientation(Enum):
+    """Physical scroll orientation"""
     HORIZONTAL = "horizontal"
     VERTICAL = "vertical"
 
 
 
-"""DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes.
+class Node(BaseModel):
+    """DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes.
 DOMNode is a base node mirror type."""
-class Node(TypedDict):
     nodeId: "NodeId"
-    """Node identifier that is passed into the rest of the DOM messages as the `nodeId`. Backend
-will only push node with given `id` once. It is aware of all requested nodes and will only
-fire DOM events for nodes known to the client."""
-    parentId: "Optional[NodeId]"
-    """The id of the parent node if any."""
     backendNodeId: "BackendNodeId"
-    """The BackendNodeId for this node."""
     nodeType: "int"
-    """`Node`'s nodeType."""
     nodeName: "str"
-    """`Node`'s nodeName."""
     localName: "str"
-    """`Node`'s localName."""
     nodeValue: "str"
-    """`Node`'s nodeValue."""
-    childNodeCount: "Optional[int]"
-    """Child count for `Container` nodes."""
-    children: "Optional[List[Node]]"
-    """Child nodes of this node when requested with children."""
-    attributes: "Optional[List[str]]"
-    """Attributes of the `Element` node in the form of flat array `[name1, value1, name2, value2]`."""
-    documentURL: "Optional[str]"
-    """Document URL that `Document` or `FrameOwner` node points to."""
-    baseURL: "Optional[str]"
-    """Base URL that `Document` or `FrameOwner` node uses for URL completion."""
-    publicId: "Optional[str]"
-    """`DocumentType`'s publicId."""
-    systemId: "Optional[str]"
-    """`DocumentType`'s systemId."""
-    internalSubset: "Optional[str]"
-    """`DocumentType`'s internalSubset."""
-    xmlVersion: "Optional[str]"
-    """`Document`'s XML version in case of XML documents."""
-    name: "Optional[str]"
-    """`Attr`'s name."""
-    value: "Optional[str]"
-    """`Attr`'s value."""
-    pseudoType: "Optional[PseudoType]"
-    """Pseudo element type for this node."""
-    pseudoIdentifier: "Optional[str]"
-    """Pseudo element identifier for this node. Only present if there is a
-valid pseudoType."""
-    shadowRootType: "Optional[ShadowRootType]"
-    """Shadow root type."""
-    frameId: "Optional[FrameId]"
-    """Frame ID for frame owner elements."""
-    contentDocument: "Optional[Node]"
-    """Content document for frame owner elements."""
-    shadowRoots: "Optional[List[Node]]"
-    """Shadow root list for given element host."""
-    templateContent: "Optional[Node]"
-    """Content document fragment for template elements."""
-    pseudoElements: "Optional[List[Node]]"
-    """Pseudo elements associated with this node."""
-    importedDocument: "Optional[Node]"
-    """Deprecated, as the HTML Imports API has been removed (crbug.com/937746).
-This property used to return the imported document for the HTMLImport links.
-The property is always undefined now."""
-    distributedNodes: "Optional[List[BackendNode]]"
-    """Distributed nodes for given insertion point."""
-    isSVG: "Optional[bool]"
-    """Whether the node is SVG."""
-    compatibilityMode: "Optional[CompatibilityMode]"
-    assignedSlot: "Optional[BackendNode]"
-    isScrollable: "Optional[bool]"
+    parentId: "Optional[NodeId]" = None
+    childNodeCount: "Optional[int]" = None
+    children: "Optional[List[Node]]" = None
+    attributes: "Optional[List[str]]" = None
+    documentURL: "Optional[str]" = None
+    baseURL: "Optional[str]" = None
+    publicId: "Optional[str]" = None
+    systemId: "Optional[str]" = None
+    internalSubset: "Optional[str]" = None
+    xmlVersion: "Optional[str]" = None
+    name: "Optional[str]" = None
+    value: "Optional[str]" = None
+    pseudoType: "Optional[PseudoType]" = None
+    pseudoIdentifier: "Optional[str]" = None
+    shadowRootType: "Optional[ShadowRootType]" = None
+    frameId: "Optional[FrameId]" = None
+    contentDocument: "Optional[Node]" = None
+    shadowRoots: "Optional[List[Node]]" = None
+    templateContent: "Optional[Node]" = None
+    pseudoElements: "Optional[List[Node]]" = None
+    importedDocument: "Optional[Node]" = None
+    distributedNodes: "Optional[List[BackendNode]]" = None
+    isSVG: "Optional[bool]" = None
+    compatibilityMode: "Optional[CompatibilityMode]" = None
+    assignedSlot: "Optional[BackendNode]" = None
+    isScrollable: "Optional[bool]" = None
 
 
 
-"""A structure to hold the top-level node of a detached tree and an array of its retained descendants."""
-class DetachedElementInfo(TypedDict):
+class DetachedElementInfo(BaseModel):
+    """A structure to hold the top-level node of a detached tree and an array of its retained descendants."""
     treeNode: "Node"
     retainedNodeIds: "List[NodeId]"
 
 
 
-"""A structure holding an RGBA color."""
-class RGBA(TypedDict):
+class RGBA(BaseModel):
+    """A structure holding an RGBA color."""
     r: "int"
-    """The red component, in the [0-255] range."""
     g: "int"
-    """The green component, in the [0-255] range."""
     b: "int"
-    """The blue component, in the [0-255] range."""
-    a: "Optional[float]"
-    """The alpha component, in the [0-1] range (default: 1)."""
+    a: "Optional[float]" = None
 
 
 
@@ -213,51 +173,55 @@ Quad = List[float]
 
 
 
-"""Box model."""
-class BoxModel(TypedDict):
+class BoxModel(BaseModel):
+    """Box model."""
     content: "Quad"
-    """Content box"""
     padding: "Quad"
-    """Padding box"""
     border: "Quad"
-    """Border box"""
     margin: "Quad"
-    """Margin box"""
     width: "int"
-    """Node width"""
     height: "int"
-    """Node height"""
-    shapeOutside: "Optional[ShapeOutsideInfo]"
-    """Shape outside coordinates"""
+    shapeOutside: "Optional[ShapeOutsideInfo]" = None
 
 
 
-"""CSS Shape Outside details."""
-class ShapeOutsideInfo(TypedDict):
+class ShapeOutsideInfo(BaseModel):
+    """CSS Shape Outside details."""
     bounds: "Quad"
-    """Shape bounds"""
     shape: "List[Any]"
-    """Shape coordinate details"""
     marginShape: "List[Any]"
-    """Margin shape bounds"""
 
 
 
-"""Rectangle."""
-class Rect(TypedDict):
+class Rect(BaseModel):
+    """Rectangle."""
     x: "float"
-    """X coordinate"""
     y: "float"
-    """Y coordinate"""
     width: "float"
-    """Rectangle width"""
     height: "float"
-    """Rectangle height"""
 
 
 
-class CSSComputedStyleProperty(TypedDict):
+class CSSComputedStyleProperty(BaseModel):
     name: "str"
-    """Computed style property name."""
     value: "str"
-    """Computed style property value."""
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..page.types import FrameId
+        # Rebuild models now that imports are available
+        BackendNode.model_rebuild()
+        Node.model_rebuild()
+        DetachedElementInfo.model_rebuild()
+        RGBA.model_rebuild()
+        BoxModel.model_rebuild()
+        ShapeOutsideInfo.model_rebuild()
+        Rect.model_rebuild()
+        CSSComputedStyleProperty.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

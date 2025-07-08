@@ -4,7 +4,7 @@
 
 """CDP BackgroundService Domain Events"""
 
-from typing_extensions import TypedDict
+from pydantic import BaseModel
 
 from typing import TYPE_CHECKING
 
@@ -12,14 +12,28 @@ if TYPE_CHECKING:
     from .types import BackgroundServiceEvent
     from .types import ServiceName
 
-"""Called when the recording state for the service has been updated."""
-class RecordingStateChangedEvent(TypedDict):
+class RecordingStateChangedEvent(BaseModel):
+    """Called when the recording state for the service has been updated."""
     isRecording: "bool"
     service: "ServiceName"
 
 
 
-"""Called with all existing backgroundServiceEvents when enabled, and all new
+class BackgroundServiceEventReceivedEvent(BaseModel):
+    """Called with all existing backgroundServiceEvents when enabled, and all new
 events afterwards if enabled and recording."""
-class BackgroundServiceEventReceivedEvent(TypedDict):
     backgroundServiceEvent: "BackgroundServiceEvent"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import BackgroundServiceEvent
+        from .types import ServiceName
+        # Rebuild models now that imports are available
+        RecordingStateChangedEvent.model_rebuild()
+        BackgroundServiceEventReceivedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

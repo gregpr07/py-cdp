@@ -5,8 +5,8 @@
 """CDP DOMDebugger Domain Types"""
 
 from enum import Enum
+from pydantic import BaseModel
 from typing import Optional
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -15,40 +15,45 @@ if TYPE_CHECKING:
     from ..runtime.types import RemoteObject
     from ..runtime.types import ScriptId
 
-"""DOM breakpoint type."""
 class DOMBreakpointType(Enum):
+    """DOM breakpoint type."""
     SUBTREE_MODIFIED = "subtree-modified"
     ATTRIBUTE_MODIFIED = "attribute-modified"
     NODE_REMOVED = "node-removed"
 
 
 
-"""CSP Violation type."""
 class CSPViolationType(Enum):
+    """CSP Violation type."""
     TRUSTEDTYPE_SINK_VIOLATION = "trustedtype-sink-violation"
     TRUSTEDTYPE_POLICY_VIOLATION = "trustedtype-policy-violation"
 
 
 
-"""Object event listener."""
-class EventListener(TypedDict):
+class EventListener(BaseModel):
+    """Object event listener."""
     type: "str"
-    """`EventListener`'s type."""
     useCapture: "bool"
-    """`EventListener`'s useCapture."""
     passive: "bool"
-    """`EventListener`'s passive flag."""
     once: "bool"
-    """`EventListener`'s once flag."""
     scriptId: "ScriptId"
-    """Script id of the handler code."""
     lineNumber: "int"
-    """Line number in the script (0-based)."""
     columnNumber: "int"
-    """Column number in the script (0-based)."""
-    handler: "Optional[RemoteObject]"
-    """Event handler function value."""
-    originalHandler: "Optional[RemoteObject]"
-    """Event original handler function value."""
-    backendNodeId: "Optional[BackendNodeId]"
-    """Node the listener is added to (if any)."""
+    handler: "Optional[RemoteObject]" = None
+    originalHandler: "Optional[RemoteObject]" = None
+    backendNodeId: "Optional[BackendNodeId]" = None
+
+
+# Rebuild Pydantic models to resolve forward references
+# Import dependencies for model rebuilding
+def _rebuild_models_when_ready():
+    try:
+        from ..dom.types import BackendNodeId
+        from ..runtime.types import RemoteObject
+        from ..runtime.types import ScriptId
+        # Rebuild models now that imports are available
+        EventListener.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

@@ -4,6 +4,7 @@
 
 """CDP Browser Domain Commands"""
 
+from pydantic import BaseModel
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -81,23 +82,17 @@ class CancelDownloadParameters(TypedDict):
 
 
 
-class GetVersionReturns(TypedDict):
+class GetVersionReturns(BaseModel):
     protocolVersion: "str"
-    """Protocol version."""
     product: "str"
-    """Product name."""
     revision: "str"
-    """Product revision."""
     userAgent: "str"
-    """User-Agent."""
     jsVersion: "str"
-    """V8 version."""
 
 
 
-class GetBrowserCommandLineReturns(TypedDict):
+class GetBrowserCommandLineReturns(BaseModel):
     arguments: "List[str]"
-    """Commandline parameters"""
 
 
 
@@ -110,9 +105,8 @@ all histograms."""
     """If true, retrieve delta since last delta call."""
 
 
-class GetHistogramsReturns(TypedDict):
+class GetHistogramsReturns(BaseModel):
     histograms: "List[Histogram]"
-    """Histograms."""
 
 
 
@@ -123,9 +117,8 @@ class GetHistogramParameters(TypedDict):
     """If true, retrieve delta since last delta call."""
 
 
-class GetHistogramReturns(TypedDict):
+class GetHistogramReturns(BaseModel):
     histogram: "Histogram"
-    """Histogram."""
 
 
 
@@ -134,10 +127,8 @@ class GetWindowBoundsParameters(TypedDict):
     """Browser window id."""
 
 
-class GetWindowBoundsReturns(TypedDict):
+class GetWindowBoundsReturns(BaseModel):
     bounds: "Bounds"
-    """Bounds information of the window. When window state is 'minimized', the restored window
-position and size are returned."""
 
 
 
@@ -146,12 +137,9 @@ class GetWindowForTargetParameters(TypedDict, total=False):
     """Devtools agent host id. If called as a part of the session, associated targetId is used."""
 
 
-class GetWindowForTargetReturns(TypedDict):
+class GetWindowForTargetReturns(BaseModel):
     windowId: "WindowID"
-    """Browser window id."""
     bounds: "Bounds"
-    """Bounds information of the window. When window state is 'minimized', the restored window
-position and size are returned."""
 
 
 
@@ -198,3 +186,29 @@ class AddPrivacySandboxCoordinatorKeyConfigParameters(TypedDict):
 context is used."""
 
 
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from ..target.types import TargetID
+        from .types import Bounds
+        from .types import BrowserCommandId
+        from .types import BrowserContextID
+        from .types import Histogram
+        from .types import PermissionDescriptor
+        from .types import PermissionSetting
+        from .types import PermissionType
+        from .types import PrivacySandboxAPI
+        from .types import WindowID
+        # Rebuild models now that imports are available
+        GetVersionReturns.model_rebuild()
+        GetBrowserCommandLineReturns.model_rebuild()
+        GetHistogramsReturns.model_rebuild()
+        GetHistogramReturns.model_rebuild()
+        GetWindowBoundsReturns.model_rebuild()
+        GetWindowForTargetReturns.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()

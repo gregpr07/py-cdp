@@ -4,8 +4,8 @@
 
 """CDP DeviceAccess Domain Events"""
 
+from pydantic import BaseModel
 from typing import List
-from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
@@ -13,8 +13,21 @@ if TYPE_CHECKING:
     from .types import PromptDevice
     from .types import RequestId
 
-"""A device request opened a user prompt to select a device. Respond with the
+class DeviceRequestPromptedEvent(BaseModel):
+    """A device request opened a user prompt to select a device. Respond with the
 selectPrompt or cancelPrompt command."""
-class DeviceRequestPromptedEvent(TypedDict):
     id: "RequestId"
     devices: "List[PromptDevice]"
+
+
+# Rebuild Pydantic models to resolve forward references
+def _rebuild_models_when_ready():
+    try:
+        from .types import PromptDevice
+        from .types import RequestId
+        # Rebuild models now that imports are available
+        DeviceRequestPromptedEvent.model_rebuild()
+    except ImportError:
+        pass  # Will be rebuilt later
+
+_rebuild_models_when_ready()
