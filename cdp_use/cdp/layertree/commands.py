@@ -5,8 +5,8 @@
 """CDP LayerTree Domain Commands"""
 
 from pydantic import BaseModel
-from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, Dict, List
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -19,7 +19,6 @@ if TYPE_CHECKING:
 
 class CompositingReasonsParameters(TypedDict):
     layerId: "LayerId"
-    """The id of the layer for which we want to get the reasons it was composited."""
 
 
 class CompositingReasonsReturns(BaseModel):
@@ -30,7 +29,6 @@ class CompositingReasonsReturns(BaseModel):
 
 class LoadSnapshotParameters(TypedDict):
     tiles: "List[PictureTile]"
-    """An array of tiles composing the snapshot."""
 
 
 class LoadSnapshotReturns(BaseModel):
@@ -40,7 +38,6 @@ class LoadSnapshotReturns(BaseModel):
 
 class MakeSnapshotParameters(TypedDict):
     layerId: "LayerId"
-    """The id of the layer."""
 
 
 class MakeSnapshotReturns(BaseModel):
@@ -50,13 +47,9 @@ class MakeSnapshotReturns(BaseModel):
 
 class ProfileSnapshotParameters(TypedDict):
     snapshotId: "SnapshotId"
-    """The id of the layer snapshot."""
-    minRepeatCount: "Optional[int]"
-    """The maximum number of times to replay the snapshot (1, if not specified)."""
-    minDuration: "Optional[float]"
-    """The minimum duration (in seconds) to replay the snapshot."""
-    clipRect: "Optional[Rect]"
-    """The clip rectangle to apply when replaying the snapshot."""
+    minRepeatCount: "NotRequired[int]"
+    minDuration: "NotRequired[float]"
+    clipRect: "NotRequired[Rect]"
 
 
 class ProfileSnapshotReturns(BaseModel):
@@ -66,7 +59,6 @@ class ProfileSnapshotReturns(BaseModel):
 
 class ReleaseSnapshotParameters(TypedDict):
     snapshotId: "SnapshotId"
-    """The id of the layer snapshot."""
 
 
 
@@ -74,13 +66,9 @@ class ReleaseSnapshotParameters(TypedDict):
 
 class ReplaySnapshotParameters(TypedDict):
     snapshotId: "SnapshotId"
-    """The id of the layer snapshot."""
-    fromStep: "Optional[int]"
-    """The first step to replay from (replay from the very start if not specified)."""
-    toStep: "Optional[int]"
-    """The last step to replay to (replay till the end if not specified)."""
-    scale: "Optional[float]"
-    """The scale to apply while replaying (defaults to 1)."""
+    fromStep: "NotRequired[int]"
+    toStep: "NotRequired[int]"
+    scale: "NotRequired[float]"
 
 
 class ReplaySnapshotReturns(BaseModel):
@@ -90,7 +78,6 @@ class ReplaySnapshotReturns(BaseModel):
 
 class SnapshotCommandLogParameters(TypedDict):
     snapshotId: "SnapshotId"
-    """The id of the layer snapshot."""
 
 
 class SnapshotCommandLogReturns(BaseModel):

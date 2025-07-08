@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -39,8 +39,8 @@ class AdFrameExplanation(Enum):
 
 class AdFrameStatus(BaseModel):
     """Indicates whether a frame has been identified as an ad and why."""
-    adFrameType: "AdFrameType"
-    explanations: "Optional[List[AdFrameExplanation]]" = None
+    adFrameType: "Union[AdFrameType, str]"
+    explanations: "Optional[List[Union[AdFrameExplanation, str]]]" = None
 
 
 
@@ -209,12 +209,12 @@ class PermissionsPolicyBlockReason(Enum):
 
 class PermissionsPolicyBlockLocator(BaseModel):
     frameId: "FrameId"
-    blockReason: "PermissionsPolicyBlockReason"
+    blockReason: "Union[PermissionsPolicyBlockReason, str]"
 
 
 
 class PermissionsPolicyFeatureState(BaseModel):
-    feature: "PermissionsPolicyFeature"
+    feature: "Union[PermissionsPolicyFeature, str]"
     allowed: "bool"
     locator: "Optional[PermissionsPolicyBlockLocator]" = None
 
@@ -259,20 +259,20 @@ class OriginTrialToken(BaseModel):
     trialName: "str"
     expiryTime: "TimeSinceEpoch"
     isThirdParty: "bool"
-    usageRestriction: "OriginTrialUsageRestriction"
+    usageRestriction: "Union[OriginTrialUsageRestriction, str]"
 
 
 
 class OriginTrialTokenWithStatus(BaseModel):
     rawTokenText: "str"
-    status: "OriginTrialTokenStatus"
+    status: "Union[OriginTrialTokenStatus, str]"
     parsedToken: "Optional[OriginTrialToken]" = None
 
 
 
 class OriginTrial(BaseModel):
     trialName: "str"
-    status: "OriginTrialStatus"
+    status: "Union[OriginTrialStatus, str]"
     tokensWithStatus: "List[OriginTrialTokenWithStatus]"
 
 
@@ -291,9 +291,9 @@ class Frame(BaseModel):
     domainAndRegistry: "str"
     securityOrigin: "str"
     mimeType: "str"
-    secureContextType: "SecureContextType"
-    crossOriginIsolatedContextType: "CrossOriginIsolatedContextType"
-    gatedAPIFeatures: "List[GatedAPIFeatures]"
+    secureContextType: "Union[SecureContextType, str]"
+    crossOriginIsolatedContextType: "Union[CrossOriginIsolatedContextType, str]"
+    gatedAPIFeatures: "List[Union[GatedAPIFeatures, str]]"
     parentId: "Optional[FrameId]" = None
     name: "Optional[str]" = None
     urlFragment: "Optional[str]" = None
@@ -306,7 +306,7 @@ class Frame(BaseModel):
 class FrameResource(BaseModel):
     """Information about the Resource on the page."""
     url: "str"
-    type: "ResourceType"
+    type: "Union[ResourceType, str]"
     mimeType: "str"
     lastModified: "Optional[TimeSinceEpoch]" = None
     contentSize: "Optional[float]" = None
@@ -359,7 +359,7 @@ class NavigationEntry(BaseModel):
     url: "str"
     userTypedURL: "str"
     title: "str"
-    transitionType: "TransitionType"
+    transitionType: "Union[TransitionType, str]"
 
 
 
@@ -781,8 +781,8 @@ class BackForwardCacheBlockingDetails(BaseModel):
 
 
 class BackForwardCacheNotRestoredExplanation(BaseModel):
-    type: "BackForwardCacheNotRestoredReasonType"
-    reason: "BackForwardCacheNotRestoredReason"
+    type: "Union[BackForwardCacheNotRestoredReasonType, str]"
+    reason: "Union[BackForwardCacheNotRestoredReason, str]"
     context: "Optional[str]" = None
     details: "Optional[List[BackForwardCacheBlockingDetails]]" = None
 

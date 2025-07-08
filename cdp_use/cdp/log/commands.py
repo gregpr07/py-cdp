@@ -14,6 +14,5 @@ if TYPE_CHECKING:
 
 class StartViolationsReportParameters(TypedDict):
     config: "List[ViolationSetting]"
-    """Configuration for violations."""
 
 

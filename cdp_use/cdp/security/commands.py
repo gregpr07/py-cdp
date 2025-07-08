@@ -4,6 +4,7 @@
 
 """CDP Security Domain Commands"""
 
+from typing import Union
 from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
@@ -13,7 +14,6 @@ if TYPE_CHECKING:
 
 class SetIgnoreCertificateErrorsParameters(TypedDict):
     ignore: "bool"
-    """If true, all certificate errors will be ignored."""
 
 
 
@@ -21,9 +21,7 @@ class SetIgnoreCertificateErrorsParameters(TypedDict):
 
 class HandleCertificateErrorParameters(TypedDict):
     eventId: "int"
-    """The ID of the event."""
-    action: "CertificateErrorAction"
-    """The action to take on the certificate error."""
+    action: "Union[CertificateErrorAction, str]"
 
 
 
@@ -31,6 +29,5 @@ class HandleCertificateErrorParameters(TypedDict):
 
 class SetOverrideCertificateErrorsParameters(TypedDict):
     override: "bool"
-    """If true, certificate errors will be overridden."""
 
 

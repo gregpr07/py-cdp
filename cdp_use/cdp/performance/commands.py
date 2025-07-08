@@ -15,7 +15,6 @@ if TYPE_CHECKING:
 
 class EnableParameters(TypedDict, total=False):
     timeDomain: "str"
-    """Time domain to use for collecting and reporting duration metrics."""
 
 
 
@@ -23,7 +22,6 @@ class EnableParameters(TypedDict, total=False):
 
 class SetTimeDomainParameters(TypedDict):
     timeDomain: "str"
-    """Time domain"""
 
 
 

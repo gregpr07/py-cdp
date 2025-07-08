@@ -5,8 +5,8 @@
 """CDP Browser Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List, Union
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -24,24 +24,18 @@ if TYPE_CHECKING:
 
 class SetPermissionParameters(TypedDict):
     permission: "PermissionDescriptor"
-    """Descriptor of permission to override."""
-    setting: "PermissionSetting"
-    """Setting of the permission."""
-    origin: "Optional[str]"
-    """Origin the permission applies to, all origins if not specified."""
-    browserContextId: "Optional[BrowserContextID]"
-    """Context to override. When omitted, default browser context is used."""
+    setting: "Union[PermissionSetting, str]"
+    origin: "NotRequired[str]"
+    browserContextId: "NotRequired[BrowserContextID]"
 
 
 
 
 
 class GrantPermissionsParameters(TypedDict):
-    permissions: "List[PermissionType]"
-    origin: "Optional[str]"
-    """Origin the permission applies to, all origins if not specified."""
-    browserContextId: "Optional[BrowserContextID]"
-    """BrowserContext to override permissions. When omitted, default browser context is used."""
+    permissions: "List[Union[PermissionType, str]]"
+    origin: "NotRequired[str]"
+    browserContextId: "NotRequired[BrowserContextID]"
 
 
 
@@ -49,7 +43,6 @@ class GrantPermissionsParameters(TypedDict):
 
 class ResetPermissionsParameters(TypedDict, total=False):
     browserContextId: "BrowserContextID"
-    """BrowserContext to reset permissions. When omitted, default browser context is used."""
 
 
 
@@ -57,16 +50,9 @@ class ResetPermissionsParameters(TypedDict, total=False):
 
 class SetDownloadBehaviorParameters(TypedDict):
     behavior: "str"
-    """Whether to allow all or deny all download requests, or use default Chrome behavior if
-available (otherwise deny). |allowAndName| allows download and names files according to
-their download guids."""
-    browserContextId: "Optional[BrowserContextID]"
-    """BrowserContext to set download behavior. When omitted, default browser context is used."""
-    downloadPath: "Optional[str]"
-    """The default path to save downloaded files to. This is required if behavior is set to 'allow'
-or 'allowAndName'."""
-    eventsEnabled: "Optional[bool]"
-    """Whether to emit download events (defaults to false)."""
+    browserContextId: "NotRequired[BrowserContextID]"
+    downloadPath: "NotRequired[str]"
+    eventsEnabled: "NotRequired[bool]"
 
 
 
@@ -74,9 +60,7 @@ or 'allowAndName'."""
 
 class CancelDownloadParameters(TypedDict):
     guid: "str"
-    """Global unique identifier of the download."""
-    browserContextId: "Optional[BrowserContextID]"
-    """BrowserContext to perform the action in. When omitted, default browser context is used."""
+    browserContextId: "NotRequired[BrowserContextID]"
 
 
 
@@ -98,11 +82,7 @@ class GetBrowserCommandLineReturns(BaseModel):
 
 class GetHistogramsParameters(TypedDict, total=False):
     query: "str"
-    """Requested substring in name. Only histograms which have query as a
-substring in their name are extracted. An empty or absent query returns
-all histograms."""
     delta: "bool"
-    """If true, retrieve delta since last delta call."""
 
 
 class GetHistogramsReturns(BaseModel):
@@ -112,9 +92,7 @@ class GetHistogramsReturns(BaseModel):
 
 class GetHistogramParameters(TypedDict):
     name: "str"
-    """Requested histogram name."""
-    delta: "Optional[bool]"
-    """If true, retrieve delta since last delta call."""
+    delta: "NotRequired[bool]"
 
 
 class GetHistogramReturns(BaseModel):
@@ -124,7 +102,6 @@ class GetHistogramReturns(BaseModel):
 
 class GetWindowBoundsParameters(TypedDict):
     windowId: "WindowID"
-    """Browser window id."""
 
 
 class GetWindowBoundsReturns(BaseModel):
@@ -134,7 +111,6 @@ class GetWindowBoundsReturns(BaseModel):
 
 class GetWindowForTargetParameters(TypedDict, total=False):
     targetId: "TargetID"
-    """Devtools agent host id. If called as a part of the session, associated targetId is used."""
 
 
 class GetWindowForTargetReturns(BaseModel):
@@ -145,10 +121,7 @@ class GetWindowForTargetReturns(BaseModel):
 
 class SetWindowBoundsParameters(TypedDict):
     windowId: "WindowID"
-    """Browser window id."""
     bounds: "Bounds"
-    """New window bounds. The 'minimized', 'maximized' and 'fullscreen' states cannot be combined
-with 'left', 'top', 'width' or 'height'. Leaves unspecified fields unchanged."""
 
 
 
@@ -157,14 +130,13 @@ with 'left', 'top', 'width' or 'height'. Leaves unspecified fields unchanged."""
 class SetDockTileParameters(TypedDict, total=False):
     badgeLabel: "str"
     image: "str"
-    """Png encoded image. (Encoded as a base64 string when passed over JSON)"""
 
 
 
 
 
 class ExecuteBrowserCommandParameters(TypedDict):
-    commandId: "BrowserCommandId"
+    commandId: "Union[BrowserCommandId, str]"
 
 
 
@@ -178,12 +150,10 @@ class AddPrivacySandboxEnrollmentOverrideParameters(TypedDict):
 
 
 class AddPrivacySandboxCoordinatorKeyConfigParameters(TypedDict):
-    api: "PrivacySandboxAPI"
+    api: "Union[PrivacySandboxAPI, str]"
     coordinatorOrigin: "str"
     keyConfig: "str"
-    browserContextId: "Optional[BrowserContextID]"
-    """BrowserContext to perform the action in. When omitted, default browser
-context is used."""
+    browserContextId: "NotRequired[BrowserContextID]"
 
 
 

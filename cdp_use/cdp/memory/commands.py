@@ -5,7 +5,7 @@
 """CDP Memory Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List
+from typing import List, Union
 from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
@@ -29,15 +29,13 @@ class GetDOMCountersForLeakDetectionReturns(BaseModel):
 
 class SetPressureNotificationsSuppressedParameters(TypedDict):
     suppressed: "bool"
-    """If true, memory pressure notifications will be suppressed."""
 
 
 
 
 
 class SimulatePressureNotificationParameters(TypedDict):
-    level: "PressureLevel"
-    """Memory pressure level of the notification."""
+    level: "Union[PressureLevel, str]"
 
 
 
@@ -45,9 +43,7 @@ class SimulatePressureNotificationParameters(TypedDict):
 
 class StartSamplingParameters(TypedDict, total=False):
     samplingInterval: "int"
-    """Average number of bytes between samples."""
     suppressRandomness: "bool"
-    """Do not randomize intervals between samples."""
 
 
 

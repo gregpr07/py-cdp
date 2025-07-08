@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import List
+from typing import List, Union
 
 from typing import TYPE_CHECKING
 
@@ -65,7 +65,7 @@ class FilledField(BaseModel):
     name: "str"
     value: "str"
     autofillType: "str"
-    fillingStrategy: "FillingStrategy"
+    fillingStrategy: "Union[FillingStrategy, str]"
     frameId: "FrameId"
     fieldId: "BackendNodeId"
 

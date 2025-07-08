@@ -5,8 +5,8 @@
 """CDP WebAuthn Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -17,11 +17,6 @@ if TYPE_CHECKING:
 
 class EnableParameters(TypedDict, total=False):
     enableUI: "bool"
-    """Whether to enable the WebAuthn user interface. Enabling the UI is
-recommended for debugging and demo purposes, as it is closer to the real
-experience. Disabling the UI is recommended for automated testing.
-Supported at the embedder's discretion if UI is available.
-Defaults to false."""
 
 
 
@@ -38,15 +33,9 @@ class AddVirtualAuthenticatorReturns(BaseModel):
 
 class SetResponseOverrideBitsParameters(TypedDict):
     authenticatorId: "AuthenticatorId"
-    isBogusSignature: "Optional[bool]"
-    """If isBogusSignature is set, overrides the signature in the authenticator response to be zero.
-Defaults to false."""
-    isBadUV: "Optional[bool]"
-    """If isBadUV is set, overrides the UV bit in the flags in the authenticator response to
-be zero. Defaults to false."""
-    isBadUP: "Optional[bool]"
-    """If isBadUP is set, overrides the UP bit in the flags in the authenticator response to
-be zero. Defaults to false."""
+    isBogusSignature: "NotRequired[bool]"
+    isBadUV: "NotRequired[bool]"
+    isBadUP: "NotRequired[bool]"
 
 
 
@@ -120,8 +109,8 @@ class SetAutomaticPresenceSimulationParameters(TypedDict):
 class SetCredentialPropertiesParameters(TypedDict):
     authenticatorId: "AuthenticatorId"
     credentialId: "str"
-    backupEligibility: "Optional[bool]"
-    backupState: "Optional[bool]"
+    backupEligibility: "NotRequired[bool]"
+    backupState: "NotRequired[bool]"
 
 
 

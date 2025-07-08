@@ -5,8 +5,8 @@
 """CDP Accessibility Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -20,13 +20,9 @@ if TYPE_CHECKING:
 
 class GetPartialAXTreeParameters(TypedDict, total=False):
     nodeId: "NodeId"
-    """Identifier of the node to get the partial accessibility tree for."""
     backendNodeId: "BackendNodeId"
-    """Identifier of the backend node to get the partial accessibility tree for."""
     objectId: "RemoteObjectId"
-    """JavaScript object id of the node wrapper to get the partial accessibility tree for."""
     fetchRelatives: "bool"
-    """Whether to fetch this node's ancestors, siblings and children. Defaults to true."""
 
 
 class GetPartialAXTreeReturns(BaseModel):
@@ -36,11 +32,7 @@ class GetPartialAXTreeReturns(BaseModel):
 
 class GetFullAXTreeParameters(TypedDict, total=False):
     depth: "int"
-    """The maximum depth at which descendants of the root node should be retrieved.
-If omitted, the full tree is returned."""
     frameId: "FrameId"
-    """The frame for whose document the AX tree should be retrieved.
-If omitted, the root frame is used."""
 
 
 class GetFullAXTreeReturns(BaseModel):
@@ -50,8 +42,6 @@ class GetFullAXTreeReturns(BaseModel):
 
 class GetRootAXNodeParameters(TypedDict, total=False):
     frameId: "FrameId"
-    """The frame in whose document the node resides.
-If omitted, the root frame is used."""
 
 
 class GetRootAXNodeReturns(BaseModel):
@@ -61,11 +51,8 @@ class GetRootAXNodeReturns(BaseModel):
 
 class GetAXNodeAndAncestorsParameters(TypedDict, total=False):
     nodeId: "NodeId"
-    """Identifier of the node to get."""
     backendNodeId: "BackendNodeId"
-    """Identifier of the backend node to get."""
     objectId: "RemoteObjectId"
-    """JavaScript object id of the node wrapper to get."""
 
 
 class GetAXNodeAndAncestorsReturns(BaseModel):
@@ -75,9 +62,7 @@ class GetAXNodeAndAncestorsReturns(BaseModel):
 
 class GetChildAXNodesParameters(TypedDict):
     id: "AXNodeId"
-    frameId: "Optional[FrameId]"
-    """The frame in whose document the node resides.
-If omitted, the root frame is used."""
+    frameId: "NotRequired[FrameId]"
 
 
 class GetChildAXNodesReturns(BaseModel):
@@ -87,15 +72,10 @@ class GetChildAXNodesReturns(BaseModel):
 
 class QueryAXTreeParameters(TypedDict, total=False):
     nodeId: "NodeId"
-    """Identifier of the node for the root to query."""
     backendNodeId: "BackendNodeId"
-    """Identifier of the backend node for the root to query."""
     objectId: "RemoteObjectId"
-    """JavaScript object id of the node wrapper for the root to query."""
     accessibleName: "str"
-    """Find nodes with this computed name."""
     role: "str"
-    """Find nodes with this computed role."""
 
 
 class QueryAXTreeReturns(BaseModel):

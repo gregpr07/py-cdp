@@ -5,7 +5,7 @@
 """CDP Page Domain Events"""
 
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -68,7 +68,7 @@ subtree is actually detached."""
 class FrameNavigatedEvent(BaseModel):
     """Fired once navigation of the frame has completed. Frame is now associated with the new loader."""
     frame: "Frame"
-    type: "NavigationType"
+    type: "Union[NavigationType, str]"
 
 
 
@@ -102,9 +102,9 @@ class FrameRequestedNavigationEvent(BaseModel):
     """Fired when a renderer-initiated navigation is requested.
 Navigation may still be cancelled after the event is issued."""
     frameId: "FrameId"
-    reason: "ClientNavigationReason"
+    reason: "Union[ClientNavigationReason, str]"
     url: "str"
-    disposition: "ClientNavigationDisposition"
+    disposition: "Union[ClientNavigationDisposition, str]"
 
 
 
@@ -112,7 +112,7 @@ class FrameScheduledNavigationEvent(BaseModel):
     """Fired when frame schedules a potential navigation."""
     frameId: "FrameId"
     delay: "float"
-    reason: "ClientNavigationReason"
+    reason: "Union[ClientNavigationReason, str]"
     url: "str"
 
 
@@ -176,7 +176,7 @@ open."""
     url: "str"
     frameId: "FrameId"
     message: "str"
-    type: "DialogType"
+    type: "Union[DialogType, str]"
     hasBrowserHandler: "bool"
     defaultPrompt: "Optional[str]" = None
 

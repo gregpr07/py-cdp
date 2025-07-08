@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -90,7 +90,7 @@ class InsightType(Enum):
 
 class CookieIssueInsight(BaseModel):
     """Information about the suggested solution to a cookie issue."""
-    type: "InsightType"
+    type: "Union[InsightType, str]"
     tableEntryUrl: "Optional[str]" = None
 
 
@@ -99,9 +99,9 @@ class CookieIssueDetails(BaseModel):
     """This information is currently necessary, as the front-end has a difficult
 time finding a specific cookie. With this, we can convey specific error
 information without the cookie."""
-    cookieWarningReasons: "List[CookieWarningReason]"
-    cookieExclusionReasons: "List[CookieExclusionReason]"
-    operation: "CookieOperation"
+    cookieWarningReasons: "List[Union[CookieWarningReason, str]]"
+    cookieExclusionReasons: "List[Union[CookieExclusionReason, str]]"
+    operation: "Union[CookieOperation, str]"
     cookie: "Optional[AffectedCookie]" = None
     rawCookieLine: "Optional[str]" = None
     siteForCookies: "Optional[str]" = None
@@ -152,10 +152,10 @@ class MixedContentResourceType(Enum):
 
 
 class MixedContentIssueDetails(BaseModel):
-    resolutionStatus: "MixedContentResolutionStatus"
+    resolutionStatus: "Union[MixedContentResolutionStatus, str]"
     insecureURL: "str"
     mainResourceURL: "str"
-    resourceType: "Optional[MixedContentResourceType]" = None
+    resourceType: "Optional[Union[MixedContentResourceType, str]]" = None
     request: "Optional[AffectedRequest]" = None
     frame: "Optional[AffectedFrame]" = None
 
@@ -180,7 +180,7 @@ class BlockedByResponseIssueDetails(BaseModel):
 code. Currently only used for COEP/COOP, but may be extended to include
 some CSP errors in the future."""
     request: "AffectedRequest"
-    reason: "BlockedByResponseReason"
+    reason: "Union[BlockedByResponseReason, str]"
     parentFrame: "Optional[AffectedFrame]" = None
     blockedFrame: "Optional[AffectedFrame]" = None
 
@@ -200,8 +200,8 @@ class HeavyAdReason(Enum):
 
 
 class HeavyAdIssueDetails(BaseModel):
-    resolution: "HeavyAdResolutionStatus"
-    reason: "HeavyAdReason"
+    resolution: "Union[HeavyAdResolutionStatus, str]"
+    reason: "Union[HeavyAdReason, str]"
     frame: "AffectedFrame"
 
 
@@ -228,7 +228,7 @@ class SourceCodeLocation(BaseModel):
 class ContentSecurityPolicyIssueDetails(BaseModel):
     violatedDirective: "str"
     isReportOnly: "bool"
-    contentSecurityPolicyViolationType: "ContentSecurityPolicyViolationType"
+    contentSecurityPolicyViolationType: "Union[ContentSecurityPolicyViolationType, str]"
     blockedURL: "Optional[str]" = None
     frameAncestor: "Optional[AffectedFrame]" = None
     sourceCodeLocation: "Optional[SourceCodeLocation]" = None
@@ -247,7 +247,7 @@ class SharedArrayBufferIssueDetails(BaseModel):
 transferred to a context that is not cross-origin isolated."""
     sourceCodeLocation: "SourceCodeLocation"
     isWarning: "bool"
-    type: "SharedArrayBufferIssueType"
+    type: "Union[SharedArrayBufferIssueType, str]"
 
 
 
@@ -270,7 +270,7 @@ CORS RFC1918 enforcement."""
     request: "AffectedRequest"
     location: "Optional[SourceCodeLocation]" = None
     initiatorOrigin: "Optional[str]" = None
-    resourceIPAddressSpace: "Optional[IPAddressSpace]" = None
+    resourceIPAddressSpace: "Optional[Union[IPAddressSpace, str]]" = None
     clientSecurityState: "Optional[ClientSecurityState]" = None
 
 
@@ -355,7 +355,7 @@ class SRIMessageSignatureError(Enum):
 class AttributionReportingIssueDetails(BaseModel):
     """Details for issues around \"Attribution Reporting API\" usage.
 Explainer: https://github.com/WICG/attribution-reporting-api"""
-    violationType: "AttributionReportingIssueType"
+    violationType: "Union[AttributionReportingIssueType, str]"
     request: "Optional[AffectedRequest]" = None
     violatingNodeId: "Optional[BackendNodeId]" = None
     invalidParameter: "Optional[str]" = None
@@ -380,13 +380,13 @@ class NavigatorUserAgentIssueDetails(BaseModel):
 
 
 class SharedDictionaryIssueDetails(BaseModel):
-    sharedDictionaryError: "SharedDictionaryError"
+    sharedDictionaryError: "Union[SharedDictionaryError, str]"
     request: "AffectedRequest"
 
 
 
 class SRIMessageSignatureIssueDetails(BaseModel):
-    error: "SRIMessageSignatureError"
+    error: "Union[SRIMessageSignatureError, str]"
     signatureBase: "str"
     integrityAssertions: "List[str]"
     request: "AffectedRequest"
@@ -410,7 +410,7 @@ class GenericIssueErrorType(Enum):
 
 class GenericIssueDetails(BaseModel):
     """Depending on the concrete errorType, different properties are set."""
-    errorType: "GenericIssueErrorType"
+    errorType: "Union[GenericIssueErrorType, str]"
     frameId: "Optional[FrameId]" = None
     violatingNodeId: "Optional[BackendNodeId]" = None
     violatingNodeAttribute: "Optional[str]" = None
@@ -446,7 +446,7 @@ would be `example.test`."""
     allowedSites: "List[str]"
     optOutPercentage: "float"
     isOptOutTopLevel: "bool"
-    operation: "CookieOperation"
+    operation: "Union[CookieOperation, str]"
 
 
 
@@ -457,7 +457,7 @@ class ClientHintIssueReason(Enum):
 
 
 class FederatedAuthRequestIssueDetails(BaseModel):
-    federatedAuthRequestIssueReason: "FederatedAuthRequestIssueReason"
+    federatedAuthRequestIssueReason: "Union[FederatedAuthRequestIssueReason, str]"
 
 
 
@@ -518,7 +518,7 @@ all cases except for success."""
 
 
 class FederatedAuthUserInfoRequestIssueDetails(BaseModel):
-    federatedAuthUserInfoRequestIssueReason: "FederatedAuthUserInfoRequestIssueReason"
+    federatedAuthUserInfoRequestIssueReason: "Union[FederatedAuthUserInfoRequestIssueReason, str]"
 
 
 
@@ -542,7 +542,7 @@ class ClientHintIssueDetails(BaseModel):
     """This issue tracks client hints related issues. It's used to deprecate old
 features, encourage the use of new ones, and provide general guidance."""
     sourceCodeLocation: "SourceCodeLocation"
-    clientHintIssueReason: "ClientHintIssueReason"
+    clientHintIssueReason: "Union[ClientHintIssueReason, str]"
 
 
 
@@ -561,7 +561,7 @@ class PartitioningBlobURLInfo(Enum):
 
 class PartitioningBlobURLIssueDetails(BaseModel):
     url: "str"
-    partitioningBlobURLInfo: "PartitioningBlobURLInfo"
+    partitioningBlobURLInfo: "Union[PartitioningBlobURLInfo, str]"
 
 
 
@@ -578,7 +578,7 @@ class ElementAccessibilityIssueReason(Enum):
 class ElementAccessibilityIssueDetails(BaseModel):
     """This issue warns about errors in the select or summary element content model."""
     nodeId: "BackendNodeId"
-    elementAccessibilityIssueReason: "ElementAccessibilityIssueReason"
+    elementAccessibilityIssueReason: "Union[ElementAccessibilityIssueReason, str]"
     hasDisallowedAttributes: "bool"
 
 
@@ -592,7 +592,7 @@ class StyleSheetLoadingIssueReason(Enum):
 class StylesheetLoadingIssueDetails(BaseModel):
     """This issue warns when a referenced stylesheet couldn't be loaded."""
     sourceCodeLocation: "SourceCodeLocation"
-    styleSheetLoadingIssueReason: "StyleSheetLoadingIssueReason"
+    styleSheetLoadingIssueReason: "Union[StyleSheetLoadingIssueReason, str]"
     failedRequestInfo: "Optional[FailedRequestInfo]" = None
 
 
@@ -609,7 +609,7 @@ class PropertyRuleIssueDetails(BaseModel):
     """This issue warns about errors in property rules that lead to property
 registrations being ignored."""
     sourceCodeLocation: "SourceCodeLocation"
-    propertyRuleIssueReason: "PropertyRuleIssueReason"
+    propertyRuleIssueReason: "Union[PropertyRuleIssueReason, str]"
     propertyValue: "Optional[str]" = None
 
 
@@ -623,7 +623,7 @@ class UserReidentificationIssueType(Enum):
 class UserReidentificationIssueDetails(BaseModel):
     """This issue warns about uses of APIs that may be considered misuse to
 re-identify users."""
-    type: "UserReidentificationIssueType"
+    type: "Union[UserReidentificationIssueType, str]"
     request: "Optional[AffectedRequest]" = None
 
 
@@ -700,7 +700,7 @@ IssueId = str
 
 class InspectorIssue(BaseModel):
     """An inspector issue reported from the back-end."""
-    code: "InspectorIssueCode"
+    code: "Union[InspectorIssueCode, str]"
     details: "InspectorIssueDetails"
     issueId: "Optional[IssueId]" = None
 

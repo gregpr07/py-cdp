@@ -6,7 +6,7 @@
 
 from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -16,13 +16,9 @@ if TYPE_CHECKING:
 
 class GetEncodedResponseParameters(TypedDict):
     requestId: "RequestId"
-    """Identifier of the network request to get content for."""
     encoding: "str"
-    """The encoding to use."""
-    quality: "Optional[float]"
-    """The quality of the encoding (0-1). (defaults to 1)"""
-    sizeOnly: "Optional[bool]"
-    """Whether to only return the size information (defaults to false)."""
+    quality: "NotRequired[float]"
+    sizeOnly: "NotRequired[bool]"
 
 
 class GetEncodedResponseReturns(BaseModel):
@@ -34,7 +30,6 @@ class GetEncodedResponseReturns(BaseModel):
 
 class CheckContrastParameters(TypedDict, total=False):
     reportAAA: "bool"
-    """Whether to report WCAG AAA level issues. Default is false."""
 
 
 

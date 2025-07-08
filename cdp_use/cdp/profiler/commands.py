@@ -21,7 +21,6 @@ class GetBestEffortCoverageReturns(BaseModel):
 
 class SetSamplingIntervalParameters(TypedDict):
     interval: "int"
-    """New sampling interval in microseconds."""
 
 
 
@@ -29,11 +28,8 @@ class SetSamplingIntervalParameters(TypedDict):
 
 class StartPreciseCoverageParameters(TypedDict, total=False):
     callCount: "bool"
-    """Collect accurate call counts beyond simple 'covered' or 'not covered'."""
     detailed: "bool"
-    """Collect block-based coverage."""
     allowTriggeredUpdates: "bool"
-    """Allow the backend to send updates on its own initiative"""
 
 
 class StartPreciseCoverageReturns(BaseModel):

@@ -5,7 +5,7 @@
 """CDP Tracing Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List
+from typing import List, Union
 from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
@@ -24,7 +24,6 @@ class GetCategoriesReturns(BaseModel):
 
 class RecordClockSyncMarkerParameters(TypedDict):
     syncId: "str"
-    """The ID of this clock sync marker"""
 
 
 
@@ -32,9 +31,7 @@ class RecordClockSyncMarkerParameters(TypedDict):
 
 class RequestMemoryDumpParameters(TypedDict, total=False):
     deterministic: "bool"
-    """Enables more deterministic results by forcing garbage collection"""
-    levelOfDetail: "MemoryDumpLevelOfDetail"
-    """Specifies level of details in memory dump. Defaults to \"detailed\"."""
+    levelOfDetail: "Union[MemoryDumpLevelOfDetail, str]"
 
 
 class RequestMemoryDumpReturns(BaseModel):
@@ -45,27 +42,14 @@ class RequestMemoryDumpReturns(BaseModel):
 
 class StartParameters(TypedDict, total=False):
     categories: "str"
-    """Category/tag filter"""
     options: "str"
-    """Tracing options"""
     bufferUsageReportingInterval: "float"
-    """If set, the agent will issue bufferUsage events at this interval, specified in milliseconds"""
     transferMode: "str"
-    """Whether to report trace events as series of dataCollected events or to save trace to a
-stream (defaults to `ReportEvents`)."""
-    streamFormat: "StreamFormat"
-    """Trace data format to use. This only applies when using `ReturnAsStream`
-transfer mode (defaults to `json`)."""
-    streamCompression: "StreamCompression"
-    """Compression format to use. This only applies when using `ReturnAsStream`
-transfer mode (defaults to `none`)"""
+    streamFormat: "Union[StreamFormat, str]"
+    streamCompression: "Union[StreamCompression, str]"
     traceConfig: "TraceConfig"
     perfettoConfig: "str"
-    """Base64-encoded serialized perfetto.protos.TraceConfig protobuf message
-When specified, the parameters `categories`, `options`, `traceConfig`
-are ignored. (Encoded as a base64 string when passed over JSON)"""
-    tracingBackend: "TracingBackend"
-    """Backend type (defaults to `auto`)"""
+    tracingBackend: "Union[TracingBackend, str]"
 
 
 

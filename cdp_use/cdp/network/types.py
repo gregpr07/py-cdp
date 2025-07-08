@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -182,13 +182,13 @@ class Request(BaseModel):
     url: "str"
     method: "str"
     headers: "Headers"
-    initialPriority: "ResourcePriority"
+    initialPriority: "Union[ResourcePriority, str]"
     referrerPolicy: "str"
     urlFragment: "Optional[str]" = None
     postData: "Optional[str]" = None
     hasPostData: "Optional[bool]" = None
     postDataEntries: "Optional[List[PostDataEntry]]" = None
-    mixedContentType: "Optional[MixedContentType]" = None
+    mixedContentType: "Optional[Union[MixedContentType, str]]" = None
     isLinkPreload: "Optional[bool]" = None
     trustTokenParams: "Optional[TrustTokenParams]" = None
     isSameSite: "Optional[bool]" = None
@@ -220,7 +220,7 @@ class SecurityDetails(BaseModel):
     validFrom: "TimeSinceEpoch"
     validTo: "TimeSinceEpoch"
     signedCertificateTimestampList: "List[SignedCertificateTimestamp]"
-    certificateTransparencyCompliance: "CertificateTransparencyCompliance"
+    certificateTransparencyCompliance: "Union[CertificateTransparencyCompliance, str]"
     encryptedClientHello: "bool"
     keyExchangeGroup: "Optional[str]" = None
     mac: "Optional[str]" = None
@@ -298,7 +298,7 @@ class CorsError(Enum):
 
 
 class CorsErrorStatus(BaseModel):
-    corsError: "CorsError"
+    corsError: "Union[CorsError, str]"
     failedParameter: "str"
 
 
@@ -316,7 +316,7 @@ class TrustTokenParams(BaseModel):
     """Determines what type of Trust Token operation is executed and
 depending on the type, some additional parameters. The values
 are specified in third_party/blink/renderer/core/fetch/trust_token.idl."""
-    operation: "TrustTokenOperationType"
+    operation: "Union[TrustTokenOperationType, str]"
     refreshPolicy: "str"
     issuers: "Optional[List[str]]" = None
 
@@ -354,8 +354,8 @@ class ServiceWorkerRouterSource(Enum):
 
 class ServiceWorkerRouterInfo(BaseModel):
     ruleIdMatched: "Optional[int]" = None
-    matchedSourceType: "Optional[ServiceWorkerRouterSource]" = None
-    actualSourceType: "Optional[ServiceWorkerRouterSource]" = None
+    matchedSourceType: "Optional[Union[ServiceWorkerRouterSource, str]]" = None
+    actualSourceType: "Optional[Union[ServiceWorkerRouterSource, str]]" = None
 
 
 
@@ -370,7 +370,7 @@ class Response(BaseModel):
     connectionReused: "bool"
     connectionId: "float"
     encodedDataLength: "float"
-    securityState: "SecurityState"
+    securityState: "Union[SecurityState, str]"
     headersText: "Optional[str]" = None
     requestHeaders: "Optional[Headers]" = None
     requestHeadersText: "Optional[str]" = None
@@ -382,11 +382,11 @@ class Response(BaseModel):
     fromEarlyHints: "Optional[bool]" = None
     serviceWorkerRouterInfo: "Optional[ServiceWorkerRouterInfo]" = None
     timing: "Optional[ResourceTiming]" = None
-    serviceWorkerResponseSource: "Optional[ServiceWorkerResponseSource]" = None
+    serviceWorkerResponseSource: "Optional[Union[ServiceWorkerResponseSource, str]]" = None
     responseTime: "Optional[TimeSinceEpoch]" = None
     cacheStorageCacheName: "Optional[str]" = None
     protocol: "Optional[str]" = None
-    alternateProtocolUsage: "Optional[AlternateProtocolUsage]" = None
+    alternateProtocolUsage: "Optional[Union[AlternateProtocolUsage, str]]" = None
     securityDetails: "Optional[SecurityDetails]" = None
 
 
@@ -419,7 +419,7 @@ class WebSocketFrame(BaseModel):
 class CachedResource(BaseModel):
     """Information about the cached resource."""
     url: "str"
-    type: "ResourceType"
+    type: "Union[ResourceType, str]"
     bodySize: "float"
     response: "Optional[Response]" = None
 
@@ -455,11 +455,11 @@ class Cookie(BaseModel):
     httpOnly: "bool"
     secure: "bool"
     session: "bool"
-    priority: "CookiePriority"
+    priority: "Union[CookiePriority, str]"
     sameParty: "bool"
-    sourceScheme: "CookieSourceScheme"
+    sourceScheme: "Union[CookieSourceScheme, str]"
     sourcePort: "int"
-    sameSite: "Optional[CookieSameSite]" = None
+    sameSite: "Optional[Union[CookieSameSite, str]]" = None
     partitionKey: "Optional[CookiePartitionKey]" = None
     partitionKeyOpaque: "Optional[bool]" = None
 
@@ -534,7 +534,7 @@ class CookieExemptionReason(Enum):
 
 class BlockedSetCookieWithReason(BaseModel):
     """A cookie which was not stored from a response with the corresponding reason."""
-    blockedReasons: "List[SetCookieBlockedReason]"
+    blockedReasons: "List[Union[SetCookieBlockedReason, str]]"
     cookieLine: "str"
     cookie: "Optional[Cookie]" = None
 
@@ -543,7 +543,7 @@ class BlockedSetCookieWithReason(BaseModel):
 class ExemptedSetCookieWithReason(BaseModel):
     """A cookie should have been blocked by 3PCD but is exempted and stored from a response with the
 corresponding reason. A cookie could only have at most one exemption reason."""
-    exemptionReason: "CookieExemptionReason"
+    exemptionReason: "Union[CookieExemptionReason, str]"
     cookieLine: "str"
     cookie: "Cookie"
 
@@ -553,8 +553,8 @@ class AssociatedCookie(BaseModel):
     """A cookie associated with the request which may or may not be sent with it.
 Includes the cookies itself and reasons for blocking or exemption."""
     cookie: "Cookie"
-    blockedReasons: "List[CookieBlockedReason]"
-    exemptionReason: "Optional[CookieExemptionReason]" = None
+    blockedReasons: "List[Union[CookieBlockedReason, str]]"
+    exemptionReason: "Optional[Union[CookieExemptionReason, str]]" = None
 
 
 
@@ -567,11 +567,11 @@ class CookieParam(BaseModel):
     path: "Optional[str]" = None
     secure: "Optional[bool]" = None
     httpOnly: "Optional[bool]" = None
-    sameSite: "Optional[CookieSameSite]" = None
+    sameSite: "Optional[Union[CookieSameSite, str]]" = None
     expires: "Optional[TimeSinceEpoch]" = None
-    priority: "Optional[CookiePriority]" = None
+    priority: "Optional[Union[CookiePriority, str]]" = None
     sameParty: "Optional[bool]" = None
-    sourceScheme: "Optional[CookieSourceScheme]" = None
+    sourceScheme: "Optional[Union[CookieSourceScheme, str]]" = None
     sourcePort: "Optional[int]" = None
     partitionKey: "Optional[CookiePartitionKey]" = None
 
@@ -605,8 +605,8 @@ sent. Response will intercept after the response is received."""
 class RequestPattern(BaseModel):
     """Request pattern for interception."""
     urlPattern: "Optional[str]" = None
-    resourceType: "Optional[ResourceType]" = None
-    interceptionStage: "Optional[InterceptionStage]" = None
+    resourceType: "Optional[Union[ResourceType, str]]" = None
+    interceptionStage: "Optional[Union[InterceptionStage, str]]" = None
 
 
 
@@ -651,7 +651,7 @@ class SignedExchangeError(BaseModel):
     """Information about a signed exchange response."""
     message: "str"
     signatureIndex: "Optional[int]" = None
-    errorField: "Optional[SignedExchangeErrorField]" = None
+    errorField: "Optional[Union[SignedExchangeErrorField, str]]" = None
 
 
 
@@ -685,7 +685,7 @@ class DirectTCPSocketOptions(BaseModel):
     keepAliveDelay: "Optional[float]" = None
     sendBufferSize: "Optional[float]" = None
     receiveBufferSize: "Optional[float]" = None
-    dnsQueryType: "Optional[DirectSocketDnsQueryType]" = None
+    dnsQueryType: "Optional[Union[DirectSocketDnsQueryType, str]]" = None
 
 
 
@@ -694,7 +694,7 @@ class DirectUDPSocketOptions(BaseModel):
     remotePort: "Optional[int]" = None
     localAddr: "Optional[str]" = None
     localPort: "Optional[int]" = None
-    dnsQueryType: "Optional[DirectSocketDnsQueryType]" = None
+    dnsQueryType: "Optional[Union[DirectSocketDnsQueryType, str]]" = None
     sendBufferSize: "Optional[float]" = None
     receiveBufferSize: "Optional[float]" = None
 
@@ -733,8 +733,8 @@ class ConnectTiming(BaseModel):
 
 class ClientSecurityState(BaseModel):
     initiatorIsSecureContext: "bool"
-    initiatorIPAddressSpace: "IPAddressSpace"
-    privateNetworkRequestPolicy: "PrivateNetworkRequestPolicy"
+    initiatorIPAddressSpace: "Union[IPAddressSpace, str]"
+    privateNetworkRequestPolicy: "Union[PrivateNetworkRequestPolicy, str]"
 
 
 
@@ -750,8 +750,8 @@ class CrossOriginOpenerPolicyValue(Enum):
 
 
 class CrossOriginOpenerPolicyStatus(BaseModel):
-    value: "CrossOriginOpenerPolicyValue"
-    reportOnlyValue: "CrossOriginOpenerPolicyValue"
+    value: "Union[CrossOriginOpenerPolicyValue, str]"
+    reportOnlyValue: "Union[CrossOriginOpenerPolicyValue, str]"
     reportingEndpoint: "Optional[str]" = None
     reportOnlyReportingEndpoint: "Optional[str]" = None
 
@@ -765,8 +765,8 @@ class CrossOriginEmbedderPolicyValue(Enum):
 
 
 class CrossOriginEmbedderPolicyStatus(BaseModel):
-    value: "CrossOriginEmbedderPolicyValue"
-    reportOnlyValue: "CrossOriginEmbedderPolicyValue"
+    value: "Union[CrossOriginEmbedderPolicyValue, str]"
+    reportOnlyValue: "Union[CrossOriginEmbedderPolicyValue, str]"
     reportingEndpoint: "Optional[str]" = None
     reportOnlyReportingEndpoint: "Optional[str]" = None
 
@@ -781,7 +781,7 @@ class ContentSecurityPolicySource(Enum):
 class ContentSecurityPolicyStatus(BaseModel):
     effectiveDirectives: "str"
     isEnforced: "bool"
-    source: "ContentSecurityPolicySource"
+    source: "Union[ContentSecurityPolicySource, str]"
 
 
 
@@ -815,7 +815,7 @@ class ReportingApiReport(BaseModel):
     depth: "int"
     completedAttempts: "int"
     body: "Dict[str, Any]"
-    status: "ReportStatus"
+    status: "Union[ReportStatus, str]"
 
 
 

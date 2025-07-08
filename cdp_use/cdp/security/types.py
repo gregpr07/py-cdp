@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -68,14 +68,14 @@ class SafetyTipStatus(Enum):
 
 
 class SafetyTipInfo(BaseModel):
-    safetyTipStatus: "SafetyTipStatus"
+    safetyTipStatus: "Union[SafetyTipStatus, str]"
     safeUrl: "Optional[str]" = None
 
 
 
 class VisibleSecurityState(BaseModel):
     """Security state information about the page."""
-    securityState: "SecurityState"
+    securityState: "Union[SecurityState, str]"
     securityStateIssueIds: "List[str]"
     certificateSecurityState: "Optional[CertificateSecurityState]" = None
     safetyTipInfo: "Optional[SafetyTipInfo]" = None
@@ -84,11 +84,11 @@ class VisibleSecurityState(BaseModel):
 
 class SecurityStateExplanation(BaseModel):
     """An explanation of an factor contributing to the security state."""
-    securityState: "SecurityState"
+    securityState: "Union[SecurityState, str]"
     title: "str"
     summary: "str"
     description: "str"
-    mixedContentType: "MixedContentType"
+    mixedContentType: "Union[MixedContentType, str]"
     certificate: "List[str]"
     recommendations: "Optional[List[str]]" = None
 
@@ -101,8 +101,8 @@ class InsecureContentStatus(BaseModel):
     containedMixedForm: "bool"
     ranContentWithCertErrors: "bool"
     displayedContentWithCertErrors: "bool"
-    ranInsecureContentStyle: "SecurityState"
-    displayedInsecureContentStyle: "SecurityState"
+    ranInsecureContentStyle: "Union[SecurityState, str]"
+    displayedInsecureContentStyle: "Union[SecurityState, str]"
 
 
 

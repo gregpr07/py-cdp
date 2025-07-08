@@ -5,7 +5,7 @@
 """CDP Animation Domain Types"""
 
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -31,7 +31,7 @@ class Animation(BaseModel):
 
 class ViewOrScrollTimeline(BaseModel):
     """Timeline instance"""
-    axis: "ScrollOrientation"
+    axis: "Union[ScrollOrientation, str]"
     sourceNodeId: "Optional[BackendNodeId]" = None
     startOffset: "Optional[float]" = None
     endOffset: "Optional[float]" = None

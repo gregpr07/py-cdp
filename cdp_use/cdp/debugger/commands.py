@@ -6,7 +6,7 @@
 
 from pydantic import BaseModel
 from typing import List, Optional
-from typing_extensions import TypedDict
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -32,8 +32,7 @@ if TYPE_CHECKING:
 
 class ContinueToLocationParameters(TypedDict):
     location: "Location"
-    """Location to continue to."""
-    targetCallFrames: "Optional[str]"
+    targetCallFrames: "NotRequired[str]"
 
 
 
@@ -41,8 +40,6 @@ class ContinueToLocationParameters(TypedDict):
 
 class EnableParameters(TypedDict, total=False):
     maxScriptsCacheSize: "float"
-    """The maximum size in bytes of collected scripts (not referenced by other heap objects)
-the debugger can hold. Puts no limit if parameter is omitted."""
 
 
 class EnableReturns(BaseModel):
@@ -52,26 +49,14 @@ class EnableReturns(BaseModel):
 
 class EvaluateOnCallFrameParameters(TypedDict):
     callFrameId: "CallFrameId"
-    """Call frame identifier to evaluate on."""
     expression: "str"
-    """Expression to evaluate."""
-    objectGroup: "Optional[str]"
-    """String object group name to put result into (allows rapid releasing resulting object handles
-using `releaseObjectGroup`)."""
-    includeCommandLineAPI: "Optional[bool]"
-    """Specifies whether command line API should be available to the evaluated expression, defaults
-to false."""
-    silent: "Optional[bool]"
-    """In silent mode exceptions thrown during evaluation are not reported and do not pause
-execution. Overrides `setPauseOnException` state."""
-    returnByValue: "Optional[bool]"
-    """Whether the result is expected to be a JSON object that should be sent by value."""
-    generatePreview: "Optional[bool]"
-    """Whether preview should be generated for the result."""
-    throwOnSideEffect: "Optional[bool]"
-    """Whether to throw an exception if side effect cannot be ruled out during evaluation."""
-    timeout: "Optional[TimeDelta]"
-    """Terminate execution after timing out (number of milliseconds)."""
+    objectGroup: "NotRequired[str]"
+    includeCommandLineAPI: "NotRequired[bool]"
+    silent: "NotRequired[bool]"
+    returnByValue: "NotRequired[bool]"
+    generatePreview: "NotRequired[bool]"
+    throwOnSideEffect: "NotRequired[bool]"
+    timeout: "NotRequired[TimeDelta]"
 
 
 class EvaluateOnCallFrameReturns(BaseModel):
@@ -82,12 +67,8 @@ class EvaluateOnCallFrameReturns(BaseModel):
 
 class GetPossibleBreakpointsParameters(TypedDict):
     start: "Location"
-    """Start of range to search possible breakpoint locations in."""
-    end: "Optional[Location]"
-    """End of range to search possible breakpoint locations in (excluding). When not specified, end
-of scripts is used as end of range."""
-    restrictToFunction: "Optional[bool]"
-    """Only consider locations which are in the same (non-nested) function as start."""
+    end: "NotRequired[Location]"
+    restrictToFunction: "NotRequired[bool]"
 
 
 class GetPossibleBreakpointsReturns(BaseModel):
@@ -97,7 +78,6 @@ class GetPossibleBreakpointsReturns(BaseModel):
 
 class GetScriptSourceParameters(TypedDict):
     scriptId: "ScriptId"
-    """Id of the script to get source for."""
 
 
 class GetScriptSourceReturns(BaseModel):
@@ -108,7 +88,6 @@ class GetScriptSourceReturns(BaseModel):
 
 class DisassembleWasmModuleParameters(TypedDict):
     scriptId: "ScriptId"
-    """Id of the script to disassemble"""
 
 
 class DisassembleWasmModuleReturns(BaseModel):
@@ -130,7 +109,6 @@ class NextWasmDisassemblyChunkReturns(BaseModel):
 
 class GetWasmBytecodeParameters(TypedDict):
     scriptId: "ScriptId"
-    """Id of the Wasm script to get source for."""
 
 
 class GetWasmBytecodeReturns(BaseModel):
@@ -149,7 +127,6 @@ class GetStackTraceReturns(BaseModel):
 
 class PauseOnAsyncCallParameters(TypedDict):
     parentStackTraceId: "StackTraceId"
-    """Debugger will pause when async call with given stack trace is started."""
 
 
 
@@ -164,10 +141,7 @@ class RemoveBreakpointParameters(TypedDict):
 
 class RestartFrameParameters(TypedDict):
     callFrameId: "CallFrameId"
-    """Call frame identifier to evaluate on."""
-    mode: "Optional[str]"
-    """The `mode` parameter must be present and set to 'StepInto', otherwise
-`restartFrame` will error out."""
+    mode: "NotRequired[str]"
 
 
 class RestartFrameReturns(BaseModel):
@@ -179,11 +153,6 @@ class RestartFrameReturns(BaseModel):
 
 class ResumeParameters(TypedDict, total=False):
     terminateOnResume: "bool"
-    """Set to true to terminate execution upon resuming execution. In contrast
-to Runtime.terminateExecution, this will allows to execute further
-JavaScript (i.e. via evaluation) until execution of the paused code
-is actually resumed, at which point termination is triggered.
-If execution is currently not paused, this parameter has no effect."""
 
 
 
@@ -191,13 +160,9 @@ If execution is currently not paused, this parameter has no effect."""
 
 class SearchInContentParameters(TypedDict):
     scriptId: "ScriptId"
-    """Id of the script to search in."""
     query: "str"
-    """String to search for."""
-    caseSensitive: "Optional[bool]"
-    """If true, search is case sensitive."""
-    isRegex: "Optional[bool]"
-    """If true, treats string parameter as regex."""
+    caseSensitive: "NotRequired[bool]"
+    isRegex: "NotRequired[bool]"
 
 
 class SearchInContentReturns(BaseModel):
@@ -207,8 +172,6 @@ class SearchInContentReturns(BaseModel):
 
 class SetAsyncCallStackDepthParameters(TypedDict):
     maxDepth: "int"
-    """Maximum depth of async call stacks. Setting to `0` will effectively disable collecting async
-call stacks (default)."""
 
 
 
@@ -216,7 +179,6 @@ call stacks (default)."""
 
 class SetBlackboxExecutionContextsParameters(TypedDict):
     uniqueIds: "List[str]"
-    """Array of execution context unique ids for the debugger to ignore."""
 
 
 
@@ -224,9 +186,7 @@ class SetBlackboxExecutionContextsParameters(TypedDict):
 
 class SetBlackboxPatternsParameters(TypedDict):
     patterns: "List[str]"
-    """Array of regexps that will be used to check script url for blackbox state."""
-    skipAnonymous: "Optional[bool]"
-    """If true, also ignore scripts with no source url."""
+    skipAnonymous: "NotRequired[bool]"
 
 
 
@@ -234,7 +194,6 @@ class SetBlackboxPatternsParameters(TypedDict):
 
 class SetBlackboxedRangesParameters(TypedDict):
     scriptId: "ScriptId"
-    """Id of the script."""
     positions: "List[ScriptPosition]"
 
 
@@ -243,10 +202,7 @@ class SetBlackboxedRangesParameters(TypedDict):
 
 class SetBreakpointParameters(TypedDict):
     location: "Location"
-    """Location to set breakpoint in."""
-    condition: "Optional[str]"
-    """Expression to use as a breakpoint condition. When specified, debugger will only stop on the
-breakpoint if this expression evaluates to true."""
+    condition: "NotRequired[str]"
 
 
 class SetBreakpointReturns(BaseModel):
@@ -257,7 +213,6 @@ class SetBreakpointReturns(BaseModel):
 
 class SetInstrumentationBreakpointParameters(TypedDict):
     instrumentation: "str"
-    """Instrumentation name."""
 
 
 class SetInstrumentationBreakpointReturns(BaseModel):
@@ -267,19 +222,11 @@ class SetInstrumentationBreakpointReturns(BaseModel):
 
 class SetBreakpointByUrlParameters(TypedDict):
     lineNumber: "int"
-    """Line number to set breakpoint at."""
-    url: "Optional[str]"
-    """URL of the resources to set breakpoint on."""
-    urlRegex: "Optional[str]"
-    """Regex pattern for the URLs of the resources to set breakpoints on. Either `url` or
-`urlRegex` must be specified."""
-    scriptHash: "Optional[str]"
-    """Script hash of the resources to set breakpoint on."""
-    columnNumber: "Optional[int]"
-    """Offset in the line to set breakpoint at."""
-    condition: "Optional[str]"
-    """Expression to use as a breakpoint condition. When specified, debugger will only stop on the
-breakpoint if this expression evaluates to true."""
+    url: "NotRequired[str]"
+    urlRegex: "NotRequired[str]"
+    scriptHash: "NotRequired[str]"
+    columnNumber: "NotRequired[int]"
+    condition: "NotRequired[str]"
 
 
 class SetBreakpointByUrlReturns(BaseModel):
@@ -290,10 +237,7 @@ class SetBreakpointByUrlReturns(BaseModel):
 
 class SetBreakpointOnFunctionCallParameters(TypedDict):
     objectId: "RemoteObjectId"
-    """Function object id."""
-    condition: "Optional[str]"
-    """Expression to use as a breakpoint condition. When specified, debugger will
-stop on the breakpoint if this expression evaluates to true."""
+    condition: "NotRequired[str]"
 
 
 class SetBreakpointOnFunctionCallReturns(BaseModel):
@@ -303,7 +247,6 @@ class SetBreakpointOnFunctionCallReturns(BaseModel):
 
 class SetBreakpointsActiveParameters(TypedDict):
     active: "bool"
-    """New value for breakpoints active state."""
 
 
 
@@ -311,7 +254,6 @@ class SetBreakpointsActiveParameters(TypedDict):
 
 class SetPauseOnExceptionsParameters(TypedDict):
     state: "str"
-    """Pause on exceptions mode."""
 
 
 
@@ -319,7 +261,6 @@ class SetPauseOnExceptionsParameters(TypedDict):
 
 class SetReturnValueParameters(TypedDict):
     newValue: "CallArgument"
-    """New return value."""
 
 
 
@@ -327,15 +268,9 @@ class SetReturnValueParameters(TypedDict):
 
 class SetScriptSourceParameters(TypedDict):
     scriptId: "ScriptId"
-    """Id of the script to edit."""
     scriptSource: "str"
-    """New content of the script."""
-    dryRun: "Optional[bool]"
-    """If true the change will not actually be applied. Dry run may be used to get result
-description without actually modifying the code."""
-    allowTopFrameEditing: "Optional[bool]"
-    """If true, then `scriptSource` is allowed to change the function on top of the stack
-as long as the top-most stack frame is the only activation of that function."""
+    dryRun: "NotRequired[bool]"
+    allowTopFrameEditing: "NotRequired[bool]"
 
 
 class SetScriptSourceReturns(BaseModel):
@@ -350,7 +285,6 @@ class SetScriptSourceReturns(BaseModel):
 
 class SetSkipAllPausesParameters(TypedDict):
     skip: "bool"
-    """New value for skip pauses state."""
 
 
 
@@ -358,14 +292,9 @@ class SetSkipAllPausesParameters(TypedDict):
 
 class SetVariableValueParameters(TypedDict):
     scopeNumber: "int"
-    """0-based number of scope as was listed in scope chain. Only 'local', 'closure' and 'catch'
-scope types are allowed. Other scopes could be manipulated manually."""
     variableName: "str"
-    """Variable name."""
     newValue: "CallArgument"
-    """New variable value."""
     callFrameId: "CallFrameId"
-    """Id of callframe that holds variable."""
 
 
 
@@ -373,10 +302,7 @@ scope types are allowed. Other scopes could be manipulated manually."""
 
 class StepIntoParameters(TypedDict, total=False):
     breakOnAsyncCall: "bool"
-    """Debugger will pause on the execution of the first async task which was scheduled
-before next pause."""
     skipList: "List[LocationRange]"
-    """The skipList specifies location ranges that should be skipped on step into."""
 
 
 
@@ -384,7 +310,6 @@ before next pause."""
 
 class StepOverParameters(TypedDict, total=False):
     skipList: "List[LocationRange]"
-    """The skipList specifies location ranges that should be skipped on step over."""
 
 
 

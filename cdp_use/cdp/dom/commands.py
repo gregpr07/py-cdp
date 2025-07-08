@@ -5,8 +5,8 @@
 """CDP DOM Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List, Optional, Union
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -30,7 +30,6 @@ if TYPE_CHECKING:
 
 class CollectClassNamesFromSubtreeParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node to collect class names."""
 
 
 class CollectClassNamesFromSubtreeReturns(BaseModel):
@@ -40,12 +39,8 @@ class CollectClassNamesFromSubtreeReturns(BaseModel):
 
 class CopyToParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node to copy."""
     targetNodeId: "NodeId"
-    """Id of the element to drop the copy into."""
-    insertBeforeNodeId: "Optional[NodeId]"
-    """Drop the copy before this node (if absent, the copy becomes the last child of
-`targetNodeId`)."""
+    insertBeforeNodeId: "NotRequired[NodeId]"
 
 
 class CopyToReturns(BaseModel):
@@ -55,17 +50,10 @@ class CopyToReturns(BaseModel):
 
 class DescribeNodeParameters(TypedDict, total=False):
     nodeId: "NodeId"
-    """Identifier of the node."""
     backendNodeId: "BackendNodeId"
-    """Identifier of the backend node."""
     objectId: "RemoteObjectId"
-    """JavaScript object id of the node wrapper."""
     depth: "int"
-    """The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
-entire subtree or provide an integer larger than 0."""
     pierce: "bool"
-    """Whether or not iframes and shadow roots should be traversed when returning the subtree
-(default is false)."""
 
 
 class DescribeNodeReturns(BaseModel):
@@ -75,14 +63,9 @@ class DescribeNodeReturns(BaseModel):
 
 class ScrollIntoViewIfNeededParameters(TypedDict, total=False):
     nodeId: "NodeId"
-    """Identifier of the node."""
     backendNodeId: "BackendNodeId"
-    """Identifier of the backend node."""
     objectId: "RemoteObjectId"
-    """JavaScript object id of the node wrapper."""
     rect: "Rect"
-    """The rect to be scrolled into view, relative to the node's border box, in CSS pixels.
-When omitted, center of the node will be used, similar to Element.scrollIntoView."""
 
 
 
@@ -90,7 +73,6 @@ When omitted, center of the node will be used, similar to Element.scrollIntoView
 
 class DiscardSearchResultsParameters(TypedDict):
     searchId: "str"
-    """Unique search session identifier."""
 
 
 
@@ -98,7 +80,6 @@ class DiscardSearchResultsParameters(TypedDict):
 
 class EnableParameters(TypedDict, total=False):
     includeWhitespace: "str"
-    """Whether to include whitespaces in the children array of returned Nodes."""
 
 
 
@@ -106,11 +87,8 @@ class EnableParameters(TypedDict, total=False):
 
 class FocusParameters(TypedDict, total=False):
     nodeId: "NodeId"
-    """Identifier of the node."""
     backendNodeId: "BackendNodeId"
-    """Identifier of the backend node."""
     objectId: "RemoteObjectId"
-    """JavaScript object id of the node wrapper."""
 
 
 
@@ -118,7 +96,6 @@ class FocusParameters(TypedDict, total=False):
 
 class GetAttributesParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node to retrieve attributes for."""
 
 
 class GetAttributesReturns(BaseModel):
@@ -128,11 +105,8 @@ class GetAttributesReturns(BaseModel):
 
 class GetBoxModelParameters(TypedDict, total=False):
     nodeId: "NodeId"
-    """Identifier of the node."""
     backendNodeId: "BackendNodeId"
-    """Identifier of the backend node."""
     objectId: "RemoteObjectId"
-    """JavaScript object id of the node wrapper."""
 
 
 class GetBoxModelReturns(BaseModel):
@@ -142,11 +116,8 @@ class GetBoxModelReturns(BaseModel):
 
 class GetContentQuadsParameters(TypedDict, total=False):
     nodeId: "NodeId"
-    """Identifier of the node."""
     backendNodeId: "BackendNodeId"
-    """Identifier of the backend node."""
     objectId: "RemoteObjectId"
-    """JavaScript object id of the node wrapper."""
 
 
 class GetContentQuadsReturns(BaseModel):
@@ -156,11 +127,7 @@ class GetContentQuadsReturns(BaseModel):
 
 class GetDocumentParameters(TypedDict, total=False):
     depth: "int"
-    """The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
-entire subtree or provide an integer larger than 0."""
     pierce: "bool"
-    """Whether or not iframes and shadow roots should be traversed when returning the subtree
-(default is false)."""
 
 
 class GetDocumentReturns(BaseModel):
@@ -170,11 +137,7 @@ class GetDocumentReturns(BaseModel):
 
 class GetFlattenedDocumentParameters(TypedDict, total=False):
     depth: "int"
-    """The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
-entire subtree or provide an integer larger than 0."""
     pierce: "bool"
-    """Whether or not iframes and shadow roots should be traversed when returning the subtree
-(default is false)."""
 
 
 class GetFlattenedDocumentReturns(BaseModel):
@@ -184,12 +147,8 @@ class GetFlattenedDocumentReturns(BaseModel):
 
 class GetNodesForSubtreeByStyleParameters(TypedDict):
     nodeId: "NodeId"
-    """Node ID pointing to the root of a subtree."""
     computedStyles: "List[CSSComputedStyleProperty]"
-    """The style to filter nodes by (includes nodes if any of properties matches)."""
-    pierce: "Optional[bool]"
-    """Whether or not iframes and shadow roots in the same target should be traversed when returning the
-results (default is false)."""
+    pierce: "NotRequired[bool]"
 
 
 class GetNodesForSubtreeByStyleReturns(BaseModel):
@@ -199,13 +158,9 @@ class GetNodesForSubtreeByStyleReturns(BaseModel):
 
 class GetNodeForLocationParameters(TypedDict):
     x: "int"
-    """X coordinate."""
     y: "int"
-    """Y coordinate."""
-    includeUserAgentShadowDOM: "Optional[bool]"
-    """False to skip to the nearest non-UA shadow root ancestor (default: false)."""
-    ignorePointerEventsNone: "Optional[bool]"
-    """Whether to ignore pointer-events: none on elements and hit test them."""
+    includeUserAgentShadowDOM: "NotRequired[bool]"
+    ignorePointerEventsNone: "NotRequired[bool]"
 
 
 class GetNodeForLocationReturns(BaseModel):
@@ -217,13 +172,9 @@ class GetNodeForLocationReturns(BaseModel):
 
 class GetOuterHTMLParameters(TypedDict, total=False):
     nodeId: "NodeId"
-    """Identifier of the node."""
     backendNodeId: "BackendNodeId"
-    """Identifier of the backend node."""
     objectId: "RemoteObjectId"
-    """JavaScript object id of the node wrapper."""
     includeShadowDOM: "bool"
-    """Include all shadow roots. Equals to false if not specified."""
 
 
 class GetOuterHTMLReturns(BaseModel):
@@ -233,7 +184,6 @@ class GetOuterHTMLReturns(BaseModel):
 
 class GetRelayoutBoundaryParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node."""
 
 
 class GetRelayoutBoundaryReturns(BaseModel):
@@ -243,11 +193,8 @@ class GetRelayoutBoundaryReturns(BaseModel):
 
 class GetSearchResultsParameters(TypedDict):
     searchId: "str"
-    """Unique search session identifier."""
     fromIndex: "int"
-    """Start index of the search result to be returned."""
     toIndex: "int"
-    """End index of the search result to be returned."""
 
 
 class GetSearchResultsReturns(BaseModel):
@@ -257,12 +204,8 @@ class GetSearchResultsReturns(BaseModel):
 
 class MoveToParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node to move."""
     targetNodeId: "NodeId"
-    """Id of the element to drop the moved node into."""
-    insertBeforeNodeId: "Optional[NodeId]"
-    """Drop node before this one (if absent, the moved node becomes the last child of
-`targetNodeId`)."""
+    insertBeforeNodeId: "NotRequired[NodeId]"
 
 
 class MoveToReturns(BaseModel):
@@ -272,9 +215,7 @@ class MoveToReturns(BaseModel):
 
 class PerformSearchParameters(TypedDict):
     query: "str"
-    """Plain text or query selector or XPath search query."""
-    includeUserAgentShadowDOM: "Optional[bool]"
-    """True to search in user agent shadow DOM."""
+    includeUserAgentShadowDOM: "NotRequired[bool]"
 
 
 class PerformSearchReturns(BaseModel):
@@ -285,7 +226,6 @@ class PerformSearchReturns(BaseModel):
 
 class PushNodeByPathToFrontendParameters(TypedDict):
     path: "str"
-    """Path to node in the proprietary format."""
 
 
 class PushNodeByPathToFrontendReturns(BaseModel):
@@ -295,7 +235,6 @@ class PushNodeByPathToFrontendReturns(BaseModel):
 
 class PushNodesByBackendIdsToFrontendParameters(TypedDict):
     backendNodeIds: "List[BackendNodeId]"
-    """The array of backend node ids."""
 
 
 class PushNodesByBackendIdsToFrontendReturns(BaseModel):
@@ -305,9 +244,7 @@ class PushNodesByBackendIdsToFrontendReturns(BaseModel):
 
 class QuerySelectorParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node to query upon."""
     selector: "str"
-    """Selector string."""
 
 
 class QuerySelectorReturns(BaseModel):
@@ -317,9 +254,7 @@ class QuerySelectorReturns(BaseModel):
 
 class QuerySelectorAllParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node to query upon."""
     selector: "str"
-    """Selector string."""
 
 
 class QuerySelectorAllReturns(BaseModel):
@@ -334,9 +269,7 @@ class GetTopLayerElementsReturns(BaseModel):
 
 class GetElementByRelationParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node from which to query the relation."""
     relation: "str"
-    """Type of relation to get."""
 
 
 class GetElementByRelationReturns(BaseModel):
@@ -346,9 +279,7 @@ class GetElementByRelationReturns(BaseModel):
 
 class RemoveAttributeParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the element to remove attribute from."""
     name: "str"
-    """Name of the attribute to remove."""
 
 
 
@@ -356,7 +287,6 @@ class RemoveAttributeParameters(TypedDict):
 
 class RemoveNodeParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node to remove."""
 
 
 
@@ -364,13 +294,8 @@ class RemoveNodeParameters(TypedDict):
 
 class RequestChildNodesParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node to get children for."""
-    depth: "Optional[int]"
-    """The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
-entire subtree or provide an integer larger than 0."""
-    pierce: "Optional[bool]"
-    """Whether or not iframes and shadow roots should be traversed when returning the sub-tree
-(default is false)."""
+    depth: "NotRequired[int]"
+    pierce: "NotRequired[bool]"
 
 
 
@@ -378,7 +303,6 @@ entire subtree or provide an integer larger than 0."""
 
 class RequestNodeParameters(TypedDict):
     objectId: "RemoteObjectId"
-    """JavaScript object id to convert into node."""
 
 
 class RequestNodeReturns(BaseModel):
@@ -388,13 +312,9 @@ class RequestNodeReturns(BaseModel):
 
 class ResolveNodeParameters(TypedDict, total=False):
     nodeId: "NodeId"
-    """Id of the node to resolve."""
     backendNodeId: "BackendNodeId"
-    """Backend identifier of the node to resolve."""
     objectGroup: "str"
-    """Symbolic group name that can be used to release multiple objects."""
     executionContextId: "ExecutionContextId"
-    """Execution context in which to resolve the node."""
 
 
 class ResolveNodeReturns(BaseModel):
@@ -404,11 +324,8 @@ class ResolveNodeReturns(BaseModel):
 
 class SetAttributeValueParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the element to set attribute for."""
     name: "str"
-    """Attribute name."""
     value: "str"
-    """Attribute value."""
 
 
 
@@ -416,12 +333,8 @@ class SetAttributeValueParameters(TypedDict):
 
 class SetAttributesAsTextParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the element to set attributes for."""
     text: "str"
-    """Text with a number of attributes. Will parse this text using HTML parser."""
-    name: "Optional[str]"
-    """Attribute name to replace with new attributes derived from text in case text parsed
-successfully."""
+    name: "NotRequired[str]"
 
 
 
@@ -429,13 +342,9 @@ successfully."""
 
 class SetFileInputFilesParameters(TypedDict):
     files: "List[str]"
-    """Array of file paths to set."""
-    nodeId: "Optional[NodeId]"
-    """Identifier of the node."""
-    backendNodeId: "Optional[BackendNodeId]"
-    """Identifier of the backend node."""
-    objectId: "Optional[RemoteObjectId]"
-    """JavaScript object id of the node wrapper."""
+    nodeId: "NotRequired[NodeId]"
+    backendNodeId: "NotRequired[BackendNodeId]"
+    objectId: "NotRequired[RemoteObjectId]"
 
 
 
@@ -443,7 +352,6 @@ class SetFileInputFilesParameters(TypedDict):
 
 class SetNodeStackTracesEnabledParameters(TypedDict):
     enable: "bool"
-    """Enable or disable."""
 
 
 
@@ -451,7 +359,6 @@ class SetNodeStackTracesEnabledParameters(TypedDict):
 
 class GetNodeStackTracesParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node to get stack traces for."""
 
 
 class GetNodeStackTracesReturns(BaseModel):
@@ -461,7 +368,6 @@ class GetNodeStackTracesReturns(BaseModel):
 
 class GetFileInfoParameters(TypedDict):
     objectId: "RemoteObjectId"
-    """JavaScript object id of the node wrapper."""
 
 
 class GetFileInfoReturns(BaseModel):
@@ -476,7 +382,6 @@ class GetDetachedDomNodesReturns(BaseModel):
 
 class SetInspectedNodeParameters(TypedDict):
     nodeId: "NodeId"
-    """DOM node id to be accessible by means of $x command line API."""
 
 
 
@@ -484,9 +389,7 @@ class SetInspectedNodeParameters(TypedDict):
 
 class SetNodeNameParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node to set name for."""
     name: "str"
-    """New node's name."""
 
 
 class SetNodeNameReturns(BaseModel):
@@ -496,9 +399,7 @@ class SetNodeNameReturns(BaseModel):
 
 class SetNodeValueParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node to set value for."""
     value: "str"
-    """New node's value."""
 
 
 
@@ -506,9 +407,7 @@ class SetNodeValueParameters(TypedDict):
 
 class SetOuterHTMLParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node to set markup for."""
     outerHTML: "str"
-    """Outer HTML markup to set."""
 
 
 
@@ -526,10 +425,10 @@ class GetFrameOwnerReturns(BaseModel):
 
 class GetContainerForNodeParameters(TypedDict):
     nodeId: "NodeId"
-    containerName: "Optional[str]"
-    physicalAxes: "Optional[PhysicalAxes]"
-    logicalAxes: "Optional[LogicalAxes]"
-    queriesScrollState: "Optional[bool]"
+    containerName: "NotRequired[str]"
+    physicalAxes: "NotRequired[Union[PhysicalAxes, str]]"
+    logicalAxes: "NotRequired[Union[LogicalAxes, str]]"
+    queriesScrollState: "NotRequired[bool]"
 
 
 class GetContainerForNodeReturns(BaseModel):
@@ -539,7 +438,6 @@ class GetContainerForNodeReturns(BaseModel):
 
 class GetQueryingDescendantsForContainerParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the container node to find querying descendants from."""
 
 
 class GetQueryingDescendantsForContainerReturns(BaseModel):
@@ -549,12 +447,7 @@ class GetQueryingDescendantsForContainerReturns(BaseModel):
 
 class GetAnchorElementParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the positioned element from which to find the anchor."""
-    anchorSpecifier: "Optional[str]"
-    """An optional anchor specifier, as defined in
-https://www.w3.org/TR/css-anchor-position-1/#anchor-specifier.
-If not provided, it will return the implicit anchor element for
-the given positioned element."""
+    anchorSpecifier: "NotRequired[str]"
 
 
 class GetAnchorElementReturns(BaseModel):

@@ -98,6 +98,18 @@ class CDPGenerator:
 
         print(f"Generating CDP types for {len(domains)} domains...")
 
+        # Pre-pass to find all enums across all domains
+        all_enums = set()
+        for domain in domains:
+            domain_name = domain["domain"]
+            for type_def in domain.get("types", []):
+                if type_def.get("type") == "string" and "enum" in type_def:
+                    all_enums.add(f"{domain_name}.{type_def['id']}")
+
+        self.type_generator.all_enums = all_enums
+        self.command_generator.all_enums = all_enums
+        self.event_generator.all_enums = all_enums
+
         # Clean output directory
         self.clean_output_dir()
 

@@ -8,7 +8,6 @@ from typing_extensions import TypedDict
 
 class SetInstrumentationBreakpointParameters(TypedDict):
     eventName: "str"
-    """Instrumentation name to stop on."""
 
 
 
@@ -16,6 +15,5 @@ class SetInstrumentationBreakpointParameters(TypedDict):
 
 class RemoveInstrumentationBreakpointParameters(TypedDict):
     eventName: "str"
-    """Instrumentation name to stop on."""
 
 

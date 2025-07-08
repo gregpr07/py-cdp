@@ -5,7 +5,7 @@ Generates Python function signatures and parameter types for CDP commands.
 """
 
 import re
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Union
 
 
 class CommandGenerator:
@@ -15,6 +15,7 @@ class CommandGenerator:
         self.imports = set()
         self.generated_commands = set()
         self.type_checking_imports = set()
+        self.all_enums = set()
 
     def generate_commands(self, domain: Dict[str, Any]) -> str:
         """Generate commands.py content for a domain."""
@@ -28,7 +29,7 @@ class CommandGenerator:
         # Always add basic imports
         self.imports.add("from typing import Any, Dict, List, Optional, Union")
         self.imports.add(
-            "from typing_extensions import TypedDict"
+            "from typing_extensions import TypedDict, NotRequired"
         )  # For parameter types
         self.imports.add("from pydantic import BaseModel")  # For return types
 
@@ -157,14 +158,9 @@ class CommandGenerator:
 
                 # Handle optional parameters
                 if param.get("optional", False) and required_params:
-                    param_type = f"Optional[{param_type}]"
+                    param_type = f"NotRequired[{param_type}]"
 
                 content += f'    {param_name}: "{param_type}"\n'
-
-                if param_desc:
-                    # Escape all quotes in descriptions
-                    escaped_desc = param_desc.replace("\\", "\\\\").replace('"', '\\"')
-                    content += f'    """{escaped_desc}"""\n'
 
         self.generated_commands.add(class_name)
         return content
@@ -231,6 +227,7 @@ class CommandGenerator:
         """Resolve a type reference ($ref)."""
         if "$ref" in type_ref:
             ref = type_ref["$ref"]
+            type_name = ""
 
             # Handle cross-domain references
             if "." in ref:
@@ -242,11 +239,16 @@ class CommandGenerator:
                 self.type_checking_imports.add(
                     f"from ..{domain_ref}.types import {type_name}"
                 )
-                return type_name
             else:
+                type_name = ref
                 # Same domain reference - always import from types module in commands
                 self.type_checking_imports.add(f"from .types import {ref}")
-                return ref
+
+            fqn = ref if "." in ref else f"{current_domain}.{ref}"
+            if fqn in self.all_enums:
+                return f"Union[{type_name}, str]"
+
+            return type_name
 
         # Handle inline type definitions
         if "type" in type_ref:

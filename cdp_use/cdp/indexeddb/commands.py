@@ -5,8 +5,8 @@
 """CDP IndexedDB Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -17,74 +17,48 @@ if TYPE_CHECKING:
     from .types import KeyRange
 
 class ClearObjectStoreParameters(TypedDict):
-    securityOrigin: "Optional[str]"
-    """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
-Security origin."""
-    storageKey: "Optional[str]"
-    """Storage key."""
-    storageBucket: "Optional[StorageBucket]"
-    """Storage bucket. If not specified, it uses the default bucket."""
+    securityOrigin: "NotRequired[str]"
+    storageKey: "NotRequired[str]"
+    storageBucket: "NotRequired[StorageBucket]"
     databaseName: "str"
-    """Database name."""
     objectStoreName: "str"
-    """Object store name."""
 
 
 
 
 
 class DeleteDatabaseParameters(TypedDict):
-    securityOrigin: "Optional[str]"
-    """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
-Security origin."""
-    storageKey: "Optional[str]"
-    """Storage key."""
-    storageBucket: "Optional[StorageBucket]"
-    """Storage bucket. If not specified, it uses the default bucket."""
+    securityOrigin: "NotRequired[str]"
+    storageKey: "NotRequired[str]"
+    storageBucket: "NotRequired[StorageBucket]"
     databaseName: "str"
-    """Database name."""
 
 
 
 
 
 class DeleteObjectStoreEntriesParameters(TypedDict):
-    securityOrigin: "Optional[str]"
-    """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
-Security origin."""
-    storageKey: "Optional[str]"
-    """Storage key."""
-    storageBucket: "Optional[StorageBucket]"
-    """Storage bucket. If not specified, it uses the default bucket."""
+    securityOrigin: "NotRequired[str]"
+    storageKey: "NotRequired[str]"
+    storageBucket: "NotRequired[StorageBucket]"
     databaseName: "str"
     objectStoreName: "str"
     keyRange: "KeyRange"
-    """Range of entry keys to delete"""
 
 
 
 
 
 class RequestDataParameters(TypedDict):
-    securityOrigin: "Optional[str]"
-    """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
-Security origin."""
-    storageKey: "Optional[str]"
-    """Storage key."""
-    storageBucket: "Optional[StorageBucket]"
-    """Storage bucket. If not specified, it uses the default bucket."""
+    securityOrigin: "NotRequired[str]"
+    storageKey: "NotRequired[str]"
+    storageBucket: "NotRequired[StorageBucket]"
     databaseName: "str"
-    """Database name."""
     objectStoreName: "str"
-    """Object store name."""
     indexName: "str"
-    """Index name, empty string for object store data requests."""
     skipCount: "int"
-    """Number of records to skip."""
     pageSize: "int"
-    """Number of records to fetch."""
-    keyRange: "Optional[KeyRange]"
-    """Key range."""
+    keyRange: "NotRequired[KeyRange]"
 
 
 class RequestDataReturns(BaseModel):
@@ -94,17 +68,11 @@ class RequestDataReturns(BaseModel):
 
 
 class GetMetadataParameters(TypedDict):
-    securityOrigin: "Optional[str]"
-    """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
-Security origin."""
-    storageKey: "Optional[str]"
-    """Storage key."""
-    storageBucket: "Optional[StorageBucket]"
-    """Storage bucket. If not specified, it uses the default bucket."""
+    securityOrigin: "NotRequired[str]"
+    storageKey: "NotRequired[str]"
+    storageBucket: "NotRequired[StorageBucket]"
     databaseName: "str"
-    """Database name."""
     objectStoreName: "str"
-    """Object store name."""
 
 
 class GetMetadataReturns(BaseModel):
@@ -114,15 +82,10 @@ class GetMetadataReturns(BaseModel):
 
 
 class RequestDatabaseParameters(TypedDict):
-    securityOrigin: "Optional[str]"
-    """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
-Security origin."""
-    storageKey: "Optional[str]"
-    """Storage key."""
-    storageBucket: "Optional[StorageBucket]"
-    """Storage bucket. If not specified, it uses the default bucket."""
+    securityOrigin: "NotRequired[str]"
+    storageKey: "NotRequired[str]"
+    storageBucket: "NotRequired[StorageBucket]"
     databaseName: "str"
-    """Database name."""
 
 
 class RequestDatabaseReturns(BaseModel):
@@ -132,12 +95,8 @@ class RequestDatabaseReturns(BaseModel):
 
 class RequestDatabaseNamesParameters(TypedDict, total=False):
     securityOrigin: "str"
-    """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
-Security origin."""
     storageKey: "str"
-    """Storage key."""
     storageBucket: "StorageBucket"
-    """Storage bucket. If not specified, it uses the default bucket."""
 
 
 class RequestDatabaseNamesReturns(BaseModel):

@@ -5,7 +5,7 @@
 """CDP FedCm Domain Events"""
 
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 class DialogShownEvent(BaseModel):
     dialogId: "str"
-    dialogType: "DialogType"
+    dialogType: "Union[DialogType, str]"
     accounts: "List[Account]"
     title: "str"
     subtitle: "Optional[str]" = None

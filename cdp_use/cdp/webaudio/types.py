@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Union
 
 """An unique ID for a graph object (AudioContext, AudioNode, AudioParam) in Web Audio API"""
 GraphObjectId = str
@@ -73,8 +73,8 @@ class ContextRealtimeData(BaseModel):
 class BaseAudioContext(BaseModel):
     """Protocol object for BaseAudioContext"""
     contextId: "GraphObjectId"
-    contextType: "ContextType"
-    contextState: "ContextState"
+    contextType: "Union[ContextType, str]"
+    contextState: "Union[ContextState, str]"
     callbackBufferSize: "float"
     maxOutputChannelCount: "float"
     sampleRate: "float"
@@ -97,8 +97,8 @@ class AudioNode(BaseModel):
     numberOfInputs: "float"
     numberOfOutputs: "float"
     channelCount: "float"
-    channelCountMode: "ChannelCountMode"
-    channelInterpretation: "ChannelInterpretation"
+    channelCountMode: "Union[ChannelCountMode, str]"
+    channelInterpretation: "Union[ChannelInterpretation, str]"
 
 
 
@@ -108,7 +108,7 @@ class AudioParam(BaseModel):
     nodeId: "GraphObjectId"
     contextId: "GraphObjectId"
     paramType: "ParamType"
-    rate: "AutomationRate"
+    rate: "Union[AutomationRate, str]"
     defaultValue: "float"
     minValue: "float"
     maxValue: "float"

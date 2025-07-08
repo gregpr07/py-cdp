@@ -5,7 +5,7 @@
 """CDP Network Domain Events"""
 
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -68,10 +68,10 @@ class LoadingFailedEvent(BaseModel):
     """Fired when HTTP request has failed to load."""
     requestId: "RequestId"
     timestamp: "MonotonicTime"
-    type: "ResourceType"
+    type: "Union[ResourceType, str]"
     errorText: "str"
     canceled: "Optional[bool]" = None
-    blockedReason: "Optional[BlockedReason]" = None
+    blockedReason: "Optional[Union[BlockedReason, str]]" = None
     corsErrorStatus: "Optional[CorsErrorStatus]" = None
 
 
@@ -91,12 +91,12 @@ Deprecated, use Fetch.requestPaused instead."""
     interceptionId: "InterceptionId"
     request: "Request"
     frameId: "FrameId"
-    resourceType: "ResourceType"
+    resourceType: "Union[ResourceType, str]"
     isNavigationRequest: "bool"
     isDownload: "Optional[bool]" = None
     redirectUrl: "Optional[str]" = None
     authChallenge: "Optional[AuthChallenge]" = None
-    responseErrorReason: "Optional[ErrorReason]" = None
+    responseErrorReason: "Optional[Union[ErrorReason, str]]" = None
     responseStatusCode: "Optional[int]" = None
     responseHeaders: "Optional[Headers]" = None
     requestId: "Optional[RequestId]" = None
@@ -120,7 +120,7 @@ class RequestWillBeSentEvent(BaseModel):
     initiator: "Initiator"
     redirectHasExtraInfo: "bool"
     redirectResponse: "Optional[Response]" = None
-    type: "Optional[ResourceType]" = None
+    type: "Optional[Union[ResourceType, str]]" = None
     frameId: "Optional[FrameId]" = None
     hasUserGesture: "Optional[bool]" = None
 
@@ -129,7 +129,7 @@ class RequestWillBeSentEvent(BaseModel):
 class ResourceChangedPriorityEvent(BaseModel):
     """Fired when resource loading priority is changed"""
     requestId: "RequestId"
-    newPriority: "ResourcePriority"
+    newPriority: "Union[ResourcePriority, str]"
     timestamp: "MonotonicTime"
 
 
@@ -146,7 +146,7 @@ class ResponseReceivedEvent(BaseModel):
     requestId: "RequestId"
     loaderId: "LoaderId"
     timestamp: "MonotonicTime"
-    type: "ResourceType"
+    type: "Union[ResourceType, str]"
     response: "Response"
     hasExtraInfo: "bool"
     frameId: "Optional[FrameId]" = None
@@ -357,7 +357,7 @@ it, and responseReceivedExtraInfo may be fired before or after responseReceived.
     requestId: "RequestId"
     blockedCookies: "List[BlockedSetCookieWithReason]"
     headers: "Headers"
-    resourceIPAddressSpace: "IPAddressSpace"
+    resourceIPAddressSpace: "Union[IPAddressSpace, str]"
     statusCode: "int"
     headersText: "Optional[str]" = None
     cookiePartitionKey: "Optional[CookiePartitionKey]" = None
@@ -381,7 +381,7 @@ the type of the operation and whether the operation succeeded or
 failed, the event is fired before the corresponding request was sent
 or after the response was received."""
     status: "str"
-    type: "TrustTokenOperationType"
+    type: "Union[TrustTokenOperationType, str]"
     requestId: "RequestId"
     topLevelOrigin: "Optional[str]" = None
     issuerOrigin: "Optional[str]" = None

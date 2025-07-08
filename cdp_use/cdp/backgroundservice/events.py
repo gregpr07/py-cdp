@@ -5,6 +5,7 @@
 """CDP BackgroundService Domain Events"""
 
 from pydantic import BaseModel
+from typing import Union
 
 from typing import TYPE_CHECKING
 
@@ -15,7 +16,7 @@ if TYPE_CHECKING:
 class RecordingStateChangedEvent(BaseModel):
     """Called when the recording state for the service has been updated."""
     isRecording: "bool"
-    service: "ServiceName"
+    service: "Union[ServiceName, str]"
 
 
 

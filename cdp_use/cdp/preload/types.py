@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -28,7 +28,7 @@ class RuleSet(BaseModel):
     backendNodeId: "Optional[BackendNodeId]" = None
     url: "Optional[str]" = None
     requestId: "Optional[RequestId]" = None
-    errorType: "Optional[RuleSetErrorType]" = None
+    errorType: "Optional[Union[RuleSetErrorType, str]]" = None
     errorMessage: "Optional[str]" = None
 
 
@@ -64,9 +64,9 @@ not the final url that is navigated to. For example, prerendering allows
 same-origin main frame navigations during the attempt, but the attempt is
 still keyed with the initial URL."""
     loaderId: "LoaderId"
-    action: "SpeculationAction"
+    action: "Union[SpeculationAction, str]"
     url: "str"
-    targetHint: "Optional[SpeculationTargetHint]" = None
+    targetHint: "Optional[Union[SpeculationTargetHint, str]]" = None
 
 
 

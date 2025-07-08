@@ -5,8 +5,8 @@
 """CDP CacheStorage Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -20,7 +20,6 @@ if TYPE_CHECKING:
 
 class DeleteCacheParameters(TypedDict):
     cacheId: "CacheId"
-    """Id of cache for deletion."""
 
 
 
@@ -28,9 +27,7 @@ class DeleteCacheParameters(TypedDict):
 
 class DeleteEntryParameters(TypedDict):
     cacheId: "CacheId"
-    """Id of cache where the entry will be deleted."""
     request: "str"
-    """URL spec of the request."""
 
 
 
@@ -38,12 +35,8 @@ class DeleteEntryParameters(TypedDict):
 
 class RequestCacheNamesParameters(TypedDict, total=False):
     securityOrigin: "str"
-    """At least and at most one of securityOrigin, storageKey, storageBucket must be specified.
-Security origin."""
     storageKey: "str"
-    """Storage key."""
     storageBucket: "StorageBucket"
-    """Storage bucket. If not specified, it uses the default bucket."""
 
 
 class RequestCacheNamesReturns(BaseModel):
@@ -53,11 +46,8 @@ class RequestCacheNamesReturns(BaseModel):
 
 class RequestCachedResponseParameters(TypedDict):
     cacheId: "CacheId"
-    """Id of cache that contains the entry."""
     requestURL: "str"
-    """URL spec of the request."""
     requestHeaders: "List[Header]"
-    """headers of the request."""
 
 
 class RequestCachedResponseReturns(BaseModel):
@@ -67,13 +57,9 @@ class RequestCachedResponseReturns(BaseModel):
 
 class RequestEntriesParameters(TypedDict):
     cacheId: "CacheId"
-    """ID of cache to get entries from."""
-    skipCount: "Optional[int]"
-    """Number of records to skip."""
-    pageSize: "Optional[int]"
-    """Number of records to fetch."""
-    pathFilter: "Optional[str]"
-    """If present, only return the entries containing this substring in the path"""
+    skipCount: "NotRequired[int]"
+    pageSize: "NotRequired[int]"
+    pathFilter: "NotRequired[str]"
 
 
 class RequestEntriesReturns(BaseModel):

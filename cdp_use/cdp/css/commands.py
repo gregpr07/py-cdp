@@ -5,8 +5,8 @@
 """CDP CSS Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List, Optional, Union
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -45,15 +45,9 @@ if TYPE_CHECKING:
 
 class AddRuleParameters(TypedDict):
     styleSheetId: "StyleSheetId"
-    """The css style sheet identifier where a new rule should be inserted."""
     ruleText: "str"
-    """The text of a new rule."""
     location: "SourceRange"
-    """Text position of a new rule in the target style sheet."""
-    nodeForPropertySyntaxValidation: "Optional[NodeId]"
-    """NodeId for the DOM node in whose context custom property declarations for registered properties should be
-validated. If omitted, declarations in the new rule text can only be validated statically, which may produce
-incorrect results if the declaration contains a var() for example."""
+    nodeForPropertySyntaxValidation: "NotRequired[NodeId]"
 
 
 class AddRuleReturns(BaseModel):
@@ -72,12 +66,7 @@ class CollectClassNamesReturns(BaseModel):
 
 class CreateStyleSheetParameters(TypedDict):
     frameId: "FrameId"
-    """Identifier of the frame where \"via-inspector\" stylesheet should be created."""
-    force: "Optional[bool]"
-    """If true, creates a new stylesheet for every call. If false,
-returns a stylesheet previously created by a call with force=false
-for the frame's document if it exists or creates a new stylesheet
-(default: false)."""
+    force: "NotRequired[bool]"
 
 
 class CreateStyleSheetReturns(BaseModel):
@@ -87,9 +76,7 @@ class CreateStyleSheetReturns(BaseModel):
 
 class ForcePseudoStateParameters(TypedDict):
     nodeId: "NodeId"
-    """The element id for which to force the pseudo state."""
     forcedPseudoClasses: "List[str]"
-    """Element pseudo classes to force when computing the element's style."""
 
 
 
@@ -97,9 +84,7 @@ class ForcePseudoStateParameters(TypedDict):
 
 class ForceStartingStyleParameters(TypedDict):
     nodeId: "NodeId"
-    """The element id for which to force the starting-style state."""
     forced: "bool"
-    """Boolean indicating if this is on or off."""
 
 
 
@@ -107,7 +92,6 @@ class ForceStartingStyleParameters(TypedDict):
 
 class GetBackgroundColorsParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node to get background colors for."""
 
 
 class GetBackgroundColorsReturns(BaseModel):
@@ -128,17 +112,10 @@ class GetComputedStyleForNodeReturns(BaseModel):
 
 class ResolveValuesParameters(TypedDict):
     values: "List[str]"
-    """Substitution functions (var()/env()/attr()) and cascade-dependent
-keywords (revert/revert-layer) do not work."""
     nodeId: "NodeId"
-    """Id of the node in whose context the expression is evaluated"""
-    propertyName: "Optional[str]"
-    """Only longhands and custom property names are accepted."""
-    pseudoType: "Optional[PseudoType]"
-    """Pseudo element type, only works for pseudo elements that generate
-elements in the tree, such as ::before and ::after."""
-    pseudoIdentifier: "Optional[str]"
-    """Pseudo element custom ident."""
+    propertyName: "NotRequired[str]"
+    pseudoType: "NotRequired[Union[PseudoType, str]]"
+    pseudoIdentifier: "NotRequired[str]"
 
 
 class ResolveValuesReturns(BaseModel):
@@ -262,7 +239,6 @@ class TakeComputedStyleUpdatesReturns(BaseModel):
 
 class SetEffectivePropertyValueForNodeParameters(TypedDict):
     nodeId: "NodeId"
-    """The element id for which to set property."""
     propertyName: "str"
     value: "str"
 
@@ -359,10 +335,7 @@ class SetStyleSheetTextReturns(BaseModel):
 
 class SetStyleTextsParameters(TypedDict):
     edits: "List[StyleDeclarationEdit]"
-    nodeForPropertySyntaxValidation: "Optional[NodeId]"
-    """NodeId for the DOM node in whose context custom property declarations for registered properties should be
-validated. If omitted, declarations in the new rule text can only be validated statically, which may produce
-incorrect results if the declaration contains a var() for example."""
+    nodeForPropertySyntaxValidation: "NotRequired[NodeId]"
 
 
 class SetStyleTextsReturns(BaseModel):
@@ -383,7 +356,6 @@ class TakeCoverageDeltaReturns(BaseModel):
 
 class SetLocalFontsEnabledParameters(TypedDict):
     enabled: "bool"
-    """Whether rendering of local fonts is enabled."""
 
 
 

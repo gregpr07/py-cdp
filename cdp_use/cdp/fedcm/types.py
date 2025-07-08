@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Union
 
 class LoginState(Enum):
     """Whether this is a sign-up or sign-in action for this account, i.e.
@@ -49,7 +49,7 @@ class Account(BaseModel):
     pictureUrl: "str"
     idpConfigUrl: "str"
     idpLoginUrl: "str"
-    loginState: "LoginState"
+    loginState: "Union[LoginState, str]"
     termsOfServiceUrl: "Optional[str]" = None
     privacyPolicyUrl: "Optional[str]" = None
 

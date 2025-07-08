@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -37,7 +37,7 @@ class DataEntry(BaseModel):
     responseTime: "float"
     responseStatus: "int"
     responseStatusText: "str"
-    responseType: "CachedResponseType"
+    responseType: "Union[CachedResponseType, str]"
     responseHeaders: "List[Header]"
 
 

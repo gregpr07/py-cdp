@@ -5,7 +5,7 @@
 """CDP Debugger Domain Events"""
 
 from pydantic import BaseModel
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -65,7 +65,7 @@ class ScriptFailedToParseEvent(BaseModel):
     length: "Optional[int]" = None
     stackTrace: "Optional[StackTrace]" = None
     codeOffset: "Optional[int]" = None
-    scriptLanguage: "Optional[ScriptLanguage]" = None
+    scriptLanguage: "Optional[Union[ScriptLanguage, str]]" = None
     embedderName: "Optional[str]" = None
 
 
@@ -90,7 +90,7 @@ scripts upon enabling debugger."""
     length: "Optional[int]" = None
     stackTrace: "Optional[StackTrace]" = None
     codeOffset: "Optional[int]" = None
-    scriptLanguage: "Optional[ScriptLanguage]" = None
+    scriptLanguage: "Optional[Union[ScriptLanguage, str]]" = None
     debugSymbols: "Optional[List[DebugSymbols]]" = None
     embedderName: "Optional[str]" = None
     resolvedBreakpoints: "Optional[List[ResolvedBreakpoint]]" = None

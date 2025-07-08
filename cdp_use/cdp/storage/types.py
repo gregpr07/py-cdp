@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -38,7 +38,7 @@ class StorageType(Enum):
 
 class UsageForType(BaseModel):
     """Usage for a storage type."""
-    storageType: "StorageType"
+    storageType: "Union[StorageType, str]"
     usage: "float"
 
 
@@ -199,7 +199,7 @@ class StorageBucketInfo(BaseModel):
     expiration: "TimeSinceEpoch"
     quota: "float"
     persistent: "bool"
-    durability: "StorageBucketsDurability"
+    durability: "Union[StorageBucketsDurability, str]"
 
 
 
@@ -291,7 +291,7 @@ class AttributionReportingSourceRegistration(BaseModel):
     triggerData: "List[float]"
     eventReportWindows: "AttributionReportingEventReportWindows"
     aggregatableReportWindow: "int"
-    type: "AttributionReportingSourceType"
+    type: "Union[AttributionReportingSourceType, str]"
     sourceOrigin: "str"
     reportingOrigin: "str"
     destinationSites: "List[str]"
@@ -299,7 +299,7 @@ class AttributionReportingSourceRegistration(BaseModel):
     priority: "SignedInt64AsBase10"
     filterData: "List[AttributionReportingFilterDataEntry]"
     aggregationKeys: "List[AttributionReportingAggregationKeysEntry]"
-    triggerDataMatching: "AttributionReportingTriggerDataMatching"
+    triggerDataMatching: "Union[AttributionReportingTriggerDataMatching, str]"
     destinationLimitPriority: "SignedInt64AsBase10"
     aggregatableDebugReportingConfig: "AttributionReportingAggregatableDebugReportingConfig"
     maxEventLevelReports: "int"
@@ -385,7 +385,7 @@ class AttributionReportingTriggerRegistration(BaseModel):
     aggregatableValues: "List[AttributionReportingAggregatableValueEntry]"
     aggregatableFilteringIdMaxBytes: "int"
     debugReporting: "bool"
-    sourceRegistrationTimeConfig: "AttributionReportingSourceRegistrationTimeConfig"
+    sourceRegistrationTimeConfig: "Union[AttributionReportingSourceRegistrationTimeConfig, str]"
     aggregatableDebugReportingConfig: "AttributionReportingAggregatableDebugReportingConfig"
     scopes: "List[str]"
     namedBudgets: "List[AttributionReportingNamedBudgetCandidate]"

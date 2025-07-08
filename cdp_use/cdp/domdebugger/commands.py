@@ -5,8 +5,8 @@
 """CDP DOMDebugger Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List, Union
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -19,13 +19,8 @@ if TYPE_CHECKING:
 
 class GetEventListenersParameters(TypedDict):
     objectId: "RemoteObjectId"
-    """Identifier of the object to return listeners for."""
-    depth: "Optional[int]"
-    """The maximum depth at which Node children should be retrieved, defaults to 1. Use -1 for the
-entire subtree or provide an integer larger than 0."""
-    pierce: "Optional[bool]"
-    """Whether or not iframes and shadow roots should be traversed when returning the subtree
-(default is false). Reports listeners for all contexts if pierce is enabled."""
+    depth: "NotRequired[int]"
+    pierce: "NotRequired[bool]"
 
 
 class GetEventListenersReturns(BaseModel):
@@ -35,9 +30,7 @@ class GetEventListenersReturns(BaseModel):
 
 class RemoveDOMBreakpointParameters(TypedDict):
     nodeId: "NodeId"
-    """Identifier of the node to remove breakpoint from."""
-    type: "DOMBreakpointType"
-    """Type of the breakpoint to remove."""
+    type: "Union[DOMBreakpointType, str]"
 
 
 
@@ -45,9 +38,7 @@ class RemoveDOMBreakpointParameters(TypedDict):
 
 class RemoveEventListenerBreakpointParameters(TypedDict):
     eventName: "str"
-    """Event name."""
-    targetName: "Optional[str]"
-    """EventTarget interface name."""
+    targetName: "NotRequired[str]"
 
 
 
@@ -55,7 +46,6 @@ class RemoveEventListenerBreakpointParameters(TypedDict):
 
 class RemoveInstrumentationBreakpointParameters(TypedDict):
     eventName: "str"
-    """Instrumentation name to stop on."""
 
 
 
@@ -63,15 +53,13 @@ class RemoveInstrumentationBreakpointParameters(TypedDict):
 
 class RemoveXHRBreakpointParameters(TypedDict):
     url: "str"
-    """Resource URL substring."""
 
 
 
 
 
 class SetBreakOnCSPViolationParameters(TypedDict):
-    violationTypes: "List[CSPViolationType]"
-    """CSP Violations to stop upon."""
+    violationTypes: "List[Union[CSPViolationType, str]]"
 
 
 
@@ -79,9 +67,7 @@ class SetBreakOnCSPViolationParameters(TypedDict):
 
 class SetDOMBreakpointParameters(TypedDict):
     nodeId: "NodeId"
-    """Identifier of the node to set breakpoint on."""
-    type: "DOMBreakpointType"
-    """Type of the operation to stop upon."""
+    type: "Union[DOMBreakpointType, str]"
 
 
 
@@ -89,10 +75,7 @@ class SetDOMBreakpointParameters(TypedDict):
 
 class SetEventListenerBreakpointParameters(TypedDict):
     eventName: "str"
-    """DOM Event name to stop on (any DOM event will do)."""
-    targetName: "Optional[str]"
-    """EventTarget interface name to stop on. If equal to `\"*\"` or not provided, will stop on any
-EventTarget."""
+    targetName: "NotRequired[str]"
 
 
 
@@ -100,7 +83,6 @@ EventTarget."""
 
 class SetInstrumentationBreakpointParameters(TypedDict):
     eventName: "str"
-    """Instrumentation name to stop on."""
 
 
 
@@ -108,7 +90,6 @@ class SetInstrumentationBreakpointParameters(TypedDict):
 
 class SetXHRBreakpointParameters(TypedDict):
     url: "str"
-    """Resource URL substring. All XHRs having this substring in the URL will get stopped upon."""
 
 
 

@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -69,12 +69,12 @@ class AXValueNativeSourceType(Enum):
 
 class AXValueSource(BaseModel):
     """A single source for a computed AX property."""
-    type: "AXValueSourceType"
+    type: "Union[AXValueSourceType, str]"
     value: "Optional[AXValue]" = None
     attribute: "Optional[str]" = None
     attributeValue: "Optional[AXValue]" = None
     superseded: "Optional[bool]" = None
-    nativeSource: "Optional[AXValueNativeSourceType]" = None
+    nativeSource: "Optional[Union[AXValueNativeSourceType, str]]" = None
     nativeSourceValue: "Optional[AXValue]" = None
     invalid: "Optional[bool]" = None
     invalidReason: "Optional[str]" = None
@@ -89,14 +89,14 @@ class AXRelatedNode(BaseModel):
 
 
 class AXProperty(BaseModel):
-    name: "AXPropertyName"
+    name: "Union[AXPropertyName, str]"
     value: "AXValue"
 
 
 
 class AXValue(BaseModel):
     """A single computed AX property."""
-    type: "AXValueType"
+    type: "Union[AXValueType, str]"
     value: "Optional[Any]" = None
     relatedNodes: "Optional[List[AXRelatedNode]]" = None
     sources: "Optional[List[AXValueSource]]" = None

@@ -15,7 +15,6 @@ if TYPE_CHECKING:
 
 class GetCurrentTimeParameters(TypedDict):
     id: "str"
-    """Id of animation."""
 
 
 class GetCurrentTimeReturns(BaseModel):
@@ -30,7 +29,6 @@ class GetPlaybackRateReturns(BaseModel):
 
 class ReleaseAnimationsParameters(TypedDict):
     animations: "List[str]"
-    """List of animation ids to seek."""
 
 
 
@@ -38,7 +36,6 @@ class ReleaseAnimationsParameters(TypedDict):
 
 class ResolveAnimationParameters(TypedDict):
     animationId: "str"
-    """Animation id."""
 
 
 class ResolveAnimationReturns(BaseModel):
@@ -48,9 +45,7 @@ class ResolveAnimationReturns(BaseModel):
 
 class SeekAnimationsParameters(TypedDict):
     animations: "List[str]"
-    """List of animation ids to seek."""
     currentTime: "float"
-    """Set the current time of each animation."""
 
 
 
@@ -58,9 +53,7 @@ class SeekAnimationsParameters(TypedDict):
 
 class SetPausedParameters(TypedDict):
     animations: "List[str]"
-    """Animations to set the pause state of."""
     paused: "bool"
-    """Paused state to set to."""
 
 
 
@@ -68,7 +61,6 @@ class SetPausedParameters(TypedDict):
 
 class SetPlaybackRateParameters(TypedDict):
     playbackRate: "float"
-    """Playback rate for animations on page"""
 
 
 
@@ -76,11 +68,8 @@ class SetPlaybackRateParameters(TypedDict):
 
 class SetTimingParameters(TypedDict):
     animationId: "str"
-    """Animation id."""
     duration: "float"
-    """Duration of the animation."""
     delay: "float"
-    """Delay of the animation."""
 
 
 

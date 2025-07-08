@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -135,9 +135,9 @@ DOMNode is a base node mirror type."""
     xmlVersion: "Optional[str]" = None
     name: "Optional[str]" = None
     value: "Optional[str]" = None
-    pseudoType: "Optional[PseudoType]" = None
+    pseudoType: "Optional[Union[PseudoType, str]]" = None
     pseudoIdentifier: "Optional[str]" = None
-    shadowRootType: "Optional[ShadowRootType]" = None
+    shadowRootType: "Optional[Union[ShadowRootType, str]]" = None
     frameId: "Optional[FrameId]" = None
     contentDocument: "Optional[Node]" = None
     shadowRoots: "Optional[List[Node]]" = None
@@ -146,7 +146,7 @@ DOMNode is a base node mirror type."""
     importedDocument: "Optional[Node]" = None
     distributedNodes: "Optional[List[BackendNode]]" = None
     isSVG: "Optional[bool]" = None
-    compatibilityMode: "Optional[CompatibilityMode]" = None
+    compatibilityMode: "Optional[Union[CompatibilityMode, str]]" = None
     assignedSlot: "Optional[BackendNode]" = None
     isScrollable: "Optional[bool]" = None
 

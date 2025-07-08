@@ -5,8 +5,8 @@
 """CDP BluetoothEmulation Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List, Union
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -20,18 +20,15 @@ if TYPE_CHECKING:
     from .types import ScanEntry
 
 class EnableParameters(TypedDict):
-    state: "CentralState"
-    """State of the simulated central."""
+    state: "Union[CentralState, str]"
     leSupported: "bool"
-    """If the simulated central supports low-energy."""
 
 
 
 
 
 class SetSimulatedCentralStateParameters(TypedDict):
-    state: "CentralState"
-    """State of the simulated central."""
+    state: "Union[CentralState, str]"
 
 
 
@@ -56,7 +53,7 @@ class SimulateAdvertisementParameters(TypedDict):
 
 class SimulateGATTOperationResponseParameters(TypedDict):
     address: "str"
-    type: "GATTOperationType"
+    type: "Union[GATTOperationType, str]"
     code: "int"
 
 
@@ -65,9 +62,9 @@ class SimulateGATTOperationResponseParameters(TypedDict):
 
 class SimulateCharacteristicOperationResponseParameters(TypedDict):
     characteristicId: "str"
-    type: "CharacteristicOperationType"
+    type: "Union[CharacteristicOperationType, str]"
     code: "int"
-    data: "Optional[str]"
+    data: "NotRequired[str]"
 
 
 
@@ -75,9 +72,9 @@ class SimulateCharacteristicOperationResponseParameters(TypedDict):
 
 class SimulateDescriptorOperationResponseParameters(TypedDict):
     descriptorId: "str"
-    type: "DescriptorOperationType"
+    type: "Union[DescriptorOperationType, str]"
     code: "int"
-    data: "Optional[str]"
+    data: "NotRequired[str]"
 
 
 

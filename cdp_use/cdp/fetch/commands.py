@@ -5,8 +5,8 @@
 """CDP Fetch Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List, Union
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -20,12 +20,7 @@ if TYPE_CHECKING:
 
 class EnableParameters(TypedDict, total=False):
     patterns: "List[RequestPattern]"
-    """If specified, only requests matching any of these patterns will produce
-fetchRequested event and will be paused until clients response. If not set,
-all requests will be affected."""
     handleAuthRequests: "bool"
-    """If true, authRequired events will be issued and requests will be paused
-expecting a call to continueWithAuth."""
 
 
 
@@ -33,9 +28,7 @@ expecting a call to continueWithAuth."""
 
 class FailRequestParameters(TypedDict):
     requestId: "RequestId"
-    """An id the client received in requestPaused event."""
-    errorReason: "ErrorReason"
-    """Causes the request to fail with the given reason."""
+    errorReason: "Union[ErrorReason, str]"
 
 
 
@@ -43,23 +36,11 @@ class FailRequestParameters(TypedDict):
 
 class FulfillRequestParameters(TypedDict):
     requestId: "RequestId"
-    """An id the client received in requestPaused event."""
     responseCode: "int"
-    """An HTTP response code."""
-    responseHeaders: "Optional[List[HeaderEntry]]"
-    """Response headers."""
-    binaryResponseHeaders: "Optional[str]"
-    """Alternative way of specifying response headers as a \\0-separated
-series of name: value pairs. Prefer the above method unless you
-need to represent some non-UTF8 values that can't be transmitted
-over the protocol as text. (Encoded as a base64 string when passed over JSON)"""
-    body: "Optional[str]"
-    """A response body. If absent, original response body will be used if
-the request is intercepted at the response stage and empty body
-will be used if the request is intercepted at the request stage. (Encoded as a base64 string when passed over JSON)"""
-    responsePhrase: "Optional[str]"
-    """A textual representation of responseCode.
-If absent, a standard phrase matching responseCode is used."""
+    responseHeaders: "NotRequired[List[HeaderEntry]]"
+    binaryResponseHeaders: "NotRequired[str]"
+    body: "NotRequired[str]"
+    responsePhrase: "NotRequired[str]"
 
 
 
@@ -67,19 +48,11 @@ If absent, a standard phrase matching responseCode is used."""
 
 class ContinueRequestParameters(TypedDict):
     requestId: "RequestId"
-    """An id the client received in requestPaused event."""
-    url: "Optional[str]"
-    """If set, the request url will be modified in a way that's not observable by page."""
-    method: "Optional[str]"
-    """If set, the request method is overridden."""
-    postData: "Optional[str]"
-    """If set, overrides the post data in the request. (Encoded as a base64 string when passed over JSON)"""
-    headers: "Optional[List[HeaderEntry]]"
-    """If set, overrides the request headers. Note that the overrides do not
-extend to subsequent redirect hops, if a redirect happens. Another override
-may be applied to a different request produced by a redirect."""
-    interceptResponse: "Optional[bool]"
-    """If set, overrides response interception behavior for this request."""
+    url: "NotRequired[str]"
+    method: "NotRequired[str]"
+    postData: "NotRequired[str]"
+    headers: "NotRequired[List[HeaderEntry]]"
+    interceptResponse: "NotRequired[bool]"
 
 
 
@@ -87,9 +60,7 @@ may be applied to a different request produced by a redirect."""
 
 class ContinueWithAuthParameters(TypedDict):
     requestId: "RequestId"
-    """An id the client received in authRequired event."""
     authChallengeResponse: "AuthChallengeResponse"
-    """Response to  with an authChallenge."""
 
 
 
@@ -97,19 +68,10 @@ class ContinueWithAuthParameters(TypedDict):
 
 class ContinueResponseParameters(TypedDict):
     requestId: "RequestId"
-    """An id the client received in requestPaused event."""
-    responseCode: "Optional[int]"
-    """An HTTP response code. If absent, original response code will be used."""
-    responsePhrase: "Optional[str]"
-    """A textual representation of responseCode.
-If absent, a standard phrase matching responseCode is used."""
-    responseHeaders: "Optional[List[HeaderEntry]]"
-    """Response headers. If absent, original response headers will be used."""
-    binaryResponseHeaders: "Optional[str]"
-    """Alternative way of specifying response headers as a \\0-separated
-series of name: value pairs. Prefer the above method unless you
-need to represent some non-UTF8 values that can't be transmitted
-over the protocol as text. (Encoded as a base64 string when passed over JSON)"""
+    responseCode: "NotRequired[int]"
+    responsePhrase: "NotRequired[str]"
+    responseHeaders: "NotRequired[List[HeaderEntry]]"
+    binaryResponseHeaders: "NotRequired[str]"
 
 
 
@@ -117,7 +79,6 @@ over the protocol as text. (Encoded as a base64 string when passed over JSON)"""
 
 class GetResponseBodyParameters(TypedDict):
     requestId: "RequestId"
-    """Identifier for the intercepted request to get body for."""
 
 
 class GetResponseBodyReturns(BaseModel):

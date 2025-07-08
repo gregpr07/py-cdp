@@ -5,7 +5,7 @@
 """CDP Storage Domain Events"""
 
 from pydantic import BaseModel
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -68,7 +68,7 @@ class InterestGroupAccessedEvent(BaseModel):
     """One of the interest groups was accessed. Note that these events are global
 to all targets sharing an interest group store."""
     accessTime: "TimeSinceEpoch"
-    type: "InterestGroupAccessType"
+    type: "Union[InterestGroupAccessType, str]"
     ownerOrigin: "str"
     name: "str"
     componentSellerOrigin: "Optional[str]" = None
@@ -82,7 +82,7 @@ class InterestGroupAuctionEventOccurredEvent(BaseModel):
     """An auction involving interest groups is taking place. These events are
 target-specific."""
     eventTime: "TimeSinceEpoch"
-    type: "InterestGroupAuctionEventType"
+    type: "Union[InterestGroupAuctionEventType, str]"
     uniqueAuctionId: "InterestGroupAuctionId"
     parentAuctionId: "Optional[InterestGroupAuctionId]" = None
     auctionConfig: "Optional[Dict[str, Any]]" = None
@@ -94,7 +94,7 @@ class InterestGroupAuctionNetworkRequestCreatedEvent(BaseModel):
 in what role. Note that it is not ordered with respect to
 Network.requestWillBeSent (but will happen before loadingFinished
 loadingFailed)."""
-    type: "InterestGroupAuctionFetchType"
+    type: "Union[InterestGroupAuctionFetchType, str]"
     requestId: "RequestId"
     auctions: "List[InterestGroupAuctionId]"
 
@@ -104,8 +104,8 @@ class SharedStorageAccessedEvent(BaseModel):
     """Shared storage was accessed by the associated page.
 The following parameters are included in all events."""
     accessTime: "TimeSinceEpoch"
-    scope: "SharedStorageAccessScope"
-    method: "SharedStorageAccessMethod"
+    scope: "Union[SharedStorageAccessScope, str]"
+    method: "Union[SharedStorageAccessMethod, str]"
     mainFrameId: "FrameId"
     ownerOrigin: "str"
     ownerSite: "str"
@@ -118,7 +118,7 @@ class SharedStorageWorkletOperationExecutionFinishedEvent(BaseModel):
 The following parameters are included in all events."""
     finishedTime: "TimeSinceEpoch"
     executionTime: "int"
-    method: "SharedStorageAccessMethod"
+    method: "Union[SharedStorageAccessMethod, str]"
     operationId: "str"
     workletTargetId: "TargetID"
     mainFrameId: "FrameId"
@@ -138,21 +138,21 @@ class StorageBucketDeletedEvent(BaseModel):
 
 class AttributionReportingSourceRegisteredEvent(BaseModel):
     registration: "AttributionReportingSourceRegistration"
-    result: "AttributionReportingSourceRegistrationResult"
+    result: "Union[AttributionReportingSourceRegistrationResult, str]"
 
 
 
 class AttributionReportingTriggerRegisteredEvent(BaseModel):
     registration: "AttributionReportingTriggerRegistration"
-    eventLevel: "AttributionReportingEventLevelResult"
-    aggregatable: "AttributionReportingAggregatableResult"
+    eventLevel: "Union[AttributionReportingEventLevelResult, str]"
+    aggregatable: "Union[AttributionReportingAggregatableResult, str]"
 
 
 
 class AttributionReportingReportSentEvent(BaseModel):
     url: "str"
     body: "Dict[str, Any]"
-    result: "AttributionReportingReportResult"
+    result: "Union[AttributionReportingReportResult, str]"
     netError: "Optional[int]" = None
     netErrorName: "Optional[str]" = None
     httpStatusCode: "Optional[int]" = None

@@ -5,8 +5,8 @@
 """CDP PWA Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List, Union
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -17,9 +17,6 @@ if TYPE_CHECKING:
 
 class GetOsAppStateParameters(TypedDict):
     manifestId: "str"
-    """The id from the webapp's manifest file, commonly it's the url of the
-site installing the webapp. See
-https://web.dev/learn/pwa/web-app-manifest."""
 
 
 class GetOsAppStateReturns(BaseModel):
@@ -30,9 +27,7 @@ class GetOsAppStateReturns(BaseModel):
 
 class InstallParameters(TypedDict):
     manifestId: "str"
-    installUrlOrBundleUrl: "Optional[str]"
-    """The location of the app or bundle overriding the one derived from the
-manifestId."""
+    installUrlOrBundleUrl: "NotRequired[str]"
 
 
 
@@ -47,7 +42,7 @@ class UninstallParameters(TypedDict):
 
 class LaunchParameters(TypedDict):
     manifestId: "str"
-    url: "Optional[str]"
+    url: "NotRequired[str]"
 
 
 class LaunchReturns(BaseModel):
@@ -74,19 +69,8 @@ class OpenCurrentPageInAppParameters(TypedDict):
 
 class ChangeAppUserSettingsParameters(TypedDict):
     manifestId: "str"
-    linkCapturing: "Optional[bool]"
-    """If user allows the links clicked on by the user in the app's scope, or
-extended scope if the manifest has scope extensions and the flags
-`DesktopPWAsLinkCapturingWithScopeExtensions` and
-`WebAppEnableScopeExtensions` are enabled.
-
-Note, the API does not support resetting the linkCapturing to the
-initial value, uninstalling and installing the web app again will reset
-it.
-
-TODO(crbug.com/339453269): Setting this value on ChromeOS is not
-supported yet."""
-    displayMode: "Optional[DisplayMode]"
+    linkCapturing: "NotRequired[bool]"
+    displayMode: "NotRequired[Union[DisplayMode, str]]"
 
 
 

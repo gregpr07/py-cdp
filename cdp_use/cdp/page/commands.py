@@ -5,8 +5,8 @@
 """CDP Page Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List, Optional, Union
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -50,16 +50,9 @@ class AddScriptToEvaluateOnLoadReturns(BaseModel):
 
 class AddScriptToEvaluateOnNewDocumentParameters(TypedDict):
     source: "str"
-    worldName: "Optional[str]"
-    """If specified, creates an isolated world with the given name and evaluates given script in it.
-This world name will be used as the ExecutionContextDescription::name when the corresponding
-event is emitted."""
-    includeCommandLineAPI: "Optional[bool]"
-    """Specifies whether command line API should be available to the script, defaults
-to false."""
-    runImmediately: "Optional[bool]"
-    """If true, runs the script immediately on existing execution contexts or worlds.
-Default: false."""
+    worldName: "NotRequired[str]"
+    includeCommandLineAPI: "NotRequired[bool]"
+    runImmediately: "NotRequired[bool]"
 
 
 class AddScriptToEvaluateOnNewDocumentReturns(BaseModel):
@@ -69,17 +62,11 @@ class AddScriptToEvaluateOnNewDocumentReturns(BaseModel):
 
 class CaptureScreenshotParameters(TypedDict, total=False):
     format: "str"
-    """Image compression format (defaults to png)."""
     quality: "int"
-    """Compression quality from range [0..100] (jpeg only)."""
     clip: "Viewport"
-    """Capture the screenshot of a given region only."""
     fromSurface: "bool"
-    """Capture the screenshot from the surface, rather than the view. Defaults to true."""
     captureBeyondViewport: "bool"
-    """Capture the screenshot beyond the viewport. Defaults to false."""
     optimizeForSpeed: "bool"
-    """Optimize image encoding for speed, not for resulting size (defaults to false)"""
 
 
 class CaptureScreenshotReturns(BaseModel):
@@ -89,7 +76,6 @@ class CaptureScreenshotReturns(BaseModel):
 
 class CaptureSnapshotParameters(TypedDict, total=False):
     format: "str"
-    """Format (defaults to mhtml)."""
 
 
 class CaptureSnapshotReturns(BaseModel):
@@ -99,12 +85,8 @@ class CaptureSnapshotReturns(BaseModel):
 
 class CreateIsolatedWorldParameters(TypedDict):
     frameId: "FrameId"
-    """Id of the frame in which the isolated world should be created."""
-    worldName: "Optional[str]"
-    """An optional name which is reported in the Execution Context."""
-    grantUniveralAccess: "Optional[bool]"
-    """Whether or not universal access should be granted to the isolated world. This is a powerful
-option, use with caution."""
+    worldName: "NotRequired[str]"
+    grantUniveralAccess: "NotRequired[bool]"
 
 
 class CreateIsolatedWorldReturns(BaseModel):
@@ -114,9 +96,7 @@ class CreateIsolatedWorldReturns(BaseModel):
 
 class DeleteCookieParameters(TypedDict):
     cookieName: "str"
-    """Name of the cookie to remove."""
     url: "str"
-    """URL to match cooke domain and path."""
 
 
 
@@ -124,8 +104,6 @@ class DeleteCookieParameters(TypedDict):
 
 class EnableParameters(TypedDict, total=False):
     enableFileChooserOpenedEvent: "bool"
-    """If true, the `Page.fileChooserOpened` event will be emitted regardless of the state set by
-`Page.setInterceptFileChooserDialog` command (default: false)."""
 
 
 
@@ -192,9 +170,7 @@ class GetNavigationHistoryReturns(BaseModel):
 
 class GetResourceContentParameters(TypedDict):
     frameId: "FrameId"
-    """Frame id to get resource for."""
     url: "str"
-    """URL of the resource to get content for."""
 
 
 class GetResourceContentReturns(BaseModel):
@@ -210,10 +186,7 @@ class GetResourceTreeReturns(BaseModel):
 
 class HandleJavaScriptDialogParameters(TypedDict):
     accept: "bool"
-    """Whether to accept or dismiss the dialog."""
-    promptText: "Optional[str]"
-    """The text to enter into the dialog prompt before accepting. Used only if this is a prompt
-dialog."""
+    promptText: "NotRequired[str]"
 
 
 
@@ -221,15 +194,10 @@ dialog."""
 
 class NavigateParameters(TypedDict):
     url: "str"
-    """URL to navigate the page to."""
-    referrer: "Optional[str]"
-    """Referrer URL."""
-    transitionType: "Optional[TransitionType]"
-    """Intended transition type."""
-    frameId: "Optional[FrameId]"
-    """Frame id to navigate, if not specified navigates the top frame."""
-    referrerPolicy: "Optional[ReferrerPolicy]"
-    """Referrer-policy used for the navigation."""
+    referrer: "NotRequired[str]"
+    transitionType: "NotRequired[Union[TransitionType, str]]"
+    frameId: "NotRequired[FrameId]"
+    referrerPolicy: "NotRequired[Union[ReferrerPolicy, str]]"
 
 
 class NavigateReturns(BaseModel):
@@ -241,7 +209,6 @@ class NavigateReturns(BaseModel):
 
 class NavigateToHistoryEntryParameters(TypedDict):
     entryId: "int"
-    """Unique id of the entry to navigate to."""
 
 
 
@@ -249,55 +216,22 @@ class NavigateToHistoryEntryParameters(TypedDict):
 
 class PrintToPDFParameters(TypedDict, total=False):
     landscape: "bool"
-    """Paper orientation. Defaults to false."""
     displayHeaderFooter: "bool"
-    """Display header and footer. Defaults to false."""
     printBackground: "bool"
-    """Print background graphics. Defaults to false."""
     scale: "float"
-    """Scale of the webpage rendering. Defaults to 1."""
     paperWidth: "float"
-    """Paper width in inches. Defaults to 8.5 inches."""
     paperHeight: "float"
-    """Paper height in inches. Defaults to 11 inches."""
     marginTop: "float"
-    """Top margin in inches. Defaults to 1cm (~0.4 inches)."""
     marginBottom: "float"
-    """Bottom margin in inches. Defaults to 1cm (~0.4 inches)."""
     marginLeft: "float"
-    """Left margin in inches. Defaults to 1cm (~0.4 inches)."""
     marginRight: "float"
-    """Right margin in inches. Defaults to 1cm (~0.4 inches)."""
     pageRanges: "str"
-    """Paper ranges to print, one based, e.g., '1-5, 8, 11-13'. Pages are
-printed in the document order, not in the order specified, and no
-more than once.
-Defaults to empty string, which implies the entire document is printed.
-The page numbers are quietly capped to actual page count of the
-document, and ranges beyond the end of the document are ignored.
-If this results in no pages to print, an error is reported.
-It is an error to specify a range with start greater than end."""
     headerTemplate: "str"
-    """HTML template for the print header. Should be valid HTML markup with following
-classes used to inject printing values into them:
-- `date`: formatted print date
-- `title`: document title
-- `url`: document location
-- `pageNumber`: current page number
-- `totalPages`: total pages in the document
-
-For example, `<span class=title></span>` would generate span containing the title."""
     footerTemplate: "str"
-    """HTML template for the print footer. Should use the same format as the `headerTemplate`."""
     preferCSSPageSize: "bool"
-    """Whether or not to prefer page size as defined by css. Defaults to false,
-in which case the content will be scaled to fit the paper size."""
     transferMode: "str"
-    """return as stream"""
     generateTaggedPDF: "bool"
-    """Whether or not to generate tagged (accessible) PDF. Defaults to embedder choice."""
     generateDocumentOutline: "bool"
-    """Whether or not to embed the document outline into the PDF."""
 
 
 class PrintToPDFReturns(BaseModel):
@@ -308,14 +242,8 @@ class PrintToPDFReturns(BaseModel):
 
 class ReloadParameters(TypedDict, total=False):
     ignoreCache: "bool"
-    """If true, browser cache is ignored (as if the user pressed Shift+refresh)."""
     scriptToEvaluateOnLoad: "str"
-    """If set, the script will be injected into all frames of the inspected page after reload.
-Argument will be ignored if reloading dataURL origin."""
     loaderId: "LoaderId"
-    """If set, an error will be thrown if the target page's main frame's
-loader id does not match the provided id. This prevents accidentally
-reloading an unintended target in case there's a racing navigation."""
 
 
 
@@ -337,7 +265,6 @@ class RemoveScriptToEvaluateOnNewDocumentParameters(TypedDict):
 
 class ScreencastFrameAckParameters(TypedDict):
     sessionId: "int"
-    """Frame number."""
 
 
 
@@ -345,15 +272,10 @@ class ScreencastFrameAckParameters(TypedDict):
 
 class SearchInResourceParameters(TypedDict):
     frameId: "FrameId"
-    """Frame id for resource to search in."""
     url: "str"
-    """URL of the resource to search in."""
     query: "str"
-    """String to search for."""
-    caseSensitive: "Optional[bool]"
-    """If true, search is case sensitive."""
-    isRegex: "Optional[bool]"
-    """If true, treats string parameter as regex."""
+    caseSensitive: "NotRequired[bool]"
+    isRegex: "NotRequired[bool]"
 
 
 class SearchInResourceReturns(BaseModel):
@@ -363,7 +285,6 @@ class SearchInResourceReturns(BaseModel):
 
 class SetAdBlockingEnabledParameters(TypedDict):
     enabled: "bool"
-    """Whether to block ads."""
 
 
 
@@ -371,7 +292,6 @@ class SetAdBlockingEnabledParameters(TypedDict):
 
 class SetBypassCSPParameters(TypedDict):
     enabled: "bool"
-    """Whether to bypass page CSP."""
 
 
 
@@ -397,30 +317,17 @@ class GetOriginTrialsReturns(BaseModel):
 
 class SetDeviceMetricsOverrideParameters(TypedDict):
     width: "int"
-    """Overriding width value in pixels (minimum 0, maximum 10000000). 0 disables the override."""
     height: "int"
-    """Overriding height value in pixels (minimum 0, maximum 10000000). 0 disables the override."""
     deviceScaleFactor: "float"
-    """Overriding device scale factor value. 0 disables the override."""
     mobile: "bool"
-    """Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text
-autosizing and more."""
-    scale: "Optional[float]"
-    """Scale to apply to resulting view image."""
-    screenWidth: "Optional[int]"
-    """Overriding screen width value in pixels (minimum 0, maximum 10000000)."""
-    screenHeight: "Optional[int]"
-    """Overriding screen height value in pixels (minimum 0, maximum 10000000)."""
-    positionX: "Optional[int]"
-    """Overriding view X position on screen in pixels (minimum 0, maximum 10000000)."""
-    positionY: "Optional[int]"
-    """Overriding view Y position on screen in pixels (minimum 0, maximum 10000000)."""
-    dontSetVisibleSize: "Optional[bool]"
-    """Do not set visible view size, rely upon explicit setVisibleSize call."""
-    screenOrientation: "Optional[ScreenOrientation]"
-    """Screen orientation override."""
-    viewport: "Optional[Viewport]"
-    """The viewport dimensions and scale. If not set, the override is cleared."""
+    scale: "NotRequired[float]"
+    screenWidth: "NotRequired[int]"
+    screenHeight: "NotRequired[int]"
+    positionX: "NotRequired[int]"
+    positionY: "NotRequired[int]"
+    dontSetVisibleSize: "NotRequired[bool]"
+    screenOrientation: "NotRequired[ScreenOrientation]"
+    viewport: "NotRequired[Viewport]"
 
 
 
@@ -428,11 +335,8 @@ autosizing and more."""
 
 class SetDeviceOrientationOverrideParameters(TypedDict):
     alpha: "float"
-    """Mock alpha"""
     beta: "float"
-    """Mock beta"""
     gamma: "float"
-    """Mock gamma"""
 
 
 
@@ -440,9 +344,7 @@ class SetDeviceOrientationOverrideParameters(TypedDict):
 
 class SetFontFamiliesParameters(TypedDict):
     fontFamilies: "FontFamilies"
-    """Specifies font families to set. If a font family is not specified, it won't be changed."""
-    forScripts: "Optional[List[ScriptFontFamilies]]"
-    """Specifies font families to set for individual scripts."""
+    forScripts: "NotRequired[List[ScriptFontFamilies]]"
 
 
 
@@ -450,7 +352,6 @@ class SetFontFamiliesParameters(TypedDict):
 
 class SetFontSizesParameters(TypedDict):
     fontSizes: "FontSizes"
-    """Specifies font sizes to set. If a font size is not specified, it won't be changed."""
 
 
 
@@ -458,9 +359,7 @@ class SetFontSizesParameters(TypedDict):
 
 class SetDocumentContentParameters(TypedDict):
     frameId: "FrameId"
-    """Frame id to set HTML for."""
     html: "str"
-    """HTML content to set."""
 
 
 
@@ -468,10 +367,7 @@ class SetDocumentContentParameters(TypedDict):
 
 class SetDownloadBehaviorParameters(TypedDict):
     behavior: "str"
-    """Whether to allow all or deny all download requests, or use default Chrome behavior if
-available (otherwise deny)."""
-    downloadPath: "Optional[str]"
-    """The default path to save downloaded files to. This is required if behavior is set to 'allow'"""
+    downloadPath: "NotRequired[str]"
 
 
 
@@ -479,11 +375,8 @@ available (otherwise deny)."""
 
 class SetGeolocationOverrideParameters(TypedDict, total=False):
     latitude: "float"
-    """Mock latitude"""
     longitude: "float"
-    """Mock longitude"""
     accuracy: "float"
-    """Mock accuracy"""
 
 
 
@@ -491,7 +384,6 @@ class SetGeolocationOverrideParameters(TypedDict, total=False):
 
 class SetLifecycleEventsEnabledParameters(TypedDict):
     enabled: "bool"
-    """If true, starts emitting lifecycle events."""
 
 
 
@@ -499,9 +391,7 @@ class SetLifecycleEventsEnabledParameters(TypedDict):
 
 class SetTouchEmulationEnabledParameters(TypedDict):
     enabled: "bool"
-    """Whether the touch event emulation should be enabled."""
-    configuration: "Optional[str]"
-    """Touch/gesture events configuration. Default: current platform."""
+    configuration: "NotRequired[str]"
 
 
 
@@ -509,15 +399,10 @@ class SetTouchEmulationEnabledParameters(TypedDict):
 
 class StartScreencastParameters(TypedDict, total=False):
     format: "str"
-    """Image compression format."""
     quality: "int"
-    """Compression quality from range [0..100]."""
     maxWidth: "int"
-    """Maximum screenshot width."""
     maxHeight: "int"
-    """Maximum screenshot height."""
     everyNthFrame: "int"
-    """Send every n-th frame."""
 
 
 
@@ -525,7 +410,6 @@ class StartScreencastParameters(TypedDict, total=False):
 
 class SetWebLifecycleStateParameters(TypedDict):
     state: "str"
-    """Target lifecycle state"""
 
 
 
@@ -541,7 +425,6 @@ class ProduceCompilationCacheParameters(TypedDict):
 class AddCompilationCacheParameters(TypedDict):
     url: "str"
     data: "str"
-    """Base64-encoded data (Encoded as a base64 string when passed over JSON)"""
 
 
 
@@ -563,9 +446,7 @@ class SetRPHRegistrationModeParameters(TypedDict):
 
 class GenerateTestReportParameters(TypedDict):
     message: "str"
-    """Message to be displayed in the report."""
-    group: "Optional[str]"
-    """Specifies the endpoint group to deliver the report to."""
+    group: "NotRequired[str]"
 
 
 
@@ -573,10 +454,7 @@ class GenerateTestReportParameters(TypedDict):
 
 class SetInterceptFileChooserDialogParameters(TypedDict):
     enabled: "bool"
-    cancel: "Optional[bool]"
-    """If true, cancels the dialog by emitting relevant events (if any)
-in addition to not showing it if the interception is enabled
-(default: false)."""
+    cancel: "NotRequired[bool]"
 
 
 

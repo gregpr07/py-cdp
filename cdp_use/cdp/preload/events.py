@@ -5,7 +5,7 @@
 """CDP Preload Domain Events"""
 
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -50,8 +50,8 @@ class PrefetchStatusUpdatedEvent(BaseModel):
     pipelineId: "PreloadPipelineId"
     initiatingFrameId: "FrameId"
     prefetchUrl: "str"
-    status: "PreloadingStatus"
-    prefetchStatus: "PrefetchStatus"
+    status: "Union[PreloadingStatus, str]"
+    prefetchStatus: "Union[PrefetchStatus, str]"
     requestId: "RequestId"
 
 
@@ -60,8 +60,8 @@ class PrerenderStatusUpdatedEvent(BaseModel):
     """Fired when a prerender attempt is updated."""
     key: "PreloadingAttemptKey"
     pipelineId: "PreloadPipelineId"
-    status: "PreloadingStatus"
-    prerenderStatus: "Optional[PrerenderFinalStatus]" = None
+    status: "Union[PreloadingStatus, str]"
+    prerenderStatus: "Optional[Union[PrerenderFinalStatus, str]]" = None
     disallowedMojoInterface: "Optional[str]" = None
     mismatchedHeaders: "Optional[List[PrerenderMismatchedHeaders]]" = None
 

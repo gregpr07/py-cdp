@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -34,7 +34,7 @@ inspector\" rules), \"regular\" for regular stylesheets."""
 
 class PseudoElementMatches(BaseModel):
     """CSS rule collection for a single pseudo style."""
-    pseudoType: "PseudoType"
+    pseudoType: "Union[PseudoType, str]"
     matches: "List[RuleMatch]"
     pseudoIdentifier: "Optional[str]" = None
 
@@ -103,7 +103,7 @@ class CSSStyleSheetHeader(BaseModel):
     styleSheetId: "StyleSheetId"
     frameId: "FrameId"
     sourceURL: "str"
-    origin: "StyleSheetOrigin"
+    origin: "Union[StyleSheetOrigin, str]"
     title: "str"
     disabled: "bool"
     isInline: "bool"
@@ -124,7 +124,7 @@ class CSSStyleSheetHeader(BaseModel):
 class CSSRule(BaseModel):
     """CSS rule representation."""
     selectorList: "SelectorList"
-    origin: "StyleSheetOrigin"
+    origin: "Union[StyleSheetOrigin, str]"
     style: "CSSStyle"
     styleSheetId: "Optional[StyleSheetId]" = None
     nestingSelectors: "Optional[List[str]]" = None
@@ -133,7 +133,7 @@ class CSSRule(BaseModel):
     supports: "Optional[List[CSSSupports]]" = None
     layers: "Optional[List[CSSLayer]]" = None
     scopes: "Optional[List[CSSScope]]" = None
-    ruleTypes: "Optional[List[CSSRuleType]]" = None
+    ruleTypes: "Optional[List[Union[CSSRuleType, str]]]" = None
     startingStyles: "Optional[List[CSSStartingStyle]]" = None
 
 
@@ -240,8 +240,8 @@ class CSSContainerQuery(BaseModel):
     range: "Optional[SourceRange]" = None
     styleSheetId: "Optional[StyleSheetId]" = None
     name: "Optional[str]" = None
-    physicalAxes: "Optional[PhysicalAxes]" = None
-    logicalAxes: "Optional[LogicalAxes]" = None
+    physicalAxes: "Optional[Union[PhysicalAxes, str]]" = None
+    logicalAxes: "Optional[Union[LogicalAxes, str]]" = None
     queriesScrollState: "Optional[bool]" = None
 
 
@@ -323,7 +323,7 @@ and additional information such as platformFontFamily and fontVariationAxes."""
 
 class CSSTryRule(BaseModel):
     """CSS try rule representation."""
-    origin: "StyleSheetOrigin"
+    origin: "Union[StyleSheetOrigin, str]"
     style: "CSSStyle"
     styleSheetId: "Optional[StyleSheetId]" = None
 
@@ -332,7 +332,7 @@ class CSSTryRule(BaseModel):
 class CSSPositionTryRule(BaseModel):
     """CSS @position-try rule representation."""
     name: "Value"
-    origin: "StyleSheetOrigin"
+    origin: "Union[StyleSheetOrigin, str]"
     style: "CSSStyle"
     active: "bool"
     styleSheetId: "Optional[StyleSheetId]" = None
@@ -357,7 +357,7 @@ class CSSPropertyRegistration(BaseModel):
 
 class CSSFontPaletteValuesRule(BaseModel):
     """CSS font-palette-values rule representation."""
-    origin: "StyleSheetOrigin"
+    origin: "Union[StyleSheetOrigin, str]"
     fontPaletteName: "Value"
     style: "CSSStyle"
     styleSheetId: "Optional[StyleSheetId]" = None
@@ -366,7 +366,7 @@ class CSSFontPaletteValuesRule(BaseModel):
 
 class CSSPropertyRule(BaseModel):
     """CSS property at-rule representation."""
-    origin: "StyleSheetOrigin"
+    origin: "Union[StyleSheetOrigin, str]"
     propertyName: "Value"
     style: "CSSStyle"
     styleSheetId: "Optional[StyleSheetId]" = None
@@ -400,7 +400,7 @@ class CSSFunctionNode(BaseModel):
 class CSSFunctionRule(BaseModel):
     """CSS function at-rule representation."""
     name: "Value"
-    origin: "StyleSheetOrigin"
+    origin: "Union[StyleSheetOrigin, str]"
     parameters: "List[CSSFunctionParameter]"
     children: "List[CSSFunctionNode]"
     styleSheetId: "Optional[StyleSheetId]" = None
@@ -409,7 +409,7 @@ class CSSFunctionRule(BaseModel):
 
 class CSSKeyframeRule(BaseModel):
     """CSS keyframe rule representation."""
-    origin: "StyleSheetOrigin"
+    origin: "Union[StyleSheetOrigin, str]"
     keyText: "Value"
     style: "CSSStyle"
     styleSheetId: "Optional[StyleSheetId]" = None

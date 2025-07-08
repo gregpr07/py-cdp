@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -48,8 +48,8 @@ class ServiceWorkerVersion(BaseModel):
     versionId: "str"
     registrationId: "RegistrationID"
     scriptURL: "str"
-    runningStatus: "ServiceWorkerVersionRunningStatus"
-    status: "ServiceWorkerVersionStatus"
+    runningStatus: "Union[ServiceWorkerVersionRunningStatus, str]"
+    status: "Union[ServiceWorkerVersionStatus, str]"
     scriptLastModified: "Optional[float]" = None
     scriptResponseTime: "Optional[float]" = None
     controlledClients: "Optional[List[TargetID]]" = None

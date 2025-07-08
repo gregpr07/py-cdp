@@ -6,7 +6,7 @@
 
 from pydantic import BaseModel
 from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -16,7 +16,6 @@ if TYPE_CHECKING:
 
 class CloseParameters(TypedDict):
     handle: "StreamHandle"
-    """Handle of the stream to close."""
 
 
 
@@ -24,12 +23,8 @@ class CloseParameters(TypedDict):
 
 class ReadParameters(TypedDict):
     handle: "StreamHandle"
-    """Handle of the stream to read."""
-    offset: "Optional[int]"
-    """Seek to the specified offset before reading (if not specified, proceed with offset
-following the last read). Some types of streams may only support sequential reads."""
-    size: "Optional[int]"
-    """Maximum number of bytes to read (left upon the agent discretion if not specified)."""
+    offset: "NotRequired[int]"
+    size: "NotRequired[int]"
 
 
 class ReadReturns(BaseModel):
@@ -41,7 +36,6 @@ class ReadReturns(BaseModel):
 
 class ResolveBlobParameters(TypedDict):
     objectId: "RemoteObjectId"
-    """Object id of a Blob object wrapper."""
 
 
 class ResolveBlobReturns(BaseModel):

@@ -5,8 +5,8 @@
 """CDP Overlay Domain Commands"""
 
 from pydantic import BaseModel
-from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, Dict, List, Union
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -31,15 +31,10 @@ if TYPE_CHECKING:
 
 class GetHighlightObjectForTestParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node to get highlight object for."""
-    includeDistance: "Optional[bool]"
-    """Whether to include distance info."""
-    includeStyle: "Optional[bool]"
-    """Whether to include style info."""
-    colorFormat: "Optional[ColorFormat]"
-    """The color format to get config with (default: hex)."""
-    showAccessibilityInfo: "Optional[bool]"
-    """Whether to show accessibility info (default: true)."""
+    includeDistance: "NotRequired[bool]"
+    includeStyle: "NotRequired[bool]"
+    colorFormat: "NotRequired[Union[ColorFormat, str]]"
+    showAccessibilityInfo: "NotRequired[bool]"
 
 
 class GetHighlightObjectForTestReturns(BaseModel):
@@ -49,7 +44,6 @@ class GetHighlightObjectForTestReturns(BaseModel):
 
 class GetGridHighlightObjectsForTestParameters(TypedDict):
     nodeIds: "List[NodeId]"
-    """Ids of the node to get highlight object for."""
 
 
 class GetGridHighlightObjectsForTestReturns(BaseModel):
@@ -59,7 +53,6 @@ class GetGridHighlightObjectsForTestReturns(BaseModel):
 
 class GetSourceOrderHighlightObjectForTestParameters(TypedDict):
     nodeId: "NodeId"
-    """Id of the node to highlight."""
 
 
 class GetSourceOrderHighlightObjectForTestReturns(BaseModel):
@@ -69,11 +62,8 @@ class GetSourceOrderHighlightObjectForTestReturns(BaseModel):
 
 class HighlightFrameParameters(TypedDict):
     frameId: "FrameId"
-    """Identifier of the frame to highlight."""
-    contentColor: "Optional[RGBA]"
-    """The content box highlight fill color (default: transparent)."""
-    contentOutlineColor: "Optional[RGBA]"
-    """The content box highlight outline color (default: transparent)."""
+    contentColor: "NotRequired[RGBA]"
+    contentOutlineColor: "NotRequired[RGBA]"
 
 
 
@@ -81,15 +71,10 @@ class HighlightFrameParameters(TypedDict):
 
 class HighlightNodeParameters(TypedDict):
     highlightConfig: "HighlightConfig"
-    """A descriptor for the highlight appearance."""
-    nodeId: "Optional[NodeId]"
-    """Identifier of the node to highlight."""
-    backendNodeId: "Optional[BackendNodeId]"
-    """Identifier of the backend node to highlight."""
-    objectId: "Optional[RemoteObjectId]"
-    """JavaScript object id of the node to be highlighted."""
-    selector: "Optional[str]"
-    """Selectors to highlight relevant nodes."""
+    nodeId: "NotRequired[NodeId]"
+    backendNodeId: "NotRequired[BackendNodeId]"
+    objectId: "NotRequired[RemoteObjectId]"
+    selector: "NotRequired[str]"
 
 
 
@@ -97,11 +82,8 @@ class HighlightNodeParameters(TypedDict):
 
 class HighlightQuadParameters(TypedDict):
     quad: "Quad"
-    """Quad to highlight"""
-    color: "Optional[RGBA]"
-    """The highlight fill color (default: transparent)."""
-    outlineColor: "Optional[RGBA]"
-    """The highlight outline color (default: transparent)."""
+    color: "NotRequired[RGBA]"
+    outlineColor: "NotRequired[RGBA]"
 
 
 
@@ -109,17 +91,11 @@ class HighlightQuadParameters(TypedDict):
 
 class HighlightRectParameters(TypedDict):
     x: "int"
-    """X coordinate"""
     y: "int"
-    """Y coordinate"""
     width: "int"
-    """Rectangle width"""
     height: "int"
-    """Rectangle height"""
-    color: "Optional[RGBA]"
-    """The highlight fill color (default: transparent)."""
-    outlineColor: "Optional[RGBA]"
-    """The highlight outline color (default: transparent)."""
+    color: "NotRequired[RGBA]"
+    outlineColor: "NotRequired[RGBA]"
 
 
 
@@ -127,24 +103,17 @@ class HighlightRectParameters(TypedDict):
 
 class HighlightSourceOrderParameters(TypedDict):
     sourceOrderConfig: "SourceOrderConfig"
-    """A descriptor for the appearance of the overlay drawing."""
-    nodeId: "Optional[NodeId]"
-    """Identifier of the node to highlight."""
-    backendNodeId: "Optional[BackendNodeId]"
-    """Identifier of the backend node to highlight."""
-    objectId: "Optional[RemoteObjectId]"
-    """JavaScript object id of the node to be highlighted."""
+    nodeId: "NotRequired[NodeId]"
+    backendNodeId: "NotRequired[BackendNodeId]"
+    objectId: "NotRequired[RemoteObjectId]"
 
 
 
 
 
 class SetInspectModeParameters(TypedDict):
-    mode: "InspectMode"
-    """Set an inspection mode."""
-    highlightConfig: "Optional[HighlightConfig]"
-    """A descriptor for the highlight appearance of hovered-over nodes. May be omitted if `enabled
-== false`."""
+    mode: "Union[InspectMode, str]"
+    highlightConfig: "NotRequired[HighlightConfig]"
 
 
 
@@ -152,7 +121,6 @@ class SetInspectModeParameters(TypedDict):
 
 class SetShowAdHighlightsParameters(TypedDict):
     show: "bool"
-    """True for showing ad highlights"""
 
 
 
@@ -160,7 +128,6 @@ class SetShowAdHighlightsParameters(TypedDict):
 
 class SetPausedInDebuggerMessageParameters(TypedDict, total=False):
     message: "str"
-    """The message to display, also triggers resume and step over controls."""
 
 
 
@@ -168,7 +135,6 @@ class SetPausedInDebuggerMessageParameters(TypedDict, total=False):
 
 class SetShowDebugBordersParameters(TypedDict):
     show: "bool"
-    """True for showing debug borders"""
 
 
 
@@ -176,7 +142,6 @@ class SetShowDebugBordersParameters(TypedDict):
 
 class SetShowFPSCounterParameters(TypedDict):
     show: "bool"
-    """True for showing the FPS counter"""
 
 
 
@@ -184,7 +149,6 @@ class SetShowFPSCounterParameters(TypedDict):
 
 class SetShowGridOverlaysParameters(TypedDict):
     gridNodeHighlightConfigs: "List[GridNodeHighlightConfig]"
-    """An array of node identifiers and descriptors for the highlight appearance."""
 
 
 
@@ -192,7 +156,6 @@ class SetShowGridOverlaysParameters(TypedDict):
 
 class SetShowFlexOverlaysParameters(TypedDict):
     flexNodeHighlightConfigs: "List[FlexNodeHighlightConfig]"
-    """An array of node identifiers and descriptors for the highlight appearance."""
 
 
 
@@ -200,7 +163,6 @@ class SetShowFlexOverlaysParameters(TypedDict):
 
 class SetShowScrollSnapOverlaysParameters(TypedDict):
     scrollSnapHighlightConfigs: "List[ScrollSnapHighlightConfig]"
-    """An array of node identifiers and descriptors for the highlight appearance."""
 
 
 
@@ -208,7 +170,6 @@ class SetShowScrollSnapOverlaysParameters(TypedDict):
 
 class SetShowContainerQueryOverlaysParameters(TypedDict):
     containerQueryHighlightConfigs: "List[ContainerQueryHighlightConfig]"
-    """An array of node identifiers and descriptors for the highlight appearance."""
 
 
 
@@ -216,7 +177,6 @@ class SetShowContainerQueryOverlaysParameters(TypedDict):
 
 class SetShowPaintRectsParameters(TypedDict):
     result: "bool"
-    """True for showing paint rectangles"""
 
 
 
@@ -224,7 +184,6 @@ class SetShowPaintRectsParameters(TypedDict):
 
 class SetShowLayoutShiftRegionsParameters(TypedDict):
     result: "bool"
-    """True for showing layout shift regions"""
 
 
 
@@ -232,7 +191,6 @@ class SetShowLayoutShiftRegionsParameters(TypedDict):
 
 class SetShowScrollBottleneckRectsParameters(TypedDict):
     show: "bool"
-    """True for showing scroll bottleneck rects"""
 
 
 
@@ -240,7 +198,6 @@ class SetShowScrollBottleneckRectsParameters(TypedDict):
 
 class SetShowHitTestBordersParameters(TypedDict):
     show: "bool"
-    """True for showing hit-test borders"""
 
 
 
@@ -255,7 +212,6 @@ class SetShowWebVitalsParameters(TypedDict):
 
 class SetShowViewportSizeOnResizeParameters(TypedDict):
     show: "bool"
-    """Whether to paint size or not."""
 
 
 
@@ -263,7 +219,6 @@ class SetShowViewportSizeOnResizeParameters(TypedDict):
 
 class SetShowHingeParameters(TypedDict, total=False):
     hingeConfig: "HingeConfig"
-    """hinge data, null means hideHinge"""
 
 
 
@@ -271,7 +226,6 @@ class SetShowHingeParameters(TypedDict, total=False):
 
 class SetShowIsolatedElementsParameters(TypedDict):
     isolatedElementHighlightConfigs: "List[IsolatedElementHighlightConfig]"
-    """An array of node identifiers and descriptors for the highlight appearance."""
 
 
 
@@ -279,7 +233,6 @@ class SetShowIsolatedElementsParameters(TypedDict):
 
 class SetShowWindowControlsOverlayParameters(TypedDict, total=False):
     windowControlsOverlayConfig: "WindowControlsOverlayConfig"
-    """Window Controls Overlay data, null means hide Window Controls Overlay"""
 
 
 

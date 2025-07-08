@@ -5,7 +5,7 @@
 """CDP BluetoothEmulation Domain Events"""
 
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -19,7 +19,7 @@ class GattOperationReceivedEvent(BaseModel):
     """Event for when a GATT operation of |type| to the peripheral with |address|
 happened."""
     address: "str"
-    type: "GATTOperationType"
+    type: "Union[GATTOperationType, str]"
 
 
 
@@ -28,9 +28,9 @@ class CharacteristicOperationReceivedEvent(BaseModel):
 respresented by |characteristicId| happened. |data| and |writeType| is
 expected to exist when |type| is write."""
     characteristicId: "str"
-    type: "CharacteristicOperationType"
+    type: "Union[CharacteristicOperationType, str]"
     data: "Optional[str]" = None
-    writeType: "Optional[CharacteristicWriteType]" = None
+    writeType: "Optional[Union[CharacteristicWriteType, str]]" = None
 
 
 
@@ -39,7 +39,7 @@ class DescriptorOperationReceivedEvent(BaseModel):
 respresented by |descriptorId| happened. |data| is expected to exist when
 |type| is write."""
     descriptorId: "str"
-    type: "DescriptorOperationType"
+    type: "Union[DescriptorOperationType, str]"
     data: "Optional[str]" = None
 
 

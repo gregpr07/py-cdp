@@ -5,8 +5,8 @@
 """CDP Storage Domain Commands"""
 
 from pydantic import BaseModel
-from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, Dict, List
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -34,9 +34,7 @@ class GetStorageKeyForFrameReturns(BaseModel):
 
 class ClearDataForOriginParameters(TypedDict):
     origin: "str"
-    """Security origin."""
     storageTypes: "str"
-    """Comma separated list of StorageType to clear."""
 
 
 
@@ -44,9 +42,7 @@ class ClearDataForOriginParameters(TypedDict):
 
 class ClearDataForStorageKeyParameters(TypedDict):
     storageKey: "str"
-    """Storage key."""
     storageTypes: "str"
-    """Comma separated list of StorageType to clear."""
 
 
 
@@ -54,7 +50,6 @@ class ClearDataForStorageKeyParameters(TypedDict):
 
 class GetCookiesParameters(TypedDict, total=False):
     browserContextId: "BrowserContextID"
-    """Browser context to use when called on the browser endpoint."""
 
 
 class GetCookiesReturns(BaseModel):
@@ -64,9 +59,7 @@ class GetCookiesReturns(BaseModel):
 
 class SetCookiesParameters(TypedDict):
     cookies: "List[CookieParam]"
-    """Cookies to be set."""
-    browserContextId: "Optional[BrowserContextID]"
-    """Browser context to use when called on the browser endpoint."""
+    browserContextId: "NotRequired[BrowserContextID]"
 
 
 
@@ -74,7 +67,6 @@ class SetCookiesParameters(TypedDict):
 
 class ClearCookiesParameters(TypedDict, total=False):
     browserContextId: "BrowserContextID"
-    """Browser context to use when called on the browser endpoint."""
 
 
 
@@ -82,7 +74,6 @@ class ClearCookiesParameters(TypedDict, total=False):
 
 class GetUsageAndQuotaParameters(TypedDict):
     origin: "str"
-    """Security origin."""
 
 
 class GetUsageAndQuotaReturns(BaseModel):
@@ -95,15 +86,7 @@ class GetUsageAndQuotaReturns(BaseModel):
 
 class OverrideQuotaForOriginParameters(TypedDict):
     origin: "str"
-    """Security origin."""
-    quotaSize: "Optional[float]"
-    """The quota size (in bytes) to override the original quota with.
-If this is called multiple times, the overridden quota will be equal to
-the quotaSize provided in the final call. If this is called without
-specifying a quotaSize, the quota will be reset to the default value for
-the specified origin. If this is called multiple times with different
-origins, the override will be maintained for each origin until it is
-disabled (called without a quotaSize)."""
+    quotaSize: "NotRequired[float]"
 
 
 
@@ -111,7 +94,6 @@ disabled (called without a quotaSize)."""
 
 class TrackCacheStorageForOriginParameters(TypedDict):
     origin: "str"
-    """Security origin."""
 
 
 
@@ -119,7 +101,6 @@ class TrackCacheStorageForOriginParameters(TypedDict):
 
 class TrackCacheStorageForStorageKeyParameters(TypedDict):
     storageKey: "str"
-    """Storage key."""
 
 
 
@@ -127,7 +108,6 @@ class TrackCacheStorageForStorageKeyParameters(TypedDict):
 
 class TrackIndexedDBForOriginParameters(TypedDict):
     origin: "str"
-    """Security origin."""
 
 
 
@@ -135,7 +115,6 @@ class TrackIndexedDBForOriginParameters(TypedDict):
 
 class TrackIndexedDBForStorageKeyParameters(TypedDict):
     storageKey: "str"
-    """Storage key."""
 
 
 
@@ -143,7 +122,6 @@ class TrackIndexedDBForStorageKeyParameters(TypedDict):
 
 class UntrackCacheStorageForOriginParameters(TypedDict):
     origin: "str"
-    """Security origin."""
 
 
 
@@ -151,7 +129,6 @@ class UntrackCacheStorageForOriginParameters(TypedDict):
 
 class UntrackCacheStorageForStorageKeyParameters(TypedDict):
     storageKey: "str"
-    """Storage key."""
 
 
 
@@ -159,7 +136,6 @@ class UntrackCacheStorageForStorageKeyParameters(TypedDict):
 
 class UntrackIndexedDBForOriginParameters(TypedDict):
     origin: "str"
-    """Security origin."""
 
 
 
@@ -167,7 +143,6 @@ class UntrackIndexedDBForOriginParameters(TypedDict):
 
 class UntrackIndexedDBForStorageKeyParameters(TypedDict):
     storageKey: "str"
-    """Storage key."""
 
 
 
@@ -233,9 +208,7 @@ class SetSharedStorageEntryParameters(TypedDict):
     ownerOrigin: "str"
     key: "str"
     value: "str"
-    ignoreIfPresent: "Optional[bool]"
-    """If `ignoreIfPresent` is included and true, then only sets the entry if
-`key` doesn't already exist."""
+    ignoreIfPresent: "NotRequired[bool]"
 
 
 
@@ -292,7 +265,6 @@ class RunBounceTrackingMitigationsReturns(BaseModel):
 
 class SetAttributionReportingLocalTestingModeParameters(TypedDict):
     enabled: "bool"
-    """If enabled, noise is suppressed and reports are sent immediately."""
 
 
 
@@ -317,9 +289,7 @@ class GetRelatedWebsiteSetsReturns(BaseModel):
 
 class GetAffectedUrlsForThirdPartyCookieMetadataParameters(TypedDict):
     firstPartyUrl: "str"
-    """The URL of the page currently being visited."""
     thirdPartyUrls: "List[str]"
-    """The list of embedded resource URLs from the page."""
 
 
 class GetAffectedUrlsForThirdPartyCookieMetadataReturns(BaseModel):

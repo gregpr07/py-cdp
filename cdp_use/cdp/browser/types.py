@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 BrowserContextID = str
 
@@ -31,7 +31,7 @@ class Bounds(BaseModel):
     top: "Optional[int]" = None
     width: "Optional[int]" = None
     height: "Optional[int]" = None
-    windowState: "Optional[WindowState]" = None
+    windowState: "Optional[Union[WindowState, str]]" = None
 
 
 

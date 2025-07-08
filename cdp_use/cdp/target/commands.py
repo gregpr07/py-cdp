@@ -5,8 +5,8 @@
 """CDP Target Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List, Union
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -28,10 +28,7 @@ class ActivateTargetParameters(TypedDict):
 
 class AttachToTargetParameters(TypedDict):
     targetId: "TargetID"
-    flatten: "Optional[bool]"
-    """Enables \"flat\" access to the session via specifying sessionId attribute in the commands.
-We plan to make this the default, deprecate non-flattened mode,
-and eventually retire it. See crbug.com/991325."""
+    flatten: "NotRequired[bool]"
 
 
 class AttachToTargetReturns(BaseModel):
@@ -55,10 +52,8 @@ class CloseTargetReturns(BaseModel):
 
 class ExposeDevToolsProtocolParameters(TypedDict):
     targetId: "TargetID"
-    bindingName: "Optional[str]"
-    """Binding name, 'cdp' if not specified."""
-    inheritPermissions: "Optional[bool]"
-    """If true, inherits the current root session's permissions (default: false)."""
+    bindingName: "NotRequired[str]"
+    inheritPermissions: "NotRequired[bool]"
 
 
 
@@ -66,14 +61,9 @@ class ExposeDevToolsProtocolParameters(TypedDict):
 
 class CreateBrowserContextParameters(TypedDict, total=False):
     disposeOnDetach: "bool"
-    """If specified, disposes this context when debugging session disconnects."""
     proxyServer: "str"
-    """Proxy server, similar to the one passed to --proxy-server"""
     proxyBypassList: "str"
-    """Proxy bypass list, similar to the one passed to --proxy-bypass-list"""
     originsWithUniversalNetworkAccess: "List[str]"
-    """An optional list of origins to grant unlimited cross-origin access to.
-Parts of the URL other than those constituting origin are ignored."""
 
 
 class CreateBrowserContextReturns(BaseModel):
@@ -88,34 +78,17 @@ class GetBrowserContextsReturns(BaseModel):
 
 class CreateTargetParameters(TypedDict):
     url: "str"
-    """The initial URL the page will be navigated to. An empty string indicates about:blank."""
-    left: "Optional[int]"
-    """Frame left origin in DIP (requires newWindow to be true or headless shell)."""
-    top: "Optional[int]"
-    """Frame top origin in DIP (requires newWindow to be true or headless shell)."""
-    width: "Optional[int]"
-    """Frame width in DIP (requires newWindow to be true or headless shell)."""
-    height: "Optional[int]"
-    """Frame height in DIP (requires newWindow to be true or headless shell)."""
-    windowState: "Optional[WindowState]"
-    """Frame window state (requires newWindow to be true or headless shell).
-Default is normal."""
-    browserContextId: "Optional[BrowserContextID]"
-    """The browser context to create the page in."""
-    enableBeginFrameControl: "Optional[bool]"
-    """Whether BeginFrames for this target will be controlled via DevTools (headless shell only,
-not supported on MacOS yet, false by default)."""
-    newWindow: "Optional[bool]"
-    """Whether to create a new Window or Tab (false by default, not supported by headless shell)."""
-    background: "Optional[bool]"
-    """Whether to create the target in background or foreground (false by default, not supported
-by headless shell)."""
-    forTab: "Optional[bool]"
-    """Whether to create the target of type \"tab\"."""
-    hidden: "Optional[bool]"
-    """Whether to create a hidden target. The hidden target is observable via protocol, but not
-present in the tab UI strip. Cannot be created with `forTab: true`, `newWindow: true` or
-`background: false`. The life-time of the tab is limited to the life-time of the session."""
+    left: "NotRequired[int]"
+    top: "NotRequired[int]"
+    width: "NotRequired[int]"
+    height: "NotRequired[int]"
+    windowState: "NotRequired[Union[WindowState, str]]"
+    browserContextId: "NotRequired[BrowserContextID]"
+    enableBeginFrameControl: "NotRequired[bool]"
+    newWindow: "NotRequired[bool]"
+    background: "NotRequired[bool]"
+    forTab: "NotRequired[bool]"
+    hidden: "NotRequired[bool]"
 
 
 class CreateTargetReturns(BaseModel):
@@ -125,9 +98,7 @@ class CreateTargetReturns(BaseModel):
 
 class DetachFromTargetParameters(TypedDict, total=False):
     sessionId: "SessionID"
-    """Session to detach."""
     targetId: "TargetID"
-    """Deprecated."""
 
 
 
@@ -151,9 +122,6 @@ class GetTargetInfoReturns(BaseModel):
 
 class GetTargetsParameters(TypedDict, total=False):
     filter: "TargetFilter"
-    """Only targets matching filter will be reported. If filter is not specified
-and target discovery is currently enabled, a filter used for target discovery
-is used for consistency."""
 
 
 class GetTargetsReturns(BaseModel):
@@ -163,10 +131,8 @@ class GetTargetsReturns(BaseModel):
 
 class SendMessageToTargetParameters(TypedDict):
     message: "str"
-    sessionId: "Optional[SessionID]"
-    """Identifier of the session."""
-    targetId: "Optional[TargetID]"
-    """Deprecated."""
+    sessionId: "NotRequired[SessionID]"
+    targetId: "NotRequired[TargetID]"
 
 
 
@@ -174,16 +140,9 @@ class SendMessageToTargetParameters(TypedDict):
 
 class SetAutoAttachParameters(TypedDict):
     autoAttach: "bool"
-    """Whether to auto-attach to related targets."""
     waitForDebuggerOnStart: "bool"
-    """Whether to pause new targets when attaching to them. Use `Runtime.runIfWaitingForDebugger`
-to run paused targets."""
-    flatten: "Optional[bool]"
-    """Enables \"flat\" access to the session via specifying sessionId attribute in the commands.
-We plan to make this the default, deprecate non-flattened mode,
-and eventually retire it. See crbug.com/991325."""
-    filter: "Optional[TargetFilter]"
-    """Only targets matching filter will be attached."""
+    flatten: "NotRequired[bool]"
+    filter: "NotRequired[TargetFilter]"
 
 
 
@@ -192,10 +151,7 @@ and eventually retire it. See crbug.com/991325."""
 class AutoAttachRelatedParameters(TypedDict):
     targetId: "TargetID"
     waitForDebuggerOnStart: "bool"
-    """Whether to pause new targets when attaching to them. Use `Runtime.runIfWaitingForDebugger`
-to run paused targets."""
-    filter: "Optional[TargetFilter]"
-    """Only targets matching filter will be attached."""
+    filter: "NotRequired[TargetFilter]"
 
 
 
@@ -203,10 +159,7 @@ to run paused targets."""
 
 class SetDiscoverTargetsParameters(TypedDict):
     discover: "bool"
-    """Whether to discover available targets."""
-    filter: "Optional[TargetFilter]"
-    """Only targets matching filter will be attached. If `discover` is false,
-`filter` must be omitted or empty."""
+    filter: "NotRequired[TargetFilter]"
 
 
 
@@ -214,7 +167,6 @@ class SetDiscoverTargetsParameters(TypedDict):
 
 class SetRemoteLocationsParameters(TypedDict):
     locations: "List[RemoteLocation]"
-    """List of remote locations."""
 
 
 

@@ -5,7 +5,7 @@ Converts CDP protocol JSON type definitions to Python TypedDict classes.
 """
 
 import re
-from typing import Any, Dict
+from typing import Any, Dict, List, Optional, Union
 
 
 class TypeGenerator:
@@ -15,6 +15,7 @@ class TypeGenerator:
         self.imports = set()
         self.generated_types = set()
         self.type_checking_imports = set()
+        self.all_enums = set()
 
     def generate_types(self, domain: Dict[str, Any]) -> str:
         """Generate types.py content for a domain."""
@@ -146,6 +147,7 @@ class TypeGenerator:
             content += f'    {attr_name} = "{value}"\n'
 
         self.generated_types.add(type_id)
+        self.all_enums.add(type_id)
         return content
 
     def generate_primitive_type(
@@ -261,6 +263,7 @@ class TypeGenerator:
         """Resolve a type reference ($ref)."""
         if "$ref" in type_ref:
             ref = type_ref["$ref"]
+            type_name = ""
 
             # Handle cross-domain references
             if "." in ref:
@@ -281,15 +284,18 @@ class TypeGenerator:
                     self.type_checking_imports.add(
                         f"from ..{domain_ref}.types import {type_name}"
                     )
-                # If same domain and type IS defined in this file, don't import - just return the type name
-                return type_name
             else:
+                type_name = ref
                 # Same domain reference - only import if not defined in this file
                 if ref not in self.generated_types:
                     # Type not defined in this file, import it
                     self.type_checking_imports.add(f"from .types import {ref}")
-                # If type IS defined in this file, don't import it
-                return ref
+
+            fqn = ref if "." in ref else f"{current_domain}.{ref}"
+            if fqn in self.all_enums:
+                return f"Union[{type_name}, str]"
+
+            return type_name
 
         # Handle inline type definitions
         if "type" in type_ref:

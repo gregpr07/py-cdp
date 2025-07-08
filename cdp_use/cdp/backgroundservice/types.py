@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import List
+from typing import List, Union
 
 from typing import TYPE_CHECKING
 
@@ -38,7 +38,7 @@ class BackgroundServiceEvent(BaseModel):
     timestamp: "TimeSinceEpoch"
     origin: "str"
     serviceWorkerRegistrationId: "RegistrationID"
-    service: "ServiceName"
+    service: "Union[ServiceName, str]"
     eventName: "str"
     instanceId: "str"
     eventMetadata: "List[EventMetadata]"

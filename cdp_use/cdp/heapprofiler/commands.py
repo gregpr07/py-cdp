@@ -5,8 +5,7 @@
 """CDP HeapProfiler Domain Commands"""
 
 from pydantic import BaseModel
-from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -18,7 +17,6 @@ if TYPE_CHECKING:
 
 class AddInspectedHeapObjectParameters(TypedDict):
     heapObjectId: "HeapSnapshotObjectId"
-    """Heap snapshot object id to be accessible by means of $x command line API."""
 
 
 
@@ -26,7 +24,6 @@ class AddInspectedHeapObjectParameters(TypedDict):
 
 class GetHeapObjectIdParameters(TypedDict):
     objectId: "RemoteObjectId"
-    """Identifier of the object to get heap object id for."""
 
 
 class GetHeapObjectIdReturns(BaseModel):
@@ -36,8 +33,7 @@ class GetHeapObjectIdReturns(BaseModel):
 
 class GetObjectByHeapObjectIdParameters(TypedDict):
     objectId: "HeapSnapshotObjectId"
-    objectGroup: "Optional[str]"
-    """Symbolic group name that can be used to release multiple objects."""
+    objectGroup: "NotRequired[str]"
 
 
 class GetObjectByHeapObjectIdReturns(BaseModel):
@@ -52,24 +48,8 @@ class GetSamplingProfileReturns(BaseModel):
 
 class StartSamplingParameters(TypedDict, total=False):
     samplingInterval: "float"
-    """Average sample interval in bytes. Poisson distribution is used for the intervals. The
-default value is 32768 bytes."""
     includeObjectsCollectedByMajorGC: "bool"
-    """By default, the sampling heap profiler reports only objects which are
-still alive when the profile is returned via getSamplingProfile or
-stopSampling, which is useful for determining what functions contribute
-the most to steady-state memory usage. This flag instructs the sampling
-heap profiler to also include information about objects discarded by
-major GC, which will show which functions cause large temporary memory
-usage or long GC pauses."""
     includeObjectsCollectedByMinorGC: "bool"
-    """By default, the sampling heap profiler reports only objects which are
-still alive when the profile is returned via getSamplingProfile or
-stopSampling, which is useful for determining what functions contribute
-the most to steady-state memory usage. This flag instructs the sampling
-heap profiler to also include information about objects discarded by
-minor GC, which is useful when tuning a latency-sensitive application
-for minimal GC activity."""
 
 
 
@@ -89,14 +69,9 @@ class StopSamplingReturns(BaseModel):
 
 class StopTrackingHeapObjectsParameters(TypedDict, total=False):
     reportProgress: "bool"
-    """If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken
-when the tracking is stopped."""
     treatGlobalObjectsAsRoots: "bool"
-    """Deprecated in favor of `exposeInternals`."""
     captureNumericValue: "bool"
-    """If true, numerical values are included in the snapshot"""
     exposeInternals: "bool"
-    """If true, exposes internals of the snapshot."""
 
 
 
@@ -104,14 +79,9 @@ when the tracking is stopped."""
 
 class TakeHeapSnapshotParameters(TypedDict, total=False):
     reportProgress: "bool"
-    """If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken."""
     treatGlobalObjectsAsRoots: "bool"
-    """If true, a raw snapshot without artificial roots will be generated.
-Deprecated in favor of `exposeInternals`."""
     captureNumericValue: "bool"
-    """If true, numerical values are included in the snapshot"""
     exposeInternals: "bool"
-    """If true, exposes internals of the snapshot."""
 
 
 

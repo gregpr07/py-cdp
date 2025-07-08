@@ -5,8 +5,8 @@
 """CDP Network Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List, Union
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -35,8 +35,7 @@ if TYPE_CHECKING:
     from .types import TimeSinceEpoch
 
 class SetAcceptedEncodingsParameters(TypedDict):
-    encodings: "List[ContentEncoding]"
-    """List of accepted content encodings."""
+    encodings: "List[Union[ContentEncoding, str]]"
 
 
 
@@ -59,26 +58,13 @@ class CanEmulateNetworkConditionsReturns(BaseModel):
 
 class ContinueInterceptedRequestParameters(TypedDict):
     interceptionId: "InterceptionId"
-    errorReason: "Optional[ErrorReason]"
-    """If set this causes the request to fail with the given reason. Passing `Aborted` for requests
-marked with `isNavigationRequest` also cancels the navigation. Must not be set in response
-to an authChallenge."""
-    rawResponse: "Optional[str]"
-    """If set the requests completes using with the provided base64 encoded raw response, including
-HTTP status line and headers etc... Must not be set in response to an authChallenge. (Encoded as a base64 string when passed over JSON)"""
-    url: "Optional[str]"
-    """If set the request url will be modified in a way that's not observable by page. Must not be
-set in response to an authChallenge."""
-    method: "Optional[str]"
-    """If set this allows the request method to be overridden. Must not be set in response to an
-authChallenge."""
-    postData: "Optional[str]"
-    """If set this allows postData to be set. Must not be set in response to an authChallenge."""
-    headers: "Optional[Headers]"
-    """If set this allows the request headers to be changed. Must not be set in response to an
-authChallenge."""
-    authChallengeResponse: "Optional[AuthChallengeResponse]"
-    """Response to a requestIntercepted with an authChallenge. Must not be set otherwise."""
+    errorReason: "NotRequired[Union[ErrorReason, str]]"
+    rawResponse: "NotRequired[str]"
+    url: "NotRequired[str]"
+    method: "NotRequired[str]"
+    postData: "NotRequired[str]"
+    headers: "NotRequired[Headers]"
+    authChallengeResponse: "NotRequired[AuthChallengeResponse]"
 
 
 
@@ -86,17 +72,10 @@ authChallenge."""
 
 class DeleteCookiesParameters(TypedDict):
     name: "str"
-    """Name of the cookies to remove."""
-    url: "Optional[str]"
-    """If specified, deletes all the cookies with the given name where domain and path match
-provided URL."""
-    domain: "Optional[str]"
-    """If specified, deletes only cookies with the exact domain."""
-    path: "Optional[str]"
-    """If specified, deletes only cookies with the exact path."""
-    partitionKey: "Optional[CookiePartitionKey]"
-    """If specified, deletes only cookies with the the given name and partitionKey where
-all partition key attributes match the cookie partition key attribute."""
+    url: "NotRequired[str]"
+    domain: "NotRequired[str]"
+    path: "NotRequired[str]"
+    partitionKey: "NotRequired[CookiePartitionKey]"
 
 
 
@@ -104,21 +83,13 @@ all partition key attributes match the cookie partition key attribute."""
 
 class EmulateNetworkConditionsParameters(TypedDict):
     offline: "bool"
-    """True to emulate internet disconnection."""
     latency: "float"
-    """Minimum latency from request sent to response headers received (ms)."""
     downloadThroughput: "float"
-    """Maximal aggregated download throughput (bytes/sec). -1 disables download throttling."""
     uploadThroughput: "float"
-    """Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling."""
-    connectionType: "Optional[ConnectionType]"
-    """Connection type if known."""
-    packetLoss: "Optional[float]"
-    """WebRTC packet loss (percent, 0-100). 0 disables packet loss emulation, 100 drops all the packets."""
-    packetQueueLength: "Optional[int]"
-    """WebRTC packet queue length (packet). 0 removes any queue length limitations."""
-    packetReordering: "Optional[bool]"
-    """WebRTC packetReordering feature."""
+    connectionType: "NotRequired[Union[ConnectionType, str]]"
+    packetLoss: "NotRequired[float]"
+    packetQueueLength: "NotRequired[int]"
+    packetReordering: "NotRequired[bool]"
 
 
 
@@ -126,13 +97,9 @@ class EmulateNetworkConditionsParameters(TypedDict):
 
 class EnableParameters(TypedDict, total=False):
     maxTotalBufferSize: "int"
-    """Buffer size in bytes to use when preserving network payloads (XHRs, etc)."""
     maxResourceBufferSize: "int"
-    """Per-resource buffer size in bytes to use when preserving network payloads (XHRs, etc)."""
     maxPostDataSize: "int"
-    """Longest post body size (in bytes) that would be included in requestWillBeSent notification"""
     reportDirectSocketTraffic: "bool"
-    """Whether DirectSocket chunk send/receive events should be reported."""
 
 
 
@@ -145,7 +112,6 @@ class GetAllCookiesReturns(BaseModel):
 
 class GetCertificateParameters(TypedDict):
     origin: "str"
-    """Origin to get certificate for."""
 
 
 class GetCertificateReturns(BaseModel):
@@ -155,9 +121,6 @@ class GetCertificateReturns(BaseModel):
 
 class GetCookiesParameters(TypedDict, total=False):
     urls: "List[str]"
-    """The list of URLs for which applicable cookies will be fetched.
-If not specified, it's assumed to be set to the list containing
-the URLs of the page and all of its subframes."""
 
 
 class GetCookiesReturns(BaseModel):
@@ -167,7 +130,6 @@ class GetCookiesReturns(BaseModel):
 
 class GetResponseBodyParameters(TypedDict):
     requestId: "RequestId"
-    """Identifier of the network request to get content for."""
 
 
 class GetResponseBodyReturns(BaseModel):
@@ -178,7 +140,6 @@ class GetResponseBodyReturns(BaseModel):
 
 class GetRequestPostDataParameters(TypedDict):
     requestId: "RequestId"
-    """Identifier of the network request to get content for."""
 
 
 class GetRequestPostDataReturns(BaseModel):
@@ -188,7 +149,6 @@ class GetRequestPostDataReturns(BaseModel):
 
 class GetResponseBodyForInterceptionParameters(TypedDict):
     interceptionId: "InterceptionId"
-    """Identifier for the intercepted request to get body for."""
 
 
 class GetResponseBodyForInterceptionReturns(BaseModel):
@@ -208,7 +168,6 @@ class TakeResponseBodyForInterceptionAsStreamReturns(BaseModel):
 
 class ReplayXHRParameters(TypedDict):
     requestId: "RequestId"
-    """Identifier of XHR to replay."""
 
 
 
@@ -216,13 +175,9 @@ class ReplayXHRParameters(TypedDict):
 
 class SearchInResponseBodyParameters(TypedDict):
     requestId: "RequestId"
-    """Identifier of the network response to search."""
     query: "str"
-    """String to search for."""
-    caseSensitive: "Optional[bool]"
-    """If true, search is case sensitive."""
-    isRegex: "Optional[bool]"
-    """If true, treats string parameter as regex."""
+    caseSensitive: "NotRequired[bool]"
+    isRegex: "NotRequired[bool]"
 
 
 class SearchInResponseBodyReturns(BaseModel):
@@ -232,7 +187,6 @@ class SearchInResponseBodyReturns(BaseModel):
 
 class SetBlockedURLsParameters(TypedDict):
     urls: "List[str]"
-    """URL patterns to block. Wildcards ('*') are allowed."""
 
 
 
@@ -240,7 +194,6 @@ class SetBlockedURLsParameters(TypedDict):
 
 class SetBypassServiceWorkerParameters(TypedDict):
     bypass: "bool"
-    """Bypass service worker and load from network."""
 
 
 
@@ -248,7 +201,6 @@ class SetBypassServiceWorkerParameters(TypedDict):
 
 class SetCacheDisabledParameters(TypedDict):
     cacheDisabled: "bool"
-    """Cache disabled state."""
 
 
 
@@ -256,36 +208,19 @@ class SetCacheDisabledParameters(TypedDict):
 
 class SetCookieParameters(TypedDict):
     name: "str"
-    """Cookie name."""
     value: "str"
-    """Cookie value."""
-    url: "Optional[str]"
-    """The request-URI to associate with the setting of the cookie. This value can affect the
-default domain, path, source port, and source scheme values of the created cookie."""
-    domain: "Optional[str]"
-    """Cookie domain."""
-    path: "Optional[str]"
-    """Cookie path."""
-    secure: "Optional[bool]"
-    """True if cookie is secure."""
-    httpOnly: "Optional[bool]"
-    """True if cookie is http-only."""
-    sameSite: "Optional[CookieSameSite]"
-    """Cookie SameSite type."""
-    expires: "Optional[TimeSinceEpoch]"
-    """Cookie expiration date, session cookie if not set"""
-    priority: "Optional[CookiePriority]"
-    """Cookie Priority type."""
-    sameParty: "Optional[bool]"
-    """True if cookie is SameParty."""
-    sourceScheme: "Optional[CookieSourceScheme]"
-    """Cookie source scheme type."""
-    sourcePort: "Optional[int]"
-    """Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port.
-An unspecified port value allows protocol clients to emulate legacy cookie scope for the port.
-This is a temporary ability and it will be removed in the future."""
-    partitionKey: "Optional[CookiePartitionKey]"
-    """Cookie partition key. If not set, the cookie will be set as not partitioned."""
+    url: "NotRequired[str]"
+    domain: "NotRequired[str]"
+    path: "NotRequired[str]"
+    secure: "NotRequired[bool]"
+    httpOnly: "NotRequired[bool]"
+    sameSite: "NotRequired[Union[CookieSameSite, str]]"
+    expires: "NotRequired[TimeSinceEpoch]"
+    priority: "NotRequired[Union[CookiePriority, str]]"
+    sameParty: "NotRequired[bool]"
+    sourceScheme: "NotRequired[Union[CookieSourceScheme, str]]"
+    sourcePort: "NotRequired[int]"
+    partitionKey: "NotRequired[CookiePartitionKey]"
 
 
 class SetCookieReturns(BaseModel):
@@ -295,7 +230,6 @@ class SetCookieReturns(BaseModel):
 
 class SetCookiesParameters(TypedDict):
     cookies: "List[CookieParam]"
-    """Cookies to be set."""
 
 
 
@@ -303,7 +237,6 @@ class SetCookiesParameters(TypedDict):
 
 class SetExtraHTTPHeadersParameters(TypedDict):
     headers: "Headers"
-    """Map with extra HTTP headers."""
 
 
 
@@ -311,7 +244,6 @@ class SetExtraHTTPHeadersParameters(TypedDict):
 
 class SetAttachDebugStackParameters(TypedDict):
     enabled: "bool"
-    """Whether to attach a page script stack for debugging purpose."""
 
 
 
@@ -319,8 +251,6 @@ class SetAttachDebugStackParameters(TypedDict):
 
 class SetRequestInterceptionParameters(TypedDict):
     patterns: "List[RequestPattern]"
-    """Requests matching any of these patterns will be forwarded and wait for the corresponding
-continueInterceptedRequest call."""
 
 
 
@@ -328,13 +258,9 @@ continueInterceptedRequest call."""
 
 class SetUserAgentOverrideParameters(TypedDict):
     userAgent: "str"
-    """User agent to use."""
-    acceptLanguage: "Optional[str]"
-    """Browser language to emulate."""
-    platform: "Optional[str]"
-    """The platform navigator.platform should return."""
-    userAgentMetadata: "Optional[UserAgentMetadata]"
-    """To be sent in Sec-CH-UA-* headers and returned in navigator.userAgentData"""
+    acceptLanguage: "NotRequired[str]"
+    platform: "NotRequired[str]"
+    userAgentMetadata: "NotRequired[UserAgentMetadata]"
 
 
 
@@ -342,7 +268,6 @@ class SetUserAgentOverrideParameters(TypedDict):
 
 class StreamResourceContentParameters(TypedDict):
     requestId: "RequestId"
-    """Identifier of the request to stream."""
 
 
 class StreamResourceContentReturns(BaseModel):
@@ -352,7 +277,6 @@ class StreamResourceContentReturns(BaseModel):
 
 class GetSecurityIsolationStatusParameters(TypedDict, total=False):
     frameId: "FrameId"
-    """If no frameId is provided, the status of the target is provided."""
 
 
 class GetSecurityIsolationStatusReturns(BaseModel):
@@ -362,20 +286,15 @@ class GetSecurityIsolationStatusReturns(BaseModel):
 
 class EnableReportingApiParameters(TypedDict):
     enable: "bool"
-    """Whether to enable or disable events for the Reporting API"""
 
 
 
 
 
 class LoadNetworkResourceParameters(TypedDict):
-    frameId: "Optional[FrameId]"
-    """Frame id to get the resource for. Mandatory for frame targets, and
-should be omitted for worker targets."""
+    frameId: "NotRequired[FrameId]"
     url: "str"
-    """URL of the resource to get content for."""
     options: "LoadNetworkResourceOptions"
-    """Options for the request."""
 
 
 class LoadNetworkResourceReturns(BaseModel):
@@ -385,11 +304,8 @@ class LoadNetworkResourceReturns(BaseModel):
 
 class SetCookieControlsParameters(TypedDict):
     enableThirdPartyCookieRestriction: "bool"
-    """Whether 3pc restriction is enabled."""
     disableThirdPartyCookieMetadata: "bool"
-    """Whether 3pc grace period exception should be enabled; false by default."""
     disableThirdPartyCookieHeuristics: "bool"
-    """Whether 3pc heuristics exceptions should be enabled; false by default."""
 
 
 

@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -31,8 +31,8 @@ body is received)."""
 
 class RequestPattern(BaseModel):
     urlPattern: "Optional[str]" = None
-    resourceType: "Optional[ResourceType]" = None
-    requestStage: "Optional[RequestStage]" = None
+    resourceType: "Optional[Union[ResourceType, str]]" = None
+    requestStage: "Optional[Union[RequestStage, str]]" = None
 
 
 

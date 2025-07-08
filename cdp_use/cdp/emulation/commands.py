@@ -5,8 +5,8 @@
 """CDP Emulation Domain Commands"""
 
 from pydantic import BaseModel
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import List, Union
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -36,7 +36,6 @@ class CanEmulateReturns(BaseModel):
 
 class SetFocusEmulationEnabledParameters(TypedDict):
     enabled: "bool"
-    """Whether to enable to disable focus emulation."""
 
 
 
@@ -44,8 +43,6 @@ class SetFocusEmulationEnabledParameters(TypedDict):
 
 class SetAutoDarkModeOverrideParameters(TypedDict, total=False):
     enabled: "bool"
-    """Whether to enable or disable automatic dark mode.
-If not specified, any existing override will be cleared."""
 
 
 
@@ -53,7 +50,6 @@ If not specified, any existing override will be cleared."""
 
 class SetCPUThrottlingRateParameters(TypedDict):
     rate: "float"
-    """Throttling rate as a slowdown factor (1 is no throttle, 2 is 2x slowdown, etc)."""
 
 
 
@@ -61,8 +57,6 @@ class SetCPUThrottlingRateParameters(TypedDict):
 
 class SetDefaultBackgroundColorOverrideParameters(TypedDict, total=False):
     color: "RGBA"
-    """RGBA of the default background color. If not specified, any existing override will be
-cleared."""
 
 
 
@@ -77,39 +71,19 @@ class SetSafeAreaInsetsOverrideParameters(TypedDict):
 
 class SetDeviceMetricsOverrideParameters(TypedDict):
     width: "int"
-    """Overriding width value in pixels (minimum 0, maximum 10000000). 0 disables the override."""
     height: "int"
-    """Overriding height value in pixels (minimum 0, maximum 10000000). 0 disables the override."""
     deviceScaleFactor: "float"
-    """Overriding device scale factor value. 0 disables the override."""
     mobile: "bool"
-    """Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text
-autosizing and more."""
-    scale: "Optional[float]"
-    """Scale to apply to resulting view image."""
-    screenWidth: "Optional[int]"
-    """Overriding screen width value in pixels (minimum 0, maximum 10000000)."""
-    screenHeight: "Optional[int]"
-    """Overriding screen height value in pixels (minimum 0, maximum 10000000)."""
-    positionX: "Optional[int]"
-    """Overriding view X position on screen in pixels (minimum 0, maximum 10000000)."""
-    positionY: "Optional[int]"
-    """Overriding view Y position on screen in pixels (minimum 0, maximum 10000000)."""
-    dontSetVisibleSize: "Optional[bool]"
-    """Do not set visible view size, rely upon explicit setVisibleSize call."""
-    screenOrientation: "Optional[ScreenOrientation]"
-    """Screen orientation override."""
-    viewport: "Optional[Viewport]"
-    """If set, the visible area of the page will be overridden to this viewport. This viewport
-change is not observed by the page, e.g. viewport-relative elements do not change positions."""
-    displayFeature: "Optional[DisplayFeature]"
-    """If set, the display feature of a multi-segment screen. If not set, multi-segment support
-is turned-off.
-Deprecated, use Emulation.setDisplayFeaturesOverride."""
-    devicePosture: "Optional[DevicePosture]"
-    """If set, the posture of a foldable device. If not set the posture is set
-to continuous.
-Deprecated, use Emulation.setDevicePostureOverride."""
+    scale: "NotRequired[float]"
+    screenWidth: "NotRequired[int]"
+    screenHeight: "NotRequired[int]"
+    positionX: "NotRequired[int]"
+    positionY: "NotRequired[int]"
+    dontSetVisibleSize: "NotRequired[bool]"
+    screenOrientation: "NotRequired[ScreenOrientation]"
+    viewport: "NotRequired[Viewport]"
+    displayFeature: "NotRequired[DisplayFeature]"
+    devicePosture: "NotRequired[DevicePosture]"
 
 
 
@@ -131,7 +105,6 @@ class SetDisplayFeaturesOverrideParameters(TypedDict):
 
 class SetScrollbarsHiddenParameters(TypedDict):
     hidden: "bool"
-    """Whether scrollbars should be always hidden."""
 
 
 
@@ -139,7 +112,6 @@ class SetScrollbarsHiddenParameters(TypedDict):
 
 class SetDocumentCookieDisabledParameters(TypedDict):
     disabled: "bool"
-    """Whether document.coookie API should be disabled."""
 
 
 
@@ -147,9 +119,7 @@ class SetDocumentCookieDisabledParameters(TypedDict):
 
 class SetEmitTouchEventsForMouseParameters(TypedDict):
     enabled: "bool"
-    """Whether touch emulation based on mouse input should be enabled."""
-    configuration: "Optional[str]"
-    """Touch/gesture events configuration. Default: current platform."""
+    configuration: "NotRequired[str]"
 
 
 
@@ -157,9 +127,7 @@ class SetEmitTouchEventsForMouseParameters(TypedDict):
 
 class SetEmulatedMediaParameters(TypedDict, total=False):
     media: "str"
-    """Media type to emulate. Empty string disables the override."""
     features: "List[MediaFeature]"
-    """Media features to emulate."""
 
 
 
@@ -167,8 +135,6 @@ class SetEmulatedMediaParameters(TypedDict, total=False):
 
 class SetEmulatedVisionDeficiencyParameters(TypedDict):
     type: "str"
-    """Vision deficiency to emulate. Order: best-effort emulations come first, followed by any
-physiologically accurate emulations for medically recognized color vision deficiencies."""
 
 
 
@@ -183,26 +149,19 @@ class SetEmulatedOSTextScaleParameters(TypedDict, total=False):
 
 class SetGeolocationOverrideParameters(TypedDict, total=False):
     latitude: "float"
-    """Mock latitude"""
     longitude: "float"
-    """Mock longitude"""
     accuracy: "float"
-    """Mock accuracy"""
     altitude: "float"
-    """Mock altitude"""
     altitudeAccuracy: "float"
-    """Mock altitudeAccuracy"""
     heading: "float"
-    """Mock heading"""
     speed: "float"
-    """Mock speed"""
 
 
 
 
 
 class GetOverriddenSensorInformationParameters(TypedDict):
-    type: "SensorType"
+    type: "Union[SensorType, str]"
 
 
 class GetOverriddenSensorInformationReturns(BaseModel):
@@ -212,15 +171,15 @@ class GetOverriddenSensorInformationReturns(BaseModel):
 
 class SetSensorOverrideEnabledParameters(TypedDict):
     enabled: "bool"
-    type: "SensorType"
-    metadata: "Optional[SensorMetadata]"
+    type: "Union[SensorType, str]"
+    metadata: "NotRequired[SensorMetadata]"
 
 
 
 
 
 class SetSensorOverrideReadingsParameters(TypedDict):
-    type: "SensorType"
+    type: "Union[SensorType, str]"
     reading: "SensorReading"
 
 
@@ -229,25 +188,25 @@ class SetSensorOverrideReadingsParameters(TypedDict):
 
 class SetPressureSourceOverrideEnabledParameters(TypedDict):
     enabled: "bool"
-    source: "PressureSource"
-    metadata: "Optional[PressureMetadata]"
+    source: "Union[PressureSource, str]"
+    metadata: "NotRequired[PressureMetadata]"
 
 
 
 
 
 class SetPressureStateOverrideParameters(TypedDict):
-    source: "PressureSource"
-    state: "PressureState"
+    source: "Union[PressureSource, str]"
+    state: "Union[PressureState, str]"
 
 
 
 
 
 class SetPressureDataOverrideParameters(TypedDict):
-    source: "PressureSource"
-    state: "PressureState"
-    ownContributionEstimate: "Optional[float]"
+    source: "Union[PressureSource, str]"
+    state: "Union[PressureState, str]"
+    ownContributionEstimate: "NotRequired[float]"
 
 
 
@@ -255,9 +214,7 @@ class SetPressureDataOverrideParameters(TypedDict):
 
 class SetIdleOverrideParameters(TypedDict):
     isUserActive: "bool"
-    """Mock isUserActive"""
     isScreenUnlocked: "bool"
-    """Mock isScreenUnlocked"""
 
 
 
@@ -265,7 +222,6 @@ class SetIdleOverrideParameters(TypedDict):
 
 class SetNavigatorOverridesParameters(TypedDict):
     platform: "str"
-    """The platform navigator.platform should return."""
 
 
 
@@ -273,7 +229,6 @@ class SetNavigatorOverridesParameters(TypedDict):
 
 class SetPageScaleFactorParameters(TypedDict):
     pageScaleFactor: "float"
-    """Page scale factor."""
 
 
 
@@ -281,7 +236,6 @@ class SetPageScaleFactorParameters(TypedDict):
 
 class SetScriptExecutionDisabledParameters(TypedDict):
     value: "bool"
-    """Whether script execution should be disabled in the page."""
 
 
 
@@ -289,24 +243,17 @@ class SetScriptExecutionDisabledParameters(TypedDict):
 
 class SetTouchEmulationEnabledParameters(TypedDict):
     enabled: "bool"
-    """Whether the touch event emulation should be enabled."""
-    maxTouchPoints: "Optional[int]"
-    """Maximum touch points supported. Defaults to one."""
+    maxTouchPoints: "NotRequired[int]"
 
 
 
 
 
 class SetVirtualTimePolicyParameters(TypedDict):
-    policy: "VirtualTimePolicy"
-    budget: "Optional[float]"
-    """If set, after this many virtual milliseconds have elapsed virtual time will be paused and a
-virtualTimeBudgetExpired event is sent."""
-    maxVirtualTimeTaskStarvationCount: "Optional[int]"
-    """If set this specifies the maximum number of tasks that can be run before virtual is forced
-forwards to prevent deadlock."""
-    initialVirtualTime: "Optional[TimeSinceEpoch]"
-    """If set, base::Time::Now will be overridden to initially return this value."""
+    policy: "Union[VirtualTimePolicy, str]"
+    budget: "NotRequired[float]"
+    maxVirtualTimeTaskStarvationCount: "NotRequired[int]"
+    initialVirtualTime: "NotRequired[TimeSinceEpoch]"
 
 
 class SetVirtualTimePolicyReturns(BaseModel):
@@ -316,8 +263,6 @@ class SetVirtualTimePolicyReturns(BaseModel):
 
 class SetLocaleOverrideParameters(TypedDict, total=False):
     locale: "str"
-    """ICU style C locale (e.g. \"en_US\"). If not specified or empty, disables the override and
-restores default host system locale."""
 
 
 
@@ -325,9 +270,6 @@ restores default host system locale."""
 
 class SetTimezoneOverrideParameters(TypedDict):
     timezoneId: "str"
-    """The timezone identifier. List of supported timezones:
-https://source.chromium.org/chromium/chromium/deps/icu.git/+/faee8bc70570192d82d2978a71e2a615788597d1:source/data/misc/metaZones.txt
-If empty, disables the override and restores default host system timezone."""
 
 
 
@@ -335,17 +277,14 @@ If empty, disables the override and restores default host system timezone."""
 
 class SetVisibleSizeParameters(TypedDict):
     width: "int"
-    """Frame width (DIP)."""
     height: "int"
-    """Frame height (DIP)."""
 
 
 
 
 
 class SetDisabledImageTypesParameters(TypedDict):
-    imageTypes: "List[DisabledImageType]"
-    """Image types to disable."""
+    imageTypes: "List[Union[DisabledImageType, str]]"
 
 
 
@@ -353,7 +292,6 @@ class SetDisabledImageTypesParameters(TypedDict):
 
 class SetDataSaverOverrideParameters(TypedDict, total=False):
     dataSaverEnabled: "bool"
-    """Override value. Omitting the parameter disables the override."""
 
 
 
@@ -361,7 +299,6 @@ class SetDataSaverOverrideParameters(TypedDict, total=False):
 
 class SetHardwareConcurrencyOverrideParameters(TypedDict):
     hardwareConcurrency: "int"
-    """Hardware concurrency to report"""
 
 
 
@@ -369,13 +306,9 @@ class SetHardwareConcurrencyOverrideParameters(TypedDict):
 
 class SetUserAgentOverrideParameters(TypedDict):
     userAgent: "str"
-    """User agent to use."""
-    acceptLanguage: "Optional[str]"
-    """Browser language to emulate."""
-    platform: "Optional[str]"
-    """The platform navigator.platform should return."""
-    userAgentMetadata: "Optional[UserAgentMetadata]"
-    """To be sent in Sec-CH-UA-* headers and returned in navigator.userAgentData"""
+    acceptLanguage: "NotRequired[str]"
+    platform: "NotRequired[str]"
+    userAgentMetadata: "NotRequired[UserAgentMetadata]"
 
 
 
@@ -383,7 +316,6 @@ class SetUserAgentOverrideParameters(TypedDict):
 
 class SetAutomationOverrideParameters(TypedDict):
     enabled: "bool"
-    """Whether the override should be enabled."""
 
 
 
@@ -391,8 +323,6 @@ class SetAutomationOverrideParameters(TypedDict):
 
 class SetSmallViewportHeightDifferenceOverrideParameters(TypedDict):
     difference: "int"
-    """This will cause an element of size 100svh to be `difference` pixels smaller than an element
-of size 100lvh."""
 
 
 

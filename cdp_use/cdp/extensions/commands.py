@@ -5,8 +5,8 @@
 """CDP Extensions Domain Commands"""
 
 from pydantic import BaseModel
-from typing import Any, Dict, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, Dict, List, Union
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -15,7 +15,6 @@ if TYPE_CHECKING:
 
 class LoadUnpackedParameters(TypedDict):
     path: "str"
-    """Absolute file path."""
 
 
 class LoadUnpackedReturns(BaseModel):
@@ -25,7 +24,6 @@ class LoadUnpackedReturns(BaseModel):
 
 class UninstallParameters(TypedDict):
     id: "str"
-    """Extension id."""
 
 
 
@@ -33,11 +31,8 @@ class UninstallParameters(TypedDict):
 
 class GetStorageItemsParameters(TypedDict):
     id: "str"
-    """ID of extension."""
-    storageArea: "StorageArea"
-    """StorageArea to retrieve data from."""
-    keys: "Optional[List[str]]"
-    """Keys to retrieve."""
+    storageArea: "Union[StorageArea, str]"
+    keys: "NotRequired[List[str]]"
 
 
 class GetStorageItemsReturns(BaseModel):
@@ -47,11 +42,8 @@ class GetStorageItemsReturns(BaseModel):
 
 class RemoveStorageItemsParameters(TypedDict):
     id: "str"
-    """ID of extension."""
-    storageArea: "StorageArea"
-    """StorageArea to remove data from."""
+    storageArea: "Union[StorageArea, str]"
     keys: "List[str]"
-    """Keys to remove."""
 
 
 
@@ -59,9 +51,7 @@ class RemoveStorageItemsParameters(TypedDict):
 
 class ClearStorageItemsParameters(TypedDict):
     id: "str"
-    """ID of extension."""
-    storageArea: "StorageArea"
-    """StorageArea to remove data from."""
+    storageArea: "Union[StorageArea, str]"
 
 
 
@@ -69,11 +59,8 @@ class ClearStorageItemsParameters(TypedDict):
 
 class SetStorageItemsParameters(TypedDict):
     id: "str"
-    """ID of extension."""
-    storageArea: "StorageArea"
-    """StorageArea to set data in."""
+    storageArea: "Union[StorageArea, str]"
     values: "Dict[str, Any]"
-    """Values to set."""
 
 
 

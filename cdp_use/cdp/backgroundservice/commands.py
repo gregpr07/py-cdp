@@ -4,6 +4,7 @@
 
 """CDP BackgroundService Domain Commands"""
 
+from typing import Union
 from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
@@ -12,14 +13,14 @@ if TYPE_CHECKING:
     from .types import ServiceName
 
 class StartObservingParameters(TypedDict):
-    service: "ServiceName"
+    service: "Union[ServiceName, str]"
 
 
 
 
 
 class StopObservingParameters(TypedDict):
-    service: "ServiceName"
+    service: "Union[ServiceName, str]"
 
 
 
@@ -27,13 +28,13 @@ class StopObservingParameters(TypedDict):
 
 class SetRecordingParameters(TypedDict):
     shouldRecord: "bool"
-    service: "ServiceName"
+    service: "Union[ServiceName, str]"
 
 
 
 
 
 class ClearEventsParameters(TypedDict):
-    service: "ServiceName"
+    service: "Union[ServiceName, str]"
 
 

@@ -5,7 +5,7 @@
 """CDP Fetch Domain Events"""
 
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -34,8 +34,8 @@ have `redirectedRequestId` field set."""
     requestId: "RequestId"
     request: "Request"
     frameId: "FrameId"
-    resourceType: "ResourceType"
-    responseErrorReason: "Optional[ErrorReason]" = None
+    resourceType: "Union[ResourceType, str]"
+    responseErrorReason: "Optional[Union[ErrorReason, str]]" = None
     responseStatusCode: "Optional[int]" = None
     responseStatusText: "Optional[str]" = None
     responseHeaders: "Optional[List[HeaderEntry]]" = None
@@ -50,7 +50,7 @@ The request is paused until client responds with continueWithAuth."""
     requestId: "RequestId"
     request: "Request"
     frameId: "FrameId"
-    resourceType: "ResourceType"
+    resourceType: "Union[ResourceType, str]"
     authChallenge: "AuthChallenge"
 
 

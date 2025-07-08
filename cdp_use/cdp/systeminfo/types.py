@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 class GPUDevice(BaseModel):
     """Describes a single graphics processor (GPU)."""
@@ -66,10 +66,10 @@ class ImageType(Enum):
 class ImageDecodeAcceleratorCapability(BaseModel):
     """Describes a supported image decoding profile with its associated minimum and
 maximum resolutions and subsampling."""
-    imageType: "ImageType"
+    imageType: "Union[ImageType, str]"
     maxDimensions: "Size"
     minDimensions: "Size"
-    subsamplings: "List[SubsamplingFormat]"
+    subsamplings: "List[Union[SubsamplingFormat, str]]"
 
 
 

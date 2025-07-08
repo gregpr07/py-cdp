@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Union
 
 AuthenticatorId = str
 
@@ -34,9 +34,9 @@ class AuthenticatorTransport(Enum):
 
 
 class VirtualAuthenticatorOptions(BaseModel):
-    protocol: "AuthenticatorProtocol"
-    transport: "AuthenticatorTransport"
-    ctap2Version: "Optional[Ctap2Version]" = None
+    protocol: "Union[AuthenticatorProtocol, str]"
+    transport: "Union[AuthenticatorTransport, str]"
+    ctap2Version: "Optional[Union[Ctap2Version, str]]" = None
     hasResidentKey: "Optional[bool]" = None
     hasUserVerification: "Optional[bool]" = None
     hasLargeBlob: "Optional[bool]" = None

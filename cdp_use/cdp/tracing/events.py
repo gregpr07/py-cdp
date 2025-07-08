@@ -5,7 +5,7 @@
 """CDP Tracing Domain Events"""
 
 from pydantic import BaseModel
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -33,8 +33,8 @@ class TracingCompleteEvent(BaseModel):
 delivered via dataCollected events."""
     dataLossOccurred: "bool"
     stream: "Optional[StreamHandle]" = None
-    traceFormat: "Optional[StreamFormat]" = None
-    streamCompression: "Optional[StreamCompression]" = None
+    traceFormat: "Optional[Union[StreamFormat, str]]" = None
+    streamCompression: "Optional[Union[StreamCompression, str]]" = None
 
 
 # Rebuild Pydantic models to resolve forward references

@@ -5,7 +5,7 @@
 """CDP Security Domain Events"""
 
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -34,7 +34,7 @@ class VisibleSecurityStateChangedEvent(BaseModel):
 
 class SecurityStateChangedEvent(BaseModel):
     """The security state of the page changed. No longer being sent."""
-    securityState: "SecurityState"
+    securityState: "Union[SecurityState, str]"
     schemeIsCryptographic: "bool"
     explanations: "List[SecurityStateExplanation]"
     insecureContentStatus: "InsecureContentStatus"

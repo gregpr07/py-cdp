@@ -5,7 +5,7 @@
 """CDP DOMSnapshot Domain Types"""
 
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -39,8 +39,8 @@ class DOMNode(BaseModel):
     systemId: "Optional[str]" = None
     frameId: "Optional[FrameId]" = None
     contentDocumentIndex: "Optional[int]" = None
-    pseudoType: "Optional[PseudoType]" = None
-    shadowRootType: "Optional[ShadowRootType]" = None
+    pseudoType: "Optional[Union[PseudoType, str]]" = None
+    shadowRootType: "Optional[Union[ShadowRootType, str]]" = None
     isClickable: "Optional[bool]" = None
     eventListeners: "Optional[List[EventListener]]" = None
     currentSourceURL: "Optional[str]" = None

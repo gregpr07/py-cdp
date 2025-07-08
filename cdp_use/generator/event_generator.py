@@ -6,7 +6,7 @@ Generates Python TypedDict classes for CDP events.
 
 import re
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Union
 
 
 class EventGenerator:
@@ -16,6 +16,7 @@ class EventGenerator:
         self.imports = set()
         self.generated_events = set()
         self.type_checking_imports = set()
+        self.all_enums = set()
 
     def generate_events(self, domain: Dict[str, Any]) -> str:
         """Generate events.py content for a domain."""
@@ -166,6 +167,7 @@ class EventGenerator:
         """Resolve a type reference ($ref)."""
         if "$ref" in type_ref:
             ref = type_ref["$ref"]
+            type_name = ""
 
             # Handle cross-domain references
             if "." in ref:
@@ -177,11 +179,16 @@ class EventGenerator:
                 self.type_checking_imports.add(
                     f"from ..{domain_ref}.types import {type_name}"
                 )
-                return type_name
             else:
+                type_name = ref
                 # Same domain reference - always import from types module in events
                 self.type_checking_imports.add(f"from .types import {ref}")
-                return ref
+
+            fqn = ref if "." in ref else f"{current_domain}.{ref}"
+            if fqn in self.all_enums:
+                return f"Union[{type_name}, str]"
+
+            return type_name
 
         # Handle inline type definitions
         if "type" in type_ref:

@@ -6,7 +6,7 @@
 
 from enum import Enum
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Union
 
 from typing import TYPE_CHECKING
 
@@ -104,11 +104,11 @@ class HighlightConfig(BaseModel):
     shapeColor: "Optional[RGBA]" = None
     shapeMarginColor: "Optional[RGBA]" = None
     cssGridColor: "Optional[RGBA]" = None
-    colorFormat: "Optional[ColorFormat]" = None
+    colorFormat: "Optional[Union[ColorFormat, str]]" = None
     gridHighlightConfig: "Optional[GridHighlightConfig]" = None
     flexContainerHighlightConfig: "Optional[FlexContainerHighlightConfig]" = None
     flexItemHighlightConfig: "Optional[FlexItemHighlightConfig]" = None
-    contrastAlgorithm: "Optional[ContrastAlgorithm]" = None
+    contrastAlgorithm: "Optional[Union[ContrastAlgorithm, str]]" = None
     containerQueryContainerHighlightConfig: "Optional[ContainerQueryContainerHighlightConfig]" = None
 
 

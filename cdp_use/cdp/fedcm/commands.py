@@ -4,8 +4,8 @@
 
 """CDP FedCm Domain Commands"""
 
-from typing import Optional
-from typing_extensions import TypedDict
+from typing import Union
+from typing_extensions import TypedDict, NotRequired
 
 from typing import TYPE_CHECKING
 
@@ -15,9 +15,6 @@ if TYPE_CHECKING:
 
 class EnableParameters(TypedDict, total=False):
     disableRejectionDelay: "bool"
-    """Allows callers to disable the promise rejection delay that would
-normally happen, if this is unimportant to what's being tested.
-(step 4 of https://fedidcg.github.io/FedCM/#browser-api-rp-sign-in)"""
 
 
 
@@ -33,7 +30,7 @@ class SelectAccountParameters(TypedDict):
 
 class ClickDialogButtonParameters(TypedDict):
     dialogId: "str"
-    dialogButton: "DialogButton"
+    dialogButton: "Union[DialogButton, str]"
 
 
 
@@ -42,7 +39,7 @@ class ClickDialogButtonParameters(TypedDict):
 class OpenUrlParameters(TypedDict):
     dialogId: "str"
     accountIndex: "int"
-    accountUrlType: "AccountUrlType"
+    accountUrlType: "Union[AccountUrlType, str]"
 
 
 
@@ -50,6 +47,6 @@ class OpenUrlParameters(TypedDict):
 
 class DismissDialogParameters(TypedDict):
     dialogId: "str"
-    triggerCooldown: "Optional[bool]"
+    triggerCooldown: "NotRequired[bool]"
 
 
