@@ -14,23 +14,24 @@ if TYPE_CHECKING:
     from ..runtime.types import RemoteObject
     from ..runtime.types import ScriptId
 
-"""DOM breakpoint type."""
 class DOMBreakpointType(Enum):
+    """DOM breakpoint type."""
     SUBTREE_MODIFIED = "subtree-modified"
     ATTRIBUTE_MODIFIED = "attribute-modified"
     NODE_REMOVED = "node-removed"
 
 
 
-"""CSP Violation type."""
 class CSPViolationType(Enum):
+    """CSP Violation type."""
     TRUSTEDTYPE_SINK_VIOLATION = "trustedtype-sink-violation"
     TRUSTEDTYPE_POLICY_VIOLATION = "trustedtype-policy-violation"
 
 
 
-"""Object event listener."""
 class EventListener(TypedDict):
+    """Object event listener."""
+
     type: "str"
     """`EventListener`'s type."""
     useCapture: "bool"

@@ -13,22 +13,22 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..network.types import TimeSinceEpoch
 
-"""An internal certificate ID value."""
+# An internal certificate ID value.
 CertificateId = int
 
 
 
-"""A description of mixed content (HTTP resources on HTTPS pages), as defined by
-https://www.w3.org/TR/mixed-content/#categories"""
 class MixedContentType(Enum):
+    """A description of mixed content (HTTP resources on HTTPS pages), as defined by
+https://www.w3.org/TR/mixed-content/#categories"""
     BLOCKABLE = "blockable"
     OPTIONALLY_BLOCKABLE = "optionally-blockable"
     NONE = "none"
 
 
 
-"""The security level of a page or resource."""
 class SecurityState(Enum):
+    """The security level of a page or resource."""
     UNKNOWN = "unknown"
     NEUTRAL = "neutral"
     INSECURE = "insecure"
@@ -38,8 +38,9 @@ class SecurityState(Enum):
 
 
 
-"""Details about the security state of the page certificate."""
 class CertificateSecurityState(TypedDict):
+    """Details about the security state of the page certificate."""
+
     protocol: "str"
     """Protocol name (e.g. \"TLS 1.2\" or \"QUIC\")."""
     keyExchange: "str"
@@ -93,8 +94,9 @@ class SafetyTipInfo(TypedDict):
 
 
 
-"""Security state information about the page."""
 class VisibleSecurityState(TypedDict):
+    """Security state information about the page."""
+
     securityState: "SecurityState"
     """The security level of the page."""
     certificateSecurityState: "NotRequired[CertificateSecurityState]"
@@ -106,8 +108,9 @@ class VisibleSecurityState(TypedDict):
 
 
 
-"""An explanation of an factor contributing to the security state."""
 class SecurityStateExplanation(TypedDict):
+    """An explanation of an factor contributing to the security state."""
+
     securityState: "SecurityState"
     """Security state representing the severity of the factor being explained."""
     title: "str"
@@ -125,8 +128,9 @@ class SecurityStateExplanation(TypedDict):
 
 
 
-"""Information about insecure content on the page."""
 class InsecureContentStatus(TypedDict):
+    """Information about insecure content on the page."""
+
     ranMixedContent: "bool"
     """Always false."""
     displayedMixedContent: "bool"
@@ -144,8 +148,8 @@ class InsecureContentStatus(TypedDict):
 
 
 
-"""The action to take when a certificate error occurs. continue will continue processing the
-request and cancel will cancel the request."""
 class CertificateErrorAction(Enum):
+    """The action to take when a certificate error occurs. continue will continue processing the
+request and cancel will cancel the request."""
     CONTINUE = "continue"
     CANCEL = "cancel"

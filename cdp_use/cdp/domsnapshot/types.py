@@ -17,8 +17,9 @@ if TYPE_CHECKING:
     from ..domdebugger.types import EventListener
     from ..page.types import FrameId
 
-"""A Node in the DOM tree."""
 class DOMNode(TypedDict):
+    """A Node in the DOM tree."""
+
     nodeType: "int"
     """`Node`'s nodeType."""
     nodeName: "str"
@@ -83,9 +84,10 @@ clicked."""
 
 
 
-"""Details of post layout rendered text positions. The exact layout should not be regarded as
-stable and may change between versions."""
 class InlineTextBox(TypedDict):
+    """Details of post layout rendered text positions. The exact layout should not be regarded as
+stable and may change between versions."""
+
     boundingBox: "Rect"
     """The bounding box in document coordinates. Note that scroll offset of the document is ignored."""
     startCharacterIndex: "int"
@@ -97,8 +99,9 @@ represented as a surrogate pair in UTF-16 have length 2."""
 
 
 
-"""Details of an element in the DOM tree with a LayoutObject."""
 class LayoutTreeNode(TypedDict):
+    """Details of an element in the DOM tree with a LayoutObject."""
+
     domNodeIndex: "int"
     """The index of the related DOM node in the `domNodes` array returned by `getSnapshot`."""
     boundingBox: "Rect"
@@ -118,15 +121,17 @@ getSnapshot was true."""
 
 
 
-"""A subset of the full ComputedStyle as defined by the request whitelist."""
 class ComputedStyle(TypedDict):
+    """A subset of the full ComputedStyle as defined by the request whitelist."""
+
     properties: "List[NameValue]"
     """Name/value pairs of computed style properties."""
 
 
 
-"""A name/value pair."""
 class NameValue(TypedDict):
+    """A name/value pair."""
+
     name: "str"
     """Attribute/property name."""
     value: "str"
@@ -134,18 +139,19 @@ class NameValue(TypedDict):
 
 
 
-"""Index of the string in the strings table."""
+# Index of the string in the strings table.
 StringIndex = int
 
 
 
-"""Index of the string in the strings table."""
+# Index of the string in the strings table.
 ArrayOfStrings = List[StringIndex]
 
 
 
-"""Data that is only present on rare nodes."""
 class RareStringData(TypedDict):
+    """Data that is only present on rare nodes."""
+
     index: "List[int]"
     value: "List[StringIndex]"
 
@@ -166,8 +172,9 @@ Rectangle = List[float]
 
 
 
-"""Document snapshot."""
 class DocumentSnapshot(TypedDict):
+    """Document snapshot."""
+
     documentURL: "StringIndex"
     """Document URL that `Document` or `FrameOwner` node points to."""
     title: "StringIndex"
@@ -201,8 +208,9 @@ class DocumentSnapshot(TypedDict):
 
 
 
-"""Table containing nodes."""
 class NodeTreeSnapshot(TypedDict, total=False):
+    """Table containing nodes."""
+
     parentIndex: "List[int]"
     """Parent node index."""
     nodeType: "List[int]"
@@ -243,8 +251,9 @@ clicked."""
 
 
 
-"""Table of details of an element in the DOM tree with a LayoutObject."""
 class LayoutTreeSnapshot(TypedDict):
+    """Table of details of an element in the DOM tree with a LayoutObject."""
+
     nodeIndex: "List[int]"
     """Index of the corresponding node in the `NodeTreeSnapshot` array returned by `captureSnapshot`."""
     styles: "List[ArrayOfStrings]"
@@ -272,9 +281,10 @@ captureSnapshot was true."""
 
 
 
-"""Table of details of the post layout rendered text positions. The exact layout should not be regarded as
-stable and may change between versions."""
 class TextBoxSnapshot(TypedDict):
+    """Table of details of the post layout rendered text positions. The exact layout should not be regarded as
+stable and may change between versions."""
+
     layoutIndex: "List[int]"
     """Index of the layout tree node that owns this box collection."""
     bounds: "List[Rectangle]"

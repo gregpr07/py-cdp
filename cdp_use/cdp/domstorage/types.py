@@ -11,8 +11,9 @@ SerializedStorageKey = str
 
 
 
-"""DOM Storage identifier."""
 class StorageId(TypedDict):
+    """DOM Storage identifier."""
+
     securityOrigin: "NotRequired[str]"
     """Security origin for the storage."""
     storageKey: "NotRequired[SerializedStorageKey]"
@@ -22,5 +23,5 @@ class StorageId(TypedDict):
 
 
 
-"""DOM Storage item."""
+# DOM Storage item.
 Item = List[str]

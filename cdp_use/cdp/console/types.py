@@ -6,8 +6,9 @@
 
 from typing_extensions import NotRequired, TypedDict
 
-"""Console message."""
 class ConsoleMessage(TypedDict):
+    """Console message."""
+
     source: "str"
     """Message source."""
     level: "str"

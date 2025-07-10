@@ -15,8 +15,9 @@ if TYPE_CHECKING:
     from ..network.types import TimeSinceEpoch
     from ..page.types import FrameId
 
-"""See https://github.com/WICG/LargestContentfulPaint and largest_contentful_paint.idl"""
 class LargestContentfulPaint(TypedDict):
+    """See https://github.com/WICG/LargestContentfulPaint and largest_contentful_paint.idl"""
+
     renderTime: "TimeSinceEpoch"
     loadTime: "TimeSinceEpoch"
     size: "float"
@@ -36,8 +37,9 @@ class LayoutShiftAttribution(TypedDict):
 
 
 
-"""See https://wicg.github.io/layout-instability/#sec-layout-shift and layout_shift.idl"""
 class LayoutShift(TypedDict):
+    """See https://wicg.github.io/layout-instability/#sec-layout-shift and layout_shift.idl"""
+
     value: "float"
     """Score increment produced by this event."""
     hadRecentInput: "bool"

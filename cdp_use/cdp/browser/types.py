@@ -16,8 +16,8 @@ WindowID = int
 
 
 
-"""The state of the browser window."""
 class WindowState(Enum):
+    """The state of the browser window."""
     NORMAL = "normal"
     MINIMIZED = "minimized"
     MAXIMIZED = "maximized"
@@ -25,8 +25,9 @@ class WindowState(Enum):
 
 
 
-"""Browser window bounds information"""
 class Bounds(TypedDict, total=False):
+    """Browser window bounds information"""
+
     left: "int"
     """The offset from the left edge of the screen to the window in pixels."""
     top: "int"
@@ -88,9 +89,10 @@ class PermissionSetting(Enum):
 
 
 
-"""Definition of PermissionDescriptor defined in the Permissions API:
-https://w3c.github.io/permissions/#dom-permissiondescriptor."""
 class PermissionDescriptor(TypedDict):
+    """Definition of PermissionDescriptor defined in the Permissions API:
+https://w3c.github.io/permissions/#dom-permissiondescriptor."""
+
     name: "str"
     """Name of permission.
 See https://cs.chromium.org/chromium/src/third_party/blink/renderer/modules/permissions/permission_descriptor.idl for valid permission names."""
@@ -108,16 +110,17 @@ Note that userVisibleOnly = true is the only currently supported type."""
 
 
 
-"""Browser command ids used by executeBrowserCommand."""
 class BrowserCommandId(Enum):
+    """Browser command ids used by executeBrowserCommand."""
     OPENTABSEARCH = "openTabSearch"
     CLOSETABSEARCH = "closeTabSearch"
     OPENGLIC = "openGlic"
 
 
 
-"""Chrome histogram bucket."""
 class Bucket(TypedDict):
+    """Chrome histogram bucket."""
+
     low: "int"
     """Minimum value (inclusive)."""
     high: "int"
@@ -127,8 +130,9 @@ class Bucket(TypedDict):
 
 
 
-"""Chrome histogram."""
 class Histogram(TypedDict):
+    """Chrome histogram."""
+
     name: "str"
     """Name."""
     sum: "int"

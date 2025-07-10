@@ -8,8 +8,9 @@ from enum import Enum
 from typing import Any, Dict, List
 from typing_extensions import NotRequired, TypedDict
 
-"""Describes a single graphics processor (GPU)."""
 class GPUDevice(TypedDict):
+    """Describes a single graphics processor (GPU)."""
+
     vendorId: "float"
     """PCI ID of the GPU vendor, if available; 0 otherwise."""
     deviceId: "float"
@@ -29,8 +30,9 @@ class GPUDevice(TypedDict):
 
 
 
-"""Describes the width and height dimensions of an entity."""
 class Size(TypedDict):
+    """Describes the width and height dimensions of an entity."""
+
     width: "int"
     """Width in pixels."""
     height: "int"
@@ -38,9 +40,10 @@ class Size(TypedDict):
 
 
 
-"""Describes a supported video decoding profile with its associated minimum and
-maximum resolutions."""
 class VideoDecodeAcceleratorCapability(TypedDict):
+    """Describes a supported video decoding profile with its associated minimum and
+maximum resolutions."""
+
     profile: "str"
     """Video codec profile that is supported, e.g. VP9 Profile 2."""
     maxResolution: "Size"
@@ -50,9 +53,10 @@ class VideoDecodeAcceleratorCapability(TypedDict):
 
 
 
-"""Describes a supported video encoding profile with its associated maximum
-resolution and maximum framerate."""
 class VideoEncodeAcceleratorCapability(TypedDict):
+    """Describes a supported video encoding profile with its associated maximum
+resolution and maximum framerate."""
+
     profile: "str"
     """Video codec profile that is supported, e.g H264 Main."""
     maxResolution: "Size"
@@ -65,25 +69,26 @@ class VideoEncodeAcceleratorCapability(TypedDict):
 
 
 
-"""YUV subsampling type of the pixels of a given image."""
 class SubsamplingFormat(Enum):
+    """YUV subsampling type of the pixels of a given image."""
     YUV420 = "yuv420"
     YUV422 = "yuv422"
     YUV444 = "yuv444"
 
 
 
-"""Image format of a given image."""
 class ImageType(Enum):
+    """Image format of a given image."""
     JPEG = "jpeg"
     WEBP = "webp"
     UNKNOWN = "unknown"
 
 
 
-"""Describes a supported image decoding profile with its associated minimum and
-maximum resolutions and subsampling."""
 class ImageDecodeAcceleratorCapability(TypedDict):
+    """Describes a supported image decoding profile with its associated minimum and
+maximum resolutions and subsampling."""
+
     imageType: "ImageType"
     """Image coded, e.g. Jpeg."""
     maxDimensions: "Size"
@@ -95,8 +100,9 @@ class ImageDecodeAcceleratorCapability(TypedDict):
 
 
 
-"""Provides information about the GPU(s) on the system."""
 class GPUInfo(TypedDict):
+    """Provides information about the GPU(s) on the system."""
+
     devices: "List[GPUDevice]"
     """The graphics devices on the system. Element 0 is the primary GPU."""
     auxAttributes: "NotRequired[Dict[str, Any]]"
@@ -114,8 +120,9 @@ class GPUInfo(TypedDict):
 
 
 
-"""Represents process info."""
 class ProcessInfo(TypedDict):
+    """Represents process info."""
+
     type: "str"
     """Specifies process type."""
     id: "int"

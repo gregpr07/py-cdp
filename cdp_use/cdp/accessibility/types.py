@@ -14,13 +14,13 @@ if TYPE_CHECKING:
     from ..dom.types import BackendNodeId
     from ..page.types import FrameId
 
-"""Unique accessibility node identifier."""
+# Unique accessibility node identifier.
 AXNodeId = str
 
 
 
-"""Enum of possible property types."""
 class AXValueType(Enum):
+    """Enum of possible property types."""
     BOOLEAN = "boolean"
     TRISTATE = "tristate"
     BOOLEANORUNDEFINED = "booleanOrUndefined"
@@ -41,8 +41,8 @@ class AXValueType(Enum):
 
 
 
-"""Enum of possible property sources."""
 class AXValueSourceType(Enum):
+    """Enum of possible property sources."""
     ATTRIBUTE = "attribute"
     IMPLICIT = "implicit"
     STYLE = "style"
@@ -52,8 +52,8 @@ class AXValueSourceType(Enum):
 
 
 
-"""Enum of possible native property sources (as a subtype of a particular AXValueSourceType)."""
 class AXValueNativeSourceType(Enum):
+    """Enum of possible native property sources (as a subtype of a particular AXValueSourceType)."""
     DESCRIPTION = "description"
     FIGCAPTION = "figcaption"
     LABEL = "label"
@@ -67,8 +67,9 @@ class AXValueNativeSourceType(Enum):
 
 
 
-"""A single source for a computed AX property."""
 class AXValueSource(TypedDict):
+    """A single source for a computed AX property."""
+
     type: "AXValueSourceType"
     """What type of source this is."""
     value: "NotRequired[AXValue]"
@@ -108,8 +109,9 @@ class AXProperty(TypedDict):
 
 
 
-"""A single computed AX property."""
 class AXValue(TypedDict):
+    """A single computed AX property."""
+
     type: "AXValueType"
     """The type of this value."""
     value: "NotRequired[Any]"
@@ -121,13 +123,13 @@ class AXValue(TypedDict):
 
 
 
-"""Values of AXProperty name:
+class AXPropertyName(Enum):
+    """Values of AXProperty name:
 - from 'busy' to 'roledescription': states which apply to every AX node
 - from 'live' to 'root': attributes which apply to nodes in live regions
 - from 'autocomplete' to 'valuetext': attributes which apply to widgets
 - from 'checked' to 'selected': states which apply to widgets
 - from 'activedescendant' to 'owns' - relationships between elements other than parent/child/sibling."""
-class AXPropertyName(Enum):
     ACTIONS = "actions"
     BUSY = "busy"
     DISABLED = "disabled"
@@ -172,8 +174,9 @@ class AXPropertyName(Enum):
 
 
 
-"""A node in the accessibility tree."""
 class AXNode(TypedDict):
+    """A node in the accessibility tree."""
+
     nodeId: "AXNodeId"
     """Unique identifier for this node."""
     ignored: "bool"

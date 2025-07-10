@@ -8,9 +8,10 @@ from enum import Enum
 from typing import List
 from typing_extensions import TypedDict
 
-"""The following types are the replica of
-https://crsrc.org/c/chrome/browser/web_applications/proto/web_app_os_integration_state.proto;drc=9910d3be894c8f142c977ba1023f30a656bc13fc;l=67"""
 class FileHandlerAccept(TypedDict):
+    """The following types are the replica of
+https://crsrc.org/c/chrome/browser/web_applications/proto/web_app_os_integration_state.proto;drc=9910d3be894c8f142c977ba1023f30a656bc13fc;l=67"""
+
     mediaType: "str"
     """New name of the mimetype according to
 https://www.iana.org/assignments/media-types/media-types.xhtml"""
@@ -25,7 +26,7 @@ class FileHandler(TypedDict):
 
 
 
-"""If user prefers opening the app in browser or an app window."""
 class DisplayMode(Enum):
+    """If user prefers opening the app in browser or an app window."""
     STANDALONE = "standalone"
     BROWSER = "browser"

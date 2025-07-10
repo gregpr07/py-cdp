@@ -26,6 +26,7 @@ if TYPE_CHECKING:
     from .commands import GetWindowForTargetReturns
     from .commands import GrantPermissionsParameters
     from .commands import ResetPermissionsParameters
+    from .commands import SetContentsSizeParameters
     from .commands import SetDockTileParameters
     from .commands import SetDownloadBehaviorParameters
     from .commands import SetPermissionParameters
@@ -214,6 +215,18 @@ class BrowserClient:
         """Set position and/or size of the browser window."""
         return cast("Dict[str, Any]", await self._client.send_raw(
             method="Browser.setWindowBounds",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def setContentsSize(
+        self,
+        params: "SetContentsSizeParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Set size of the browser contents resizing browser window as necessary."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Browser.setContentsSize",
             params=params,
             session_id=session_id,
         ))

@@ -12,13 +12,14 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..runtime.types import CallFrame
 
-"""Heap snapshot object id."""
+# Heap snapshot object id.
 HeapSnapshotObjectId = str
 
 
 
-"""Sampling Heap Profile node. Holds callsite information, allocation statistics and child nodes."""
 class SamplingHeapProfileNode(TypedDict):
+    """Sampling Heap Profile node. Holds callsite information, allocation statistics and child nodes."""
+
     callFrame: "CallFrame"
     """Function location."""
     selfSize: "float"
@@ -30,8 +31,9 @@ class SamplingHeapProfileNode(TypedDict):
 
 
 
-"""A single sample from a sampling profile."""
 class SamplingHeapProfileSample(TypedDict):
+    """A single sample from a sampling profile."""
+
     size: "float"
     """Allocation size in bytes attributed to the sample."""
     nodeId: "int"
@@ -42,7 +44,8 @@ between startSampling and stopSampling."""
 
 
 
-"""Sampling profile."""
 class SamplingHeapProfile(TypedDict):
+    """Sampling profile."""
+
     head: "SamplingHeapProfileNode"
     samples: "List[SamplingHeapProfileSample]"

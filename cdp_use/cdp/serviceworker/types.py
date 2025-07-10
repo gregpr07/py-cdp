@@ -17,8 +17,9 @@ RegistrationID = str
 
 
 
-"""ServiceWorker registration."""
 class ServiceWorkerRegistration(TypedDict):
+    """ServiceWorker registration."""
+
     registrationId: "RegistrationID"
     scopeURL: "str"
     isDeleted: "bool"
@@ -43,8 +44,9 @@ class ServiceWorkerVersionStatus(Enum):
 
 
 
-"""ServiceWorker version."""
 class ServiceWorkerVersion(TypedDict):
+    """ServiceWorker version."""
+
     versionId: "str"
     registrationId: "RegistrationID"
     scriptURL: "str"
@@ -61,8 +63,9 @@ For cached script it is the last time the cache entry was validated."""
 
 
 
-"""ServiceWorker error message."""
 class ServiceWorkerErrorMessage(TypedDict):
+    """ServiceWorker error message."""
+
     errorMessage: "str"
     registrationId: "RegistrationID"
     versionId: "str"

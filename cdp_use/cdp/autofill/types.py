@@ -36,8 +36,9 @@ class AddressField(TypedDict):
 
 
 
-"""A list of address fields."""
 class AddressFields(TypedDict):
+    """A list of address fields."""
+
     fields: "List[AddressField]"
 
 
@@ -48,21 +49,22 @@ class Address(TypedDict):
 
 
 
-"""Defines how an address can be displayed like in chrome://settings/addresses.
+class AddressUI(TypedDict):
+    """Defines how an address can be displayed like in chrome://settings/addresses.
 Address UI is a two dimensional array, each inner array is an \"address information line\", and when rendered in a UI surface should be displayed as such.
 The following address UI for instance:
 [[{name: \"GIVE_NAME\", value: \"Jon\"}, {name: \"FAMILY_NAME\", value: \"Doe\"}], [{name: \"CITY\", value: \"Munich\"}, {name: \"ZIP\", value: \"81456\"}]]
 should allow the receiver to render:
 Jon Doe
 Munich 81456"""
-class AddressUI(TypedDict):
+
     addressFields: "List[AddressFields]"
     """A two dimension array containing the representation of values from an address profile."""
 
 
 
-"""Specified whether a filled field was done so by using the html autocomplete attribute or autofill heuristics."""
 class FillingStrategy(Enum):
+    """Specified whether a filled field was done so by using the html autocomplete attribute or autofill heuristics."""
     AUTOCOMPLETEATTRIBUTE = "autocompleteAttribute"
     AUTOFILLINFERRED = "autofillInferred"
 

@@ -13,8 +13,9 @@ if TYPE_CHECKING:
     from ..runtime.types import CallFrame
     from ..runtime.types import ScriptId
 
-"""Profile node. Holds callsite information, execution statistics and child nodes."""
 class ProfileNode(TypedDict):
+    """Profile node. Holds callsite information, execution statistics and child nodes."""
+
     id: "int"
     """Unique id of the node."""
     callFrame: "CallFrame"
@@ -31,8 +32,9 @@ optimize."""
 
 
 
-"""Profile."""
 class Profile(TypedDict):
+    """Profile."""
+
     nodes: "List[ProfileNode]"
     """The list of profile nodes. First item is the root node."""
     startTime: "float"
@@ -47,8 +49,9 @@ profile startTime."""
 
 
 
-"""Specifies a number of samples attributed to a certain source position."""
 class PositionTickInfo(TypedDict):
+    """Specifies a number of samples attributed to a certain source position."""
+
     line: "int"
     """Source line number (1-based)."""
     ticks: "int"
@@ -56,8 +59,9 @@ class PositionTickInfo(TypedDict):
 
 
 
-"""Coverage data for a source range."""
 class CoverageRange(TypedDict):
+    """Coverage data for a source range."""
+
     startOffset: "int"
     """JavaScript script source offset for the range start."""
     endOffset: "int"
@@ -67,8 +71,9 @@ class CoverageRange(TypedDict):
 
 
 
-"""Coverage data for a JavaScript function."""
 class FunctionCoverage(TypedDict):
+    """Coverage data for a JavaScript function."""
+
     functionName: "str"
     """JavaScript function name."""
     ranges: "List[CoverageRange]"
@@ -78,8 +83,9 @@ class FunctionCoverage(TypedDict):
 
 
 
-"""Coverage data for a JavaScript script."""
 class ScriptCoverage(TypedDict):
+    """Coverage data for a JavaScript script."""
+
     scriptId: "ScriptId"
     """JavaScript script id."""
     url: "str"

@@ -12,8 +12,9 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..runtime.types import RemoteObject
 
-"""Database with an array of object stores."""
 class DatabaseWithObjectStores(TypedDict):
+    """Database with an array of object stores."""
+
     name: "str"
     """Database name."""
     version: "float"
@@ -24,8 +25,9 @@ requires the version number to be 'unsigned long long')"""
 
 
 
-"""Object store."""
 class ObjectStore(TypedDict):
+    """Object store."""
+
     name: "str"
     """Object store name."""
     keyPath: "KeyPath"
@@ -37,8 +39,9 @@ class ObjectStore(TypedDict):
 
 
 
-"""Object store index."""
 class ObjectStoreIndex(TypedDict):
+    """Object store index."""
+
     name: "str"
     """Index name."""
     keyPath: "KeyPath"
@@ -50,8 +53,9 @@ class ObjectStoreIndex(TypedDict):
 
 
 
-"""Key."""
 class Key(TypedDict):
+    """Key."""
+
     type: "str"
     """Key type."""
     number: "NotRequired[float]"
@@ -65,8 +69,9 @@ class Key(TypedDict):
 
 
 
-"""Key range."""
 class KeyRange(TypedDict):
+    """Key range."""
+
     lower: "NotRequired[Key]"
     """Lower bound."""
     upper: "NotRequired[Key]"
@@ -78,8 +83,9 @@ class KeyRange(TypedDict):
 
 
 
-"""Data entry."""
 class DataEntry(TypedDict):
+    """Data entry."""
+
     key: "RemoteObject"
     """Key object."""
     primaryKey: "RemoteObject"
@@ -89,8 +95,9 @@ class DataEntry(TypedDict):
 
 
 
-"""Key path."""
 class KeyPath(TypedDict):
+    """Key path."""
+
     type: "str"
     """Key path type."""
     string: "NotRequired[str]"

@@ -14,10 +14,10 @@ if TYPE_CHECKING:
     from ..network.types import TimeSinceEpoch
     from ..serviceworker.types import RegistrationID
 
-"""The Background Service that will be associated with the commands/events.
+class ServiceName(Enum):
+    """The Background Service that will be associated with the commands/events.
 Every Background Service operates independently, but they share the same
 API."""
-class ServiceName(Enum):
     BACKGROUNDFETCH = "backgroundFetch"
     BACKGROUNDSYNC = "backgroundSync"
     PUSHMESSAGING = "pushMessaging"
@@ -27,8 +27,9 @@ class ServiceName(Enum):
 
 
 
-"""A key-value pair for additional event information to pass along."""
 class EventMetadata(TypedDict):
+    """A key-value pair for additional event information to pass along."""
+
     key: "str"
     value: "str"
 

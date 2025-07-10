@@ -6,8 +6,9 @@
 
 from typing_extensions import TypedDict
 
-"""Description of the protocol domain."""
 class Domain(TypedDict):
+    """Description of the protocol domain."""
+
     name: "str"
     """Domain name."""
     version: "str"

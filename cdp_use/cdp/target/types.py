@@ -18,7 +18,7 @@ TargetID = str
 
 
 
-"""Unique identifier of attached debugging session."""
+# Unique identifier of attached debugging session.
 SessionID = str
 
 
@@ -44,8 +44,9 @@ the type of \"page\", this may be set to \"prerender\"."""
 
 
 
-"""A filter used by target query/discovery/auto-attach operations."""
 class FilterEntry(TypedDict, total=False):
+    """A filter used by target query/discovery/auto-attach operations."""
+
     exclude: "bool"
     """If set, causes exclusion of matching targets from the list."""
     type: "str"
@@ -53,12 +54,12 @@ class FilterEntry(TypedDict, total=False):
 
 
 
-"""The entries in TargetFilter are matched sequentially against targets and
-the first entry that matches determines if the target is included or not,
-depending on the value of `exclude` field in the entry.
-If filter is not specified, the one assumed is
-[{type: \"browser\", exclude: true}, {type: \"tab\", exclude: true}, {}]
-(i.e. include everything but `browser` and `tab`)."""
+# The entries in TargetFilter are matched sequentially against targets and
+# the first entry that matches determines if the target is included or not,
+# depending on the value of `exclude` field in the entry.
+# If filter is not specified, the one assumed is
+# [{type: "browser", exclude: true}, {type: "tab", exclude: true}, {}]
+# (i.e. include everything but `browser` and `tab`).
 TargetFilter = List[FilterEntry]
 
 
@@ -69,8 +70,8 @@ class RemoteLocation(TypedDict):
 
 
 
-"""The state of the target window."""
 class WindowState(Enum):
+    """The state of the target window."""
     NORMAL = "normal"
     MINIMIZED = "minimized"
     MAXIMIZED = "maximized"

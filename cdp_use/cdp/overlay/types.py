@@ -14,8 +14,9 @@ if TYPE_CHECKING:
     from ..dom.types import RGBA
     from ..dom.types import Rect
 
-"""Configuration data for drawing the source order of an elements children."""
 class SourceOrderConfig(TypedDict):
+    """Configuration data for drawing the source order of an elements children."""
+
     parentOutlineColor: "RGBA"
     """the color to outline the given element in."""
     childOutlineColor: "RGBA"
@@ -23,8 +24,9 @@ class SourceOrderConfig(TypedDict):
 
 
 
-"""Configuration data for the highlighting of Grid elements."""
 class GridHighlightConfig(TypedDict, total=False):
+    """Configuration data for the highlighting of Grid elements."""
+
     showGridExtensionLines: "bool"
     """Whether the extension lines from grid cells to the rulers should be shown (default: false)."""
     showPositiveLineNumbers: "bool"
@@ -68,8 +70,9 @@ class GridHighlightConfig(TypedDict, total=False):
 
 
 
-"""Configuration data for the highlighting of Flex container elements."""
 class FlexContainerHighlightConfig(TypedDict, total=False):
+    """Configuration data for the highlighting of Flex container elements."""
+
     containerBorder: "LineStyle"
     """The style of the container border"""
     lineSeparator: "LineStyle"
@@ -89,8 +92,9 @@ class FlexContainerHighlightConfig(TypedDict, total=False):
 
 
 
-"""Configuration data for the highlighting of Flex item elements."""
 class FlexItemHighlightConfig(TypedDict, total=False):
+    """Configuration data for the highlighting of Flex item elements."""
+
     baseSizeBox: "BoxStyle"
     """Style of the box representing the item's base size"""
     baseSizeBorder: "LineStyle"
@@ -100,8 +104,9 @@ class FlexItemHighlightConfig(TypedDict, total=False):
 
 
 
-"""Style information for drawing a line."""
 class LineStyle(TypedDict, total=False):
+    """Style information for drawing a line."""
+
     color: "RGBA"
     """The color of the line (default: transparent)"""
     pattern: "str"
@@ -109,8 +114,9 @@ class LineStyle(TypedDict, total=False):
 
 
 
-"""Style information for drawing a box."""
 class BoxStyle(TypedDict, total=False):
+    """Style information for drawing a box."""
+
     fillColor: "RGBA"
     """The background color for the box (default: transparent)"""
     hatchColor: "RGBA"
@@ -125,8 +131,9 @@ class ContrastAlgorithm(Enum):
 
 
 
-"""Configuration data for the highlighting of page elements."""
 class HighlightConfig(TypedDict, total=False):
+    """Configuration data for the highlighting of page elements."""
+
     showInfo: "bool"
     """Whether the node info tooltip should be shown (default: false)."""
     showStyles: "bool"
@@ -176,8 +183,9 @@ class ColorFormat(Enum):
 
 
 
-"""Configurations for Persistent Grid Highlight"""
 class GridNodeHighlightConfig(TypedDict):
+    """Configurations for Persistent Grid Highlight"""
+
     gridHighlightConfig: "GridHighlightConfig"
     """A descriptor for the highlight appearance."""
     nodeId: "NodeId"
@@ -213,8 +221,9 @@ class ScrollSnapHighlightConfig(TypedDict):
 
 
 
-"""Configuration for dual screen hinge"""
 class HingeConfig(TypedDict):
+    """Configuration for dual screen hinge"""
+
     rect: "Rect"
     """A rectangle represent hinge"""
     contentColor: "NotRequired[RGBA]"
@@ -224,8 +233,9 @@ class HingeConfig(TypedDict):
 
 
 
-"""Configuration for Window Controls Overlay"""
 class WindowControlsOverlayConfig(TypedDict):
+    """Configuration for Window Controls Overlay"""
+
     showCSS: "bool"
     """Whether the title bar CSS should be shown when emulating the Window Controls Overlay."""
     selectedPlatform: "str"

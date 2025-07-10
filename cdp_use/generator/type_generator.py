@@ -109,13 +109,11 @@ class TypeGenerator:
         """Generate an enum type."""
         enum_values = type_def["enum"]
 
-        content = ""
+        content = f"class {type_id}(Enum):\n"
         if description:
             # Escape all quotes in descriptions
             escaped_desc = description.replace("\\", "\\\\").replace('"', '\\"')
-            content += f'"""{escaped_desc}"""\n'
-
-        content += f"class {type_id}(Enum):\n"
+            content += f'    """{escaped_desc}"""\n'
 
         for value in enum_values:
             # Convert enum value to valid Python identifier
@@ -134,9 +132,9 @@ class TypeGenerator:
 
         content = ""
         if description:
-            # Escape all quotes in descriptions
-            escaped_desc = description.replace("\\", "\\\\").replace('"', '\\"')
-            content += f'"""{escaped_desc}"""\n'
+            # Use comments for type alias descriptions
+            for line in description.split("\n"):
+                content += f"# {line}\n"
 
         content += f"{type_id} = {python_type}\n"
 
@@ -149,13 +147,7 @@ class TypeGenerator:
         """Generate a TypedDict for object types."""
         properties = type_def.get("properties", [])
 
-        content = ""
-        if description:
-            # Escape all quotes in descriptions
-            escaped_desc = description.replace("\\", "\\\\").replace('"', '\\"')
-            content += f'"""{escaped_desc}"""\n'
-
-        content += f"class {type_id}(TypedDict"
+        content = f"class {type_id}(TypedDict"
 
         # Check if all properties are optional
         required_props = set()
@@ -176,9 +168,20 @@ class TypeGenerator:
 
         content += "):\n"
 
+        has_body = False
+        if description:
+            # Escape all quotes in descriptions
+            escaped_desc = description.replace("\\", "\\\\").replace('"', '\\"')
+            content += f'    """{escaped_desc}"""\n'
+            has_body = True
+
         if not properties:
-            content += "    pass\n"
+            if not has_body:
+                content += "    pass\n"
         else:
+            if has_body:
+                content += "\n"  # Add a newline between docstring and first property
+
             for prop in properties:
                 prop_name = prop["name"]
                 prop_type = self.resolve_property_type(prop, domain_name)
@@ -189,7 +192,6 @@ class TypeGenerator:
                     prop_type = f"NotRequired[{prop_type}]"
 
                 content += f'    {prop_name}: "{prop_type}"\n'
-
                 if prop_desc:
                     # Escape all quotes in descriptions
                     escaped_desc = prop_desc.replace("\\", "\\\\").replace('"', '\\"')
@@ -211,9 +213,9 @@ class TypeGenerator:
 
         content = ""
         if description:
-            # Escape all quotes in descriptions
-            escaped_desc = description.replace("\\", "\\\\").replace('"', '\\"')
-            content += f'"""{escaped_desc}"""\n'
+            # Use comments for type alias descriptions
+            for line in description.split("\n"):
+                content += f"# {line}\n"
 
         content += f"{type_id} = List[{item_type}]\n"
 

@@ -7,7 +7,7 @@
 from typing import Any, Dict, List
 from typing_extensions import TypedDict
 
-"""Players will get an ID that is unique within the agent context."""
+# Players will get an ID that is unique within the agent context.
 PlayerId = str
 
 
@@ -16,9 +16,10 @@ Timestamp = float
 
 
 
-"""Have one type per entry in MediaLogRecord::Type
-Corresponds to kMessage"""
 class PlayerMessage(TypedDict):
+    """Have one type per entry in MediaLogRecord::Type
+Corresponds to kMessage"""
+
     level: "str"
     """Keep in sync with MediaLogMessageLevel
 We are currently keeping the message level 'error' separate from the
@@ -33,30 +34,34 @@ the error log level into the PlayerError type."""
 
 
 
-"""Corresponds to kMediaPropertyChange"""
 class PlayerProperty(TypedDict):
+    """Corresponds to kMediaPropertyChange"""
+
     name: "str"
     value: "str"
 
 
 
-"""Corresponds to kMediaEventTriggered"""
 class PlayerEvent(TypedDict):
+    """Corresponds to kMediaEventTriggered"""
+
     timestamp: "Timestamp"
     value: "str"
 
 
 
-"""Represents logged source line numbers reported in an error.
-NOTE: file and line are from chromium c++ implementation code, not js."""
 class PlayerErrorSourceLocation(TypedDict):
+    """Represents logged source line numbers reported in an error.
+NOTE: file and line are from chromium c++ implementation code, not js."""
+
     file: "str"
     line: "int"
 
 
 
-"""Corresponds to kMediaError"""
 class PlayerError(TypedDict):
+    """Corresponds to kMediaError"""
+
     errorType: "str"
     code: "int"
     """Code is the numeric enum entry for a specific set of error codes, such

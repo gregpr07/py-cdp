@@ -13,19 +13,20 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..page.types import FrameId
 
-"""Unique DOM node identifier."""
+# Unique DOM node identifier.
 NodeId = int
 
 
 
-"""Unique DOM node identifier used to reference a node that may not have been pushed to the
-front-end."""
+# Unique DOM node identifier used to reference a node that may not have been pushed to the
+# front-end.
 BackendNodeId = int
 
 
 
-"""Backend node with a friendly name."""
 class BackendNode(TypedDict):
+    """Backend node with a friendly name."""
+
     nodeType: "int"
     """`Node`'s nodeType."""
     nodeName: "str"
@@ -34,8 +35,8 @@ class BackendNode(TypedDict):
 
 
 
-"""Pseudo element type."""
 class PseudoType(Enum):
+    """Pseudo element type."""
     FIRST_LINE = "first-line"
     FIRST_LETTER = "first-letter"
     CHECKMARK = "checkmark"
@@ -77,48 +78,49 @@ class PseudoType(Enum):
 
 
 
-"""Shadow root type."""
 class ShadowRootType(Enum):
+    """Shadow root type."""
     USER_AGENT = "user-agent"
     OPEN = "open"
     CLOSED = "closed"
 
 
 
-"""Document compatibility mode."""
 class CompatibilityMode(Enum):
+    """Document compatibility mode."""
     QUIRKSMODE = "QuirksMode"
     LIMITEDQUIRKSMODE = "LimitedQuirksMode"
     NOQUIRKSMODE = "NoQuirksMode"
 
 
 
-"""ContainerSelector physical axes"""
 class PhysicalAxes(Enum):
+    """ContainerSelector physical axes"""
     HORIZONTAL = "Horizontal"
     VERTICAL = "Vertical"
     BOTH = "Both"
 
 
 
-"""ContainerSelector logical axes"""
 class LogicalAxes(Enum):
+    """ContainerSelector logical axes"""
     INLINE = "Inline"
     BLOCK = "Block"
     BOTH = "Both"
 
 
 
-"""Physical scroll orientation"""
 class ScrollOrientation(Enum):
+    """Physical scroll orientation"""
     HORIZONTAL = "horizontal"
     VERTICAL = "vertical"
 
 
 
-"""DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes.
-DOMNode is a base node mirror type."""
 class Node(TypedDict):
+    """DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes.
+DOMNode is a base node mirror type."""
+
     nodeId: "NodeId"
     """Node identifier that is passed into the rest of the DOM messages as the `nodeId`. Backend
 will only push node with given `id` once. It is aware of all requested nodes and will only
@@ -188,15 +190,17 @@ The property is always undefined now."""
 
 
 
-"""A structure to hold the top-level node of a detached tree and an array of its retained descendants."""
 class DetachedElementInfo(TypedDict):
+    """A structure to hold the top-level node of a detached tree and an array of its retained descendants."""
+
     treeNode: "Node"
     retainedNodeIds: "List[NodeId]"
 
 
 
-"""A structure holding an RGBA color."""
 class RGBA(TypedDict):
+    """A structure holding an RGBA color."""
+
     r: "int"
     """The red component, in the [0-255] range."""
     g: "int"
@@ -208,13 +212,14 @@ class RGBA(TypedDict):
 
 
 
-"""An array of quad vertices, x immediately followed by y for each point, points clock-wise."""
+# An array of quad vertices, x immediately followed by y for each point, points clock-wise.
 Quad = List[float]
 
 
 
-"""Box model."""
 class BoxModel(TypedDict):
+    """Box model."""
+
     content: "Quad"
     """Content box"""
     padding: "Quad"
@@ -232,8 +237,9 @@ class BoxModel(TypedDict):
 
 
 
-"""CSS Shape Outside details."""
 class ShapeOutsideInfo(TypedDict):
+    """CSS Shape Outside details."""
+
     bounds: "Quad"
     """Shape bounds"""
     shape: "List[Any]"
@@ -243,8 +249,9 @@ class ShapeOutsideInfo(TypedDict):
 
 
 
-"""Rectangle."""
 class Rect(TypedDict):
+    """Rectangle."""
+
     x: "float"
     """X coordinate"""
     y: "float"

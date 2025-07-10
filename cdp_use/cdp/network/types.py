@@ -17,8 +17,8 @@ if TYPE_CHECKING:
     from ..security.types import MixedContentType
     from ..security.types import SecurityState
 
-"""Resource type as it was perceived by the rendering engine."""
 class ResourceType(Enum):
+    """Resource type as it was perceived by the rendering engine."""
     DOCUMENT = "Document"
     STYLESHEET = "Stylesheet"
     IMAGE = "Image"
@@ -41,25 +41,25 @@ class ResourceType(Enum):
 
 
 
-"""Unique loader identifier."""
+# Unique loader identifier.
 LoaderId = str
 
 
 
-"""Unique network request identifier.
-Note that this does not identify individual HTTP requests that are part of
-a network request."""
+# Unique network request identifier.
+# Note that this does not identify individual HTTP requests that are part of
+# a network request.
 RequestId = str
 
 
 
-"""Unique intercepted request identifier."""
+# Unique intercepted request identifier.
 InterceptionId = str
 
 
 
-"""Network level fetch failure reason."""
 class ErrorReason(Enum):
+    """Network level fetch failure reason."""
     FAILED = "Failed"
     ABORTED = "Aborted"
     TIMEDOUT = "TimedOut"
@@ -77,24 +77,23 @@ class ErrorReason(Enum):
 
 
 
-"""UTC time in seconds, counted from January 1, 1970."""
+# UTC time in seconds, counted from January 1, 1970.
 TimeSinceEpoch = float
 
 
 
-"""Monotonically increasing time in seconds since an arbitrary point in the past."""
+# Monotonically increasing time in seconds since an arbitrary point in the past.
 MonotonicTime = float
 
 
 
-"""Request / response headers as keys / values of JSON object."""
 class Headers(TypedDict):
-    pass
+    """Request / response headers as keys / values of JSON object."""
 
 
 
-"""The underlying connection technology that the browser is supposedly using."""
 class ConnectionType(Enum):
+    """The underlying connection technology that the browser is supposedly using."""
     NONE = "none"
     CELLULAR2G = "cellular2g"
     CELLULAR3G = "cellular3g"
@@ -107,36 +106,37 @@ class ConnectionType(Enum):
 
 
 
-"""Represents the cookie's 'SameSite' status:
-https://tools.ietf.org/html/draft-west-first-party-cookies"""
 class CookieSameSite(Enum):
+    """Represents the cookie's 'SameSite' status:
+https://tools.ietf.org/html/draft-west-first-party-cookies"""
     STRICT = "Strict"
     LAX = "Lax"
     NONE = "None"
 
 
 
-"""Represents the cookie's 'Priority' status:
-https://tools.ietf.org/html/draft-west-cookie-priority-00"""
 class CookiePriority(Enum):
+    """Represents the cookie's 'Priority' status:
+https://tools.ietf.org/html/draft-west-cookie-priority-00"""
     LOW = "Low"
     MEDIUM = "Medium"
     HIGH = "High"
 
 
 
-"""Represents the source scheme of the origin that originally set the cookie.
+class CookieSourceScheme(Enum):
+    """Represents the source scheme of the origin that originally set the cookie.
 A value of \"Unset\" allows protocol clients to emulate legacy cookie scope for the scheme.
 This is a temporary ability and it will be removed in the future."""
-class CookieSourceScheme(Enum):
     UNSET = "Unset"
     NONSECURE = "NonSecure"
     SECURE = "Secure"
 
 
 
-"""Timing information for the request."""
 class ResourceTiming(TypedDict):
+    """Timing information for the request."""
+
     requestTime: "float"
     """Timing's requestTime is a baseline in seconds, while the other numbers are ticks in
 milliseconds relatively to this requestTime."""
@@ -183,8 +183,8 @@ milliseconds relatively to this requestTime."""
 
 
 
-"""Loading priority of a resource request."""
 class ResourcePriority(Enum):
+    """Loading priority of a resource request."""
     VERYLOW = "VeryLow"
     LOW = "Low"
     MEDIUM = "Medium"
@@ -193,14 +193,16 @@ class ResourcePriority(Enum):
 
 
 
-"""Post data entry for HTTP request"""
 class PostDataEntry(TypedDict, total=False):
+    """Post data entry for HTTP request"""
+
     bytes: "str"
 
 
 
-"""HTTP request data."""
 class Request(TypedDict):
+    """HTTP request data."""
+
     url: "str"
     """Request URL (without fragment)."""
     urlFragment: "NotRequired[str]"
@@ -233,8 +235,9 @@ request corresponding to the main frame."""
 
 
 
-"""Details of a signed certificate timestamp (SCT)."""
 class SignedCertificateTimestamp(TypedDict):
+    """Details of a signed certificate timestamp (SCT)."""
+
     status: "str"
     """Validation status."""
     origin: "str"
@@ -255,8 +258,9 @@ milliseconds since January 1, 1970, UTC, not the number of seconds."""
 
 
 
-"""Security details about a request."""
 class SecurityDetails(TypedDict):
+    """Security details about a request."""
+
     protocol: "str"
     """Protocol name (e.g. \"TLS 1.2\" or \"QUIC\")."""
     keyExchange: "str"
@@ -292,16 +296,16 @@ applicable or not known."""
 
 
 
-"""Whether the request complied with Certificate Transparency policy."""
 class CertificateTransparencyCompliance(Enum):
+    """Whether the request complied with Certificate Transparency policy."""
     UNKNOWN = "unknown"
     NOT_COMPLIANT = "not-compliant"
     COMPLIANT = "compliant"
 
 
 
-"""The reason why request was blocked."""
 class BlockedReason(Enum):
+    """The reason why request was blocked."""
     OTHER = "other"
     CSP = "csp"
     MIXED_CONTENT = "mixed-content"
@@ -321,8 +325,8 @@ class BlockedReason(Enum):
 
 
 
-"""The reason why request was blocked."""
 class CorsError(Enum):
+    """The reason why request was blocked."""
     DISALLOWEDBYMODE = "DisallowedByMode"
     INVALIDRESPONSE = "InvalidResponse"
     WILDCARDORIGINNOTALLOWED = "WildcardOriginNotAllowed"
@@ -367,8 +371,8 @@ class CorsErrorStatus(TypedDict):
 
 
 
-"""Source of serviceworker response."""
 class ServiceWorkerResponseSource(Enum):
+    """Source of serviceworker response."""
     CACHE_STORAGE = "cache-storage"
     HTTP_CACHE = "http-cache"
     FALLBACK_CODE = "fallback-code"
@@ -376,10 +380,11 @@ class ServiceWorkerResponseSource(Enum):
 
 
 
-"""Determines what type of Trust Token operation is executed and
+class TrustTokenParams(TypedDict):
+    """Determines what type of Trust Token operation is executed and
 depending on the type, some additional parameters. The values
 are specified in third_party/blink/renderer/core/fetch/trust_token.idl."""
-class TrustTokenParams(TypedDict):
+
     operation: "TrustTokenOperationType"
     refreshPolicy: "str"
     """Only set for \"token-redemption\" operation and determine whether
@@ -397,8 +402,8 @@ class TrustTokenOperationType(Enum):
 
 
 
-"""The reason why Chrome uses a specific transport protocol for HTTP semantics."""
 class AlternateProtocolUsage(Enum):
+    """The reason why Chrome uses a specific transport protocol for HTTP semantics."""
     ALTERNATIVEJOBWONWITHOUTRACE = "alternativeJobWonWithoutRace"
     ALTERNATIVEJOBWONRACE = "alternativeJobWonRace"
     MAINJOBWONRACE = "mainJobWonRace"
@@ -410,8 +415,8 @@ class AlternateProtocolUsage(Enum):
 
 
 
-"""Source of service worker router."""
 class ServiceWorkerRouterSource(Enum):
+    """Source of service worker router."""
     NETWORK = "network"
     CACHE = "cache"
     FETCH_EVENT = "fetch-event"
@@ -432,8 +437,9 @@ field will be set, otherwise no value will be set."""
 
 
 
-"""HTTP response data."""
 class Response(TypedDict):
+    """HTTP response data."""
+
     url: "str"
     """Response URL. This URL can be different from CachedResource.url in case of redirect."""
     status: "int"
@@ -494,15 +500,17 @@ Otherwise, the API is not used."""
 
 
 
-"""WebSocket request data."""
 class WebSocketRequest(TypedDict):
+    """WebSocket request data."""
+
     headers: "Headers"
     """HTTP request headers."""
 
 
 
-"""WebSocket response data."""
 class WebSocketResponse(TypedDict):
+    """WebSocket response data."""
+
     status: "int"
     """HTTP response status code."""
     statusText: "str"
@@ -518,8 +526,9 @@ class WebSocketResponse(TypedDict):
 
 
 
-"""WebSocket message data. This represents an entire WebSocket message, not just a fragmented frame as the name suggests."""
 class WebSocketFrame(TypedDict):
+    """WebSocket message data. This represents an entire WebSocket message, not just a fragmented frame as the name suggests."""
+
     opcode: "float"
     """WebSocket message opcode."""
     mask: "bool"
@@ -531,8 +540,9 @@ If the opcode isn't 1, then payloadData is a base64 encoded string representing 
 
 
 
-"""Information about the cached resource."""
 class CachedResource(TypedDict):
+    """Information about the cached resource."""
+
     url: "str"
     """Resource URL. This is the url of the original network request."""
     type: "ResourceType"
@@ -544,8 +554,9 @@ class CachedResource(TypedDict):
 
 
 
-"""Information about the request initiator."""
 class Initiator(TypedDict):
+    """Information about the request initiator."""
+
     type: "str"
     """Type of this initiator."""
     stack: "NotRequired[StackTrace]"
@@ -564,9 +575,10 @@ module) (0-based)."""
 
 
 
-"""cookiePartitionKey object
-The representation of the components of the key that are created by the cookiePartitionKey class contained in net/cookies/cookie_partition_key.h."""
 class CookiePartitionKey(TypedDict):
+    """cookiePartitionKey object
+The representation of the components of the key that are created by the cookiePartitionKey class contained in net/cookies/cookie_partition_key.h."""
+
     topLevelSite: "str"
     """The site of the top-level URL the browser was visiting at the start
 of the request to the endpoint that set the cookie."""
@@ -575,8 +587,9 @@ of the request to the endpoint that set the cookie."""
 
 
 
-"""Cookie object"""
 class Cookie(TypedDict):
+    """Cookie object"""
+
     name: "str"
     """Cookie name."""
     value: "str"
@@ -614,8 +627,8 @@ This is a temporary ability and it will be removed in the future."""
 
 
 
-"""Types of reasons why a cookie may not be stored from a response."""
 class SetCookieBlockedReason(Enum):
+    """Types of reasons why a cookie may not be stored from a response."""
     SECUREONLY = "SecureOnly"
     SAMESITESTRICT = "SameSiteStrict"
     SAMESITELAX = "SameSiteLax"
@@ -641,8 +654,8 @@ class SetCookieBlockedReason(Enum):
 
 
 
-"""Types of reasons why a cookie may not be sent with a request."""
 class CookieBlockedReason(Enum):
+    """Types of reasons why a cookie may not be sent with a request."""
     SECUREONLY = "SecureOnly"
     NOTONPATH = "NotOnPath"
     DOMAINMISMATCH = "DomainMismatch"
@@ -665,8 +678,8 @@ class CookieBlockedReason(Enum):
 
 
 
-"""Types of reasons why a cookie should have been blocked by 3PCD but is exempted for the request."""
 class CookieExemptionReason(Enum):
+    """Types of reasons why a cookie should have been blocked by 3PCD but is exempted for the request."""
     NONE = "None"
     USERSETTING = "UserSetting"
     TPCDMETADATA = "TPCDMetadata"
@@ -681,8 +694,9 @@ class CookieExemptionReason(Enum):
 
 
 
-"""A cookie which was not stored from a response with the corresponding reason."""
 class BlockedSetCookieWithReason(TypedDict):
+    """A cookie which was not stored from a response with the corresponding reason."""
+
     blockedReasons: "List[SetCookieBlockedReason]"
     """The reason(s) this cookie was blocked."""
     cookieLine: "str"
@@ -695,9 +709,10 @@ errors."""
 
 
 
-"""A cookie should have been blocked by 3PCD but is exempted and stored from a response with the
-corresponding reason. A cookie could only have at most one exemption reason."""
 class ExemptedSetCookieWithReason(TypedDict):
+    """A cookie should have been blocked by 3PCD but is exempted and stored from a response with the
+corresponding reason. A cookie could only have at most one exemption reason."""
+
     exemptionReason: "CookieExemptionReason"
     """The reason the cookie was exempted."""
     cookieLine: "str"
@@ -707,9 +722,10 @@ class ExemptedSetCookieWithReason(TypedDict):
 
 
 
-"""A cookie associated with the request which may or may not be sent with it.
-Includes the cookies itself and reasons for blocking or exemption."""
 class AssociatedCookie(TypedDict):
+    """A cookie associated with the request which may or may not be sent with it.
+Includes the cookies itself and reasons for blocking or exemption."""
+
     cookie: "Cookie"
     """The cookie object representing the cookie which was not sent."""
     blockedReasons: "List[CookieBlockedReason]"
@@ -720,8 +736,9 @@ only have at most one exemption reason."""
 
 
 
-"""Cookie parameter object"""
 class CookieParam(TypedDict):
+    """Cookie parameter object"""
+
     name: "str"
     """Cookie name."""
     value: "str"
@@ -756,8 +773,9 @@ This is a temporary ability and it will be removed in the future."""
 
 
 
-"""Authorization challenge for HTTP status code 401 or 407."""
 class AuthChallenge(TypedDict):
+    """Authorization challenge for HTTP status code 401 or 407."""
+
     source: "NotRequired[str]"
     """Source of the authentication challenge."""
     origin: "str"
@@ -769,8 +787,9 @@ class AuthChallenge(TypedDict):
 
 
 
-"""Response to an AuthChallenge."""
 class AuthChallengeResponse(TypedDict):
+    """Response to an AuthChallenge."""
+
     response: "str"
     """The decision on what to do in response to the authorization challenge.  Default means
 deferring to the default behavior of the net stack, which will likely either the Cancel
@@ -784,16 +803,17 @@ ProvideCredentials."""
 
 
 
-"""Stages of the interception to begin intercepting. Request will intercept before the request is
-sent. Response will intercept after the response is received."""
 class InterceptionStage(Enum):
+    """Stages of the interception to begin intercepting. Request will intercept before the request is
+sent. Response will intercept after the response is received."""
     REQUEST = "Request"
     HEADERSRECEIVED = "HeadersReceived"
 
 
 
-"""Request pattern for interception."""
 class RequestPattern(TypedDict, total=False):
+    """Request pattern for interception."""
+
     urlPattern: "str"
     """Wildcards (`'*'` -> zero or more, `'?'` -> exactly one) are allowed. Escape character is
 backslash. Omitting is equivalent to `\"*\"`."""
@@ -804,9 +824,10 @@ backslash. Omitting is equivalent to `\"*\"`."""
 
 
 
-"""Information about a signed exchange signature.
-https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#rfc.section.3.1"""
 class SignedExchangeSignature(TypedDict):
+    """Information about a signed exchange signature.
+https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#rfc.section.3.1"""
+
     label: "str"
     """Signed exchange signature label."""
     signature: "str"
@@ -828,9 +849,10 @@ class SignedExchangeSignature(TypedDict):
 
 
 
-"""Information about a signed exchange header.
-https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#cbor-representation"""
 class SignedExchangeHeader(TypedDict):
+    """Information about a signed exchange header.
+https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#cbor-representation"""
+
     requestUrl: "str"
     """Signed exchange request URL."""
     responseCode: "int"
@@ -844,8 +866,8 @@ class SignedExchangeHeader(TypedDict):
 
 
 
-"""Field type for a signed exchange related error."""
 class SignedExchangeErrorField(Enum):
+    """Field type for a signed exchange related error."""
     SIGNATURESIG = "signatureSig"
     SIGNATUREINTEGRITY = "signatureIntegrity"
     SIGNATURECERTURL = "signatureCertUrl"
@@ -855,8 +877,9 @@ class SignedExchangeErrorField(Enum):
 
 
 
-"""Information about a signed exchange response."""
 class SignedExchangeError(TypedDict):
+    """Information about a signed exchange response."""
+
     message: "str"
     """Error message."""
     signatureIndex: "NotRequired[int]"
@@ -866,8 +889,9 @@ class SignedExchangeError(TypedDict):
 
 
 
-"""Information about a signed exchange response."""
 class SignedExchangeInfo(TypedDict):
+    """Information about a signed exchange response."""
+
     outerResponse: "Response"
     """The outer response of signed HTTP exchange which was received from network."""
     hasExtraInfo: "bool"
@@ -882,8 +906,8 @@ extra headers."""
 
 
 
-"""List of content encodings supported by the backend."""
 class ContentEncoding(Enum):
+    """List of content encodings supported by the backend."""
     DEFLATE = "deflate"
     GZIP = "gzip"
     BR = "br"
@@ -1023,8 +1047,8 @@ class SecurityIsolationStatus(TypedDict, total=False):
 
 
 
-"""The status of a Reporting API report."""
 class ReportStatus(Enum):
+    """The status of a Reporting API report."""
     QUEUED = "Queued"
     PENDING = "Pending"
     MARKEDFORREMOVAL = "MarkedForRemoval"
@@ -1036,8 +1060,9 @@ ReportId = str
 
 
 
-"""An object representing a report generated by the Reporting API."""
 class ReportingApiReport(TypedDict):
+    """An object representing a report generated by the Reporting API."""
+
     id: "ReportId"
     initiatorUrl: "str"
     """The URL of the document that triggered the report."""
@@ -1064,8 +1089,9 @@ class ReportingApiEndpoint(TypedDict):
 
 
 
-"""An object providing the result of a network resource load."""
 class LoadNetworkResourcePageResult(TypedDict):
+    """An object providing the result of a network resource load."""
+
     success: "bool"
     netError: "NotRequired[float]"
     """Optional values used for error reporting."""
@@ -1078,8 +1104,9 @@ class LoadNetworkResourcePageResult(TypedDict):
 
 
 
-"""An options object that may be extended later to better support CORS,
-CORB and streaming."""
 class LoadNetworkResourceOptions(TypedDict):
+    """An options object that may be extended later to better support CORS,
+CORB and streaming."""
+
     disableCache: "bool"
     includeCredentials: "bool"

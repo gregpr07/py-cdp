@@ -15,13 +15,14 @@ if TYPE_CHECKING:
     from ..network.types import LoaderId
     from ..network.types import RequestId
 
-"""Unique id"""
+# Unique id
 RuleSetId = str
 
 
 
-"""Corresponds to SpeculationRuleSet"""
 class RuleSet(TypedDict):
+    """Corresponds to SpeculationRuleSet"""
+
     id: "RuleSetId"
     loaderId: "LoaderId"
     """Identifies a document which the rule set is associated with."""
@@ -60,30 +61,31 @@ class RuleSetErrorType(Enum):
 
 
 
-"""The type of preloading attempted. It corresponds to
+class SpeculationAction(Enum):
+    """The type of preloading attempted. It corresponds to
 mojom::SpeculationAction (although PrefetchWithSubresources is omitted as it
 isn't being used by clients)."""
-class SpeculationAction(Enum):
     PREFETCH = "Prefetch"
     PRERENDER = "Prerender"
 
 
 
-"""Corresponds to mojom::SpeculationTargetHint.
-See https://github.com/WICG/nav-speculation/blob/main/triggers.md#window-name-targeting-hints"""
 class SpeculationTargetHint(Enum):
+    """Corresponds to mojom::SpeculationTargetHint.
+See https://github.com/WICG/nav-speculation/blob/main/triggers.md#window-name-targeting-hints"""
     BLANK = "Blank"
     SELF = "Self"
 
 
 
-"""A key that identifies a preloading attempt.
+class PreloadingAttemptKey(TypedDict):
+    """A key that identifies a preloading attempt.
 
 The url used is the url specified by the trigger (i.e. the initial URL), and
 not the final url that is navigated to. For example, prerendering allows
 same-origin main frame navigations during the attempt, but the attempt is
 still keyed with the initial URL."""
-class PreloadingAttemptKey(TypedDict):
+
     loaderId: "LoaderId"
     action: "SpeculationAction"
     url: "str"
@@ -91,31 +93,32 @@ class PreloadingAttemptKey(TypedDict):
 
 
 
-"""Lists sources for a preloading attempt, specifically the ids of rule sets
+class PreloadingAttemptSource(TypedDict):
+    """Lists sources for a preloading attempt, specifically the ids of rule sets
 that had a speculation rule that triggered the attempt, and the
 BackendNodeIds of <a href> or <area href> elements that triggered the
 attempt (in the case of attempts triggered by a document rule). It is
 possible for multiple rule sets and links to trigger a single attempt."""
-class PreloadingAttemptSource(TypedDict):
+
     key: "PreloadingAttemptKey"
     ruleSetIds: "List[RuleSetId]"
     nodeIds: "List[BackendNodeId]"
 
 
 
-"""Chrome manages different types of preloads together using a
-concept of preloading pipeline. For example, if a site uses a
-SpeculationRules for prerender, Chrome first starts a prefetch and
-then upgrades it to prerender.
-
-CDP events for them are emitted separately but they share
-`PreloadPipelineId`."""
+# Chrome manages different types of preloads together using a
+# concept of preloading pipeline. For example, if a site uses a
+# SpeculationRules for prerender, Chrome first starts a prefetch and
+# then upgrades it to prerender.
+# 
+# CDP events for them are emitted separately but they share
+# `PreloadPipelineId`.
 PreloadPipelineId = str
 
 
 
-"""List of FinalStatus reasons for Prerender2."""
 class PrerenderFinalStatus(Enum):
+    """List of FinalStatus reasons for Prerender2."""
     ACTIVATED = "Activated"
     DESTROYED = "Destroyed"
     LOWENDDEVICE = "LowEndDevice"
@@ -192,9 +195,9 @@ class PrerenderFinalStatus(Enum):
 
 
 
-"""Preloading status values, see also PreloadingTriggeringOutcome. This
-status is shared by prefetchStatusUpdated and prerenderStatusUpdated."""
 class PreloadingStatus(Enum):
+    """Preloading status values, see also PreloadingTriggeringOutcome. This
+status is shared by prefetchStatusUpdated and prerenderStatusUpdated."""
     PENDING = "Pending"
     RUNNING = "Running"
     READY = "Ready"
@@ -204,9 +207,9 @@ class PreloadingStatus(Enum):
 
 
 
-"""TODO(https://crbug.com/1384419): revisit the list of PrefetchStatus and
-filter out the ones that aren't necessary to the developers."""
 class PrefetchStatus(Enum):
+    """TODO(https://crbug.com/1384419): revisit the list of PrefetchStatus and
+filter out the ones that aren't necessary to the developers."""
     PREFETCHALLOWED = "PrefetchAllowed"
     PREFETCHFAILEDINELIGIBLEREDIRECT = "PrefetchFailedIneligibleRedirect"
     PREFETCHFAILEDINVALIDREDIRECT = "PrefetchFailedInvalidRedirect"
@@ -244,8 +247,9 @@ class PrefetchStatus(Enum):
 
 
 
-"""Information of headers to be displayed when the header mismatch occurred."""
 class PrerenderMismatchedHeaders(TypedDict):
+    """Information of headers to be displayed when the header mismatch occurred."""
+
     headerName: "str"
     initialValue: "NotRequired[str]"
     activationValue: "NotRequired[str]"

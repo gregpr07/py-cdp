@@ -18,8 +18,8 @@ SerializedStorageKey = str
 
 
 
-"""Enum of possible storage types."""
 class StorageType(Enum):
+    """Enum of possible storage types."""
     COOKIES = "cookies"
     FILE_SYSTEMS = "file_systems"
     INDEXEDDB = "indexeddb"
@@ -36,8 +36,9 @@ class StorageType(Enum):
 
 
 
-"""Usage for a storage type."""
 class UsageForType(TypedDict):
+    """Usage for a storage type."""
+
     storageType: "StorageType"
     """Name of storage type."""
     usage: "float"
@@ -45,21 +46,22 @@ class UsageForType(TypedDict):
 
 
 
-"""Pair of issuer origin and number of available (signed, but not used) Trust
-Tokens from that issuer."""
 class TrustTokens(TypedDict):
+    """Pair of issuer origin and number of available (signed, but not used) Trust
+Tokens from that issuer."""
+
     issuerOrigin: "str"
     count: "float"
 
 
 
-"""Protected audience interest group auction identifier."""
+# Protected audience interest group auction identifier.
 InterestGroupAuctionId = str
 
 
 
-"""Enum of interest group access types."""
 class InterestGroupAccessType(Enum):
+    """Enum of interest group access types."""
     JOIN = "join"
     LEAVE = "leave"
     UPDATE = "update"
@@ -74,15 +76,15 @@ class InterestGroupAccessType(Enum):
 
 
 
-"""Enum of auction events."""
 class InterestGroupAuctionEventType(Enum):
+    """Enum of auction events."""
     STARTED = "started"
     CONFIGRESOLVED = "configResolved"
 
 
 
-"""Enum of network fetches auctions can do."""
 class InterestGroupAuctionFetchType(Enum):
+    """Enum of network fetches auctions can do."""
     BIDDERJS = "bidderJs"
     BIDDERWASM = "bidderWasm"
     SELLERJS = "sellerJs"
@@ -91,8 +93,8 @@ class InterestGroupAuctionFetchType(Enum):
 
 
 
-"""Enum of shared storage access scopes."""
 class SharedStorageAccessScope(Enum):
+    """Enum of shared storage access scopes."""
     WINDOW = "window"
     SHAREDSTORAGEWORKLET = "sharedStorageWorklet"
     PROTECTEDAUDIENCEWORKLET = "protectedAudienceWorklet"
@@ -100,8 +102,8 @@ class SharedStorageAccessScope(Enum):
 
 
 
-"""Enum of shared storage access methods."""
 class SharedStorageAccessMethod(Enum):
+    """Enum of shared storage access methods."""
     ADDMODULE = "addModule"
     CREATEWORKLET = "createWorklet"
     SELECTURL = "selectURL"
@@ -120,15 +122,17 @@ class SharedStorageAccessMethod(Enum):
 
 
 
-"""Struct for a single key-value pair in an origin's shared storage."""
 class SharedStorageEntry(TypedDict):
+    """Struct for a single key-value pair in an origin's shared storage."""
+
     key: "str"
     value: "str"
 
 
 
-"""Details for an origin's shared storage."""
 class SharedStorageMetadata(TypedDict):
+    """Details for an origin's shared storage."""
+
     creationTime: "TimeSinceEpoch"
     """Time when the origin's shared storage was last created."""
     length: "int"
@@ -141,9 +145,10 @@ storage."""
 
 
 
-"""Represents a dictionary object passed in as privateAggregationConfig to
-run or selectURL."""
 class SharedStoragePrivateAggregationConfig(TypedDict):
+    """Represents a dictionary object passed in as privateAggregationConfig to
+run or selectURL."""
+
     aggregationCoordinatorOrigin: "NotRequired[str]"
     """The chosen aggregation service deployment."""
     contextId: "NotRequired[str]"
@@ -155,15 +160,17 @@ class SharedStoragePrivateAggregationConfig(TypedDict):
 
 
 
-"""Pair of reporting metadata details for a candidate URL for `selectURL()`."""
 class SharedStorageReportingMetadata(TypedDict):
+    """Pair of reporting metadata details for a candidate URL for `selectURL()`."""
+
     eventType: "str"
     reportingUrl: "str"
 
 
 
-"""Bundles a candidate URL with its reporting metadata."""
 class SharedStorageUrlWithMetadata(TypedDict):
+    """Bundles a candidate URL with its reporting metadata."""
+
     url: "str"
     """Spec of candidate URL."""
     reportingMetadata: "List[SharedStorageReportingMetadata]"
@@ -171,9 +178,10 @@ class SharedStorageUrlWithMetadata(TypedDict):
 
 
 
-"""Bundles the parameters for shared storage access events whose
-presence/absence can vary according to SharedStorageAccessType."""
 class SharedStorageAccessParams(TypedDict, total=False):
+    """Bundles the parameters for shared storage access events whose
+presence/absence can vary according to SharedStorageAccessType."""
+
     scriptSourceUrl: "str"
     """Spec of the module script URL.
 Present only for SharedStorageAccessMethods: addModule and
@@ -522,8 +530,9 @@ class AttributionReportingReportResult(Enum):
 
 
 
-"""A single Related Website Set object."""
 class RelatedWebsiteSet(TypedDict):
+    """A single Related Website Set object."""
+
     primarySites: "List[str]"
     """The primary site of this set, along with the ccTLDs if there is any."""
     associatedSites: "List[str]"

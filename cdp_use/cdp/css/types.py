@@ -21,10 +21,10 @@ StyleSheetId = str
 
 
 
-"""Stylesheet type: \"injected\" for stylesheets injected via extension, \"user-agent\" for user-agent
+class StyleSheetOrigin(Enum):
+    """Stylesheet type: \"injected\" for stylesheets injected via extension, \"user-agent\" for user-agent
 stylesheets, \"inspector\" for stylesheets created by the inspector (i.e. those holding the \"via
 inspector\" rules), \"regular\" for regular stylesheets."""
-class StyleSheetOrigin(Enum):
     INJECTED = "injected"
     USER_AGENT = "user-agent"
     INSPECTOR = "inspector"
@@ -32,8 +32,9 @@ class StyleSheetOrigin(Enum):
 
 
 
-"""CSS rule collection for a single pseudo style."""
 class PseudoElementMatches(TypedDict):
+    """CSS rule collection for a single pseudo style."""
+
     pseudoType: "PseudoType"
     """Pseudo element type."""
     pseudoIdentifier: "NotRequired[str]"
@@ -43,8 +44,9 @@ class PseudoElementMatches(TypedDict):
 
 
 
-"""CSS style coming from animations with the name of the animation."""
 class CSSAnimationStyle(TypedDict):
+    """CSS style coming from animations with the name of the animation."""
+
     name: "NotRequired[str]"
     """The name of the animation."""
     style: "CSSStyle"
@@ -52,8 +54,9 @@ class CSSAnimationStyle(TypedDict):
 
 
 
-"""Inherited CSS rule collection from ancestor node."""
 class InheritedStyleEntry(TypedDict):
+    """Inherited CSS rule collection from ancestor node."""
+
     inlineStyle: "NotRequired[CSSStyle]"
     """The ancestor node's inline style, if any, in the style inheritance chain."""
     matchedCSSRules: "List[RuleMatch]"
@@ -61,8 +64,9 @@ class InheritedStyleEntry(TypedDict):
 
 
 
-"""Inherited CSS style collection for animated styles from ancestor node."""
 class InheritedAnimatedStyleEntry(TypedDict, total=False):
+    """Inherited CSS style collection for animated styles from ancestor node."""
+
     animationStyles: "List[CSSAnimationStyle]"
     """Styles coming from the animations of the ancestor, if any, in the style inheritance chain."""
     transitionsStyle: "CSSStyle"
@@ -70,15 +74,17 @@ class InheritedAnimatedStyleEntry(TypedDict, total=False):
 
 
 
-"""Inherited pseudo element matches from pseudos of an ancestor node."""
 class InheritedPseudoElementMatches(TypedDict):
+    """Inherited pseudo element matches from pseudos of an ancestor node."""
+
     pseudoElements: "List[PseudoElementMatches]"
     """Matches of pseudo styles from the pseudos of an ancestor node."""
 
 
 
-"""Match data for a CSS rule."""
 class RuleMatch(TypedDict):
+    """Match data for a CSS rule."""
+
     rule: "CSSRule"
     """CSS rule in the match."""
     matchingSelectors: "List[int]"
@@ -86,8 +92,9 @@ class RuleMatch(TypedDict):
 
 
 
-"""Data for a simple selector (these are delimited by commas in a selector list)."""
 class Value(TypedDict):
+    """Data for a simple selector (these are delimited by commas in a selector list)."""
+
     text: "str"
     """Value text."""
     range: "NotRequired[SourceRange]"
@@ -97,9 +104,10 @@ class Value(TypedDict):
 
 
 
-"""Specificity:
-https://drafts.csswg.org/selectors/#specificity-rules"""
 class Specificity(TypedDict):
+    """Specificity:
+https://drafts.csswg.org/selectors/#specificity-rules"""
+
     a: "int"
     """The a component, which represents the number of ID selectors."""
     b: "int"
@@ -110,8 +118,9 @@ pseudo-classes."""
 
 
 
-"""Selector list data."""
 class SelectorList(TypedDict):
+    """Selector list data."""
+
     selectors: "List[Value]"
     """Selectors in the list."""
     text: "str"
@@ -119,8 +128,9 @@ class SelectorList(TypedDict):
 
 
 
-"""CSS stylesheet metainformation."""
 class CSSStyleSheetHeader(TypedDict):
+    """CSS stylesheet metainformation."""
+
     styleSheetId: "StyleSheetId"
     """The stylesheet identifier."""
     frameId: "FrameId"
@@ -167,8 +177,9 @@ CSS module script."""
 
 
 
-"""CSS rule representation."""
 class CSSRule(TypedDict):
+    """CSS rule representation."""
+
     styleSheetId: "NotRequired[StyleSheetId]"
     """The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from."""
@@ -203,9 +214,9 @@ The array enumerates @starting-style at-rules starting with the innermost one, g
 
 
 
-"""Enum indicating the type of a CSS rule, used to represent the order of a style rule's ancestors.
-This list only contains rule types that are collected during the ancestor rule collection."""
 class CSSRuleType(Enum):
+    """Enum indicating the type of a CSS rule, used to represent the order of a style rule's ancestors.
+This list only contains rule types that are collected during the ancestor rule collection."""
     MEDIARULE = "MediaRule"
     SUPPORTSRULE = "SupportsRule"
     CONTAINERRULE = "ContainerRule"
@@ -216,8 +227,9 @@ class CSSRuleType(Enum):
 
 
 
-"""CSS coverage information."""
 class RuleUsage(TypedDict):
+    """CSS coverage information."""
+
     styleSheetId: "StyleSheetId"
     """The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from."""
@@ -230,8 +242,9 @@ stylesheet rules) this rule came from."""
 
 
 
-"""Text range within a resource. All numbers are zero-based."""
 class SourceRange(TypedDict):
+    """Text range within a resource. All numbers are zero-based."""
+
     startLine: "int"
     """Start line of range."""
     startColumn: "int"
@@ -261,8 +274,9 @@ class CSSComputedStyleProperty(TypedDict):
 
 
 
-"""CSS style representation."""
 class CSSStyle(TypedDict):
+    """CSS style representation."""
+
     styleSheetId: "NotRequired[StyleSheetId]"
     """The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from."""
@@ -277,8 +291,9 @@ stylesheet rules) this rule came from."""
 
 
 
-"""CSS property declaration data."""
 class CSSProperty(TypedDict):
+    """CSS property declaration data."""
+
     name: "str"
     """The property name."""
     value: "str"
@@ -301,8 +316,9 @@ This field will be empty if the given property is not a shorthand."""
 
 
 
-"""CSS media rule descriptor."""
 class CSSMedia(TypedDict):
+    """CSS media rule descriptor."""
+
     text: "str"
     """Media query text."""
     source: "str"
@@ -322,8 +338,9 @@ available)."""
 
 
 
-"""Media query descriptor."""
 class MediaQuery(TypedDict):
+    """Media query descriptor."""
+
     expressions: "List[MediaQueryExpression]"
     """Array of media query expressions."""
     active: "bool"
@@ -331,8 +348,9 @@ class MediaQuery(TypedDict):
 
 
 
-"""Media query expression descriptor."""
 class MediaQueryExpression(TypedDict):
+    """Media query expression descriptor."""
+
     value: "float"
     """Media query expression value."""
     unit: "str"
@@ -346,8 +364,9 @@ class MediaQueryExpression(TypedDict):
 
 
 
-"""CSS container query rule descriptor."""
 class CSSContainerQuery(TypedDict):
+    """CSS container query rule descriptor."""
+
     text: "str"
     """Container query text."""
     range: "NotRequired[SourceRange]"
@@ -366,8 +385,9 @@ available)."""
 
 
 
-"""CSS Supports at-rule descriptor."""
 class CSSSupports(TypedDict):
+    """CSS Supports at-rule descriptor."""
+
     text: "str"
     """Supports rule text."""
     active: "bool"
@@ -380,8 +400,9 @@ available)."""
 
 
 
-"""CSS Scope at-rule descriptor."""
 class CSSScope(TypedDict):
+    """CSS Scope at-rule descriptor."""
+
     text: "str"
     """Scope rule text."""
     range: "NotRequired[SourceRange]"
@@ -392,8 +413,9 @@ available)."""
 
 
 
-"""CSS Layer at-rule descriptor."""
 class CSSLayer(TypedDict):
+    """CSS Layer at-rule descriptor."""
+
     text: "str"
     """Layer name."""
     range: "NotRequired[SourceRange]"
@@ -404,8 +426,9 @@ available)."""
 
 
 
-"""CSS Starting Style at-rule descriptor."""
 class CSSStartingStyle(TypedDict, total=False):
+    """CSS Starting Style at-rule descriptor."""
+
     range: "SourceRange"
     """The associated rule header range in the enclosing stylesheet (if
 available)."""
@@ -414,8 +437,9 @@ available)."""
 
 
 
-"""CSS Layer data."""
 class CSSLayerData(TypedDict):
+    """CSS Layer data."""
+
     name: "str"
     """Layer name."""
     subLayers: "NotRequired[List[CSSLayerData]]"
@@ -426,8 +450,9 @@ A higher number has higher priority in the cascade order."""
 
 
 
-"""Information about amount of glyphs that were rendered with given font."""
 class PlatformFontUsage(TypedDict):
+    """Information about amount of glyphs that were rendered with given font."""
+
     familyName: "str"
     """Font's family name reported by platform."""
     postScriptName: "str"
@@ -439,8 +464,9 @@ class PlatformFontUsage(TypedDict):
 
 
 
-"""Information about font variation axes for variable fonts"""
 class FontVariationAxis(TypedDict):
+    """Information about font variation axes for variable fonts"""
+
     tag: "str"
     """The font-variation-setting tag (a.k.a. \"axis tag\")."""
     name: "str"
@@ -454,9 +480,10 @@ class FontVariationAxis(TypedDict):
 
 
 
-"""Properties of a web font: https://www.w3.org/TR/2008/REC-CSS2-20080411/fonts.html#font-descriptions
-and additional information such as platformFontFamily and fontVariationAxes."""
 class FontFace(TypedDict):
+    """Properties of a web font: https://www.w3.org/TR/2008/REC-CSS2-20080411/fonts.html#font-descriptions
+and additional information such as platformFontFamily and fontVariationAxes."""
+
     fontFamily: "str"
     """The font-family."""
     fontStyle: "str"
@@ -480,8 +507,9 @@ class FontFace(TypedDict):
 
 
 
-"""CSS try rule representation."""
 class CSSTryRule(TypedDict):
+    """CSS try rule representation."""
+
     styleSheetId: "NotRequired[StyleSheetId]"
     """The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from."""
@@ -492,8 +520,9 @@ stylesheet rules) this rule came from."""
 
 
 
-"""CSS @position-try rule representation."""
 class CSSPositionTryRule(TypedDict):
+    """CSS @position-try rule representation."""
+
     name: "Value"
     """The prelude dashed-ident name"""
     styleSheetId: "NotRequired[StyleSheetId]"
@@ -507,8 +536,9 @@ stylesheet rules) this rule came from."""
 
 
 
-"""CSS keyframes rule representation."""
 class CSSKeyframesRule(TypedDict):
+    """CSS keyframes rule representation."""
+
     animationName: "Value"
     """Animation name."""
     keyframes: "List[CSSKeyframeRule]"
@@ -516,8 +546,9 @@ class CSSKeyframesRule(TypedDict):
 
 
 
-"""Representation of a custom property registration through CSS.registerProperty"""
 class CSSPropertyRegistration(TypedDict):
+    """Representation of a custom property registration through CSS.registerProperty"""
+
     propertyName: "str"
     initialValue: "NotRequired[Value]"
     inherits: "bool"
@@ -525,8 +556,9 @@ class CSSPropertyRegistration(TypedDict):
 
 
 
-"""CSS font-palette-values rule representation."""
 class CSSFontPaletteValuesRule(TypedDict):
+    """CSS font-palette-values rule representation."""
+
     styleSheetId: "NotRequired[StyleSheetId]"
     """The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from."""
@@ -539,8 +571,9 @@ stylesheet rules) this rule came from."""
 
 
 
-"""CSS property at-rule representation."""
 class CSSPropertyRule(TypedDict):
+    """CSS property at-rule representation."""
+
     styleSheetId: "NotRequired[StyleSheetId]"
     """The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from."""
@@ -553,8 +586,9 @@ stylesheet rules) this rule came from."""
 
 
 
-"""CSS function argument representation."""
 class CSSFunctionParameter(TypedDict):
+    """CSS function argument representation."""
+
     name: "str"
     """The parameter name."""
     type: "str"
@@ -562,8 +596,9 @@ class CSSFunctionParameter(TypedDict):
 
 
 
-"""CSS function conditional block representation."""
 class CSSFunctionConditionNode(TypedDict):
+    """CSS function conditional block representation."""
+
     media: "NotRequired[CSSMedia]"
     """Media query for this conditional block. Only one type of condition should be set."""
     containerQueries: "NotRequired[CSSContainerQuery]"
@@ -577,8 +612,9 @@ class CSSFunctionConditionNode(TypedDict):
 
 
 
-"""Section of the body of a CSS function rule."""
 class CSSFunctionNode(TypedDict, total=False):
+    """Section of the body of a CSS function rule."""
+
     condition: "CSSFunctionConditionNode"
     """A conditional block. If set, style should not be set."""
     style: "CSSStyle"
@@ -586,8 +622,9 @@ class CSSFunctionNode(TypedDict, total=False):
 
 
 
-"""CSS function at-rule representation."""
 class CSSFunctionRule(TypedDict):
+    """CSS function at-rule representation."""
+
     name: "Value"
     """Name of the function."""
     styleSheetId: "NotRequired[StyleSheetId]"
@@ -602,8 +639,9 @@ stylesheet rules) this rule came from."""
 
 
 
-"""CSS keyframe rule representation."""
 class CSSKeyframeRule(TypedDict):
+    """CSS keyframe rule representation."""
+
     styleSheetId: "NotRequired[StyleSheetId]"
     """The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from."""
@@ -616,8 +654,9 @@ stylesheet rules) this rule came from."""
 
 
 
-"""A descriptor of operation to mutate style declaration text."""
 class StyleDeclarationEdit(TypedDict):
+    """A descriptor of operation to mutate style declaration text."""
+
     styleSheetId: "StyleSheetId"
     """The css style sheet identifier."""
     range: "SourceRange"

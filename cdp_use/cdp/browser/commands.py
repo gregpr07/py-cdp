@@ -166,6 +166,20 @@ with 'left', 'top', 'width' or 'height'. Leaves unspecified fields unchanged."""
 
 
 
+class SetContentsSizeParameters(TypedDict):
+    windowId: "WindowID"
+    """Browser window id."""
+    width: "NotRequired[int]"
+    """The window contents width in DIP. Assumes current width if omitted.
+Must be specified if 'height' is omitted."""
+    height: "NotRequired[int]"
+    """The window contents height in DIP. Assumes current height if omitted.
+Must be specified if 'width' is omitted."""
+
+
+
+
+
 class SetDockTileParameters(TypedDict, total=False):
     badgeLabel: "str"
     image: "str"

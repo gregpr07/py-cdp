@@ -6,18 +6,19 @@
 
 from typing_extensions import TypedDict
 
-"""Device request id."""
+# Device request id.
 RequestId = str
 
 
 
-"""A device id."""
+# A device id.
 DeviceId = str
 
 
 
-"""Device information displayed in a user prompt to select a device."""
 class PromptDevice(TypedDict):
+    """Device information displayed in a user prompt to select a device."""
+
     id: "DeviceId"
     name: "str"
     """Display name as it appears in a device request user prompt."""

@@ -13,18 +13,19 @@ if TYPE_CHECKING:
     from ..dom.types import BackendNodeId
     from ..dom.types import Rect
 
-"""Unique Layer identifier."""
+# Unique Layer identifier.
 LayerId = str
 
 
 
-"""Unique snapshot identifier."""
+# Unique snapshot identifier.
 SnapshotId = str
 
 
 
-"""Rectangle where scrolling happens on the main thread."""
 class ScrollRect(TypedDict):
+    """Rectangle where scrolling happens on the main thread."""
+
     rect: "Rect"
     """Rectangle itself."""
     type: "str"
@@ -32,8 +33,9 @@ class ScrollRect(TypedDict):
 
 
 
-"""Sticky position constraints."""
 class StickyPositionConstraint(TypedDict):
+    """Sticky position constraints."""
+
     stickyBoxRect: "Rect"
     """Layout rectangle of the sticky element before being shifted"""
     containingBlockRect: "Rect"
@@ -45,8 +47,9 @@ class StickyPositionConstraint(TypedDict):
 
 
 
-"""Serialized fragment of layer picture along with its offset within the layer."""
 class PictureTile(TypedDict):
+    """Serialized fragment of layer picture along with its offset within the layer."""
+
     x: "float"
     """Offset from owning layer left boundary"""
     y: "float"
@@ -56,8 +59,9 @@ class PictureTile(TypedDict):
 
 
 
-"""Information about a compositing layer."""
 class Layer(TypedDict):
+    """Information about a compositing layer."""
+
     layerId: "LayerId"
     """The unique id for this layer."""
     parentLayerId: "NotRequired[LayerId]"
@@ -94,5 +98,5 @@ transform/scrolling purposes only."""
 
 
 
-"""Array of timings, one per paint step."""
+# Array of timings, one per paint step.
 PaintProfile = List[float]

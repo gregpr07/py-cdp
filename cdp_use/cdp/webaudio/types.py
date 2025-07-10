@@ -7,20 +7,20 @@
 from enum import Enum
 from typing_extensions import NotRequired, TypedDict
 
-"""An unique ID for a graph object (AudioContext, AudioNode, AudioParam) in Web Audio API"""
+# An unique ID for a graph object (AudioContext, AudioNode, AudioParam) in Web Audio API
 GraphObjectId = str
 
 
 
-"""Enum of BaseAudioContext types"""
 class ContextType(Enum):
+    """Enum of BaseAudioContext types"""
     REALTIME = "realtime"
     OFFLINE = "offline"
 
 
 
-"""Enum of AudioContextState from the spec"""
 class ContextState(Enum):
+    """Enum of AudioContextState from the spec"""
     SUSPENDED = "suspended"
     RUNNING = "running"
     CLOSED = "closed"
@@ -28,40 +28,41 @@ class ContextState(Enum):
 
 
 
-"""Enum of AudioNode types"""
+# Enum of AudioNode types
 NodeType = str
 
 
 
-"""Enum of AudioNode::ChannelCountMode from the spec"""
 class ChannelCountMode(Enum):
+    """Enum of AudioNode::ChannelCountMode from the spec"""
     CLAMPED_MAX = "clamped-max"
     EXPLICIT = "explicit"
     MAX = "max"
 
 
 
-"""Enum of AudioNode::ChannelInterpretation from the spec"""
 class ChannelInterpretation(Enum):
+    """Enum of AudioNode::ChannelInterpretation from the spec"""
     DISCRETE = "discrete"
     SPEAKERS = "speakers"
 
 
 
-"""Enum of AudioParam types"""
+# Enum of AudioParam types
 ParamType = str
 
 
 
-"""Enum of AudioParam::AutomationRate from the spec"""
 class AutomationRate(Enum):
+    """Enum of AudioParam::AutomationRate from the spec"""
     A_RATE = "a-rate"
     K_RATE = "k-rate"
 
 
 
-"""Fields in AudioContext that change in real-time."""
 class ContextRealtimeData(TypedDict):
+    """Fields in AudioContext that change in real-time."""
+
     currentTime: "float"
     """The current context time in second in BaseAudioContext."""
     renderCapacity: "float"
@@ -75,8 +76,9 @@ capacity and glitch may occur."""
 
 
 
-"""Protocol object for BaseAudioContext"""
 class BaseAudioContext(TypedDict):
+    """Protocol object for BaseAudioContext"""
+
     contextId: "GraphObjectId"
     contextType: "ContextType"
     contextState: "ContextState"
@@ -90,15 +92,17 @@ class BaseAudioContext(TypedDict):
 
 
 
-"""Protocol object for AudioListener"""
 class AudioListener(TypedDict):
+    """Protocol object for AudioListener"""
+
     listenerId: "GraphObjectId"
     contextId: "GraphObjectId"
 
 
 
-"""Protocol object for AudioNode"""
 class AudioNode(TypedDict):
+    """Protocol object for AudioNode"""
+
     nodeId: "GraphObjectId"
     contextId: "GraphObjectId"
     nodeType: "NodeType"
@@ -110,8 +114,9 @@ class AudioNode(TypedDict):
 
 
 
-"""Protocol object for AudioParam"""
 class AudioParam(TypedDict):
+    """Protocol object for AudioParam"""
+
     paramId: "GraphObjectId"
     nodeId: "GraphObjectId"
     contextId: "GraphObjectId"

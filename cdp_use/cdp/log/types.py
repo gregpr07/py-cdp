@@ -15,8 +15,9 @@ if TYPE_CHECKING:
     from ..runtime.types import StackTrace
     from ..runtime.types import Timestamp
 
-"""Log entry."""
 class LogEntry(TypedDict):
+    """Log entry."""
+
     source: "str"
     """Log entry source."""
     level: "str"
@@ -41,8 +42,9 @@ class LogEntry(TypedDict):
 
 
 
-"""Violation configuration setting."""
 class ViolationSetting(TypedDict):
+    """Violation configuration setting."""
+
     name: "str"
     """Violation type."""
     threshold: "float"

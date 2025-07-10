@@ -8,31 +8,31 @@ from enum import Enum
 from typing import List
 from typing_extensions import TypedDict
 
-"""Indicates the various states of Central."""
 class CentralState(Enum):
+    """Indicates the various states of Central."""
     ABSENT = "absent"
     POWERED_OFF = "powered-off"
     POWERED_ON = "powered-on"
 
 
 
-"""Indicates the various types of GATT event."""
 class GATTOperationType(Enum):
+    """Indicates the various types of GATT event."""
     CONNECTION = "connection"
     DISCOVERY = "discovery"
 
 
 
-"""Indicates the various types of characteristic write."""
 class CharacteristicWriteType(Enum):
+    """Indicates the various types of characteristic write."""
     WRITE_DEFAULT_DEPRECATED = "write-default-deprecated"
     WRITE_WITH_RESPONSE = "write-with-response"
     WRITE_WITHOUT_RESPONSE = "write-without-response"
 
 
 
-"""Indicates the various types of characteristic operation."""
 class CharacteristicOperationType(Enum):
+    """Indicates the various types of characteristic operation."""
     READ = "read"
     WRITE = "write"
     SUBSCRIBE_TO_NOTIFICATIONS = "subscribe-to-notifications"
@@ -40,15 +40,16 @@ class CharacteristicOperationType(Enum):
 
 
 
-"""Indicates the various types of descriptor operation."""
 class DescriptorOperationType(Enum):
+    """Indicates the various types of descriptor operation."""
     READ = "read"
     WRITE = "write"
 
 
 
-"""Stores the manufacturer data"""
 class ManufacturerData(TypedDict):
+    """Stores the manufacturer data"""
+
     key: "int"
     """Company identifier
 https://bitbucket.org/bluetooth-SIG/public/src/main/assigned_numbers/company_identifiers/company_identifiers.yaml
@@ -58,8 +59,9 @@ https://usb.org/developers"""
 
 
 
-"""Stores the byte data of the advertisement packet sent by a Bluetooth device."""
 class ScanRecord(TypedDict, total=False):
+    """Stores the byte data of the advertisement packet sent by a Bluetooth device."""
+
     name: "str"
     uuids: "List[str]"
     appearance: "int"
@@ -72,17 +74,19 @@ manufacturer specific data."""
 
 
 
-"""Stores the advertisement packet information that is sent by a Bluetooth device."""
 class ScanEntry(TypedDict):
+    """Stores the advertisement packet information that is sent by a Bluetooth device."""
+
     deviceAddress: "str"
     rssi: "int"
     scanRecord: "ScanRecord"
 
 
 
-"""Describes the properties of a characteristic. This follows Bluetooth Core
-Specification BT 4.2 Vol 3 Part G 3.3.1. Characteristic Properties."""
 class CharacteristicProperties(TypedDict, total=False):
+    """Describes the properties of a characteristic. This follows Bluetooth Core
+Specification BT 4.2 Vol 3 Part G 3.3.1. Characteristic Properties."""
+
     broadcast: "bool"
     read: "bool"
     writeWithoutResponse: "bool"

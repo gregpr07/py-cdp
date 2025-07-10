@@ -28,8 +28,9 @@ class SafeAreaInsets(TypedDict, total=False):
 
 
 
-"""Screen orientation."""
 class ScreenOrientation(TypedDict):
+    """Screen orientation."""
+
     type: "str"
     """Orientation type."""
     angle: "int"
@@ -62,27 +63,29 @@ class MediaFeature(TypedDict):
 
 
 
-"""advance: If the scheduler runs out of immediate work, the virtual time base may fast forward to
+class VirtualTimePolicy(Enum):
+    """advance: If the scheduler runs out of immediate work, the virtual time base may fast forward to
 allow the next delayed task (if any) to run; pause: The virtual time base may not advance;
 pauseIfNetworkFetchesPending: The virtual time base may not advance if there are any pending
 resource fetches."""
-class VirtualTimePolicy(Enum):
     ADVANCE = "advance"
     PAUSE = "pause"
     PAUSEIFNETWORKFETCHESPENDING = "pauseIfNetworkFetchesPending"
 
 
 
-"""Used to specify User Agent Client Hints to emulate. See https://wicg.github.io/ua-client-hints"""
 class UserAgentBrandVersion(TypedDict):
+    """Used to specify User Agent Client Hints to emulate. See https://wicg.github.io/ua-client-hints"""
+
     brand: "str"
     version: "str"
 
 
 
-"""Used to specify User Agent Client Hints to emulate. See https://wicg.github.io/ua-client-hints
-Missing optional values will be filled in by the target with what it would normally use."""
 class UserAgentMetadata(TypedDict):
+    """Used to specify User Agent Client Hints to emulate. See https://wicg.github.io/ua-client-hints
+Missing optional values will be filled in by the target with what it would normally use."""
+
     brands: "NotRequired[List[UserAgentBrandVersion]]"
     """Brands appearing in Sec-CH-UA."""
     fullVersionList: "NotRequired[List[UserAgentBrandVersion]]"
@@ -101,9 +104,9 @@ See https://wicg.github.io/ua-client-hints/#sec-ch-ua-form-factors"""
 
 
 
-"""Used to specify sensor types to emulate.
-See https://w3c.github.io/sensors/#automation for more information."""
 class SensorType(Enum):
+    """Used to specify sensor types to emulate.
+See https://w3c.github.io/sensors/#automation for more information."""
     ABSOLUTE_ORIENTATION = "absolute-orientation"
     ACCELEROMETER = "accelerometer"
     AMBIENT_LIGHT = "ambient-light"
@@ -167,7 +170,7 @@ class PressureMetadata(TypedDict, total=False):
 
 
 
-"""Enum of image types that can be disabled."""
 class DisabledImageType(Enum):
+    """Enum of image types that can be disabled."""
     AVIF = "avif"
     WEBP = "webp"

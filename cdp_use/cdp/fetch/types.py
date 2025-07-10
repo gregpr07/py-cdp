@@ -12,17 +12,17 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..network.types import ResourceType
 
-"""Unique request identifier.
-Note that this does not identify individual HTTP requests that are part of
-a network request."""
+# Unique request identifier.
+# Note that this does not identify individual HTTP requests that are part of
+# a network request.
 RequestId = str
 
 
 
-"""Stages of the request to handle. Request will intercept before the request is
+class RequestStage(Enum):
+    """Stages of the request to handle. Request will intercept before the request is
 sent. Response will intercept after the response is received (but before response
 body is received)."""
-class RequestStage(Enum):
     REQUEST = "Request"
     RESPONSE = "Response"
 
@@ -39,15 +39,17 @@ backslash. Omitting is equivalent to `\"*\"`."""
 
 
 
-"""Response HTTP header entry"""
 class HeaderEntry(TypedDict):
+    """Response HTTP header entry"""
+
     name: "str"
     value: "str"
 
 
 
-"""Authorization challenge for HTTP status code 401 or 407."""
 class AuthChallenge(TypedDict):
+    """Authorization challenge for HTTP status code 401 or 407."""
+
     source: "NotRequired[str]"
     """Source of the authentication challenge."""
     origin: "str"
@@ -59,8 +61,9 @@ class AuthChallenge(TypedDict):
 
 
 
-"""Response to an AuthChallenge."""
 class AuthChallengeResponse(TypedDict):
+    """Response to an AuthChallenge."""
+
     response: "str"
     """The decision on what to do in response to the authorization challenge.  Default means
 deferring to the default behavior of the net stack, which will likely either the Cancel

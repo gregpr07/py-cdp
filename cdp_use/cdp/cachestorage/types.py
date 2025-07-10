@@ -13,13 +13,13 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..storage.types import StorageBucket
 
-"""Unique identifier of the Cache object."""
+# Unique identifier of the Cache object.
 CacheId = str
 
 
 
-"""type of HTTP response cached"""
 class CachedResponseType(Enum):
+    """type of HTTP response cached"""
     BASIC = "basic"
     CORS = "cors"
     DEFAULT = "default"
@@ -29,8 +29,9 @@ class CachedResponseType(Enum):
 
 
 
-"""Data entry."""
 class DataEntry(TypedDict):
+    """Data entry."""
+
     requestURL: "str"
     """Request URL."""
     requestMethod: "str"
@@ -50,8 +51,9 @@ class DataEntry(TypedDict):
 
 
 
-"""Cache identifier."""
 class Cache(TypedDict):
+    """Cache identifier."""
+
     cacheId: "CacheId"
     """An opaque unique id of the cache."""
     securityOrigin: "str"
@@ -71,7 +73,8 @@ class Header(TypedDict):
 
 
 
-"""Cached response"""
 class CachedResponse(TypedDict):
+    """Cached response"""
+
     body: "str"
     """Entry content, base64-encoded. (Encoded as a base64 string when passed over JSON)"""

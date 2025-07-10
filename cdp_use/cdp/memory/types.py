@@ -8,15 +8,16 @@ from enum import Enum
 from typing import List
 from typing_extensions import TypedDict
 
-"""Memory pressure level."""
 class PressureLevel(Enum):
+    """Memory pressure level."""
     MODERATE = "moderate"
     CRITICAL = "critical"
 
 
 
-"""Heap profile sample."""
 class SamplingProfileNode(TypedDict):
+    """Heap profile sample."""
+
     size: "float"
     """Size of the sampled allocation."""
     total: "float"
@@ -26,15 +27,17 @@ class SamplingProfileNode(TypedDict):
 
 
 
-"""Array of heap profile samples."""
 class SamplingProfile(TypedDict):
+    """Array of heap profile samples."""
+
     samples: "List[SamplingProfileNode]"
     modules: "List[Module]"
 
 
 
-"""Executable module information"""
 class Module(TypedDict):
+    """Executable module information"""
+
     name: "str"
     """Name of the module."""
     uuid: "str"
@@ -47,8 +50,9 @@ or hexadecimal (0x prefixed) string."""
 
 
 
-"""DOM object counter data."""
 class DOMCounter(TypedDict):
+    """DOM object counter data."""
+
     name: "str"
     """Object name. Note: object names should be presumed volatile and clients should not expect
 the returned names to be consistent across runs."""

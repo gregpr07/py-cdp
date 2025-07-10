@@ -8,9 +8,8 @@ from enum import Enum
 from typing import List
 from typing_extensions import TypedDict
 
-"""Configuration for memory dump. Used only when \"memory-infra\" category is enabled."""
 class MemoryDumpConfig(TypedDict):
-    pass
+    """Configuration for memory dump. Used only when \"memory-infra\" category is enabled."""
 
 
 
@@ -37,37 +36,37 @@ of 200 MB would be used."""
 
 
 
-"""Data format of a trace. Can be either the legacy JSON format or the
-protocol buffer format. Note that the JSON format will be deprecated soon."""
 class StreamFormat(Enum):
+    """Data format of a trace. Can be either the legacy JSON format or the
+protocol buffer format. Note that the JSON format will be deprecated soon."""
     JSON = "json"
     PROTO = "proto"
 
 
 
-"""Compression type to use for traces returned via streams."""
 class StreamCompression(Enum):
+    """Compression type to use for traces returned via streams."""
     NONE = "none"
     GZIP = "gzip"
 
 
 
-"""Details exposed when memory request explicitly declared.
+class MemoryDumpLevelOfDetail(Enum):
+    """Details exposed when memory request explicitly declared.
 Keep consistent with memory_dump_request_args.h and
 memory_instrumentation.mojom"""
-class MemoryDumpLevelOfDetail(Enum):
     BACKGROUND = "background"
     LIGHT = "light"
     DETAILED = "detailed"
 
 
 
-"""Backend type to use for tracing. `chrome` uses the Chrome-integrated
+class TracingBackend(Enum):
+    """Backend type to use for tracing. `chrome` uses the Chrome-integrated
 tracing service and is supported on all platforms. `system` is only
 supported on Chrome OS and uses the Perfetto system tracing service.
 `auto` chooses `system` when the perfettoConfig provided to Tracing.start
 specifies at least one non-Chrome data source; otherwise uses `chrome`."""
-class TracingBackend(Enum):
     AUTO = "auto"
     CHROME = "chrome"
     SYSTEM = "system"

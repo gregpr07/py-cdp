@@ -6,8 +6,9 @@
 
 from typing_extensions import TypedDict
 
-"""Run-time execution metric."""
 class Metric(TypedDict):
+    """Run-time execution metric."""
+
     name: "str"
     """Metric name."""
     value: "float"

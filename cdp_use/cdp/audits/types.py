@@ -20,8 +20,9 @@ if TYPE_CHECKING:
     from ..page.types import FrameId
     from ..runtime.types import ScriptId
 
-"""Information about a cookie that is affected by an inspector issue."""
 class AffectedCookie(TypedDict):
+    """Information about a cookie that is affected by an inspector issue."""
+
     name: "str"
     """The following three properties uniquely identify a cookie"""
     path: "str"
@@ -29,16 +30,18 @@ class AffectedCookie(TypedDict):
 
 
 
-"""Information about a request that is affected by an inspector issue."""
 class AffectedRequest(TypedDict):
+    """Information about a request that is affected by an inspector issue."""
+
     requestId: "NotRequired[RequestId]"
     """The unique request id."""
     url: "str"
 
 
 
-"""Information about the frame affected by an inspector issue."""
 class AffectedFrame(TypedDict):
+    """Information about the frame affected by an inspector issue."""
+
     frameId: "FrameId"
 
 
@@ -82,26 +85,28 @@ class CookieOperation(Enum):
 
 
 
-"""Represents the category of insight that a cookie issue falls under."""
 class InsightType(Enum):
+    """Represents the category of insight that a cookie issue falls under."""
     GITHUBRESOURCE = "GitHubResource"
     GRACEPERIOD = "GracePeriod"
     HEURISTICS = "Heuristics"
 
 
 
-"""Information about the suggested solution to a cookie issue."""
 class CookieIssueInsight(TypedDict):
+    """Information about the suggested solution to a cookie issue."""
+
     type: "InsightType"
     tableEntryUrl: "NotRequired[str]"
     """Link to table entry in third-party cookie migration readiness list."""
 
 
 
-"""This information is currently necessary, as the front-end has a difficult
+class CookieIssueDetails(TypedDict):
+    """This information is currently necessary, as the front-end has a difficult
 time finding a specific cookie. With this, we can convey specific error
 information without the cookie."""
-class CookieIssueDetails(TypedDict):
+
     cookie: "NotRequired[AffectedCookie]"
     """If AffectedCookie is not set then rawCookieLine contains the raw
 Set-Cookie header string. This hints at a problem where the
@@ -181,9 +186,9 @@ Does not always exist (e.g. for unsafe form submission urls)."""
 
 
 
-"""Enum indicating the reason a response has been blocked. These reasons are
-refinements of the net error BLOCKED_BY_RESPONSE."""
 class BlockedByResponseReason(Enum):
+    """Enum indicating the reason a response has been blocked. These reasons are
+refinements of the net error BLOCKED_BY_RESPONSE."""
     COEPFRAMERESOURCENEEDSCOEPHEADER = "CoepFrameResourceNeedsCoepHeader"
     COOPSANDBOXEDIFRAMECANNOTNAVIGATETOCOOPPAGE = "CoopSandboxedIFrameCannotNavigateToCoopPage"
     CORPNOTSAMEORIGIN = "CorpNotSameOrigin"
@@ -195,10 +200,11 @@ class BlockedByResponseReason(Enum):
 
 
 
-"""Details for a request that has been blocked with the BLOCKED_BY_RESPONSE
+class BlockedByResponseIssueDetails(TypedDict):
+    """Details for a request that has been blocked with the BLOCKED_BY_RESPONSE
 code. Currently only used for COEP/COOP, but may be extended to include
 some CSP errors in the future."""
-class BlockedByResponseIssueDetails(TypedDict):
+
     request: "AffectedRequest"
     parentFrame: "NotRequired[AffectedFrame]"
     blockedFrame: "NotRequired[AffectedFrame]"
@@ -267,9 +273,10 @@ class SharedArrayBufferIssueType(Enum):
 
 
 
-"""Details for a issue arising from an SAB being instantiated in, or
-transferred to a context that is not cross-origin isolated."""
 class SharedArrayBufferIssueDetails(TypedDict):
+    """Details for a issue arising from an SAB being instantiated in, or
+transferred to a context that is not cross-origin isolated."""
+
     sourceCodeLocation: "SourceCodeLocation"
     isWarning: "bool"
     type: "SharedArrayBufferIssueType"
@@ -287,9 +294,10 @@ class LowTextContrastIssueDetails(TypedDict):
 
 
 
-"""Details for a CORS related issue, e.g. a warning or error related to
-CORS RFC1918 enforcement."""
 class CorsIssueDetails(TypedDict):
+    """Details for a CORS related issue, e.g. a warning or error related to
+CORS RFC1918 enforcement."""
+
     corsErrorStatus: "CorsErrorStatus"
     isWarning: "bool"
     request: "AffectedRequest"
@@ -377,9 +385,10 @@ class SRIMessageSignatureError(Enum):
 
 
 
-"""Details for issues around \"Attribution Reporting API\" usage.
-Explainer: https://github.com/WICG/attribution-reporting-api"""
 class AttributionReportingIssueDetails(TypedDict):
+    """Details for issues around \"Attribution Reporting API\" usage.
+Explainer: https://github.com/WICG/attribution-reporting-api"""
+
     violationType: "AttributionReportingIssueType"
     request: "NotRequired[AffectedRequest]"
     violatingNodeId: "NotRequired[BackendNodeId]"
@@ -387,9 +396,10 @@ class AttributionReportingIssueDetails(TypedDict):
 
 
 
-"""Details for issues about documents in Quirks Mode
-or Limited Quirks Mode that affects page layouting."""
 class QuirksModeIssueDetails(TypedDict):
+    """Details for issues about documents in Quirks Mode
+or Limited Quirks Mode that affects page layouting."""
+
     isLimitedQuirksMode: "bool"
     """If false, it means the document's mode is \"quirks\"
 instead of \"limited-quirks\"."""
@@ -435,8 +445,9 @@ class GenericIssueErrorType(Enum):
 
 
 
-"""Depending on the concrete errorType, different properties are set."""
 class GenericIssueDetails(TypedDict):
+    """Depending on the concrete errorType, different properties are set."""
+
     errorType: "GenericIssueErrorType"
     """Issues with the same errorType are aggregated in the frontend."""
     frameId: "NotRequired[FrameId]"
@@ -446,9 +457,10 @@ class GenericIssueDetails(TypedDict):
 
 
 
-"""This issue tracks information needed to print a deprecation message.
-https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/core/frame/third_party/blink/renderer/core/frame/deprecation/README.md"""
 class DeprecationIssueDetails(TypedDict):
+    """This issue tracks information needed to print a deprecation message.
+https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/core/frame/third_party/blink/renderer/core/frame/deprecation/README.md"""
+
     affectedFrame: "NotRequired[AffectedFrame]"
     sourceCodeLocation: "SourceCodeLocation"
     type: "str"
@@ -456,22 +468,24 @@ class DeprecationIssueDetails(TypedDict):
 
 
 
-"""This issue warns about sites in the redirect chain of a finished navigation
+class BounceTrackingIssueDetails(TypedDict):
+    """This issue warns about sites in the redirect chain of a finished navigation
 that may be flagged as trackers and have their state cleared if they don't
 receive a user interaction. Note that in this context 'site' means eTLD+1.
 For example, if the URL `https://example.test:80/bounce` was in the
 redirect chain, the site reported would be `example.test`."""
-class BounceTrackingIssueDetails(TypedDict):
+
     trackingSites: "List[str]"
 
 
 
-"""This issue warns about third-party sites that are accessing cookies on the
+class CookieDeprecationMetadataIssueDetails(TypedDict):
+    """This issue warns about third-party sites that are accessing cookies on the
 current page, and have been permitted due to having a global metadata grant.
 Note that in this context 'site' means eTLD+1. For example, if the URL
 `https://example.test:80/web_page` was accessing cookies, the site reported
 would be `example.test`."""
-class CookieDeprecationMetadataIssueDetails(TypedDict):
+
     allowedSites: "List[str]"
     optOutPercentage: "float"
     isOptOutTopLevel: "bool"
@@ -490,11 +504,11 @@ class FederatedAuthRequestIssueDetails(TypedDict):
 
 
 
-"""Represents the failure reason when a federated authentication reason fails.
+class FederatedAuthRequestIssueReason(Enum):
+    """Represents the failure reason when a federated authentication reason fails.
 Should be updated alongside RequestIdTokenStatus in
 third_party/blink/public/mojom/devtools/inspector_issue.mojom to include
 all cases except for success."""
-class FederatedAuthRequestIssueReason(Enum):
     SHOULDEMBARGO = "ShouldEmbargo"
     TOOMANYREQUESTS = "TooManyRequests"
     WELLKNOWNHTTPNOTFOUND = "WellKnownHttpNotFound"
@@ -551,10 +565,10 @@ class FederatedAuthUserInfoRequestIssueDetails(TypedDict):
 
 
 
-"""Represents the failure reason when a getUserInfo() call fails.
+class FederatedAuthUserInfoRequestIssueReason(Enum):
+    """Represents the failure reason when a getUserInfo() call fails.
 Should be updated alongside FederatedAuthUserInfoRequestResult in
 third_party/blink/public/mojom/devtools/inspector_issue.mojom."""
-class FederatedAuthUserInfoRequestIssueReason(Enum):
     NOTSAMEORIGIN = "NotSameOrigin"
     NOTIFRAME = "NotIframe"
     NOTPOTENTIALLYTRUSTWORTHY = "NotPotentiallyTrustworthy"
@@ -567,9 +581,10 @@ class FederatedAuthUserInfoRequestIssueReason(Enum):
 
 
 
-"""This issue tracks client hints related issues. It's used to deprecate old
-features, encourage the use of new ones, and provide general guidance."""
 class ClientHintIssueDetails(TypedDict):
+    """This issue tracks client hints related issues. It's used to deprecate old
+features, encourage the use of new ones, and provide general guidance."""
+
     sourceCodeLocation: "SourceCodeLocation"
     clientHintIssueReason: "ClientHintIssueReason"
 
@@ -608,8 +623,9 @@ class ElementAccessibilityIssueReason(Enum):
 
 
 
-"""This issue warns about errors in the select or summary element content model."""
 class ElementAccessibilityIssueDetails(TypedDict):
+    """This issue warns about errors in the select or summary element content model."""
+
     nodeId: "BackendNodeId"
     elementAccessibilityIssueReason: "ElementAccessibilityIssueReason"
     hasDisallowedAttributes: "bool"
@@ -622,8 +638,9 @@ class StyleSheetLoadingIssueReason(Enum):
 
 
 
-"""This issue warns when a referenced stylesheet couldn't be loaded."""
 class StylesheetLoadingIssueDetails(TypedDict):
+    """This issue warns when a referenced stylesheet couldn't be loaded."""
+
     sourceCodeLocation: "SourceCodeLocation"
     """Source code position that referenced the failing stylesheet."""
     styleSheetLoadingIssueReason: "StyleSheetLoadingIssueReason"
@@ -641,9 +658,10 @@ class PropertyRuleIssueReason(Enum):
 
 
 
-"""This issue warns about errors in property rules that lead to property
-registrations being ignored."""
 class PropertyRuleIssueDetails(TypedDict):
+    """This issue warns about errors in property rules that lead to property
+registrations being ignored."""
+
     sourceCodeLocation: "SourceCodeLocation"
     """Source code position of the property rule."""
     propertyRuleIssueReason: "PropertyRuleIssueReason"
@@ -659,19 +677,20 @@ class UserReidentificationIssueType(Enum):
 
 
 
-"""This issue warns about uses of APIs that may be considered misuse to
-re-identify users."""
 class UserReidentificationIssueDetails(TypedDict):
+    """This issue warns about uses of APIs that may be considered misuse to
+re-identify users."""
+
     type: "UserReidentificationIssueType"
     request: "NotRequired[AffectedRequest]"
     """Applies to BlockedFrameNavigation and BlockedSubresource issue types."""
 
 
 
-"""A unique identifier for the type of issue. Each type may use one of the
+class InspectorIssueCode(Enum):
+    """A unique identifier for the type of issue. Each type may use one of the
 optional fields in InspectorIssueDetails to convey more specific
 information about the kind of issue."""
-class InspectorIssueCode(Enum):
     COOKIEISSUE = "CookieIssue"
     MIXEDCONTENTISSUE = "MixedContentIssue"
     BLOCKEDBYRESPONSEISSUE = "BlockedByResponseIssue"
@@ -700,10 +719,11 @@ class InspectorIssueCode(Enum):
 
 
 
-"""This struct holds a list of optional fields with additional information
+class InspectorIssueDetails(TypedDict, total=False):
+    """This struct holds a list of optional fields with additional information
 specific to the kind of issue. When adding a new issue code, please also
 add a new optional field to this type."""
-class InspectorIssueDetails(TypedDict, total=False):
+
     cookieIssueDetails: "CookieIssueDetails"
     mixedContentIssueDetails: "MixedContentIssueDetails"
     blockedByResponseIssueDetails: "BlockedByResponseIssueDetails"
@@ -732,14 +752,15 @@ class InspectorIssueDetails(TypedDict, total=False):
 
 
 
-"""A unique id for a DevTools inspector issue. Allows other entities (e.g.
-exceptions, CDP message, console messages, etc.) to reference an issue."""
+# A unique id for a DevTools inspector issue. Allows other entities (e.g.
+# exceptions, CDP message, console messages, etc.) to reference an issue.
 IssueId = str
 
 
 
-"""An inspector issue reported from the back-end."""
 class InspectorIssue(TypedDict):
+    """An inspector issue reported from the back-end."""
+
     code: "InspectorIssueCode"
     details: "InspectorIssueDetails"
     issueId: "NotRequired[IssueId]"

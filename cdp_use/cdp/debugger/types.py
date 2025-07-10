@@ -14,18 +14,19 @@ if TYPE_CHECKING:
     from ..runtime.types import RemoteObject
     from ..runtime.types import ScriptId
 
-"""Breakpoint identifier."""
+# Breakpoint identifier.
 BreakpointId = str
 
 
 
-"""Call frame identifier."""
+# Call frame identifier.
 CallFrameId = str
 
 
 
-"""Location in the source code."""
 class Location(TypedDict):
+    """Location in the source code."""
+
     scriptId: "ScriptId"
     """Script identifier as reported in the `Debugger.scriptParsed`."""
     lineNumber: "int"
@@ -35,23 +36,26 @@ class Location(TypedDict):
 
 
 
-"""Location in the source code."""
 class ScriptPosition(TypedDict):
+    """Location in the source code."""
+
     lineNumber: "int"
     columnNumber: "int"
 
 
 
-"""Location range within one script."""
 class LocationRange(TypedDict):
+    """Location range within one script."""
+
     scriptId: "ScriptId"
     start: "ScriptPosition"
     end: "ScriptPosition"
 
 
 
-"""JavaScript call frame. Array of call frames form the call stack."""
 class CallFrame(TypedDict):
+    """JavaScript call frame. Array of call frames form the call stack."""
+
     callFrameId: "CallFrameId"
     """Call frame identifier. This identifier is only valid while the virtual machine is paused."""
     functionName: "str"
@@ -78,8 +82,9 @@ successful, but it is very likely."""
 
 
 
-"""Scope description."""
 class Scope(TypedDict):
+    """Scope description."""
+
     type: "str"
     """Scope type."""
     object: "RemoteObject"
@@ -94,8 +99,9 @@ variables as its properties."""
 
 
 
-"""Search match for resource."""
 class SearchMatch(TypedDict):
+    """Search match for resource."""
+
     lineNumber: "float"
     """Line number in resource content."""
     lineContent: "str"
@@ -122,15 +128,16 @@ class WasmDisassemblyChunk(TypedDict):
 
 
 
-"""Enum of possible script languages."""
 class ScriptLanguage(Enum):
+    """Enum of possible script languages."""
     JAVASCRIPT = "JavaScript"
     WEBASSEMBLY = "WebAssembly"
 
 
 
-"""Debug symbols available for a wasm script."""
 class DebugSymbols(TypedDict):
+    """Debug symbols available for a wasm script."""
+
     type: "str"
     """Type of the debug symbols."""
     externalURL: "NotRequired[str]"

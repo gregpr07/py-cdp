@@ -6,8 +6,9 @@
 
 from typing_extensions import TypedDict
 
-"""Encoding options for a screenshot."""
 class ScreenshotParams(TypedDict, total=False):
+    """Encoding options for a screenshot."""
+
     format: "str"
     """Image compression format (defaults to png)."""
     quality: "int"

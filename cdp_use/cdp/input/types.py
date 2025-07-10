@@ -52,7 +52,7 @@ class MouseButton(Enum):
 
 
 
-"""UTC time in seconds, counted from January 1, 1970."""
+# UTC time in seconds, counted from January 1, 1970.
 TimeSinceEpoch = float
 
 

@@ -7,13 +7,14 @@
 from typing import Any, Dict, List
 from typing_extensions import NotRequired, TypedDict
 
-"""Unique script identifier."""
+# Unique script identifier.
 ScriptId = str
 
 
 
-"""Represents options for serialization. Overrides `generatePreview` and `returnByValue`."""
 class SerializationOptions(TypedDict):
+    """Represents options for serialization. Overrides `generatePreview` and `returnByValue`."""
+
     serialization: "str"
     maxDepth: "NotRequired[int]"
     """Deep serialization depth. Default is full depth. Respected only in `deep` serialization mode."""
@@ -24,8 +25,9 @@ Values can be only of type string or integer."""
 
 
 
-"""Represents deep serialized value."""
 class DeepSerializedValue(TypedDict):
+    """Represents deep serialized value."""
+
     type: "str"
     value: "NotRequired[Any]"
     objectId: "NotRequired[str]"
@@ -36,19 +38,20 @@ per value in the scope of one CDP call."""
 
 
 
-"""Unique object identifier."""
+# Unique object identifier.
 RemoteObjectId = str
 
 
 
-"""Primitive value which cannot be JSON-stringified. Includes values `-0`, `NaN`, `Infinity`,
-`-Infinity`, and bigint literals."""
+# Primitive value which cannot be JSON-stringified. Includes values `-0`, `NaN`, `Infinity`,
+# `-Infinity`, and bigint literals.
 UnserializableValue = str
 
 
 
-"""Mirror object referencing original JavaScript object."""
 class RemoteObject(TypedDict):
+    """Mirror object referencing original JavaScript object."""
+
     type: "str"
     """Object type."""
     subtype: "NotRequired[str]"
@@ -85,8 +88,9 @@ The result value is json ML array."""
 
 
 
-"""Object containing abbreviated remote object value."""
 class ObjectPreview(TypedDict):
+    """Object containing abbreviated remote object value."""
+
     type: "str"
     """Object type."""
     subtype: "NotRequired[str]"
@@ -124,8 +128,9 @@ class EntryPreview(TypedDict):
 
 
 
-"""Object property descriptor."""
 class PropertyDescriptor(TypedDict):
+    """Object property descriptor."""
+
     name: "str"
     """Property name or symbol description."""
     value: "NotRequired[RemoteObject]"
@@ -153,8 +158,9 @@ object."""
 
 
 
-"""Object internal property descriptor. This property isn't normally visible in JavaScript code."""
 class InternalPropertyDescriptor(TypedDict):
+    """Object internal property descriptor. This property isn't normally visible in JavaScript code."""
+
     name: "str"
     """Conventional property name."""
     value: "NotRequired[RemoteObject]"
@@ -162,8 +168,9 @@ class InternalPropertyDescriptor(TypedDict):
 
 
 
-"""Object private field descriptor."""
 class PrivatePropertyDescriptor(TypedDict):
+    """Object private field descriptor."""
+
     name: "str"
     """Private property name."""
     value: "NotRequired[RemoteObject]"
@@ -177,9 +184,10 @@ or `undefined` if there is no setter (accessor descriptors only)."""
 
 
 
-"""Represents function call argument. Either remote object id `objectId`, primitive `value`,
-unserializable primitive value or neither of (for undefined) them should be specified."""
 class CallArgument(TypedDict, total=False):
+    """Represents function call argument. Either remote object id `objectId`, primitive `value`,
+unserializable primitive value or neither of (for undefined) them should be specified."""
+
     value: "Any"
     """Primitive value or serializable javascript object."""
     unserializableValue: "UnserializableValue"
@@ -189,13 +197,14 @@ class CallArgument(TypedDict, total=False):
 
 
 
-"""Id of an execution context."""
+# Id of an execution context.
 ExecutionContextId = int
 
 
 
-"""Description of an isolated world."""
 class ExecutionContextDescription(TypedDict):
+    """Description of an isolated world."""
+
     id: "ExecutionContextId"
     """Unique id of the execution context. It can be used to specify in which execution context
 script evaluation should be performed."""
@@ -212,9 +221,10 @@ performs a cross-process navigation."""
 
 
 
-"""Detailed information about exception (or error) that was thrown during script compilation or
-execution."""
 class ExceptionDetails(TypedDict):
+    """Detailed information about exception (or error) that was thrown during script compilation or
+execution."""
+
     exceptionId: "int"
     """Exception id."""
     text: "str"
@@ -240,18 +250,19 @@ requests, etc."""
 
 
 
-"""Number of milliseconds since epoch."""
+# Number of milliseconds since epoch.
 Timestamp = float
 
 
 
-"""Number of milliseconds."""
+# Number of milliseconds.
 TimeDelta = float
 
 
 
-"""Stack entry for runtime errors and assertions."""
 class CallFrame(TypedDict):
+    """Stack entry for runtime errors and assertions."""
+
     functionName: "str"
     """JavaScript function name."""
     scriptId: "ScriptId"
@@ -265,8 +276,9 @@ class CallFrame(TypedDict):
 
 
 
-"""Call frames for assertions or error messages."""
 class StackTrace(TypedDict):
+    """Call frames for assertions or error messages."""
+
     description: "NotRequired[str]"
     """String label of this stack trace. For async traces this may be a name of the function that
 initiated the async call."""
@@ -279,13 +291,14 @@ initiated the async call."""
 
 
 
-"""Unique identifier of current debugger."""
+# Unique identifier of current debugger.
 UniqueDebuggerId = str
 
 
 
-"""If `debuggerId` is set stack trace comes from another debugger and can be resolved there. This
-allows to track cross-debugger calls. See `Runtime.StackTrace` and `Debugger.paused` for usages."""
 class StackTraceId(TypedDict):
+    """If `debuggerId` is set stack trace comes from another debugger and can be resolved there. This
+allows to track cross-debugger calls. See `Runtime.StackTrace` and `Debugger.paused` for usages."""
+
     id: "str"
     debuggerId: "NotRequired[UniqueDebuggerId]"

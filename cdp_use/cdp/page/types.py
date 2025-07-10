@@ -17,13 +17,13 @@ if TYPE_CHECKING:
     from ..runtime.types import ScriptId
     from ..runtime.types import UniqueDebuggerId
 
-"""Unique frame identifier."""
+# Unique frame identifier.
 FrameId = str
 
 
 
-"""Indicates whether a frame has been identified as an ad."""
 class AdFrameType(Enum):
+    """Indicates whether a frame has been identified as an ad."""
     NONE = "none"
     CHILD = "child"
     ROOT = "root"
@@ -37,16 +37,18 @@ class AdFrameExplanation(Enum):
 
 
 
-"""Indicates whether a frame has been identified as an ad and why."""
 class AdFrameStatus(TypedDict):
+    """Indicates whether a frame has been identified as an ad and why."""
+
     adFrameType: "AdFrameType"
     explanations: "NotRequired[List[AdFrameExplanation]]"
 
 
 
-"""Identifies the script which caused a script or frame to be labelled as an
-ad."""
 class AdScriptId(TypedDict):
+    """Identifies the script which caused a script or frame to be labelled as an
+ad."""
+
     scriptId: "ScriptId"
     """Script Id of the script which caused a script or frame to be labelled as
 an ad."""
@@ -55,10 +57,11 @@ an ad."""
 
 
 
-"""Encapsulates the script ancestry and the root script filterlist rule that
+class AdScriptAncestry(TypedDict):
+    """Encapsulates the script ancestry and the root script filterlist rule that
 caused the frame to be labelled as an ad. Only created when `ancestryChain`
 is not empty."""
-class AdScriptAncestry(TypedDict):
+
     ancestryChain: "List[AdScriptId]"
     """A chain of `AdScriptId`s representing the ancestry of an ad script that
 led to the creation of a frame. The chain is ordered from the script
@@ -71,8 +74,8 @@ available."""
 
 
 
-"""Indicates whether the frame is a secure context and why it is the case."""
 class SecureContextType(Enum):
+    """Indicates whether the frame is a secure context and why it is the case."""
     SECURE = "Secure"
     SECURELOCALHOST = "SecureLocalhost"
     INSECURESCHEME = "InsecureScheme"
@@ -80,8 +83,8 @@ class SecureContextType(Enum):
 
 
 
-"""Indicates whether the frame is cross-origin isolated and why it is the case."""
 class CrossOriginIsolatedContextType(Enum):
+    """Indicates whether the frame is cross-origin isolated and why it is the case."""
     ISOLATED = "Isolated"
     NOTISOLATED = "NotIsolated"
     NOTISOLATEDFEATUREDISABLED = "NotIsolatedFeatureDisabled"
@@ -96,10 +99,10 @@ class GatedAPIFeatures(Enum):
 
 
 
-"""All Permissions Policy features. This enum should match the one defined
+class PermissionsPolicyFeature(Enum):
+    """All Permissions Policy features. This enum should match the one defined
 in services/network/public/cpp/permissions_policy/permissions_policy_features.json5.
 LINT.IfChange(PermissionsPolicyFeature)"""
-class PermissionsPolicyFeature(Enum):
     ACCELEROMETER = "accelerometer"
     ALL_SCREENS_CAPTURE = "all-screens-capture"
     AMBIENT_LIGHT_SENSOR = "ambient-light-sensor"
@@ -208,8 +211,8 @@ class PermissionsPolicyFeature(Enum):
 
 
 
-"""Reason for a permissions policy feature to be disabled."""
 class PermissionsPolicyBlockReason(Enum):
+    """Reason for a permissions policy feature to be disabled."""
     HEADER = "Header"
     IFRAMEATTRIBUTE = "IframeAttribute"
     INFENCEDFRAMETREE = "InFencedFrameTree"
@@ -230,9 +233,9 @@ class PermissionsPolicyFeatureState(TypedDict):
 
 
 
-"""Origin Trial(https://www.chromium.org/blink/origin-trials) support.
-Status for an Origin Trial token."""
 class OriginTrialTokenStatus(Enum):
+    """Origin Trial(https://www.chromium.org/blink/origin-trials) support.
+Status for an Origin Trial token."""
     SUCCESS = "Success"
     NOTSUPPORTED = "NotSupported"
     INSECURE = "Insecure"
@@ -248,8 +251,8 @@ class OriginTrialTokenStatus(Enum):
 
 
 
-"""Status for an Origin Trial."""
 class OriginTrialStatus(Enum):
+    """Status for an Origin Trial."""
     ENABLED = "Enabled"
     VALIDTOKENNOTPROVIDED = "ValidTokenNotProvided"
     OSNOTSUPPORTED = "OSNotSupported"
@@ -289,8 +292,9 @@ class OriginTrial(TypedDict):
 
 
 
-"""Additional information about the frame document's security origin."""
 class SecurityOriginDetails(TypedDict):
+    """Additional information about the frame document's security origin."""
+
     isLocalhost: "bool"
     """Indicates whether the frame document's security origin is one
 of the local hostnames (e.g. \"localhost\") or IP addresses (IPv4
@@ -298,8 +302,9 @@ of the local hostnames (e.g. \"localhost\") or IP addresses (IPv4
 
 
 
-"""Information about the Frame on the page."""
 class Frame(TypedDict):
+    """Information about the Frame on the page."""
+
     id: "FrameId"
     """Frame unique identifier."""
     parentId: "NotRequired[FrameId]"
@@ -336,8 +341,9 @@ Example URLs: http://www.google.com/file.html -> \"google.com\"
 
 
 
-"""Information about the Resource on the page."""
 class FrameResource(TypedDict):
+    """Information about the Resource on the page."""
+
     url: "str"
     """Resource URL."""
     type: "ResourceType"
@@ -355,8 +361,9 @@ class FrameResource(TypedDict):
 
 
 
-"""Information about the Frame hierarchy along with their cached resources."""
 class FrameResourceTree(TypedDict):
+    """Information about the Frame hierarchy along with their cached resources."""
+
     frame: "Frame"
     """Frame information for this tree item."""
     childFrames: "NotRequired[List[FrameResourceTree]]"
@@ -366,8 +373,9 @@ class FrameResourceTree(TypedDict):
 
 
 
-"""Information about the Frame hierarchy."""
 class FrameTree(TypedDict):
+    """Information about the Frame hierarchy."""
+
     frame: "Frame"
     """Frame information for this tree item."""
     childFrames: "NotRequired[List[FrameTree]]"
@@ -375,13 +383,13 @@ class FrameTree(TypedDict):
 
 
 
-"""Unique script identifier."""
+# Unique script identifier.
 ScriptIdentifier = str
 
 
 
-"""Transition type."""
 class TransitionType(Enum):
+    """Transition type."""
     LINK = "link"
     TYPED = "typed"
     ADDRESS_BAR = "address_bar"
@@ -398,8 +406,9 @@ class TransitionType(Enum):
 
 
 
-"""Navigation history entry."""
 class NavigationEntry(TypedDict):
+    """Navigation history entry."""
+
     id: "int"
     """Unique id of the navigation history entry."""
     url: "str"
@@ -413,8 +422,9 @@ class NavigationEntry(TypedDict):
 
 
 
-"""Screencast frame metadata."""
 class ScreencastFrameMetadata(TypedDict):
+    """Screencast frame metadata."""
+
     offsetTop: "float"
     """Top offset in DIP."""
     pageScaleFactor: "float"
@@ -432,8 +442,8 @@ class ScreencastFrameMetadata(TypedDict):
 
 
 
-"""Javascript dialog type."""
 class DialogType(Enum):
+    """Javascript dialog type."""
     ALERT = "alert"
     CONFIRM = "confirm"
     PROMPT = "prompt"
@@ -441,8 +451,9 @@ class DialogType(Enum):
 
 
 
-"""Error while paring app manifest."""
 class AppManifestError(TypedDict):
+    """Error while paring app manifest."""
+
     message: "str"
     """Error message."""
     critical: "int"
@@ -454,15 +465,17 @@ class AppManifestError(TypedDict):
 
 
 
-"""Parsed app manifest properties."""
 class AppManifestParsedProperties(TypedDict):
+    """Parsed app manifest properties."""
+
     scope: "str"
     """Computed scope value"""
 
 
 
-"""Layout viewport position and dimensions."""
 class LayoutViewport(TypedDict):
+    """Layout viewport position and dimensions."""
+
     pageX: "int"
     """Horizontal offset relative to the document (CSS pixels)."""
     pageY: "int"
@@ -474,8 +487,9 @@ class LayoutViewport(TypedDict):
 
 
 
-"""Visual viewport position, dimensions, and scale."""
 class VisualViewport(TypedDict):
+    """Visual viewport position, dimensions, and scale."""
+
     offsetX: "float"
     """Horizontal offset relative to the layout viewport (CSS pixels)."""
     offsetY: "float"
@@ -495,8 +509,9 @@ class VisualViewport(TypedDict):
 
 
 
-"""Viewport for capturing screenshot."""
 class Viewport(TypedDict):
+    """Viewport for capturing screenshot."""
+
     x: "float"
     """X offset in device independent pixels (dip)."""
     y: "float"
@@ -510,8 +525,9 @@ class Viewport(TypedDict):
 
 
 
-"""Generic font families collection."""
 class FontFamilies(TypedDict, total=False):
+    """Generic font families collection."""
+
     standard: "str"
     """The standard font-family."""
     fixed: "str"
@@ -529,8 +545,9 @@ class FontFamilies(TypedDict, total=False):
 
 
 
-"""Font families collection for a script."""
 class ScriptFontFamilies(TypedDict):
+    """Font families collection for a script."""
+
     script: "str"
     """Name of the script which these font families are defined for."""
     fontFamilies: "FontFamilies"
@@ -538,8 +555,9 @@ class ScriptFontFamilies(TypedDict):
 
 
 
-"""Default font sizes."""
 class FontSizes(TypedDict, total=False):
+    """Default font sizes."""
+
     standard: "int"
     """Default standard font size."""
     fixed: "int"
@@ -577,8 +595,9 @@ class InstallabilityErrorArgument(TypedDict):
 
 
 
-"""The installability error"""
 class InstallabilityError(TypedDict):
+    """The installability error"""
+
     errorId: "str"
     """The error id (e.g. 'manifest-missing-suitable-icon')."""
     errorArguments: "List[InstallabilityErrorArgument]"
@@ -586,8 +605,8 @@ class InstallabilityError(TypedDict):
 
 
 
-"""The referring-policy used for the navigation."""
 class ReferrerPolicy(Enum):
+    """The referring-policy used for the navigation."""
     NOREFERRER = "noReferrer"
     NOREFERRERWHENDOWNGRADE = "noReferrerWhenDowngrade"
     ORIGIN = "origin"
@@ -599,8 +618,9 @@ class ReferrerPolicy(Enum):
 
 
 
-"""Per-script compilation cache parameters for `Page.produceCompilationCache`"""
 class CompilationCacheParams(TypedDict):
+    """Per-script compilation cache parameters for `Page.produceCompilationCache`"""
+
     url: "str"
     """The URL of the script to produce a compilation cache entry for."""
     eager: "NotRequired[bool]"
@@ -627,8 +647,9 @@ other enums below."""
 
 
 
-"""The image definition used in both icon and screenshot."""
 class ImageResource(TypedDict):
+    """The image definition used in both icon and screenshot."""
+
     url: "str"
     """The src field in the definition, but changing to url in favor of
 consistency."""
@@ -724,15 +745,15 @@ https://github.com/WICG/manifest-incubations/blob/gh-pages/scope_extensions-expl
 
 
 
-"""The type of a frameNavigated event."""
 class NavigationType(Enum):
+    """The type of a frameNavigated event."""
     NAVIGATION = "Navigation"
     BACKFORWARDCACHERESTORE = "BackForwardCacheRestore"
 
 
 
-"""List of not restored reasons for back-forward cache."""
 class BackForwardCacheNotRestoredReason(Enum):
+    """List of not restored reasons for back-forward cache."""
     NOTPRIMARYMAINFRAME = "NotPrimaryMainFrame"
     BACKFORWARDCACHEDISABLED = "BackForwardCacheDisabled"
     RELATEDACTIVECONTENTSEXIST = "RelatedActiveContentsExist"
@@ -879,8 +900,8 @@ class BackForwardCacheNotRestoredReason(Enum):
 
 
 
-"""Types of not restored reasons for back-forward cache."""
 class BackForwardCacheNotRestoredReasonType(Enum):
+    """Types of not restored reasons for back-forward cache."""
     SUPPORTPENDING = "SupportPending"
     PAGESUPPORTNEEDED = "PageSupportNeeded"
     CIRCUMSTANTIAL = "Circumstantial"
