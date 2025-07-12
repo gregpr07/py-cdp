@@ -4,7 +4,7 @@
 
 """CDP DOMDebugger Domain Types"""
 
-from enum import Enum
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -14,18 +14,13 @@ if TYPE_CHECKING:
     from ..runtime.types import RemoteObject
     from ..runtime.types import ScriptId
 
-class DOMBreakpointType(Enum):
-    """DOM breakpoint type."""
-    SUBTREE_MODIFIED = "subtree-modified"
-    ATTRIBUTE_MODIFIED = "attribute-modified"
-    NODE_REMOVED = "node-removed"
+DOMBreakpointType = Literal["subtree-modified", "attribute-modified", "node-removed"]
+"""DOM breakpoint type."""
 
 
 
-class CSPViolationType(Enum):
-    """CSP Violation type."""
-    TRUSTEDTYPE_SINK_VIOLATION = "trustedtype-sink-violation"
-    TRUSTEDTYPE_POLICY_VIOLATION = "trustedtype-policy-violation"
+CSPViolationType = Literal["trustedtype-sink-violation", "trustedtype-policy-violation"]
+"""CSP Violation type."""
 
 
 

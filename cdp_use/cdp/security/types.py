@@ -4,8 +4,8 @@
 
 """CDP Security Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -13,28 +13,19 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..network.types import TimeSinceEpoch
 
-# An internal certificate ID value.
 CertificateId = int
+"""An internal certificate ID value."""
 
 
 
-class MixedContentType(Enum):
-    """A description of mixed content (HTTP resources on HTTPS pages), as defined by
+MixedContentType = Literal["blockable", "optionally-blockable", "none"]
+"""A description of mixed content (HTTP resources on HTTPS pages), as defined by
 https://www.w3.org/TR/mixed-content/#categories"""
-    BLOCKABLE = "blockable"
-    OPTIONALLY_BLOCKABLE = "optionally-blockable"
-    NONE = "none"
 
 
 
-class SecurityState(Enum):
-    """The security level of a page or resource."""
-    UNKNOWN = "unknown"
-    NEUTRAL = "neutral"
-    INSECURE = "insecure"
-    SECURE = "secure"
-    INFO = "info"
-    INSECURE_BROKEN = "insecure-broken"
+SecurityState = Literal["unknown", "neutral", "insecure", "secure", "info", "insecure-broken"]
+"""The security level of a page or resource."""
 
 
 
@@ -80,9 +71,7 @@ class CertificateSecurityState(TypedDict):
 
 
 
-class SafetyTipStatus(Enum):
-    BADREPUTATION = "badReputation"
-    LOOKALIKE = "lookalike"
+SafetyTipStatus = Literal["badReputation", "lookalike"]
 
 
 
@@ -148,8 +137,6 @@ class InsecureContentStatus(TypedDict):
 
 
 
-class CertificateErrorAction(Enum):
-    """The action to take when a certificate error occurs. continue will continue processing the
+CertificateErrorAction = Literal["continue", "cancel"]
+"""The action to take when a certificate error occurs. continue will continue processing the
 request and cancel will cancel the request."""
-    CONTINUE = "continue"
-    CANCEL = "cancel"

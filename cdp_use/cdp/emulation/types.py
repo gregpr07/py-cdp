@@ -4,8 +4,8 @@
 
 """CDP Emulation Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 class SafeAreaInsets(TypedDict, total=False):
@@ -63,14 +63,11 @@ class MediaFeature(TypedDict):
 
 
 
-class VirtualTimePolicy(Enum):
-    """advance: If the scheduler runs out of immediate work, the virtual time base may fast forward to
+VirtualTimePolicy = Literal["advance", "pause", "pauseIfNetworkFetchesPending"]
+"""advance: If the scheduler runs out of immediate work, the virtual time base may fast forward to
 allow the next delayed task (if any) to run; pause: The virtual time base may not advance;
 pauseIfNetworkFetchesPending: The virtual time base may not advance if there are any pending
 resource fetches."""
-    ADVANCE = "advance"
-    PAUSE = "pause"
-    PAUSEIFNETWORKFETCHESPENDING = "pauseIfNetworkFetchesPending"
 
 
 
@@ -104,17 +101,9 @@ See https://wicg.github.io/ua-client-hints/#sec-ch-ua-form-factors"""
 
 
 
-class SensorType(Enum):
-    """Used to specify sensor types to emulate.
+SensorType = Literal["absolute-orientation", "accelerometer", "ambient-light", "gravity", "gyroscope", "linear-acceleration", "magnetometer", "relative-orientation"]
+"""Used to specify sensor types to emulate.
 See https://w3c.github.io/sensors/#automation for more information."""
-    ABSOLUTE_ORIENTATION = "absolute-orientation"
-    ACCELEROMETER = "accelerometer"
-    AMBIENT_LIGHT = "ambient-light"
-    GRAVITY = "gravity"
-    GYROSCOPE = "gyroscope"
-    LINEAR_ACCELERATION = "linear-acceleration"
-    MAGNETOMETER = "magnetometer"
-    RELATIVE_ORIENTATION = "relative-orientation"
 
 
 
@@ -152,16 +141,11 @@ class SensorReading(TypedDict, total=False):
 
 
 
-class PressureSource(Enum):
-    CPU = "cpu"
+PressureSource = Literal["cpu"]
 
 
 
-class PressureState(Enum):
-    NOMINAL = "nominal"
-    FAIR = "fair"
-    SERIOUS = "serious"
-    CRITICAL = "critical"
+PressureState = Literal["nominal", "fair", "serious", "critical"]
 
 
 
@@ -170,7 +154,5 @@ class PressureMetadata(TypedDict, total=False):
 
 
 
-class DisabledImageType(Enum):
-    """Enum of image types that can be disabled."""
-    AVIF = "avif"
-    WEBP = "webp"
+DisabledImageType = Literal["avif", "webp"]
+"""Enum of image types that can be disabled."""

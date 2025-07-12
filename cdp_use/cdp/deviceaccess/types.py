@@ -6,13 +6,13 @@
 
 from typing_extensions import TypedDict
 
-# Device request id.
 RequestId = str
+"""Device request id."""
 
 
 
-# A device id.
 DeviceId = str
+"""A device id."""
 
 
 

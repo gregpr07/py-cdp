@@ -50,6 +50,11 @@ async def main():
             params={"depth": -1, "pierce": True}, session_id=session_id
         )
 
+        ax_tree = await cdp.send.Accessibility.getFullAXTree(
+            params={}, session_id=session_id
+        )
+        print(ax_tree)
+
         print("Root node ID:", dom_result["root"]["nodeId"])
 
         # Execute 10 concurrent CDP requests with full type safety

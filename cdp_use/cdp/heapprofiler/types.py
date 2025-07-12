@@ -12,8 +12,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..runtime.types import CallFrame
 
-# Heap snapshot object id.
 HeapSnapshotObjectId = str
+"""Heap snapshot object id."""
 
 
 

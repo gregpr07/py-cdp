@@ -4,59 +4,46 @@
 
 """CDP WebAudio Domain Types"""
 
-from enum import Enum
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
-# An unique ID for a graph object (AudioContext, AudioNode, AudioParam) in Web Audio API
 GraphObjectId = str
+"""An unique ID for a graph object (AudioContext, AudioNode, AudioParam) in Web Audio API"""
 
 
 
-class ContextType(Enum):
-    """Enum of BaseAudioContext types"""
-    REALTIME = "realtime"
-    OFFLINE = "offline"
+ContextType = Literal["realtime", "offline"]
+"""Enum of BaseAudioContext types"""
 
 
 
-class ContextState(Enum):
-    """Enum of AudioContextState from the spec"""
-    SUSPENDED = "suspended"
-    RUNNING = "running"
-    CLOSED = "closed"
-    INTERRUPTED = "interrupted"
+ContextState = Literal["suspended", "running", "closed", "interrupted"]
+"""Enum of AudioContextState from the spec"""
 
 
 
-# Enum of AudioNode types
 NodeType = str
+"""Enum of AudioNode types"""
 
 
 
-class ChannelCountMode(Enum):
-    """Enum of AudioNode::ChannelCountMode from the spec"""
-    CLAMPED_MAX = "clamped-max"
-    EXPLICIT = "explicit"
-    MAX = "max"
+ChannelCountMode = Literal["clamped-max", "explicit", "max"]
+"""Enum of AudioNode::ChannelCountMode from the spec"""
 
 
 
-class ChannelInterpretation(Enum):
-    """Enum of AudioNode::ChannelInterpretation from the spec"""
-    DISCRETE = "discrete"
-    SPEAKERS = "speakers"
+ChannelInterpretation = Literal["discrete", "speakers"]
+"""Enum of AudioNode::ChannelInterpretation from the spec"""
 
 
 
-# Enum of AudioParam types
 ParamType = str
+"""Enum of AudioParam types"""
 
 
 
-class AutomationRate(Enum):
-    """Enum of AudioParam::AutomationRate from the spec"""
-    A_RATE = "a-rate"
-    K_RATE = "k-rate"
+AutomationRate = Literal["a-rate", "k-rate"]
+"""Enum of AudioParam::AutomationRate from the spec"""
 
 
 

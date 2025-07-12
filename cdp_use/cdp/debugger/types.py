@@ -4,8 +4,8 @@
 
 """CDP Debugger Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -14,13 +14,13 @@ if TYPE_CHECKING:
     from ..runtime.types import RemoteObject
     from ..runtime.types import ScriptId
 
-# Breakpoint identifier.
 BreakpointId = str
+"""Breakpoint identifier."""
 
 
 
-# Call frame identifier.
 CallFrameId = str
+"""Call frame identifier."""
 
 
 
@@ -128,10 +128,8 @@ class WasmDisassemblyChunk(TypedDict):
 
 
 
-class ScriptLanguage(Enum):
-    """Enum of possible script languages."""
-    JAVASCRIPT = "JavaScript"
-    WEBASSEMBLY = "WebAssembly"
+ScriptLanguage = Literal["JavaScript", "WebAssembly"]
+"""Enum of possible script languages."""
 
 
 

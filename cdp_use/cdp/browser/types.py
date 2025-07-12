@@ -4,8 +4,8 @@
 
 """CDP Browser Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 BrowserContextID = str
@@ -16,12 +16,8 @@ WindowID = int
 
 
 
-class WindowState(Enum):
-    """The state of the browser window."""
-    NORMAL = "normal"
-    MINIMIZED = "minimized"
-    MAXIMIZED = "maximized"
-    FULLSCREEN = "fullscreen"
+WindowState = Literal["normal", "minimized", "maximized", "fullscreen"]
+"""The state of the browser window."""
 
 
 
@@ -41,51 +37,11 @@ class Bounds(TypedDict, total=False):
 
 
 
-class PermissionType(Enum):
-    AR = "ar"
-    AUDIOCAPTURE = "audioCapture"
-    AUTOMATICFULLSCREEN = "automaticFullscreen"
-    BACKGROUNDFETCH = "backgroundFetch"
-    BACKGROUNDSYNC = "backgroundSync"
-    CAMERAPANTILTZOOM = "cameraPanTiltZoom"
-    CAPTUREDSURFACECONTROL = "capturedSurfaceControl"
-    CLIPBOARDREADWRITE = "clipboardReadWrite"
-    CLIPBOARDSANITIZEDWRITE = "clipboardSanitizedWrite"
-    DISPLAYCAPTURE = "displayCapture"
-    DURABLESTORAGE = "durableStorage"
-    GEOLOCATION = "geolocation"
-    HANDTRACKING = "handTracking"
-    IDLEDETECTION = "idleDetection"
-    KEYBOARDLOCK = "keyboardLock"
-    LOCALFONTS = "localFonts"
-    LOCALNETWORKACCESS = "localNetworkAccess"
-    MIDI = "midi"
-    MIDISYSEX = "midiSysex"
-    NFC = "nfc"
-    NOTIFICATIONS = "notifications"
-    PAYMENTHANDLER = "paymentHandler"
-    PERIODICBACKGROUNDSYNC = "periodicBackgroundSync"
-    POINTERLOCK = "pointerLock"
-    PROTECTEDMEDIAIDENTIFIER = "protectedMediaIdentifier"
-    SENSORS = "sensors"
-    SMARTCARD = "smartCard"
-    SPEAKERSELECTION = "speakerSelection"
-    STORAGEACCESS = "storageAccess"
-    TOPLEVELSTORAGEACCESS = "topLevelStorageAccess"
-    VIDEOCAPTURE = "videoCapture"
-    VR = "vr"
-    WAKELOCKSCREEN = "wakeLockScreen"
-    WAKELOCKSYSTEM = "wakeLockSystem"
-    WEBAPPINSTALLATION = "webAppInstallation"
-    WEBPRINTING = "webPrinting"
-    WINDOWMANAGEMENT = "windowManagement"
+PermissionType = Literal["ar", "audioCapture", "automaticFullscreen", "backgroundFetch", "backgroundSync", "cameraPanTiltZoom", "capturedSurfaceControl", "clipboardReadWrite", "clipboardSanitizedWrite", "displayCapture", "durableStorage", "geolocation", "handTracking", "idleDetection", "keyboardLock", "localFonts", "localNetworkAccess", "midi", "midiSysex", "nfc", "notifications", "paymentHandler", "periodicBackgroundSync", "pointerLock", "protectedMediaIdentifier", "sensors", "smartCard", "speakerSelection", "storageAccess", "topLevelStorageAccess", "videoCapture", "vr", "wakeLockScreen", "wakeLockSystem", "webAppInstallation", "webPrinting", "windowManagement"]
 
 
 
-class PermissionSetting(Enum):
-    GRANTED = "granted"
-    DENIED = "denied"
-    PROMPT = "prompt"
+PermissionSetting = Literal["granted", "denied", "prompt"]
 
 
 
@@ -110,11 +66,8 @@ Note that userVisibleOnly = true is the only currently supported type."""
 
 
 
-class BrowserCommandId(Enum):
-    """Browser command ids used by executeBrowserCommand."""
-    OPENTABSEARCH = "openTabSearch"
-    CLOSETABSEARCH = "closeTabSearch"
-    OPENGLIC = "openGlic"
+BrowserCommandId = Literal["openTabSearch", "closeTabSearch", "openGlic"]
+"""Browser command ids used by executeBrowserCommand."""
 
 
 
@@ -144,6 +97,4 @@ class Histogram(TypedDict):
 
 
 
-class PrivacySandboxAPI(Enum):
-    BIDDINGANDAUCTIONSERVICES = "BiddingAndAuctionServices"
-    TRUSTEDKEYVALUE = "TrustedKeyValue"
+PrivacySandboxAPI = Literal["BiddingAndAuctionServices", "TrustedKeyValue"]

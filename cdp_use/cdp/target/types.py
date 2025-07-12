@@ -4,8 +4,8 @@
 
 """CDP Target Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -18,8 +18,8 @@ TargetID = str
 
 
 
-# Unique identifier of attached debugging session.
 SessionID = str
+"""Unique identifier of attached debugging session."""
 
 
 
@@ -54,13 +54,13 @@ class FilterEntry(TypedDict, total=False):
 
 
 
-# The entries in TargetFilter are matched sequentially against targets and
-# the first entry that matches determines if the target is included or not,
-# depending on the value of `exclude` field in the entry.
-# If filter is not specified, the one assumed is
-# [{type: "browser", exclude: true}, {type: "tab", exclude: true}, {}]
-# (i.e. include everything but `browser` and `tab`).
 TargetFilter = List[FilterEntry]
+"""The entries in TargetFilter are matched sequentially against targets and
+the first entry that matches determines if the target is included or not,
+depending on the value of `exclude` field in the entry.
+If filter is not specified, the one assumed is
+[{type: "browser", exclude: true}, {type: "tab", exclude: true}, {}]
+(i.e. include everything but `browser` and `tab`)."""
 
 
 
@@ -70,9 +70,5 @@ class RemoteLocation(TypedDict):
 
 
 
-class WindowState(Enum):
-    """The state of the target window."""
-    NORMAL = "normal"
-    MINIMIZED = "minimized"
-    MAXIMIZED = "maximized"
-    FULLSCREEN = "fullscreen"
+WindowState = Literal["normal", "minimized", "maximized", "fullscreen"]
+"""The state of the target window."""

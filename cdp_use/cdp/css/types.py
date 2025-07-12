@@ -4,8 +4,8 @@
 
 """CDP CSS Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -21,14 +21,10 @@ StyleSheetId = str
 
 
 
-class StyleSheetOrigin(Enum):
-    """Stylesheet type: \"injected\" for stylesheets injected via extension, \"user-agent\" for user-agent
-stylesheets, \"inspector\" for stylesheets created by the inspector (i.e. those holding the \"via
-inspector\" rules), \"regular\" for regular stylesheets."""
-    INJECTED = "injected"
-    USER_AGENT = "user-agent"
-    INSPECTOR = "inspector"
-    REGULAR = "regular"
+StyleSheetOrigin = Literal["injected", "user-agent", "inspector", "regular"]
+"""Stylesheet type: "injected" for stylesheets injected via extension, "user-agent" for user-agent
+stylesheets, "inspector" for stylesheets created by the inspector (i.e. those holding the "via
+inspector" rules), "regular" for regular stylesheets."""
 
 
 
@@ -214,16 +210,9 @@ The array enumerates @starting-style at-rules starting with the innermost one, g
 
 
 
-class CSSRuleType(Enum):
-    """Enum indicating the type of a CSS rule, used to represent the order of a style rule's ancestors.
+CSSRuleType = Literal["MediaRule", "SupportsRule", "ContainerRule", "LayerRule", "ScopeRule", "StyleRule", "StartingStyleRule"]
+"""Enum indicating the type of a CSS rule, used to represent the order of a style rule's ancestors.
 This list only contains rule types that are collected during the ancestor rule collection."""
-    MEDIARULE = "MediaRule"
-    SUPPORTSRULE = "SupportsRule"
-    CONTAINERRULE = "ContainerRule"
-    LAYERRULE = "LayerRule"
-    SCOPERULE = "ScopeRule"
-    STYLERULE = "StyleRule"
-    STARTINGSTYLERULE = "StartingStyleRule"
 
 
 

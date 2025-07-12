@@ -4,14 +4,12 @@
 
 """CDP Memory Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import TypedDict
 
-class PressureLevel(Enum):
-    """Memory pressure level."""
-    MODERATE = "moderate"
-    CRITICAL = "critical"
+PressureLevel = Literal["moderate", "critical"]
+"""Memory pressure level."""
 
 
 

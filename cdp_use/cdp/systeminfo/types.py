@@ -4,8 +4,8 @@
 
 """CDP SystemInfo Domain Types"""
 
-from enum import Enum
 from typing import Any, Dict, List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 class GPUDevice(TypedDict):
@@ -69,19 +69,13 @@ resolution and maximum framerate."""
 
 
 
-class SubsamplingFormat(Enum):
-    """YUV subsampling type of the pixels of a given image."""
-    YUV420 = "yuv420"
-    YUV422 = "yuv422"
-    YUV444 = "yuv444"
+SubsamplingFormat = Literal["yuv420", "yuv422", "yuv444"]
+"""YUV subsampling type of the pixels of a given image."""
 
 
 
-class ImageType(Enum):
-    """Image format of a given image."""
-    JPEG = "jpeg"
-    WEBP = "webp"
-    UNKNOWN = "unknown"
+ImageType = Literal["jpeg", "webp", "unknown"]
+"""Image format of a given image."""
 
 
 

@@ -4,8 +4,8 @@
 
 """CDP PWA Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import TypedDict
 
 class FileHandlerAccept(TypedDict):
@@ -26,7 +26,5 @@ class FileHandler(TypedDict):
 
 
 
-class DisplayMode(Enum):
-    """If user prefers opening the app in browser or an app window."""
-    STANDALONE = "standalone"
-    BROWSER = "browser"
+DisplayMode = Literal["standalone", "browser"]
+"""If user prefers opening the app in browser or an app window."""

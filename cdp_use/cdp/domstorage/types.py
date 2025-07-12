@@ -23,5 +23,5 @@ class StorageId(TypedDict):
 
 
 
-# DOM Storage item.
 Item = List[str]
+"""DOM Storage item."""

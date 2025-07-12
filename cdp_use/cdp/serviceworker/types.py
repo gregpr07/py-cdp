@@ -4,8 +4,8 @@
 
 """CDP ServiceWorker Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -26,21 +26,11 @@ class ServiceWorkerRegistration(TypedDict):
 
 
 
-class ServiceWorkerVersionRunningStatus(Enum):
-    STOPPED = "stopped"
-    STARTING = "starting"
-    RUNNING = "running"
-    STOPPING = "stopping"
+ServiceWorkerVersionRunningStatus = Literal["stopped", "starting", "running", "stopping"]
 
 
 
-class ServiceWorkerVersionStatus(Enum):
-    NEW = "new"
-    INSTALLING = "installing"
-    INSTALLED = "installed"
-    ACTIVATING = "activating"
-    ACTIVATED = "activated"
-    REDUNDANT = "redundant"
+ServiceWorkerVersionStatus = Literal["new", "installing", "installed", "activating", "activated", "redundant"]
 
 
 

@@ -4,8 +4,8 @@
 
 """CDP BackgroundService Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
@@ -14,16 +14,10 @@ if TYPE_CHECKING:
     from ..network.types import TimeSinceEpoch
     from ..serviceworker.types import RegistrationID
 
-class ServiceName(Enum):
-    """The Background Service that will be associated with the commands/events.
+ServiceName = Literal["backgroundFetch", "backgroundSync", "pushMessaging", "notifications", "paymentHandler", "periodicBackgroundSync"]
+"""The Background Service that will be associated with the commands/events.
 Every Background Service operates independently, but they share the same
 API."""
-    BACKGROUNDFETCH = "backgroundFetch"
-    BACKGROUNDSYNC = "backgroundSync"
-    PUSHMESSAGING = "pushMessaging"
-    NOTIFICATIONS = "notifications"
-    PAYMENTHANDLER = "paymentHandler"
-    PERIODICBACKGROUNDSYNC = "periodicBackgroundSync"
 
 
 

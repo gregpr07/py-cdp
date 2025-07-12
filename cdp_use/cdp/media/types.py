@@ -7,8 +7,8 @@
 from typing import Any, Dict, List
 from typing_extensions import TypedDict
 
-# Players will get an ID that is unique within the agent context.
 PlayerId = str
+"""Players will get an ID that is unique within the agent context."""
 
 
 

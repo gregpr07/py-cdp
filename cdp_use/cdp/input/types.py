@@ -4,8 +4,8 @@
 
 """CDP Input Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 class TouchPoint(TypedDict):
@@ -35,25 +35,16 @@ the top of the viewport and Y increases as it proceeds towards the bottom of the
 
 
 
-class GestureSourceType(Enum):
-    DEFAULT = "default"
-    TOUCH = "touch"
-    MOUSE = "mouse"
+GestureSourceType = Literal["default", "touch", "mouse"]
 
 
 
-class MouseButton(Enum):
-    NONE = "none"
-    LEFT = "left"
-    MIDDLE = "middle"
-    RIGHT = "right"
-    BACK = "back"
-    FORWARD = "forward"
+MouseButton = Literal["none", "left", "middle", "right", "back", "forward"]
 
 
 
-# UTC time in seconds, counted from January 1, 1970.
 TimeSinceEpoch = float
+"""UTC time in seconds, counted from January 1, 1970."""
 
 
 

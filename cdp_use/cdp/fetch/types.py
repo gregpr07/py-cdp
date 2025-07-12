@@ -4,7 +4,7 @@
 
 """CDP Fetch Domain Types"""
 
-from enum import Enum
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -12,19 +12,17 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..network.types import ResourceType
 
-# Unique request identifier.
-# Note that this does not identify individual HTTP requests that are part of
-# a network request.
 RequestId = str
+"""Unique request identifier.
+Note that this does not identify individual HTTP requests that are part of
+a network request."""
 
 
 
-class RequestStage(Enum):
-    """Stages of the request to handle. Request will intercept before the request is
+RequestStage = Literal["Request", "Response"]
+"""Stages of the request to handle. Request will intercept before the request is
 sent. Response will intercept after the response is received (but before response
 body is received)."""
-    REQUEST = "Request"
-    RESPONSE = "Response"
 
 
 

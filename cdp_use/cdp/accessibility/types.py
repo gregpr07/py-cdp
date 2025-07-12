@@ -4,8 +4,8 @@
 
 """CDP Accessibility Domain Types"""
 
-from enum import Enum
 from typing import Any, List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -14,56 +14,23 @@ if TYPE_CHECKING:
     from ..dom.types import BackendNodeId
     from ..page.types import FrameId
 
-# Unique accessibility node identifier.
 AXNodeId = str
+"""Unique accessibility node identifier."""
 
 
 
-class AXValueType(Enum):
-    """Enum of possible property types."""
-    BOOLEAN = "boolean"
-    TRISTATE = "tristate"
-    BOOLEANORUNDEFINED = "booleanOrUndefined"
-    IDREF = "idref"
-    IDREFLIST = "idrefList"
-    INTEGER = "integer"
-    NODE = "node"
-    NODELIST = "nodeList"
-    NUMBER = "number"
-    STRING = "string"
-    COMPUTEDSTRING = "computedString"
-    TOKEN = "token"
-    TOKENLIST = "tokenList"
-    DOMRELATION = "domRelation"
-    ROLE = "role"
-    INTERNALROLE = "internalRole"
-    VALUEUNDEFINED = "valueUndefined"
+AXValueType = Literal["boolean", "tristate", "booleanOrUndefined", "idref", "idrefList", "integer", "node", "nodeList", "number", "string", "computedString", "token", "tokenList", "domRelation", "role", "internalRole", "valueUndefined"]
+"""Enum of possible property types."""
 
 
 
-class AXValueSourceType(Enum):
-    """Enum of possible property sources."""
-    ATTRIBUTE = "attribute"
-    IMPLICIT = "implicit"
-    STYLE = "style"
-    CONTENTS = "contents"
-    PLACEHOLDER = "placeholder"
-    RELATEDELEMENT = "relatedElement"
+AXValueSourceType = Literal["attribute", "implicit", "style", "contents", "placeholder", "relatedElement"]
+"""Enum of possible property sources."""
 
 
 
-class AXValueNativeSourceType(Enum):
-    """Enum of possible native property sources (as a subtype of a particular AXValueSourceType)."""
-    DESCRIPTION = "description"
-    FIGCAPTION = "figcaption"
-    LABEL = "label"
-    LABELFOR = "labelfor"
-    LABELWRAPPED = "labelwrapped"
-    LEGEND = "legend"
-    RUBYANNOTATION = "rubyannotation"
-    TABLECAPTION = "tablecaption"
-    TITLE = "title"
-    OTHER = "other"
+AXValueNativeSourceType = Literal["description", "figcaption", "label", "labelfor", "labelwrapped", "legend", "rubyannotation", "tablecaption", "title", "other"]
+"""Enum of possible native property sources (as a subtype of a particular AXValueSourceType)."""
 
 
 
@@ -123,54 +90,13 @@ class AXValue(TypedDict):
 
 
 
-class AXPropertyName(Enum):
-    """Values of AXProperty name:
+AXPropertyName = Literal["actions", "busy", "disabled", "editable", "focusable", "focused", "hidden", "hiddenRoot", "invalid", "keyshortcuts", "settable", "roledescription", "live", "atomic", "relevant", "root", "autocomplete", "hasPopup", "level", "multiselectable", "orientation", "multiline", "readonly", "required", "valuemin", "valuemax", "valuetext", "checked", "expanded", "modal", "pressed", "selected", "activedescendant", "controls", "describedby", "details", "errormessage", "flowto", "labelledby", "owns", "url"]
+"""Values of AXProperty name:
 - from 'busy' to 'roledescription': states which apply to every AX node
 - from 'live' to 'root': attributes which apply to nodes in live regions
 - from 'autocomplete' to 'valuetext': attributes which apply to widgets
 - from 'checked' to 'selected': states which apply to widgets
 - from 'activedescendant' to 'owns' - relationships between elements other than parent/child/sibling."""
-    ACTIONS = "actions"
-    BUSY = "busy"
-    DISABLED = "disabled"
-    EDITABLE = "editable"
-    FOCUSABLE = "focusable"
-    FOCUSED = "focused"
-    HIDDEN = "hidden"
-    HIDDENROOT = "hiddenRoot"
-    INVALID = "invalid"
-    KEYSHORTCUTS = "keyshortcuts"
-    SETTABLE = "settable"
-    ROLEDESCRIPTION = "roledescription"
-    LIVE = "live"
-    ATOMIC = "atomic"
-    RELEVANT = "relevant"
-    ROOT = "root"
-    AUTOCOMPLETE = "autocomplete"
-    HASPOPUP = "hasPopup"
-    LEVEL = "level"
-    MULTISELECTABLE = "multiselectable"
-    ORIENTATION = "orientation"
-    MULTILINE = "multiline"
-    READONLY = "readonly"
-    REQUIRED = "required"
-    VALUEMIN = "valuemin"
-    VALUEMAX = "valuemax"
-    VALUETEXT = "valuetext"
-    CHECKED = "checked"
-    EXPANDED = "expanded"
-    MODAL = "modal"
-    PRESSED = "pressed"
-    SELECTED = "selected"
-    ACTIVEDESCENDANT = "activedescendant"
-    CONTROLS = "controls"
-    DESCRIBEDBY = "describedby"
-    DETAILS = "details"
-    ERRORMESSAGE = "errormessage"
-    FLOWTO = "flowto"
-    LABELLEDBY = "labelledby"
-    OWNS = "owns"
-    URL = "url"
 
 
 

@@ -4,11 +4,7 @@
 
 """CDP Extensions Domain Types"""
 
-from enum import Enum
+from typing_extensions import Literal
 
-class StorageArea(Enum):
-    """Storage areas."""
-    SESSION = "session"
-    LOCAL = "local"
-    SYNC = "sync"
-    MANAGED = "managed"
+StorageArea = Literal["session", "local", "sync", "managed"]
+"""Storage areas."""

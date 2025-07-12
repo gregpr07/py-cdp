@@ -4,7 +4,7 @@
 
 """CDP Overlay Domain Types"""
 
-from enum import Enum
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -124,10 +124,7 @@ class BoxStyle(TypedDict, total=False):
 
 
 
-class ContrastAlgorithm(Enum):
-    AA = "aa"
-    AAA = "aaa"
-    APCA = "apca"
+ContrastAlgorithm = Literal["aa", "aaa", "apca"]
 
 
 
@@ -175,11 +172,7 @@ class HighlightConfig(TypedDict, total=False):
 
 
 
-class ColorFormat(Enum):
-    RGB = "rgb"
-    HSL = "hsl"
-    HWB = "hwb"
-    HEX = "hex"
+ColorFormat = Literal["rgb", "hsl", "hwb", "hex"]
 
 
 
@@ -279,8 +272,4 @@ class IsolationModeHighlightConfig(TypedDict, total=False):
 
 
 
-class InspectMode(Enum):
-    SEARCHFORNODE = "searchForNode"
-    SEARCHFORUASHADOWDOM = "searchForUAShadowDOM"
-    CAPTUREAREASCREENSHOT = "captureAreaScreenshot"
-    NONE = "none"
+InspectMode = Literal["searchForNode", "searchForUAShadowDOM", "captureAreaScreenshot", "none"]

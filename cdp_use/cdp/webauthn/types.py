@@ -4,31 +4,22 @@
 
 """CDP WebAuthn Domain Types"""
 
-from enum import Enum
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 AuthenticatorId = str
 
 
 
-class AuthenticatorProtocol(Enum):
-    U2F = "u2f"
-    CTAP2 = "ctap2"
+AuthenticatorProtocol = Literal["u2f", "ctap2"]
 
 
 
-class Ctap2Version(Enum):
-    CTAP2_0 = "ctap2_0"
-    CTAP2_1 = "ctap2_1"
+Ctap2Version = Literal["ctap2_0", "ctap2_1"]
 
 
 
-class AuthenticatorTransport(Enum):
-    USB = "usb"
-    NFC = "nfc"
-    BLE = "ble"
-    CABLE = "cable"
-    INTERNAL = "internal"
+AuthenticatorTransport = Literal["usb", "nfc", "ble", "cable", "internal"]
 
 
 

@@ -4,8 +4,8 @@
 
 """CDP Autofill Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
@@ -63,10 +63,8 @@ Munich 81456"""
 
 
 
-class FillingStrategy(Enum):
-    """Specified whether a filled field was done so by using the html autocomplete attribute or autofill heuristics."""
-    AUTOCOMPLETEATTRIBUTE = "autocompleteAttribute"
-    AUTOFILLINFERRED = "autofillInferred"
+FillingStrategy = Literal["autocompleteAttribute", "autofillInferred"]
+"""Specified whether a filled field was done so by using the html autocomplete attribute or autofill heuristics."""
 
 
 

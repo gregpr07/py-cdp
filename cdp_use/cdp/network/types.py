@@ -4,8 +4,8 @@
 
 """CDP Network Domain Types"""
 
-from enum import Enum
 from typing import Any, Dict, List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -17,73 +17,40 @@ if TYPE_CHECKING:
     from ..security.types import MixedContentType
     from ..security.types import SecurityState
 
-class ResourceType(Enum):
-    """Resource type as it was perceived by the rendering engine."""
-    DOCUMENT = "Document"
-    STYLESHEET = "Stylesheet"
-    IMAGE = "Image"
-    MEDIA = "Media"
-    FONT = "Font"
-    SCRIPT = "Script"
-    TEXTTRACK = "TextTrack"
-    XHR = "XHR"
-    FETCH = "Fetch"
-    PREFETCH = "Prefetch"
-    EVENTSOURCE = "EventSource"
-    WEBSOCKET = "WebSocket"
-    MANIFEST = "Manifest"
-    SIGNEDEXCHANGE = "SignedExchange"
-    PING = "Ping"
-    CSPVIOLATIONREPORT = "CSPViolationReport"
-    PREFLIGHT = "Preflight"
-    FEDCM = "FedCM"
-    OTHER = "Other"
+ResourceType = Literal["Document", "Stylesheet", "Image", "Media", "Font", "Script", "TextTrack", "XHR", "Fetch", "Prefetch", "EventSource", "WebSocket", "Manifest", "SignedExchange", "Ping", "CSPViolationReport", "Preflight", "FedCM", "Other"]
+"""Resource type as it was perceived by the rendering engine."""
 
 
 
-# Unique loader identifier.
 LoaderId = str
+"""Unique loader identifier."""
 
 
 
-# Unique network request identifier.
-# Note that this does not identify individual HTTP requests that are part of
-# a network request.
 RequestId = str
+"""Unique network request identifier.
+Note that this does not identify individual HTTP requests that are part of
+a network request."""
 
 
 
-# Unique intercepted request identifier.
 InterceptionId = str
+"""Unique intercepted request identifier."""
 
 
 
-class ErrorReason(Enum):
-    """Network level fetch failure reason."""
-    FAILED = "Failed"
-    ABORTED = "Aborted"
-    TIMEDOUT = "TimedOut"
-    ACCESSDENIED = "AccessDenied"
-    CONNECTIONCLOSED = "ConnectionClosed"
-    CONNECTIONRESET = "ConnectionReset"
-    CONNECTIONREFUSED = "ConnectionRefused"
-    CONNECTIONABORTED = "ConnectionAborted"
-    CONNECTIONFAILED = "ConnectionFailed"
-    NAMENOTRESOLVED = "NameNotResolved"
-    INTERNETDISCONNECTED = "InternetDisconnected"
-    ADDRESSUNREACHABLE = "AddressUnreachable"
-    BLOCKEDBYCLIENT = "BlockedByClient"
-    BLOCKEDBYRESPONSE = "BlockedByResponse"
+ErrorReason = Literal["Failed", "Aborted", "TimedOut", "AccessDenied", "ConnectionClosed", "ConnectionReset", "ConnectionRefused", "ConnectionAborted", "ConnectionFailed", "NameNotResolved", "InternetDisconnected", "AddressUnreachable", "BlockedByClient", "BlockedByResponse"]
+"""Network level fetch failure reason."""
 
 
 
-# UTC time in seconds, counted from January 1, 1970.
 TimeSinceEpoch = float
+"""UTC time in seconds, counted from January 1, 1970."""
 
 
 
-# Monotonically increasing time in seconds since an arbitrary point in the past.
 MonotonicTime = float
+"""Monotonically increasing time in seconds since an arbitrary point in the past."""
 
 
 
@@ -92,45 +59,27 @@ class Headers(TypedDict):
 
 
 
-class ConnectionType(Enum):
-    """The underlying connection technology that the browser is supposedly using."""
-    NONE = "none"
-    CELLULAR2G = "cellular2g"
-    CELLULAR3G = "cellular3g"
-    CELLULAR4G = "cellular4g"
-    BLUETOOTH = "bluetooth"
-    ETHERNET = "ethernet"
-    WIFI = "wifi"
-    WIMAX = "wimax"
-    OTHER = "other"
+ConnectionType = Literal["none", "cellular2g", "cellular3g", "cellular4g", "bluetooth", "ethernet", "wifi", "wimax", "other"]
+"""The underlying connection technology that the browser is supposedly using."""
 
 
 
-class CookieSameSite(Enum):
-    """Represents the cookie's 'SameSite' status:
+CookieSameSite = Literal["Strict", "Lax", "None"]
+"""Represents the cookie's 'SameSite' status:
 https://tools.ietf.org/html/draft-west-first-party-cookies"""
-    STRICT = "Strict"
-    LAX = "Lax"
-    NONE = "None"
 
 
 
-class CookiePriority(Enum):
-    """Represents the cookie's 'Priority' status:
+CookiePriority = Literal["Low", "Medium", "High"]
+"""Represents the cookie's 'Priority' status:
 https://tools.ietf.org/html/draft-west-cookie-priority-00"""
-    LOW = "Low"
-    MEDIUM = "Medium"
-    HIGH = "High"
 
 
 
-class CookieSourceScheme(Enum):
-    """Represents the source scheme of the origin that originally set the cookie.
-A value of \"Unset\" allows protocol clients to emulate legacy cookie scope for the scheme.
+CookieSourceScheme = Literal["Unset", "NonSecure", "Secure"]
+"""Represents the source scheme of the origin that originally set the cookie.
+A value of "Unset" allows protocol clients to emulate legacy cookie scope for the scheme.
 This is a temporary ability and it will be removed in the future."""
-    UNSET = "Unset"
-    NONSECURE = "NonSecure"
-    SECURE = "Secure"
 
 
 
@@ -183,13 +132,8 @@ milliseconds relatively to this requestTime."""
 
 
 
-class ResourcePriority(Enum):
-    """Loading priority of a resource request."""
-    VERYLOW = "VeryLow"
-    LOW = "Low"
-    MEDIUM = "Medium"
-    HIGH = "High"
-    VERYHIGH = "VeryHigh"
+ResourcePriority = Literal["VeryLow", "Low", "Medium", "High", "VeryHigh"]
+"""Loading priority of a resource request."""
 
 
 
@@ -296,72 +240,18 @@ applicable or not known."""
 
 
 
-class CertificateTransparencyCompliance(Enum):
-    """Whether the request complied with Certificate Transparency policy."""
-    UNKNOWN = "unknown"
-    NOT_COMPLIANT = "not-compliant"
-    COMPLIANT = "compliant"
+CertificateTransparencyCompliance = Literal["unknown", "not-compliant", "compliant"]
+"""Whether the request complied with Certificate Transparency policy."""
 
 
 
-class BlockedReason(Enum):
-    """The reason why request was blocked."""
-    OTHER = "other"
-    CSP = "csp"
-    MIXED_CONTENT = "mixed-content"
-    ORIGIN = "origin"
-    INSPECTOR = "inspector"
-    INTEGRITY = "integrity"
-    SUBRESOURCE_FILTER = "subresource-filter"
-    CONTENT_TYPE = "content-type"
-    COEP_FRAME_RESOURCE_NEEDS_COEP_HEADER = "coep-frame-resource-needs-coep-header"
-    COOP_SANDBOXED_IFRAME_CANNOT_NAVIGATE_TO_COOP_PAGE = "coop-sandboxed-iframe-cannot-navigate-to-coop-page"
-    CORP_NOT_SAME_ORIGIN = "corp-not-same-origin"
-    CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_COEP = "corp-not-same-origin-after-defaulted-to-same-origin-by-coep"
-    CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_DIP = "corp-not-same-origin-after-defaulted-to-same-origin-by-dip"
-    CORP_NOT_SAME_ORIGIN_AFTER_DEFAULTED_TO_SAME_ORIGIN_BY_COEP_AND_DIP = "corp-not-same-origin-after-defaulted-to-same-origin-by-coep-and-dip"
-    CORP_NOT_SAME_SITE = "corp-not-same-site"
-    SRI_MESSAGE_SIGNATURE_MISMATCH = "sri-message-signature-mismatch"
+BlockedReason = Literal["other", "csp", "mixed-content", "origin", "inspector", "integrity", "subresource-filter", "content-type", "coep-frame-resource-needs-coep-header", "coop-sandboxed-iframe-cannot-navigate-to-coop-page", "corp-not-same-origin", "corp-not-same-origin-after-defaulted-to-same-origin-by-coep", "corp-not-same-origin-after-defaulted-to-same-origin-by-dip", "corp-not-same-origin-after-defaulted-to-same-origin-by-coep-and-dip", "corp-not-same-site", "sri-message-signature-mismatch"]
+"""The reason why request was blocked."""
 
 
 
-class CorsError(Enum):
-    """The reason why request was blocked."""
-    DISALLOWEDBYMODE = "DisallowedByMode"
-    INVALIDRESPONSE = "InvalidResponse"
-    WILDCARDORIGINNOTALLOWED = "WildcardOriginNotAllowed"
-    MISSINGALLOWORIGINHEADER = "MissingAllowOriginHeader"
-    MULTIPLEALLOWORIGINVALUES = "MultipleAllowOriginValues"
-    INVALIDALLOWORIGINVALUE = "InvalidAllowOriginValue"
-    ALLOWORIGINMISMATCH = "AllowOriginMismatch"
-    INVALIDALLOWCREDENTIALS = "InvalidAllowCredentials"
-    CORSDISABLEDSCHEME = "CorsDisabledScheme"
-    PREFLIGHTINVALIDSTATUS = "PreflightInvalidStatus"
-    PREFLIGHTDISALLOWEDREDIRECT = "PreflightDisallowedRedirect"
-    PREFLIGHTWILDCARDORIGINNOTALLOWED = "PreflightWildcardOriginNotAllowed"
-    PREFLIGHTMISSINGALLOWORIGINHEADER = "PreflightMissingAllowOriginHeader"
-    PREFLIGHTMULTIPLEALLOWORIGINVALUES = "PreflightMultipleAllowOriginValues"
-    PREFLIGHTINVALIDALLOWORIGINVALUE = "PreflightInvalidAllowOriginValue"
-    PREFLIGHTALLOWORIGINMISMATCH = "PreflightAllowOriginMismatch"
-    PREFLIGHTINVALIDALLOWCREDENTIALS = "PreflightInvalidAllowCredentials"
-    PREFLIGHTMISSINGALLOWEXTERNAL = "PreflightMissingAllowExternal"
-    PREFLIGHTINVALIDALLOWEXTERNAL = "PreflightInvalidAllowExternal"
-    PREFLIGHTMISSINGALLOWPRIVATENETWORK = "PreflightMissingAllowPrivateNetwork"
-    PREFLIGHTINVALIDALLOWPRIVATENETWORK = "PreflightInvalidAllowPrivateNetwork"
-    INVALIDALLOWMETHODSPREFLIGHTRESPONSE = "InvalidAllowMethodsPreflightResponse"
-    INVALIDALLOWHEADERSPREFLIGHTRESPONSE = "InvalidAllowHeadersPreflightResponse"
-    METHODDISALLOWEDBYPREFLIGHTRESPONSE = "MethodDisallowedByPreflightResponse"
-    HEADERDISALLOWEDBYPREFLIGHTRESPONSE = "HeaderDisallowedByPreflightResponse"
-    REDIRECTCONTAINSCREDENTIALS = "RedirectContainsCredentials"
-    INSECUREPRIVATENETWORK = "InsecurePrivateNetwork"
-    INVALIDPRIVATENETWORKACCESS = "InvalidPrivateNetworkAccess"
-    UNEXPECTEDPRIVATENETWORKACCESS = "UnexpectedPrivateNetworkAccess"
-    NOCORSREDIRECTMODENOTFOLLOW = "NoCorsRedirectModeNotFollow"
-    PREFLIGHTMISSINGPRIVATENETWORKACCESSID = "PreflightMissingPrivateNetworkAccessId"
-    PREFLIGHTMISSINGPRIVATENETWORKACCESSNAME = "PreflightMissingPrivateNetworkAccessName"
-    PRIVATENETWORKACCESSPERMISSIONUNAVAILABLE = "PrivateNetworkAccessPermissionUnavailable"
-    PRIVATENETWORKACCESSPERMISSIONDENIED = "PrivateNetworkAccessPermissionDenied"
-    LOCALNETWORKACCESSPERMISSIONDENIED = "LocalNetworkAccessPermissionDenied"
+CorsError = Literal["DisallowedByMode", "InvalidResponse", "WildcardOriginNotAllowed", "MissingAllowOriginHeader", "MultipleAllowOriginValues", "InvalidAllowOriginValue", "AllowOriginMismatch", "InvalidAllowCredentials", "CorsDisabledScheme", "PreflightInvalidStatus", "PreflightDisallowedRedirect", "PreflightWildcardOriginNotAllowed", "PreflightMissingAllowOriginHeader", "PreflightMultipleAllowOriginValues", "PreflightInvalidAllowOriginValue", "PreflightAllowOriginMismatch", "PreflightInvalidAllowCredentials", "PreflightMissingAllowExternal", "PreflightInvalidAllowExternal", "PreflightMissingAllowPrivateNetwork", "PreflightInvalidAllowPrivateNetwork", "InvalidAllowMethodsPreflightResponse", "InvalidAllowHeadersPreflightResponse", "MethodDisallowedByPreflightResponse", "HeaderDisallowedByPreflightResponse", "RedirectContainsCredentials", "InsecurePrivateNetwork", "InvalidPrivateNetworkAccess", "UnexpectedPrivateNetworkAccess", "NoCorsRedirectModeNotFollow", "PreflightMissingPrivateNetworkAccessId", "PreflightMissingPrivateNetworkAccessName", "PrivateNetworkAccessPermissionUnavailable", "PrivateNetworkAccessPermissionDenied", "LocalNetworkAccessPermissionDenied"]
+"""The reason why request was blocked."""
 
 
 
@@ -371,12 +261,8 @@ class CorsErrorStatus(TypedDict):
 
 
 
-class ServiceWorkerResponseSource(Enum):
-    """Source of serviceworker response."""
-    CACHE_STORAGE = "cache-storage"
-    HTTP_CACHE = "http-cache"
-    FALLBACK_CODE = "fallback-code"
-    NETWORK = "network"
+ServiceWorkerResponseSource = Literal["cache-storage", "http-cache", "fallback-code", "network"]
+"""Source of serviceworker response."""
 
 
 
@@ -395,33 +281,17 @@ records."""
 
 
 
-class TrustTokenOperationType(Enum):
-    ISSUANCE = "Issuance"
-    REDEMPTION = "Redemption"
-    SIGNING = "Signing"
+TrustTokenOperationType = Literal["Issuance", "Redemption", "Signing"]
 
 
 
-class AlternateProtocolUsage(Enum):
-    """The reason why Chrome uses a specific transport protocol for HTTP semantics."""
-    ALTERNATIVEJOBWONWITHOUTRACE = "alternativeJobWonWithoutRace"
-    ALTERNATIVEJOBWONRACE = "alternativeJobWonRace"
-    MAINJOBWONRACE = "mainJobWonRace"
-    MAPPINGMISSING = "mappingMissing"
-    BROKEN = "broken"
-    DNSALPNH3JOBWONWITHOUTRACE = "dnsAlpnH3JobWonWithoutRace"
-    DNSALPNH3JOBWONRACE = "dnsAlpnH3JobWonRace"
-    UNSPECIFIEDREASON = "unspecifiedReason"
+AlternateProtocolUsage = Literal["alternativeJobWonWithoutRace", "alternativeJobWonRace", "mainJobWonRace", "mappingMissing", "broken", "dnsAlpnH3JobWonWithoutRace", "dnsAlpnH3JobWonRace", "unspecifiedReason"]
+"""The reason why Chrome uses a specific transport protocol for HTTP semantics."""
 
 
 
-class ServiceWorkerRouterSource(Enum):
-    """Source of service worker router."""
-    NETWORK = "network"
-    CACHE = "cache"
-    FETCH_EVENT = "fetch-event"
-    RACE_NETWORK_AND_FETCH_HANDLER = "race-network-and-fetch-handler"
-    RACE_NETWORK_AND_CACHE = "race-network-and-cache"
+ServiceWorkerRouterSource = Literal["network", "cache", "fetch-event", "race-network-and-fetch-handler", "race-network-and-cache"]
+"""Source of service worker router."""
 
 
 
@@ -627,70 +497,18 @@ This is a temporary ability and it will be removed in the future."""
 
 
 
-class SetCookieBlockedReason(Enum):
-    """Types of reasons why a cookie may not be stored from a response."""
-    SECUREONLY = "SecureOnly"
-    SAMESITESTRICT = "SameSiteStrict"
-    SAMESITELAX = "SameSiteLax"
-    SAMESITEUNSPECIFIEDTREATEDASLAX = "SameSiteUnspecifiedTreatedAsLax"
-    SAMESITENONEINSECURE = "SameSiteNoneInsecure"
-    USERPREFERENCES = "UserPreferences"
-    THIRDPARTYPHASEOUT = "ThirdPartyPhaseout"
-    THIRDPARTYBLOCKEDINFIRSTPARTYSET = "ThirdPartyBlockedInFirstPartySet"
-    SYNTAXERROR = "SyntaxError"
-    SCHEMENOTSUPPORTED = "SchemeNotSupported"
-    OVERWRITESECURE = "OverwriteSecure"
-    INVALIDDOMAIN = "InvalidDomain"
-    INVALIDPREFIX = "InvalidPrefix"
-    UNKNOWNERROR = "UnknownError"
-    SCHEMEFULSAMESITESTRICT = "SchemefulSameSiteStrict"
-    SCHEMEFULSAMESITELAX = "SchemefulSameSiteLax"
-    SCHEMEFULSAMESITEUNSPECIFIEDTREATEDASLAX = "SchemefulSameSiteUnspecifiedTreatedAsLax"
-    SAMEPARTYFROMCROSSPARTYCONTEXT = "SamePartyFromCrossPartyContext"
-    SAMEPARTYCONFLICTSWITHOTHERATTRIBUTES = "SamePartyConflictsWithOtherAttributes"
-    NAMEVALUEPAIREXCEEDSMAXSIZE = "NameValuePairExceedsMaxSize"
-    DISALLOWEDCHARACTER = "DisallowedCharacter"
-    NOCOOKIECONTENT = "NoCookieContent"
+SetCookieBlockedReason = Literal["SecureOnly", "SameSiteStrict", "SameSiteLax", "SameSiteUnspecifiedTreatedAsLax", "SameSiteNoneInsecure", "UserPreferences", "ThirdPartyPhaseout", "ThirdPartyBlockedInFirstPartySet", "SyntaxError", "SchemeNotSupported", "OverwriteSecure", "InvalidDomain", "InvalidPrefix", "UnknownError", "SchemefulSameSiteStrict", "SchemefulSameSiteLax", "SchemefulSameSiteUnspecifiedTreatedAsLax", "SamePartyFromCrossPartyContext", "SamePartyConflictsWithOtherAttributes", "NameValuePairExceedsMaxSize", "DisallowedCharacter", "NoCookieContent"]
+"""Types of reasons why a cookie may not be stored from a response."""
 
 
 
-class CookieBlockedReason(Enum):
-    """Types of reasons why a cookie may not be sent with a request."""
-    SECUREONLY = "SecureOnly"
-    NOTONPATH = "NotOnPath"
-    DOMAINMISMATCH = "DomainMismatch"
-    SAMESITESTRICT = "SameSiteStrict"
-    SAMESITELAX = "SameSiteLax"
-    SAMESITEUNSPECIFIEDTREATEDASLAX = "SameSiteUnspecifiedTreatedAsLax"
-    SAMESITENONEINSECURE = "SameSiteNoneInsecure"
-    USERPREFERENCES = "UserPreferences"
-    THIRDPARTYPHASEOUT = "ThirdPartyPhaseout"
-    THIRDPARTYBLOCKEDINFIRSTPARTYSET = "ThirdPartyBlockedInFirstPartySet"
-    UNKNOWNERROR = "UnknownError"
-    SCHEMEFULSAMESITESTRICT = "SchemefulSameSiteStrict"
-    SCHEMEFULSAMESITELAX = "SchemefulSameSiteLax"
-    SCHEMEFULSAMESITEUNSPECIFIEDTREATEDASLAX = "SchemefulSameSiteUnspecifiedTreatedAsLax"
-    SAMEPARTYFROMCROSSPARTYCONTEXT = "SamePartyFromCrossPartyContext"
-    NAMEVALUEPAIREXCEEDSMAXSIZE = "NameValuePairExceedsMaxSize"
-    PORTMISMATCH = "PortMismatch"
-    SCHEMEMISMATCH = "SchemeMismatch"
-    ANONYMOUSCONTEXT = "AnonymousContext"
+CookieBlockedReason = Literal["SecureOnly", "NotOnPath", "DomainMismatch", "SameSiteStrict", "SameSiteLax", "SameSiteUnspecifiedTreatedAsLax", "SameSiteNoneInsecure", "UserPreferences", "ThirdPartyPhaseout", "ThirdPartyBlockedInFirstPartySet", "UnknownError", "SchemefulSameSiteStrict", "SchemefulSameSiteLax", "SchemefulSameSiteUnspecifiedTreatedAsLax", "SamePartyFromCrossPartyContext", "NameValuePairExceedsMaxSize", "PortMismatch", "SchemeMismatch", "AnonymousContext"]
+"""Types of reasons why a cookie may not be sent with a request."""
 
 
 
-class CookieExemptionReason(Enum):
-    """Types of reasons why a cookie should have been blocked by 3PCD but is exempted for the request."""
-    NONE = "None"
-    USERSETTING = "UserSetting"
-    TPCDMETADATA = "TPCDMetadata"
-    TPCDDEPRECATIONTRIAL = "TPCDDeprecationTrial"
-    TOPLEVELTPCDDEPRECATIONTRIAL = "TopLevelTPCDDeprecationTrial"
-    TPCDHEURISTICS = "TPCDHeuristics"
-    ENTERPRISEPOLICY = "EnterprisePolicy"
-    STORAGEACCESS = "StorageAccess"
-    TOPLEVELSTORAGEACCESS = "TopLevelStorageAccess"
-    SCHEME = "Scheme"
-    SAMESITENONECOOKIESINSANDBOX = "SameSiteNoneCookiesInSandbox"
+CookieExemptionReason = Literal["None", "UserSetting", "TPCDMetadata", "TPCDDeprecationTrial", "TopLevelTPCDDeprecationTrial", "TPCDHeuristics", "EnterprisePolicy", "StorageAccess", "TopLevelStorageAccess", "Scheme", "SameSiteNoneCookiesInSandbox"]
+"""Types of reasons why a cookie should have been blocked by 3PCD but is exempted for the request."""
 
 
 
@@ -803,11 +621,9 @@ ProvideCredentials."""
 
 
 
-class InterceptionStage(Enum):
-    """Stages of the interception to begin intercepting. Request will intercept before the request is
+InterceptionStage = Literal["Request", "HeadersReceived"]
+"""Stages of the interception to begin intercepting. Request will intercept before the request is
 sent. Response will intercept after the response is received."""
-    REQUEST = "Request"
-    HEADERSRECEIVED = "HeadersReceived"
 
 
 
@@ -866,14 +682,8 @@ https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-
 
 
 
-class SignedExchangeErrorField(Enum):
-    """Field type for a signed exchange related error."""
-    SIGNATURESIG = "signatureSig"
-    SIGNATUREINTEGRITY = "signatureIntegrity"
-    SIGNATURECERTURL = "signatureCertUrl"
-    SIGNATURECERTSHA256 = "signatureCertSha256"
-    SIGNATUREVALIDITYURL = "signatureValidityUrl"
-    SIGNATURETIMESTAMPS = "signatureTimestamps"
+SignedExchangeErrorField = Literal["signatureSig", "signatureIntegrity", "signatureCertUrl", "signatureCertSha256", "signatureValidityUrl", "signatureTimestamps"]
+"""Field type for a signed exchange related error."""
 
 
 
@@ -906,18 +716,12 @@ extra headers."""
 
 
 
-class ContentEncoding(Enum):
-    """List of content encodings supported by the backend."""
-    DEFLATE = "deflate"
-    GZIP = "gzip"
-    BR = "br"
-    ZSTD = "zstd"
+ContentEncoding = Literal["deflate", "gzip", "br", "zstd"]
+"""List of content encodings supported by the backend."""
 
 
 
-class DirectSocketDnsQueryType(Enum):
-    IPV4 = "ipv4"
-    IPV6 = "ipv6"
+DirectSocketDnsQueryType = Literal["ipv4", "ipv6"]
 
 
 
@@ -959,22 +763,11 @@ Expected to be unsigned integer."""
 
 
 
-class PrivateNetworkRequestPolicy(Enum):
-    ALLOW = "Allow"
-    BLOCKFROMINSECURETOMOREPRIVATE = "BlockFromInsecureToMorePrivate"
-    WARNFROMINSECURETOMOREPRIVATE = "WarnFromInsecureToMorePrivate"
-    PREFLIGHTBLOCK = "PreflightBlock"
-    PREFLIGHTWARN = "PreflightWarn"
-    PERMISSIONBLOCK = "PermissionBlock"
-    PERMISSIONWARN = "PermissionWarn"
+PrivateNetworkRequestPolicy = Literal["Allow", "BlockFromInsecureToMorePrivate", "WarnFromInsecureToMorePrivate", "PreflightBlock", "PreflightWarn", "PermissionBlock", "PermissionWarn"]
 
 
 
-class IPAddressSpace(Enum):
-    LOOPBACK = "Loopback"
-    PRIVATE = "Private"
-    PUBLIC = "Public"
-    UNKNOWN = "Unknown"
+IPAddressSpace = Literal["Loopback", "Private", "Public", "Unknown"]
 
 
 
@@ -993,14 +786,7 @@ class ClientSecurityState(TypedDict):
 
 
 
-class CrossOriginOpenerPolicyValue(Enum):
-    SAMEORIGIN = "SameOrigin"
-    SAMEORIGINALLOWPOPUPS = "SameOriginAllowPopups"
-    RESTRICTPROPERTIES = "RestrictProperties"
-    UNSAFENONE = "UnsafeNone"
-    SAMEORIGINPLUSCOEP = "SameOriginPlusCoep"
-    RESTRICTPROPERTIESPLUSCOEP = "RestrictPropertiesPlusCoep"
-    NOOPENERALLOWPOPUPS = "NoopenerAllowPopups"
+CrossOriginOpenerPolicyValue = Literal["SameOrigin", "SameOriginAllowPopups", "RestrictProperties", "UnsafeNone", "SameOriginPlusCoep", "RestrictPropertiesPlusCoep", "NoopenerAllowPopups"]
 
 
 
@@ -1012,10 +798,7 @@ class CrossOriginOpenerPolicyStatus(TypedDict):
 
 
 
-class CrossOriginEmbedderPolicyValue(Enum):
-    NONE = "None"
-    CREDENTIALLESS = "Credentialless"
-    REQUIRECORP = "RequireCorp"
+CrossOriginEmbedderPolicyValue = Literal["None", "Credentialless", "RequireCorp"]
 
 
 
@@ -1027,9 +810,7 @@ class CrossOriginEmbedderPolicyStatus(TypedDict):
 
 
 
-class ContentSecurityPolicySource(Enum):
-    HTTP = "HTTP"
-    META = "Meta"
+ContentSecurityPolicySource = Literal["HTTP", "Meta"]
 
 
 
@@ -1047,12 +828,8 @@ class SecurityIsolationStatus(TypedDict, total=False):
 
 
 
-class ReportStatus(Enum):
-    """The status of a Reporting API report."""
-    QUEUED = "Queued"
-    PENDING = "Pending"
-    MARKEDFORREMOVAL = "MarkedForRemoval"
-    SUCCESS = "Success"
+ReportStatus = Literal["Queued", "Pending", "MarkedForRemoval", "Success"]
+"""The status of a Reporting API report."""
 
 
 

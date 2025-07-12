@@ -4,8 +4,8 @@
 
 """CDP CacheStorage Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -13,19 +13,13 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..storage.types import StorageBucket
 
-# Unique identifier of the Cache object.
 CacheId = str
+"""Unique identifier of the Cache object."""
 
 
 
-class CachedResponseType(Enum):
-    """type of HTTP response cached"""
-    BASIC = "basic"
-    CORS = "cors"
-    DEFAULT = "default"
-    ERROR = "error"
-    OPAQUERESPONSE = "opaqueResponse"
-    OPAQUEREDIRECT = "opaqueRedirect"
+CachedResponseType = Literal["basic", "cors", "default", "error", "opaqueResponse", "opaqueRedirect"]
+"""type of HTTP response cached"""
 
 
 

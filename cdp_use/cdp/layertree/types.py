@@ -13,13 +13,13 @@ if TYPE_CHECKING:
     from ..dom.types import BackendNodeId
     from ..dom.types import Rect
 
-# Unique Layer identifier.
 LayerId = str
+"""Unique Layer identifier."""
 
 
 
-# Unique snapshot identifier.
 SnapshotId = str
+"""Unique snapshot identifier."""
 
 
 
@@ -98,5 +98,5 @@ transform/scrolling purposes only."""
 
 
 
-# Array of timings, one per paint step.
 PaintProfile = List[float]
+"""Array of timings, one per paint step."""

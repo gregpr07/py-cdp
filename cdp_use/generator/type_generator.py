@@ -28,7 +28,6 @@ class TypeGenerator:
         # Always add basic imports
         self.imports.add("from typing import Any, Dict, List, Optional, Union")
         self.imports.add("from typing_extensions import NotRequired, TypedDict")
-        self.imports.add("from enum import Enum")
 
         # First pass: collect all type names that will be defined in this domain
         for type_def in types:
@@ -85,7 +84,7 @@ class TypeGenerator:
 
         # Handle enum types
         if type_type == "string" and "enum" in type_def:
-            return self.generate_enum_type(type_id, type_def, description)
+            return self.generate_literal_type(type_id, type_def, description)
 
         # Handle primitive types with restrictions
         if type_type in ["string", "integer", "number", "boolean"]:
@@ -103,22 +102,26 @@ class TypeGenerator:
 
         return ""
 
-    def generate_enum_type(
+    def generate_literal_type(
         self, type_id: str, type_def: Dict[str, Any], description: str
     ) -> str:
-        """Generate an enum type."""
+        """Generate a literal type."""
         enum_values = type_def["enum"]
 
-        content = f"class {type_id}(Enum):\n"
-        if description:
-            # Escape all quotes in descriptions
-            escaped_desc = description.replace("\\", "\\\\").replace('"', '\\"')
-            content += f'    """{escaped_desc}"""\n'
+        # Add Literal import
+        self.imports.add("from typing_extensions import Literal")
 
-        for value in enum_values:
-            # Convert enum value to valid Python identifier
-            attr_name = self.to_python_identifier(value)
-            content += f'    {attr_name} = "{value}"\n'
+        content = ""
+
+        # Generate the literal type with properly quoted string values
+        quoted_values = [f'"{value}"' for value in enum_values]
+        literal_values = ", ".join(quoted_values)
+        content += f"{type_id} = Literal[{literal_values}]\n"
+
+        if description:
+            # Add docstring below the variable
+            escaped_desc = description.replace("\\", "\\\\").replace('"""', '\\"\\"\\"')
+            content += f'"""{escaped_desc}"""\n'
 
         self.generated_types.add(type_id)
         return content
@@ -131,12 +134,12 @@ class TypeGenerator:
         python_type = self.map_primitive_type(type_type)
 
         content = ""
-        if description:
-            # Use comments for type alias descriptions
-            for line in description.split("\n"):
-                content += f"# {line}\n"
-
         content += f"{type_id} = {python_type}\n"
+
+        if description:
+            # Add docstring below the variable
+            escaped_desc = description.replace("\\", "\\\\").replace('"""', '\\"\\"\\"')
+            content += f'"""{escaped_desc}"""\n'
 
         self.generated_types.add(type_id)
         return content
@@ -212,12 +215,12 @@ class TypeGenerator:
         item_type = self.resolve_type_reference(items, domain_name)
 
         content = ""
-        if description:
-            # Use comments for type alias descriptions
-            for line in description.split("\n"):
-                content += f"# {line}\n"
-
         content += f"{type_id} = List[{item_type}]\n"
+
+        if description:
+            # Add docstring below the variable
+            escaped_desc = description.replace("\\", "\\\\").replace('"""', '\\"\\"\\"')
+            content += f'"""{escaped_desc}"""\n'
 
         self.generated_types.add(type_id)
         return content

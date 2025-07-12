@@ -4,8 +4,8 @@
 
 """CDP Storage Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -18,21 +18,8 @@ SerializedStorageKey = str
 
 
 
-class StorageType(Enum):
-    """Enum of possible storage types."""
-    COOKIES = "cookies"
-    FILE_SYSTEMS = "file_systems"
-    INDEXEDDB = "indexeddb"
-    LOCAL_STORAGE = "local_storage"
-    SHADER_CACHE = "shader_cache"
-    WEBSQL = "websql"
-    SERVICE_WORKERS = "service_workers"
-    CACHE_STORAGE = "cache_storage"
-    INTEREST_GROUPS = "interest_groups"
-    SHARED_STORAGE = "shared_storage"
-    STORAGE_BUCKETS = "storage_buckets"
-    ALL = "all"
-    OTHER = "other"
+StorageType = Literal["cookies", "file_systems", "indexeddb", "local_storage", "shader_cache", "websql", "service_workers", "cache_storage", "interest_groups", "shared_storage", "storage_buckets", "all", "other"]
+"""Enum of possible storage types."""
 
 
 
@@ -55,70 +42,33 @@ Tokens from that issuer."""
 
 
 
-# Protected audience interest group auction identifier.
 InterestGroupAuctionId = str
+"""Protected audience interest group auction identifier."""
 
 
 
-class InterestGroupAccessType(Enum):
-    """Enum of interest group access types."""
-    JOIN = "join"
-    LEAVE = "leave"
-    UPDATE = "update"
-    LOADED = "loaded"
-    BID = "bid"
-    WIN = "win"
-    ADDITIONALBID = "additionalBid"
-    ADDITIONALBIDWIN = "additionalBidWin"
-    TOPLEVELBID = "topLevelBid"
-    TOPLEVELADDITIONALBID = "topLevelAdditionalBid"
-    CLEAR = "clear"
+InterestGroupAccessType = Literal["join", "leave", "update", "loaded", "bid", "win", "additionalBid", "additionalBidWin", "topLevelBid", "topLevelAdditionalBid", "clear"]
+"""Enum of interest group access types."""
 
 
 
-class InterestGroupAuctionEventType(Enum):
-    """Enum of auction events."""
-    STARTED = "started"
-    CONFIGRESOLVED = "configResolved"
+InterestGroupAuctionEventType = Literal["started", "configResolved"]
+"""Enum of auction events."""
 
 
 
-class InterestGroupAuctionFetchType(Enum):
-    """Enum of network fetches auctions can do."""
-    BIDDERJS = "bidderJs"
-    BIDDERWASM = "bidderWasm"
-    SELLERJS = "sellerJs"
-    BIDDERTRUSTEDSIGNALS = "bidderTrustedSignals"
-    SELLERTRUSTEDSIGNALS = "sellerTrustedSignals"
+InterestGroupAuctionFetchType = Literal["bidderJs", "bidderWasm", "sellerJs", "bidderTrustedSignals", "sellerTrustedSignals"]
+"""Enum of network fetches auctions can do."""
 
 
 
-class SharedStorageAccessScope(Enum):
-    """Enum of shared storage access scopes."""
-    WINDOW = "window"
-    SHAREDSTORAGEWORKLET = "sharedStorageWorklet"
-    PROTECTEDAUDIENCEWORKLET = "protectedAudienceWorklet"
-    HEADER = "header"
+SharedStorageAccessScope = Literal["window", "sharedStorageWorklet", "protectedAudienceWorklet", "header"]
+"""Enum of shared storage access scopes."""
 
 
 
-class SharedStorageAccessMethod(Enum):
-    """Enum of shared storage access methods."""
-    ADDMODULE = "addModule"
-    CREATEWORKLET = "createWorklet"
-    SELECTURL = "selectURL"
-    RUN = "run"
-    BATCHUPDATE = "batchUpdate"
-    SET = "set"
-    APPEND = "append"
-    DELETE = "delete"
-    CLEAR = "clear"
-    GET = "get"
-    KEYS = "keys"
-    VALUES = "values"
-    ENTRIES = "entries"
-    LENGTH = "length"
-    REMAININGBUDGET = "remainingBudget"
+SharedStorageAccessMethod = Literal["addModule", "createWorklet", "selectURL", "run", "batchUpdate", "set", "append", "delete", "clear", "get", "keys", "values", "entries", "length", "remainingBudget"]
+"""Enum of shared storage access methods."""
 
 
 
@@ -249,9 +199,7 @@ Present only for SharedStorageAccessMethod: batchUpdate."""
 
 
 
-class StorageBucketsDurability(Enum):
-    RELAXED = "relaxed"
-    STRICT = "strict"
+StorageBucketsDurability = Literal["relaxed", "strict"]
 
 
 
@@ -273,9 +221,7 @@ class StorageBucketInfo(TypedDict):
 
 
 
-class AttributionReportingSourceType(Enum):
-    NAVIGATION = "navigation"
-    EVENT = "event"
+AttributionReportingSourceType = Literal["navigation", "event"]
 
 
 
@@ -324,9 +270,7 @@ class AttributionReportingEventReportWindows(TypedDict):
 
 
 
-class AttributionReportingTriggerDataMatching(Enum):
-    EXACT = "exact"
-    MODULUS = "modulus"
+AttributionReportingTriggerDataMatching = Literal["exact", "modulus"]
 
 
 
@@ -394,29 +338,11 @@ int"""
 
 
 
-class AttributionReportingSourceRegistrationResult(Enum):
-    SUCCESS = "success"
-    INTERNALERROR = "internalError"
-    INSUFFICIENTSOURCECAPACITY = "insufficientSourceCapacity"
-    INSUFFICIENTUNIQUEDESTINATIONCAPACITY = "insufficientUniqueDestinationCapacity"
-    EXCESSIVEREPORTINGORIGINS = "excessiveReportingOrigins"
-    PROHIBITEDBYBROWSERPOLICY = "prohibitedByBrowserPolicy"
-    SUCCESSNOISED = "successNoised"
-    DESTINATIONREPORTINGLIMITREACHED = "destinationReportingLimitReached"
-    DESTINATIONGLOBALLIMITREACHED = "destinationGlobalLimitReached"
-    DESTINATIONBOTHLIMITSREACHED = "destinationBothLimitsReached"
-    REPORTINGORIGINSPERSITELIMITREACHED = "reportingOriginsPerSiteLimitReached"
-    EXCEEDSMAXCHANNELCAPACITY = "exceedsMaxChannelCapacity"
-    EXCEEDSMAXSCOPESCHANNELCAPACITY = "exceedsMaxScopesChannelCapacity"
-    EXCEEDSMAXTRIGGERSTATECARDINALITY = "exceedsMaxTriggerStateCardinality"
-    EXCEEDSMAXEVENTSTATESLIMIT = "exceedsMaxEventStatesLimit"
-    DESTINATIONPERDAYREPORTINGLIMITREACHED = "destinationPerDayReportingLimitReached"
+AttributionReportingSourceRegistrationResult = Literal["success", "internalError", "insufficientSourceCapacity", "insufficientUniqueDestinationCapacity", "excessiveReportingOrigins", "prohibitedByBrowserPolicy", "successNoised", "destinationReportingLimitReached", "destinationGlobalLimitReached", "destinationBothLimitsReached", "reportingOriginsPerSiteLimitReached", "exceedsMaxChannelCapacity", "exceedsMaxScopesChannelCapacity", "exceedsMaxTriggerStateCardinality", "exceedsMaxEventStatesLimit", "destinationPerDayReportingLimitReached"]
 
 
 
-class AttributionReportingSourceRegistrationTimeConfig(Enum):
-    INCLUDE = "include"
-    EXCLUDE = "exclude"
+AttributionReportingSourceRegistrationTimeConfig = Literal["include", "exclude"]
 
 
 
@@ -480,53 +406,15 @@ class AttributionReportingTriggerRegistration(TypedDict):
 
 
 
-class AttributionReportingEventLevelResult(Enum):
-    SUCCESS = "success"
-    SUCCESSDROPPEDLOWERPRIORITY = "successDroppedLowerPriority"
-    INTERNALERROR = "internalError"
-    NOCAPACITYFORATTRIBUTIONDESTINATION = "noCapacityForAttributionDestination"
-    NOMATCHINGSOURCES = "noMatchingSources"
-    DEDUPLICATED = "deduplicated"
-    EXCESSIVEATTRIBUTIONS = "excessiveAttributions"
-    PRIORITYTOOLOW = "priorityTooLow"
-    NEVERATTRIBUTEDSOURCE = "neverAttributedSource"
-    EXCESSIVEREPORTINGORIGINS = "excessiveReportingOrigins"
-    NOMATCHINGSOURCEFILTERDATA = "noMatchingSourceFilterData"
-    PROHIBITEDBYBROWSERPOLICY = "prohibitedByBrowserPolicy"
-    NOMATCHINGCONFIGURATIONS = "noMatchingConfigurations"
-    EXCESSIVEREPORTS = "excessiveReports"
-    FALSELYATTRIBUTEDSOURCE = "falselyAttributedSource"
-    REPORTWINDOWPASSED = "reportWindowPassed"
-    NOTREGISTERED = "notRegistered"
-    REPORTWINDOWNOTSTARTED = "reportWindowNotStarted"
-    NOMATCHINGTRIGGERDATA = "noMatchingTriggerData"
+AttributionReportingEventLevelResult = Literal["success", "successDroppedLowerPriority", "internalError", "noCapacityForAttributionDestination", "noMatchingSources", "deduplicated", "excessiveAttributions", "priorityTooLow", "neverAttributedSource", "excessiveReportingOrigins", "noMatchingSourceFilterData", "prohibitedByBrowserPolicy", "noMatchingConfigurations", "excessiveReports", "falselyAttributedSource", "reportWindowPassed", "notRegistered", "reportWindowNotStarted", "noMatchingTriggerData"]
 
 
 
-class AttributionReportingAggregatableResult(Enum):
-    SUCCESS = "success"
-    INTERNALERROR = "internalError"
-    NOCAPACITYFORATTRIBUTIONDESTINATION = "noCapacityForAttributionDestination"
-    NOMATCHINGSOURCES = "noMatchingSources"
-    EXCESSIVEATTRIBUTIONS = "excessiveAttributions"
-    EXCESSIVEREPORTINGORIGINS = "excessiveReportingOrigins"
-    NOHISTOGRAMS = "noHistograms"
-    INSUFFICIENTBUDGET = "insufficientBudget"
-    INSUFFICIENTNAMEDBUDGET = "insufficientNamedBudget"
-    NOMATCHINGSOURCEFILTERDATA = "noMatchingSourceFilterData"
-    NOTREGISTERED = "notRegistered"
-    PROHIBITEDBYBROWSERPOLICY = "prohibitedByBrowserPolicy"
-    DEDUPLICATED = "deduplicated"
-    REPORTWINDOWPASSED = "reportWindowPassed"
-    EXCESSIVEREPORTS = "excessiveReports"
+AttributionReportingAggregatableResult = Literal["success", "internalError", "noCapacityForAttributionDestination", "noMatchingSources", "excessiveAttributions", "excessiveReportingOrigins", "noHistograms", "insufficientBudget", "insufficientNamedBudget", "noMatchingSourceFilterData", "notRegistered", "prohibitedByBrowserPolicy", "deduplicated", "reportWindowPassed", "excessiveReports"]
 
 
 
-class AttributionReportingReportResult(Enum):
-    SENT = "sent"
-    PROHIBITED = "prohibited"
-    FAILEDTOASSEMBLE = "failedToAssemble"
-    EXPIRED = "expired"
+AttributionReportingReportResult = Literal["sent", "prohibited", "failedToAssemble", "expired"]
 
 
 

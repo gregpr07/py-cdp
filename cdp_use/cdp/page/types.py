@@ -4,8 +4,8 @@
 
 """CDP Page Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -17,23 +17,17 @@ if TYPE_CHECKING:
     from ..runtime.types import ScriptId
     from ..runtime.types import UniqueDebuggerId
 
-# Unique frame identifier.
 FrameId = str
+"""Unique frame identifier."""
 
 
 
-class AdFrameType(Enum):
-    """Indicates whether a frame has been identified as an ad."""
-    NONE = "none"
-    CHILD = "child"
-    ROOT = "root"
+AdFrameType = Literal["none", "child", "root"]
+"""Indicates whether a frame has been identified as an ad."""
 
 
 
-class AdFrameExplanation(Enum):
-    PARENTISAD = "ParentIsAd"
-    CREATEDBYADSCRIPT = "CreatedByAdScript"
-    MATCHEDBLOCKINGRULE = "MatchedBlockingRule"
+AdFrameExplanation = Literal["ParentIsAd", "CreatedByAdScript", "MatchedBlockingRule"]
 
 
 
@@ -74,149 +68,29 @@ available."""
 
 
 
-class SecureContextType(Enum):
-    """Indicates whether the frame is a secure context and why it is the case."""
-    SECURE = "Secure"
-    SECURELOCALHOST = "SecureLocalhost"
-    INSECURESCHEME = "InsecureScheme"
-    INSECUREANCESTOR = "InsecureAncestor"
+SecureContextType = Literal["Secure", "SecureLocalhost", "InsecureScheme", "InsecureAncestor"]
+"""Indicates whether the frame is a secure context and why it is the case."""
 
 
 
-class CrossOriginIsolatedContextType(Enum):
-    """Indicates whether the frame is cross-origin isolated and why it is the case."""
-    ISOLATED = "Isolated"
-    NOTISOLATED = "NotIsolated"
-    NOTISOLATEDFEATUREDISABLED = "NotIsolatedFeatureDisabled"
+CrossOriginIsolatedContextType = Literal["Isolated", "NotIsolated", "NotIsolatedFeatureDisabled"]
+"""Indicates whether the frame is cross-origin isolated and why it is the case."""
 
 
 
-class GatedAPIFeatures(Enum):
-    SHAREDARRAYBUFFERS = "SharedArrayBuffers"
-    SHAREDARRAYBUFFERSTRANSFERALLOWED = "SharedArrayBuffersTransferAllowed"
-    PERFORMANCEMEASUREMEMORY = "PerformanceMeasureMemory"
-    PERFORMANCEPROFILE = "PerformanceProfile"
+GatedAPIFeatures = Literal["SharedArrayBuffers", "SharedArrayBuffersTransferAllowed", "PerformanceMeasureMemory", "PerformanceProfile"]
 
 
 
-class PermissionsPolicyFeature(Enum):
-    """All Permissions Policy features. This enum should match the one defined
+PermissionsPolicyFeature = Literal["accelerometer", "all-screens-capture", "ambient-light-sensor", "aria-notify", "attribution-reporting", "autoplay", "bluetooth", "browsing-topics", "camera", "captured-surface-control", "ch-dpr", "ch-device-memory", "ch-downlink", "ch-ect", "ch-prefers-color-scheme", "ch-prefers-reduced-motion", "ch-prefers-reduced-transparency", "ch-rtt", "ch-save-data", "ch-ua", "ch-ua-arch", "ch-ua-bitness", "ch-ua-high-entropy-values", "ch-ua-platform", "ch-ua-model", "ch-ua-mobile", "ch-ua-form-factors", "ch-ua-full-version", "ch-ua-full-version-list", "ch-ua-platform-version", "ch-ua-wow64", "ch-viewport-height", "ch-viewport-width", "ch-width", "clipboard-read", "clipboard-write", "compute-pressure", "controlled-frame", "cross-origin-isolated", "deferred-fetch", "deferred-fetch-minimal", "device-attributes", "digital-credentials-get", "direct-sockets", "direct-sockets-private", "display-capture", "document-domain", "encrypted-media", "execution-while-out-of-viewport", "execution-while-not-rendered", "fenced-unpartitioned-storage-read", "focus-without-user-activation", "fullscreen", "frobulate", "gamepad", "geolocation", "gyroscope", "hid", "identity-credentials-get", "idle-detection", "interest-cohort", "join-ad-interest-group", "keyboard-map", "language-detector", "language-model", "local-fonts", "local-network-access", "magnetometer", "media-playback-while-not-visible", "microphone", "midi", "on-device-speech-recognition", "otp-credentials", "payment", "picture-in-picture", "popins", "private-aggregation", "private-state-token-issuance", "private-state-token-redemption", "publickey-credentials-create", "publickey-credentials-get", "record-ad-auction-events", "rewriter", "run-ad-auction", "screen-wake-lock", "serial", "shared-autofill", "shared-storage", "shared-storage-select-url", "smart-card", "speaker-selection", "storage-access", "sub-apps", "summarizer", "sync-xhr", "translator", "unload", "usb", "usb-unrestricted", "vertical-scroll", "web-app-installation", "web-printing", "web-share", "window-management", "writer", "xr-spatial-tracking"]
+"""All Permissions Policy features. This enum should match the one defined
 in services/network/public/cpp/permissions_policy/permissions_policy_features.json5.
 LINT.IfChange(PermissionsPolicyFeature)"""
-    ACCELEROMETER = "accelerometer"
-    ALL_SCREENS_CAPTURE = "all-screens-capture"
-    AMBIENT_LIGHT_SENSOR = "ambient-light-sensor"
-    ATTRIBUTION_REPORTING = "attribution-reporting"
-    AUTOPLAY = "autoplay"
-    BLUETOOTH = "bluetooth"
-    BROWSING_TOPICS = "browsing-topics"
-    CAMERA = "camera"
-    CAPTURED_SURFACE_CONTROL = "captured-surface-control"
-    CH_DPR = "ch-dpr"
-    CH_DEVICE_MEMORY = "ch-device-memory"
-    CH_DOWNLINK = "ch-downlink"
-    CH_ECT = "ch-ect"
-    CH_PREFERS_COLOR_SCHEME = "ch-prefers-color-scheme"
-    CH_PREFERS_REDUCED_MOTION = "ch-prefers-reduced-motion"
-    CH_PREFERS_REDUCED_TRANSPARENCY = "ch-prefers-reduced-transparency"
-    CH_RTT = "ch-rtt"
-    CH_SAVE_DATA = "ch-save-data"
-    CH_UA = "ch-ua"
-    CH_UA_ARCH = "ch-ua-arch"
-    CH_UA_BITNESS = "ch-ua-bitness"
-    CH_UA_HIGH_ENTROPY_VALUES = "ch-ua-high-entropy-values"
-    CH_UA_PLATFORM = "ch-ua-platform"
-    CH_UA_MODEL = "ch-ua-model"
-    CH_UA_MOBILE = "ch-ua-mobile"
-    CH_UA_FORM_FACTORS = "ch-ua-form-factors"
-    CH_UA_FULL_VERSION = "ch-ua-full-version"
-    CH_UA_FULL_VERSION_LIST = "ch-ua-full-version-list"
-    CH_UA_PLATFORM_VERSION = "ch-ua-platform-version"
-    CH_UA_WOW64 = "ch-ua-wow64"
-    CH_VIEWPORT_HEIGHT = "ch-viewport-height"
-    CH_VIEWPORT_WIDTH = "ch-viewport-width"
-    CH_WIDTH = "ch-width"
-    CLIPBOARD_READ = "clipboard-read"
-    CLIPBOARD_WRITE = "clipboard-write"
-    COMPUTE_PRESSURE = "compute-pressure"
-    CONTROLLED_FRAME = "controlled-frame"
-    CROSS_ORIGIN_ISOLATED = "cross-origin-isolated"
-    DEFERRED_FETCH = "deferred-fetch"
-    DEFERRED_FETCH_MINIMAL = "deferred-fetch-minimal"
-    DEVICE_ATTRIBUTES = "device-attributes"
-    DIGITAL_CREDENTIALS_GET = "digital-credentials-get"
-    DIRECT_SOCKETS = "direct-sockets"
-    DIRECT_SOCKETS_PRIVATE = "direct-sockets-private"
-    DISPLAY_CAPTURE = "display-capture"
-    DOCUMENT_DOMAIN = "document-domain"
-    ENCRYPTED_MEDIA = "encrypted-media"
-    EXECUTION_WHILE_OUT_OF_VIEWPORT = "execution-while-out-of-viewport"
-    EXECUTION_WHILE_NOT_RENDERED = "execution-while-not-rendered"
-    FENCED_UNPARTITIONED_STORAGE_READ = "fenced-unpartitioned-storage-read"
-    FOCUS_WITHOUT_USER_ACTIVATION = "focus-without-user-activation"
-    FULLSCREEN = "fullscreen"
-    FROBULATE = "frobulate"
-    GAMEPAD = "gamepad"
-    GEOLOCATION = "geolocation"
-    GYROSCOPE = "gyroscope"
-    HID = "hid"
-    IDENTITY_CREDENTIALS_GET = "identity-credentials-get"
-    IDLE_DETECTION = "idle-detection"
-    INTEREST_COHORT = "interest-cohort"
-    JOIN_AD_INTEREST_GROUP = "join-ad-interest-group"
-    KEYBOARD_MAP = "keyboard-map"
-    LANGUAGE_DETECTOR = "language-detector"
-    LANGUAGE_MODEL = "language-model"
-    LOCAL_FONTS = "local-fonts"
-    LOCAL_NETWORK_ACCESS = "local-network-access"
-    MAGNETOMETER = "magnetometer"
-    MEDIA_PLAYBACK_WHILE_NOT_VISIBLE = "media-playback-while-not-visible"
-    MICROPHONE = "microphone"
-    MIDI = "midi"
-    ON_DEVICE_SPEECH_RECOGNITION = "on-device-speech-recognition"
-    OTP_CREDENTIALS = "otp-credentials"
-    PAYMENT = "payment"
-    PICTURE_IN_PICTURE = "picture-in-picture"
-    POPINS = "popins"
-    PRIVATE_AGGREGATION = "private-aggregation"
-    PRIVATE_STATE_TOKEN_ISSUANCE = "private-state-token-issuance"
-    PRIVATE_STATE_TOKEN_REDEMPTION = "private-state-token-redemption"
-    PUBLICKEY_CREDENTIALS_CREATE = "publickey-credentials-create"
-    PUBLICKEY_CREDENTIALS_GET = "publickey-credentials-get"
-    RECORD_AD_AUCTION_EVENTS = "record-ad-auction-events"
-    REWRITER = "rewriter"
-    RUN_AD_AUCTION = "run-ad-auction"
-    SCREEN_WAKE_LOCK = "screen-wake-lock"
-    SERIAL = "serial"
-    SHARED_AUTOFILL = "shared-autofill"
-    SHARED_STORAGE = "shared-storage"
-    SHARED_STORAGE_SELECT_URL = "shared-storage-select-url"
-    SMART_CARD = "smart-card"
-    SPEAKER_SELECTION = "speaker-selection"
-    STORAGE_ACCESS = "storage-access"
-    SUB_APPS = "sub-apps"
-    SUMMARIZER = "summarizer"
-    SYNC_XHR = "sync-xhr"
-    TRANSLATOR = "translator"
-    UNLOAD = "unload"
-    USB = "usb"
-    USB_UNRESTRICTED = "usb-unrestricted"
-    VERTICAL_SCROLL = "vertical-scroll"
-    WEB_APP_INSTALLATION = "web-app-installation"
-    WEB_PRINTING = "web-printing"
-    WEB_SHARE = "web-share"
-    WINDOW_MANAGEMENT = "window-management"
-    WRITER = "writer"
-    XR_SPATIAL_TRACKING = "xr-spatial-tracking"
 
 
 
-class PermissionsPolicyBlockReason(Enum):
-    """Reason for a permissions policy feature to be disabled."""
-    HEADER = "Header"
-    IFRAMEATTRIBUTE = "IframeAttribute"
-    INFENCEDFRAMETREE = "InFencedFrameTree"
-    INISOLATEDAPP = "InIsolatedApp"
+PermissionsPolicyBlockReason = Literal["Header", "IframeAttribute", "InFencedFrameTree", "InIsolatedApp"]
+"""Reason for a permissions policy feature to be disabled."""
 
 
 
@@ -233,36 +107,18 @@ class PermissionsPolicyFeatureState(TypedDict):
 
 
 
-class OriginTrialTokenStatus(Enum):
-    """Origin Trial(https://www.chromium.org/blink/origin-trials) support.
+OriginTrialTokenStatus = Literal["Success", "NotSupported", "Insecure", "Expired", "WrongOrigin", "InvalidSignature", "Malformed", "WrongVersion", "FeatureDisabled", "TokenDisabled", "FeatureDisabledForUser", "UnknownTrial"]
+"""Origin Trial(https://www.chromium.org/blink/origin-trials) support.
 Status for an Origin Trial token."""
-    SUCCESS = "Success"
-    NOTSUPPORTED = "NotSupported"
-    INSECURE = "Insecure"
-    EXPIRED = "Expired"
-    WRONGORIGIN = "WrongOrigin"
-    INVALIDSIGNATURE = "InvalidSignature"
-    MALFORMED = "Malformed"
-    WRONGVERSION = "WrongVersion"
-    FEATUREDISABLED = "FeatureDisabled"
-    TOKENDISABLED = "TokenDisabled"
-    FEATUREDISABLEDFORUSER = "FeatureDisabledForUser"
-    UNKNOWNTRIAL = "UnknownTrial"
 
 
 
-class OriginTrialStatus(Enum):
-    """Status for an Origin Trial."""
-    ENABLED = "Enabled"
-    VALIDTOKENNOTPROVIDED = "ValidTokenNotProvided"
-    OSNOTSUPPORTED = "OSNotSupported"
-    TRIALNOTALLOWED = "TrialNotAllowed"
+OriginTrialStatus = Literal["Enabled", "ValidTokenNotProvided", "OSNotSupported", "TrialNotAllowed"]
+"""Status for an Origin Trial."""
 
 
 
-class OriginTrialUsageRestriction(Enum):
-    NONE = "None"
-    SUBSET = "Subset"
+OriginTrialUsageRestriction = Literal["None", "Subset"]
 
 
 
@@ -383,26 +239,13 @@ class FrameTree(TypedDict):
 
 
 
-# Unique script identifier.
 ScriptIdentifier = str
+"""Unique script identifier."""
 
 
 
-class TransitionType(Enum):
-    """Transition type."""
-    LINK = "link"
-    TYPED = "typed"
-    ADDRESS_BAR = "address_bar"
-    AUTO_BOOKMARK = "auto_bookmark"
-    AUTO_SUBFRAME = "auto_subframe"
-    MANUAL_SUBFRAME = "manual_subframe"
-    GENERATED = "generated"
-    AUTO_TOPLEVEL = "auto_toplevel"
-    FORM_SUBMIT = "form_submit"
-    RELOAD = "reload"
-    KEYWORD = "keyword"
-    KEYWORD_GENERATED = "keyword_generated"
-    OTHER = "other"
+TransitionType = Literal["link", "typed", "address_bar", "auto_bookmark", "auto_subframe", "manual_subframe", "generated", "auto_toplevel", "form_submit", "reload", "keyword", "keyword_generated", "other"]
+"""Transition type."""
 
 
 
@@ -442,12 +285,8 @@ class ScreencastFrameMetadata(TypedDict):
 
 
 
-class DialogType(Enum):
-    """Javascript dialog type."""
-    ALERT = "alert"
-    CONFIRM = "confirm"
-    PROMPT = "prompt"
-    BEFOREUNLOAD = "beforeunload"
+DialogType = Literal["alert", "confirm", "prompt", "beforeunload"]
+"""Javascript dialog type."""
 
 
 
@@ -565,25 +404,11 @@ class FontSizes(TypedDict, total=False):
 
 
 
-class ClientNavigationReason(Enum):
-    ANCHORCLICK = "anchorClick"
-    FORMSUBMISSIONGET = "formSubmissionGet"
-    FORMSUBMISSIONPOST = "formSubmissionPost"
-    HTTPHEADERREFRESH = "httpHeaderRefresh"
-    INITIALFRAMENAVIGATION = "initialFrameNavigation"
-    METATAGREFRESH = "metaTagRefresh"
-    OTHER = "other"
-    PAGEBLOCKINTERSTITIAL = "pageBlockInterstitial"
-    RELOAD = "reload"
-    SCRIPTINITIATED = "scriptInitiated"
+ClientNavigationReason = Literal["anchorClick", "formSubmissionGet", "formSubmissionPost", "httpHeaderRefresh", "initialFrameNavigation", "metaTagRefresh", "other", "pageBlockInterstitial", "reload", "scriptInitiated"]
 
 
 
-class ClientNavigationDisposition(Enum):
-    CURRENTTAB = "currentTab"
-    NEWTAB = "newTab"
-    NEWWINDOW = "newWindow"
-    DOWNLOAD = "download"
+ClientNavigationDisposition = Literal["currentTab", "newTab", "newWindow", "download"]
 
 
 
@@ -605,16 +430,8 @@ class InstallabilityError(TypedDict):
 
 
 
-class ReferrerPolicy(Enum):
-    """The referring-policy used for the navigation."""
-    NOREFERRER = "noReferrer"
-    NOREFERRERWHENDOWNGRADE = "noReferrerWhenDowngrade"
-    ORIGIN = "origin"
-    ORIGINWHENCROSSORIGIN = "originWhenCrossOrigin"
-    SAMEORIGIN = "sameOrigin"
-    STRICTORIGIN = "strictOrigin"
-    STRICTORIGINWHENCROSSORIGIN = "strictOriginWhenCrossOrigin"
-    UNSAFEURL = "unsafeUrl"
+ReferrerPolicy = Literal["noReferrer", "noReferrerWhenDowngrade", "origin", "originWhenCrossOrigin", "sameOrigin", "strictOrigin", "strictOriginWhenCrossOrigin", "unsafeUrl"]
+"""The referring-policy used for the navigation."""
 
 
 
@@ -745,166 +562,18 @@ https://github.com/WICG/manifest-incubations/blob/gh-pages/scope_extensions-expl
 
 
 
-class NavigationType(Enum):
-    """The type of a frameNavigated event."""
-    NAVIGATION = "Navigation"
-    BACKFORWARDCACHERESTORE = "BackForwardCacheRestore"
+NavigationType = Literal["Navigation", "BackForwardCacheRestore"]
+"""The type of a frameNavigated event."""
 
 
 
-class BackForwardCacheNotRestoredReason(Enum):
-    """List of not restored reasons for back-forward cache."""
-    NOTPRIMARYMAINFRAME = "NotPrimaryMainFrame"
-    BACKFORWARDCACHEDISABLED = "BackForwardCacheDisabled"
-    RELATEDACTIVECONTENTSEXIST = "RelatedActiveContentsExist"
-    HTTPSTATUSNOTOK = "HTTPStatusNotOK"
-    SCHEMENOTHTTPORHTTPS = "SchemeNotHTTPOrHTTPS"
-    LOADING = "Loading"
-    WASGRANTEDMEDIAACCESS = "WasGrantedMediaAccess"
-    DISABLEFORRENDERFRAMEHOSTCALLED = "DisableForRenderFrameHostCalled"
-    DOMAINNOTALLOWED = "DomainNotAllowed"
-    HTTPMETHODNOTGET = "HTTPMethodNotGET"
-    SUBFRAMEISNAVIGATING = "SubframeIsNavigating"
-    TIMEOUT = "Timeout"
-    CACHELIMIT = "CacheLimit"
-    JAVASCRIPTEXECUTION = "JavaScriptExecution"
-    RENDERERPROCESSKILLED = "RendererProcessKilled"
-    RENDERERPROCESSCRASHED = "RendererProcessCrashed"
-    SCHEDULERTRACKEDFEATUREUSED = "SchedulerTrackedFeatureUsed"
-    CONFLICTINGBROWSINGINSTANCE = "ConflictingBrowsingInstance"
-    CACHEFLUSHED = "CacheFlushed"
-    SERVICEWORKERVERSIONACTIVATION = "ServiceWorkerVersionActivation"
-    SESSIONRESTORED = "SessionRestored"
-    SERVICEWORKERPOSTMESSAGE = "ServiceWorkerPostMessage"
-    ENTEREDBACKFORWARDCACHEBEFORESERVICEWORKERHOSTADDED = "EnteredBackForwardCacheBeforeServiceWorkerHostAdded"
-    RENDERFRAMEHOSTREUSED_SAMESITE = "RenderFrameHostReused_SameSite"
-    RENDERFRAMEHOSTREUSED_CROSSSITE = "RenderFrameHostReused_CrossSite"
-    SERVICEWORKERCLAIM = "ServiceWorkerClaim"
-    IGNOREEVENTANDEVICT = "IgnoreEventAndEvict"
-    HAVEINNERCONTENTS = "HaveInnerContents"
-    TIMEOUTPUTTINGINCACHE = "TimeoutPuttingInCache"
-    BACKFORWARDCACHEDISABLEDBYLOWMEMORY = "BackForwardCacheDisabledByLowMemory"
-    BACKFORWARDCACHEDISABLEDBYCOMMANDLINE = "BackForwardCacheDisabledByCommandLine"
-    NETWORKREQUESTDATAPIPEDRAINEDASBYTESCONSUMER = "NetworkRequestDatapipeDrainedAsBytesConsumer"
-    NETWORKREQUESTREDIRECTED = "NetworkRequestRedirected"
-    NETWORKREQUESTTIMEOUT = "NetworkRequestTimeout"
-    NETWORKEXCEEDSBUFFERLIMIT = "NetworkExceedsBufferLimit"
-    NAVIGATIONCANCELLEDWHILERESTORING = "NavigationCancelledWhileRestoring"
-    NOTMOSTRECENTNAVIGATIONENTRY = "NotMostRecentNavigationEntry"
-    BACKFORWARDCACHEDISABLEDFORPRERENDER = "BackForwardCacheDisabledForPrerender"
-    USERAGENTOVERRIDEDIFFERS = "UserAgentOverrideDiffers"
-    FOREGROUNDCACHELIMIT = "ForegroundCacheLimit"
-    BROWSINGINSTANCENOTSWAPPED = "BrowsingInstanceNotSwapped"
-    BACKFORWARDCACHEDISABLEDFORDELEGATE = "BackForwardCacheDisabledForDelegate"
-    UNLOADHANDLEREXISTSINMAINFRAME = "UnloadHandlerExistsInMainFrame"
-    UNLOADHANDLEREXISTSINSUBFRAME = "UnloadHandlerExistsInSubFrame"
-    SERVICEWORKERUNREGISTRATION = "ServiceWorkerUnregistration"
-    CACHECONTROLNOSTORE = "CacheControlNoStore"
-    CACHECONTROLNOSTORECOOKIEMODIFIED = "CacheControlNoStoreCookieModified"
-    CACHECONTROLNOSTOREHTTPONLYCOOKIEMODIFIED = "CacheControlNoStoreHTTPOnlyCookieModified"
-    NORESPONSEHEAD = "NoResponseHead"
-    UNKNOWN = "Unknown"
-    ACTIVATIONNAVIGATIONSDISALLOWEDFORBUG1234857 = "ActivationNavigationsDisallowedForBug1234857"
-    ERRORDOCUMENT = "ErrorDocument"
-    FENCEDFRAMESEMBEDDER = "FencedFramesEmbedder"
-    COOKIEDISABLED = "CookieDisabled"
-    HTTPAUTHREQUIRED = "HTTPAuthRequired"
-    COOKIEFLUSHED = "CookieFlushed"
-    BROADCASTCHANNELONMESSAGE = "BroadcastChannelOnMessage"
-    WEBVIEWSETTINGSCHANGED = "WebViewSettingsChanged"
-    WEBVIEWJAVASCRIPTOBJECTCHANGED = "WebViewJavaScriptObjectChanged"
-    WEBVIEWMESSAGELISTENERINJECTED = "WebViewMessageListenerInjected"
-    WEBVIEWSAFEBROWSINGALLOWLISTCHANGED = "WebViewSafeBrowsingAllowlistChanged"
-    WEBVIEWDOCUMENTSTARTJAVASCRIPTCHANGED = "WebViewDocumentStartJavascriptChanged"
-    WEBSOCKET = "WebSocket"
-    WEBTRANSPORT = "WebTransport"
-    WEBRTC = "WebRTC"
-    MAINRESOURCEHASCACHECONTROLNOSTORE = "MainResourceHasCacheControlNoStore"
-    MAINRESOURCEHASCACHECONTROLNOCACHE = "MainResourceHasCacheControlNoCache"
-    SUBRESOURCEHASCACHECONTROLNOSTORE = "SubresourceHasCacheControlNoStore"
-    SUBRESOURCEHASCACHECONTROLNOCACHE = "SubresourceHasCacheControlNoCache"
-    CONTAINSPLUGINS = "ContainsPlugins"
-    DOCUMENTLOADED = "DocumentLoaded"
-    OUTSTANDINGNETWORKREQUESTOTHERS = "OutstandingNetworkRequestOthers"
-    REQUESTEDMIDIPERMISSION = "RequestedMIDIPermission"
-    REQUESTEDAUDIOCAPTUREPERMISSION = "RequestedAudioCapturePermission"
-    REQUESTEDVIDEOCAPTUREPERMISSION = "RequestedVideoCapturePermission"
-    REQUESTEDBACKFORWARDCACHEBLOCKEDSENSORS = "RequestedBackForwardCacheBlockedSensors"
-    REQUESTEDBACKGROUNDWORKPERMISSION = "RequestedBackgroundWorkPermission"
-    BROADCASTCHANNEL = "BroadcastChannel"
-    WEBXR = "WebXR"
-    SHAREDWORKER = "SharedWorker"
-    SHAREDWORKERMESSAGE = "SharedWorkerMessage"
-    WEBLOCKS = "WebLocks"
-    WEBHID = "WebHID"
-    WEBSHARE = "WebShare"
-    REQUESTEDSTORAGEACCESSGRANT = "RequestedStorageAccessGrant"
-    WEBNFC = "WebNfc"
-    OUTSTANDINGNETWORKREQUESTFETCH = "OutstandingNetworkRequestFetch"
-    OUTSTANDINGNETWORKREQUESTXHR = "OutstandingNetworkRequestXHR"
-    APPBANNER = "AppBanner"
-    PRINTING = "Printing"
-    WEBDATABASE = "WebDatabase"
-    PICTUREINPICTURE = "PictureInPicture"
-    SPEECHRECOGNIZER = "SpeechRecognizer"
-    IDLEMANAGER = "IdleManager"
-    PAYMENTMANAGER = "PaymentManager"
-    SPEECHSYNTHESIS = "SpeechSynthesis"
-    KEYBOARDLOCK = "KeyboardLock"
-    WEBOTPSERVICE = "WebOTPService"
-    OUTSTANDINGNETWORKREQUESTDIRECTSOCKET = "OutstandingNetworkRequestDirectSocket"
-    INJECTEDJAVASCRIPT = "InjectedJavascript"
-    INJECTEDSTYLESHEET = "InjectedStyleSheet"
-    KEEPALIVEREQUEST = "KeepaliveRequest"
-    INDEXEDDBEVENT = "IndexedDBEvent"
-    DUMMY = "Dummy"
-    JSNETWORKREQUESTRECEIVEDCACHECONTROLNOSTORERESOURCE = "JsNetworkRequestReceivedCacheControlNoStoreResource"
-    WEBRTCSTICKY = "WebRTCSticky"
-    WEBTRANSPORTSTICKY = "WebTransportSticky"
-    WEBSOCKETSTICKY = "WebSocketSticky"
-    SMARTCARD = "SmartCard"
-    LIVEMEDIASTREAMTRACK = "LiveMediaStreamTrack"
-    UNLOADHANDLER = "UnloadHandler"
-    PARSERABORTED = "ParserAborted"
-    CONTENTSECURITYHANDLER = "ContentSecurityHandler"
-    CONTENTWEBAUTHENTICATIONAPI = "ContentWebAuthenticationAPI"
-    CONTENTFILECHOOSER = "ContentFileChooser"
-    CONTENTSERIAL = "ContentSerial"
-    CONTENTFILESYSTEMACCESS = "ContentFileSystemAccess"
-    CONTENTMEDIADEVICESDISPATCHERHOST = "ContentMediaDevicesDispatcherHost"
-    CONTENTWEBBLUETOOTH = "ContentWebBluetooth"
-    CONTENTWEBUSB = "ContentWebUSB"
-    CONTENTMEDIASESSIONSERVICE = "ContentMediaSessionService"
-    CONTENTSCREENREADER = "ContentScreenReader"
-    CONTENTDISCARDED = "ContentDiscarded"
-    EMBEDDERPOPUPBLOCKERTABHELPER = "EmbedderPopupBlockerTabHelper"
-    EMBEDDERSAFEBROWSINGTRIGGEREDPOPUPBLOCKER = "EmbedderSafeBrowsingTriggeredPopupBlocker"
-    EMBEDDERSAFEBROWSINGTHREATDETAILS = "EmbedderSafeBrowsingThreatDetails"
-    EMBEDDERAPPBANNERMANAGER = "EmbedderAppBannerManager"
-    EMBEDDERDOMDISTILLERVIEWERSOURCE = "EmbedderDomDistillerViewerSource"
-    EMBEDDERDOMDISTILLERSELFDELETINGREQUESTDELEGATE = "EmbedderDomDistillerSelfDeletingRequestDelegate"
-    EMBEDDEROOMINTERVENTIONTABHELPER = "EmbedderOomInterventionTabHelper"
-    EMBEDDEROFFLINEPAGE = "EmbedderOfflinePage"
-    EMBEDDERCHROMEPASSWORDMANAGERCLIENTBINDCREDENTIALMANAGER = "EmbedderChromePasswordManagerClientBindCredentialManager"
-    EMBEDDERPERMISSIONREQUESTMANAGER = "EmbedderPermissionRequestManager"
-    EMBEDDERMODALDIALOG = "EmbedderModalDialog"
-    EMBEDDEREXTENSIONS = "EmbedderExtensions"
-    EMBEDDEREXTENSIONMESSAGING = "EmbedderExtensionMessaging"
-    EMBEDDEREXTENSIONMESSAGINGFOROPENPORT = "EmbedderExtensionMessagingForOpenPort"
-    EMBEDDEREXTENSIONSENTMESSAGETOCACHEDFRAME = "EmbedderExtensionSentMessageToCachedFrame"
-    REQUESTEDBYWEBVIEWCLIENT = "RequestedByWebViewClient"
-    POSTMESSAGEBYWEBVIEWCLIENT = "PostMessageByWebViewClient"
-    CACHECONTROLNOSTOREDEVICEBOUNDSESSIONTERMINATED = "CacheControlNoStoreDeviceBoundSessionTerminated"
-    CACHELIMITPRUNEDONMODERATEMEMORYPRESSURE = "CacheLimitPrunedOnModerateMemoryPressure"
-    CACHELIMITPRUNEDONCRITICALMEMORYPRESSURE = "CacheLimitPrunedOnCriticalMemoryPressure"
+BackForwardCacheNotRestoredReason = Literal["NotPrimaryMainFrame", "BackForwardCacheDisabled", "RelatedActiveContentsExist", "HTTPStatusNotOK", "SchemeNotHTTPOrHTTPS", "Loading", "WasGrantedMediaAccess", "DisableForRenderFrameHostCalled", "DomainNotAllowed", "HTTPMethodNotGET", "SubframeIsNavigating", "Timeout", "CacheLimit", "JavaScriptExecution", "RendererProcessKilled", "RendererProcessCrashed", "SchedulerTrackedFeatureUsed", "ConflictingBrowsingInstance", "CacheFlushed", "ServiceWorkerVersionActivation", "SessionRestored", "ServiceWorkerPostMessage", "EnteredBackForwardCacheBeforeServiceWorkerHostAdded", "RenderFrameHostReused_SameSite", "RenderFrameHostReused_CrossSite", "ServiceWorkerClaim", "IgnoreEventAndEvict", "HaveInnerContents", "TimeoutPuttingInCache", "BackForwardCacheDisabledByLowMemory", "BackForwardCacheDisabledByCommandLine", "NetworkRequestDatapipeDrainedAsBytesConsumer", "NetworkRequestRedirected", "NetworkRequestTimeout", "NetworkExceedsBufferLimit", "NavigationCancelledWhileRestoring", "NotMostRecentNavigationEntry", "BackForwardCacheDisabledForPrerender", "UserAgentOverrideDiffers", "ForegroundCacheLimit", "BrowsingInstanceNotSwapped", "BackForwardCacheDisabledForDelegate", "UnloadHandlerExistsInMainFrame", "UnloadHandlerExistsInSubFrame", "ServiceWorkerUnregistration", "CacheControlNoStore", "CacheControlNoStoreCookieModified", "CacheControlNoStoreHTTPOnlyCookieModified", "NoResponseHead", "Unknown", "ActivationNavigationsDisallowedForBug1234857", "ErrorDocument", "FencedFramesEmbedder", "CookieDisabled", "HTTPAuthRequired", "CookieFlushed", "BroadcastChannelOnMessage", "WebViewSettingsChanged", "WebViewJavaScriptObjectChanged", "WebViewMessageListenerInjected", "WebViewSafeBrowsingAllowlistChanged", "WebViewDocumentStartJavascriptChanged", "WebSocket", "WebTransport", "WebRTC", "MainResourceHasCacheControlNoStore", "MainResourceHasCacheControlNoCache", "SubresourceHasCacheControlNoStore", "SubresourceHasCacheControlNoCache", "ContainsPlugins", "DocumentLoaded", "OutstandingNetworkRequestOthers", "RequestedMIDIPermission", "RequestedAudioCapturePermission", "RequestedVideoCapturePermission", "RequestedBackForwardCacheBlockedSensors", "RequestedBackgroundWorkPermission", "BroadcastChannel", "WebXR", "SharedWorker", "SharedWorkerMessage", "WebLocks", "WebHID", "WebShare", "RequestedStorageAccessGrant", "WebNfc", "OutstandingNetworkRequestFetch", "OutstandingNetworkRequestXHR", "AppBanner", "Printing", "WebDatabase", "PictureInPicture", "SpeechRecognizer", "IdleManager", "PaymentManager", "SpeechSynthesis", "KeyboardLock", "WebOTPService", "OutstandingNetworkRequestDirectSocket", "InjectedJavascript", "InjectedStyleSheet", "KeepaliveRequest", "IndexedDBEvent", "Dummy", "JsNetworkRequestReceivedCacheControlNoStoreResource", "WebRTCSticky", "WebTransportSticky", "WebSocketSticky", "SmartCard", "LiveMediaStreamTrack", "UnloadHandler", "ParserAborted", "ContentSecurityHandler", "ContentWebAuthenticationAPI", "ContentFileChooser", "ContentSerial", "ContentFileSystemAccess", "ContentMediaDevicesDispatcherHost", "ContentWebBluetooth", "ContentWebUSB", "ContentMediaSessionService", "ContentScreenReader", "ContentDiscarded", "EmbedderPopupBlockerTabHelper", "EmbedderSafeBrowsingTriggeredPopupBlocker", "EmbedderSafeBrowsingThreatDetails", "EmbedderAppBannerManager", "EmbedderDomDistillerViewerSource", "EmbedderDomDistillerSelfDeletingRequestDelegate", "EmbedderOomInterventionTabHelper", "EmbedderOfflinePage", "EmbedderChromePasswordManagerClientBindCredentialManager", "EmbedderPermissionRequestManager", "EmbedderModalDialog", "EmbedderExtensions", "EmbedderExtensionMessaging", "EmbedderExtensionMessagingForOpenPort", "EmbedderExtensionSentMessageToCachedFrame", "RequestedByWebViewClient", "PostMessageByWebViewClient", "CacheControlNoStoreDeviceBoundSessionTerminated", "CacheLimitPrunedOnModerateMemoryPressure", "CacheLimitPrunedOnCriticalMemoryPressure"]
+"""List of not restored reasons for back-forward cache."""
 
 
 
-class BackForwardCacheNotRestoredReasonType(Enum):
-    """Types of not restored reasons for back-forward cache."""
-    SUPPORTPENDING = "SupportPending"
-    PAGESUPPORTNEEDED = "PageSupportNeeded"
-    CIRCUMSTANTIAL = "Circumstantial"
+BackForwardCacheNotRestoredReasonType = Literal["SupportPending", "PageSupportNeeded", "Circumstantial"]
+"""Types of not restored reasons for back-forward cache."""
 
 
 

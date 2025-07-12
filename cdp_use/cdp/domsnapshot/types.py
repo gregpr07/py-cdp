@@ -139,13 +139,13 @@ class NameValue(TypedDict):
 
 
 
-# Index of the string in the strings table.
 StringIndex = int
+"""Index of the string in the strings table."""
 
 
 
-# Index of the string in the strings table.
 ArrayOfStrings = List[StringIndex]
+"""Index of the string in the strings table."""
 
 
 

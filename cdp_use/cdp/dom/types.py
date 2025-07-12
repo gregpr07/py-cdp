@@ -4,8 +4,8 @@
 
 """CDP DOM Domain Types"""
 
-from enum import Enum
 from typing import Any, List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -13,14 +13,14 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..page.types import FrameId
 
-# Unique DOM node identifier.
 NodeId = int
+"""Unique DOM node identifier."""
 
 
 
-# Unique DOM node identifier used to reference a node that may not have been pushed to the
-# front-end.
 BackendNodeId = int
+"""Unique DOM node identifier used to reference a node that may not have been pushed to the
+front-end."""
 
 
 
@@ -35,85 +35,33 @@ class BackendNode(TypedDict):
 
 
 
-class PseudoType(Enum):
-    """Pseudo element type."""
-    FIRST_LINE = "first-line"
-    FIRST_LETTER = "first-letter"
-    CHECKMARK = "checkmark"
-    BEFORE = "before"
-    AFTER = "after"
-    PICKER_ICON = "picker-icon"
-    MARKER = "marker"
-    BACKDROP = "backdrop"
-    COLUMN = "column"
-    SELECTION = "selection"
-    SEARCH_TEXT = "search-text"
-    TARGET_TEXT = "target-text"
-    SPELLING_ERROR = "spelling-error"
-    GRAMMAR_ERROR = "grammar-error"
-    HIGHLIGHT = "highlight"
-    FIRST_LINE_INHERITED = "first-line-inherited"
-    SCROLL_MARKER = "scroll-marker"
-    SCROLL_MARKER_GROUP = "scroll-marker-group"
-    SCROLL_BUTTON = "scroll-button"
-    SCROLLBAR = "scrollbar"
-    SCROLLBAR_THUMB = "scrollbar-thumb"
-    SCROLLBAR_BUTTON = "scrollbar-button"
-    SCROLLBAR_TRACK = "scrollbar-track"
-    SCROLLBAR_TRACK_PIECE = "scrollbar-track-piece"
-    SCROLLBAR_CORNER = "scrollbar-corner"
-    RESIZER = "resizer"
-    INPUT_LIST_BUTTON = "input-list-button"
-    VIEW_TRANSITION = "view-transition"
-    VIEW_TRANSITION_GROUP = "view-transition-group"
-    VIEW_TRANSITION_IMAGE_PAIR = "view-transition-image-pair"
-    VIEW_TRANSITION_GROUP_CHILDREN = "view-transition-group-children"
-    VIEW_TRANSITION_OLD = "view-transition-old"
-    VIEW_TRANSITION_NEW = "view-transition-new"
-    PLACEHOLDER = "placeholder"
-    FILE_SELECTOR_BUTTON = "file-selector-button"
-    DETAILS_CONTENT = "details-content"
-    PICKER = "picker"
-    PERMISSION_ICON = "permission-icon"
+PseudoType = Literal["first-line", "first-letter", "checkmark", "before", "after", "picker-icon", "marker", "backdrop", "column", "selection", "search-text", "target-text", "spelling-error", "grammar-error", "highlight", "first-line-inherited", "scroll-marker", "scroll-marker-group", "scroll-button", "scrollbar", "scrollbar-thumb", "scrollbar-button", "scrollbar-track", "scrollbar-track-piece", "scrollbar-corner", "resizer", "input-list-button", "view-transition", "view-transition-group", "view-transition-image-pair", "view-transition-group-children", "view-transition-old", "view-transition-new", "placeholder", "file-selector-button", "details-content", "picker", "permission-icon"]
+"""Pseudo element type."""
 
 
 
-class ShadowRootType(Enum):
-    """Shadow root type."""
-    USER_AGENT = "user-agent"
-    OPEN = "open"
-    CLOSED = "closed"
+ShadowRootType = Literal["user-agent", "open", "closed"]
+"""Shadow root type."""
 
 
 
-class CompatibilityMode(Enum):
-    """Document compatibility mode."""
-    QUIRKSMODE = "QuirksMode"
-    LIMITEDQUIRKSMODE = "LimitedQuirksMode"
-    NOQUIRKSMODE = "NoQuirksMode"
+CompatibilityMode = Literal["QuirksMode", "LimitedQuirksMode", "NoQuirksMode"]
+"""Document compatibility mode."""
 
 
 
-class PhysicalAxes(Enum):
-    """ContainerSelector physical axes"""
-    HORIZONTAL = "Horizontal"
-    VERTICAL = "Vertical"
-    BOTH = "Both"
+PhysicalAxes = Literal["Horizontal", "Vertical", "Both"]
+"""ContainerSelector physical axes"""
 
 
 
-class LogicalAxes(Enum):
-    """ContainerSelector logical axes"""
-    INLINE = "Inline"
-    BLOCK = "Block"
-    BOTH = "Both"
+LogicalAxes = Literal["Inline", "Block", "Both"]
+"""ContainerSelector logical axes"""
 
 
 
-class ScrollOrientation(Enum):
-    """Physical scroll orientation"""
-    HORIZONTAL = "horizontal"
-    VERTICAL = "vertical"
+ScrollOrientation = Literal["horizontal", "vertical"]
+"""Physical scroll orientation"""
 
 
 
@@ -212,8 +160,8 @@ class RGBA(TypedDict):
 
 
 
-# An array of quad vertices, x immediately followed by y for each point, points clock-wise.
 Quad = List[float]
+"""An array of quad vertices, x immediately followed by y for each point, points clock-wise."""
 
 
 

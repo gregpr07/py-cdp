@@ -7,8 +7,8 @@
 from typing import Any, Dict, List
 from typing_extensions import NotRequired, TypedDict
 
-# Unique script identifier.
 ScriptId = str
+"""Unique script identifier."""
 
 
 
@@ -38,14 +38,14 @@ per value in the scope of one CDP call."""
 
 
 
-# Unique object identifier.
 RemoteObjectId = str
+"""Unique object identifier."""
 
 
 
-# Primitive value which cannot be JSON-stringified. Includes values `-0`, `NaN`, `Infinity`,
-# `-Infinity`, and bigint literals.
 UnserializableValue = str
+"""Primitive value which cannot be JSON-stringified. Includes values `-0`, `NaN`, `Infinity`,
+`-Infinity`, and bigint literals."""
 
 
 
@@ -197,8 +197,8 @@ unserializable primitive value or neither of (for undefined) them should be spec
 
 
 
-# Id of an execution context.
 ExecutionContextId = int
+"""Id of an execution context."""
 
 
 
@@ -250,13 +250,13 @@ requests, etc."""
 
 
 
-# Number of milliseconds since epoch.
 Timestamp = float
+"""Number of milliseconds since epoch."""
 
 
 
-# Number of milliseconds.
 TimeDelta = float
+"""Number of milliseconds."""
 
 
 
@@ -291,8 +291,8 @@ initiated the async call."""
 
 
 
-# Unique identifier of current debugger.
 UniqueDebuggerId = str
+"""Unique identifier of current debugger."""
 
 
 

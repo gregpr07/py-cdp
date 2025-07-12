@@ -4,38 +4,27 @@
 
 """CDP FedCm Domain Types"""
 
-from enum import Enum
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
-class LoginState(Enum):
-    """Whether this is a sign-up or sign-in action for this account, i.e.
+LoginState = Literal["SignIn", "SignUp"]
+"""Whether this is a sign-up or sign-in action for this account, i.e.
 whether this account has ever been used to sign in to this RP before."""
-    SIGNIN = "SignIn"
-    SIGNUP = "SignUp"
 
 
 
-class DialogType(Enum):
-    """The types of FedCM dialogs."""
-    ACCOUNTCHOOSER = "AccountChooser"
-    AUTOREAUTHN = "AutoReauthn"
-    CONFIRMIDPLOGIN = "ConfirmIdpLogin"
-    ERROR = "Error"
+DialogType = Literal["AccountChooser", "AutoReauthn", "ConfirmIdpLogin", "Error"]
+"""The types of FedCM dialogs."""
 
 
 
-class DialogButton(Enum):
-    """The buttons on the FedCM dialog."""
-    CONFIRMIDPLOGINCONTINUE = "ConfirmIdpLoginContinue"
-    ERRORGOTIT = "ErrorGotIt"
-    ERRORMOREDETAILS = "ErrorMoreDetails"
+DialogButton = Literal["ConfirmIdpLoginContinue", "ErrorGotIt", "ErrorMoreDetails"]
+"""The buttons on the FedCM dialog."""
 
 
 
-class AccountUrlType(Enum):
-    """The URLs that each account has"""
-    TERMSOFSERVICE = "TermsOfService"
-    PRIVACYPOLICY = "PrivacyPolicy"
+AccountUrlType = Literal["TermsOfService", "PrivacyPolicy"]
+"""The URLs that each account has"""
 
 
 

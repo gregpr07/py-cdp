@@ -4,8 +4,8 @@
 
 """CDP Audits Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -46,50 +46,20 @@ class AffectedFrame(TypedDict):
 
 
 
-class CookieExclusionReason(Enum):
-    EXCLUDESAMESITEUNSPECIFIEDTREATEDASLAX = "ExcludeSameSiteUnspecifiedTreatedAsLax"
-    EXCLUDESAMESITENONEINSECURE = "ExcludeSameSiteNoneInsecure"
-    EXCLUDESAMESITELAX = "ExcludeSameSiteLax"
-    EXCLUDESAMESITESTRICT = "ExcludeSameSiteStrict"
-    EXCLUDEINVALIDSAMEPARTY = "ExcludeInvalidSameParty"
-    EXCLUDESAMEPARTYCROSSPARTYCONTEXT = "ExcludeSamePartyCrossPartyContext"
-    EXCLUDEDOMAINNONASCII = "ExcludeDomainNonASCII"
-    EXCLUDETHIRDPARTYCOOKIEBLOCKEDINFIRSTPARTYSET = "ExcludeThirdPartyCookieBlockedInFirstPartySet"
-    EXCLUDETHIRDPARTYPHASEOUT = "ExcludeThirdPartyPhaseout"
-    EXCLUDEPORTMISMATCH = "ExcludePortMismatch"
-    EXCLUDESCHEMEMISMATCH = "ExcludeSchemeMismatch"
+CookieExclusionReason = Literal["ExcludeSameSiteUnspecifiedTreatedAsLax", "ExcludeSameSiteNoneInsecure", "ExcludeSameSiteLax", "ExcludeSameSiteStrict", "ExcludeInvalidSameParty", "ExcludeSamePartyCrossPartyContext", "ExcludeDomainNonASCII", "ExcludeThirdPartyCookieBlockedInFirstPartySet", "ExcludeThirdPartyPhaseout", "ExcludePortMismatch", "ExcludeSchemeMismatch"]
 
 
 
-class CookieWarningReason(Enum):
-    WARNSAMESITEUNSPECIFIEDCROSSSITECONTEXT = "WarnSameSiteUnspecifiedCrossSiteContext"
-    WARNSAMESITENONEINSECURE = "WarnSameSiteNoneInsecure"
-    WARNSAMESITEUNSPECIFIEDLAXALLOWUNSAFE = "WarnSameSiteUnspecifiedLaxAllowUnsafe"
-    WARNSAMESITESTRICTLAXDOWNGRADESTRICT = "WarnSameSiteStrictLaxDowngradeStrict"
-    WARNSAMESITESTRICTCROSSDOWNGRADESTRICT = "WarnSameSiteStrictCrossDowngradeStrict"
-    WARNSAMESITESTRICTCROSSDOWNGRADELAX = "WarnSameSiteStrictCrossDowngradeLax"
-    WARNSAMESITELAXCROSSDOWNGRADESTRICT = "WarnSameSiteLaxCrossDowngradeStrict"
-    WARNSAMESITELAXCROSSDOWNGRADELAX = "WarnSameSiteLaxCrossDowngradeLax"
-    WARNATTRIBUTEVALUEEXCEEDSMAXSIZE = "WarnAttributeValueExceedsMaxSize"
-    WARNDOMAINNONASCII = "WarnDomainNonASCII"
-    WARNTHIRDPARTYPHASEOUT = "WarnThirdPartyPhaseout"
-    WARNCROSSSITEREDIRECTDOWNGRADECHANGESINCLUSION = "WarnCrossSiteRedirectDowngradeChangesInclusion"
-    WARNDEPRECATIONTRIALMETADATA = "WarnDeprecationTrialMetadata"
-    WARNTHIRDPARTYCOOKIEHEURISTIC = "WarnThirdPartyCookieHeuristic"
+CookieWarningReason = Literal["WarnSameSiteUnspecifiedCrossSiteContext", "WarnSameSiteNoneInsecure", "WarnSameSiteUnspecifiedLaxAllowUnsafe", "WarnSameSiteStrictLaxDowngradeStrict", "WarnSameSiteStrictCrossDowngradeStrict", "WarnSameSiteStrictCrossDowngradeLax", "WarnSameSiteLaxCrossDowngradeStrict", "WarnSameSiteLaxCrossDowngradeLax", "WarnAttributeValueExceedsMaxSize", "WarnDomainNonASCII", "WarnThirdPartyPhaseout", "WarnCrossSiteRedirectDowngradeChangesInclusion", "WarnDeprecationTrialMetadata", "WarnThirdPartyCookieHeuristic"]
 
 
 
-class CookieOperation(Enum):
-    SETCOOKIE = "SetCookie"
-    READCOOKIE = "ReadCookie"
+CookieOperation = Literal["SetCookie", "ReadCookie"]
 
 
 
-class InsightType(Enum):
-    """Represents the category of insight that a cookie issue falls under."""
-    GITHUBRESOURCE = "GitHubResource"
-    GRACEPERIOD = "GracePeriod"
-    HEURISTICS = "Heuristics"
+InsightType = Literal["GitHubResource", "GracePeriod", "Heuristics"]
+"""Represents the category of insight that a cookie issue falls under."""
 
 
 
@@ -126,43 +96,11 @@ may be used by the front-end as additional context."""
 
 
 
-class MixedContentResolutionStatus(Enum):
-    MIXEDCONTENTBLOCKED = "MixedContentBlocked"
-    MIXEDCONTENTAUTOMATICALLYUPGRADED = "MixedContentAutomaticallyUpgraded"
-    MIXEDCONTENTWARNING = "MixedContentWarning"
+MixedContentResolutionStatus = Literal["MixedContentBlocked", "MixedContentAutomaticallyUpgraded", "MixedContentWarning"]
 
 
 
-class MixedContentResourceType(Enum):
-    ATTRIBUTIONSRC = "AttributionSrc"
-    AUDIO = "Audio"
-    BEACON = "Beacon"
-    CSPREPORT = "CSPReport"
-    DOWNLOAD = "Download"
-    EVENTSOURCE = "EventSource"
-    FAVICON = "Favicon"
-    FONT = "Font"
-    FORM = "Form"
-    FRAME = "Frame"
-    IMAGE = "Image"
-    IMPORT = "Import"
-    JSON = "JSON"
-    MANIFEST = "Manifest"
-    PING = "Ping"
-    PLUGINDATA = "PluginData"
-    PLUGINRESOURCE = "PluginResource"
-    PREFETCH = "Prefetch"
-    RESOURCE = "Resource"
-    SCRIPT = "Script"
-    SERVICEWORKER = "ServiceWorker"
-    SHAREDWORKER = "SharedWorker"
-    SPECULATIONRULES = "SpeculationRules"
-    STYLESHEET = "Stylesheet"
-    TRACK = "Track"
-    VIDEO = "Video"
-    WORKER = "Worker"
-    XMLHTTPREQUEST = "XMLHttpRequest"
-    XSLT = "XSLT"
+MixedContentResourceType = Literal["AttributionSrc", "Audio", "Beacon", "CSPReport", "Download", "EventSource", "Favicon", "Font", "Form", "Frame", "Image", "Import", "JSON", "Manifest", "Ping", "PluginData", "PluginResource", "Prefetch", "Resource", "Script", "ServiceWorker", "SharedWorker", "SpeculationRules", "Stylesheet", "Track", "Video", "Worker", "XMLHttpRequest", "XSLT"]
 
 
 
@@ -186,17 +124,9 @@ Does not always exist (e.g. for unsafe form submission urls)."""
 
 
 
-class BlockedByResponseReason(Enum):
-    """Enum indicating the reason a response has been blocked. These reasons are
+BlockedByResponseReason = Literal["CoepFrameResourceNeedsCoepHeader", "CoopSandboxedIFrameCannotNavigateToCoopPage", "CorpNotSameOrigin", "CorpNotSameOriginAfterDefaultedToSameOriginByCoep", "CorpNotSameOriginAfterDefaultedToSameOriginByDip", "CorpNotSameOriginAfterDefaultedToSameOriginByCoepAndDip", "CorpNotSameSite", "SRIMessageSignatureMismatch"]
+"""Enum indicating the reason a response has been blocked. These reasons are
 refinements of the net error BLOCKED_BY_RESPONSE."""
-    COEPFRAMERESOURCENEEDSCOEPHEADER = "CoepFrameResourceNeedsCoepHeader"
-    COOPSANDBOXEDIFRAMECANNOTNAVIGATETOCOOPPAGE = "CoopSandboxedIFrameCannotNavigateToCoopPage"
-    CORPNOTSAMEORIGIN = "CorpNotSameOrigin"
-    CORPNOTSAMEORIGINAFTERDEFAULTEDTOSAMEORIGINBYCOEP = "CorpNotSameOriginAfterDefaultedToSameOriginByCoep"
-    CORPNOTSAMEORIGINAFTERDEFAULTEDTOSAMEORIGINBYDIP = "CorpNotSameOriginAfterDefaultedToSameOriginByDip"
-    CORPNOTSAMEORIGINAFTERDEFAULTEDTOSAMEORIGINBYCOEPANDDIP = "CorpNotSameOriginAfterDefaultedToSameOriginByCoepAndDip"
-    CORPNOTSAMESITE = "CorpNotSameSite"
-    SRIMESSAGESIGNATUREMISMATCH = "SRIMessageSignatureMismatch"
 
 
 
@@ -212,16 +142,11 @@ some CSP errors in the future."""
 
 
 
-class HeavyAdResolutionStatus(Enum):
-    HEAVYADBLOCKED = "HeavyAdBlocked"
-    HEAVYADWARNING = "HeavyAdWarning"
+HeavyAdResolutionStatus = Literal["HeavyAdBlocked", "HeavyAdWarning"]
 
 
 
-class HeavyAdReason(Enum):
-    NETWORKTOTALLIMIT = "NetworkTotalLimit"
-    CPUTOTALLIMIT = "CpuTotalLimit"
-    CPUPEAKLIMIT = "CpuPeakLimit"
+HeavyAdReason = Literal["NetworkTotalLimit", "CpuTotalLimit", "CpuPeakLimit"]
 
 
 
@@ -235,14 +160,7 @@ class HeavyAdIssueDetails(TypedDict):
 
 
 
-class ContentSecurityPolicyViolationType(Enum):
-    KINLINEVIOLATION = "kInlineViolation"
-    KEVALVIOLATION = "kEvalViolation"
-    KURLVIOLATION = "kURLViolation"
-    KSRIVIOLATION = "kSRIViolation"
-    KTRUSTEDTYPESSINKVIOLATION = "kTrustedTypesSinkViolation"
-    KTRUSTEDTYPESPOLICYVIOLATION = "kTrustedTypesPolicyViolation"
-    KWASMEVALVIOLATION = "kWasmEvalViolation"
+ContentSecurityPolicyViolationType = Literal["kInlineViolation", "kEvalViolation", "kURLViolation", "kSRIViolation", "kTrustedTypesSinkViolation", "kTrustedTypesPolicyViolation", "kWasmEvalViolation"]
 
 
 
@@ -267,9 +185,7 @@ class ContentSecurityPolicyIssueDetails(TypedDict):
 
 
 
-class SharedArrayBufferIssueType(Enum):
-    TRANSFERISSUE = "TransferIssue"
-    CREATIONISSUE = "CreationIssue"
+SharedArrayBufferIssueType = Literal["TransferIssue", "CreationIssue"]
 
 
 
@@ -308,80 +224,15 @@ CORS RFC1918 enforcement."""
 
 
 
-class AttributionReportingIssueType(Enum):
-    PERMISSIONPOLICYDISABLED = "PermissionPolicyDisabled"
-    UNTRUSTWORTHYREPORTINGORIGIN = "UntrustworthyReportingOrigin"
-    INSECURECONTEXT = "InsecureContext"
-    INVALIDHEADER = "InvalidHeader"
-    INVALIDREGISTERTRIGGERHEADER = "InvalidRegisterTriggerHeader"
-    SOURCEANDTRIGGERHEADERS = "SourceAndTriggerHeaders"
-    SOURCEIGNORED = "SourceIgnored"
-    TRIGGERIGNORED = "TriggerIgnored"
-    OSSOURCEIGNORED = "OsSourceIgnored"
-    OSTRIGGERIGNORED = "OsTriggerIgnored"
-    INVALIDREGISTEROSSOURCEHEADER = "InvalidRegisterOsSourceHeader"
-    INVALIDREGISTEROSTRIGGERHEADER = "InvalidRegisterOsTriggerHeader"
-    WEBANDOSHEADERS = "WebAndOsHeaders"
-    NOWEBOROSSUPPORT = "NoWebOrOsSupport"
-    NAVIGATIONREGISTRATIONWITHOUTTRANSIENTUSERACTIVATION = "NavigationRegistrationWithoutTransientUserActivation"
-    INVALIDINFOHEADER = "InvalidInfoHeader"
-    NOREGISTERSOURCEHEADER = "NoRegisterSourceHeader"
-    NOREGISTERTRIGGERHEADER = "NoRegisterTriggerHeader"
-    NOREGISTEROSSOURCEHEADER = "NoRegisterOsSourceHeader"
-    NOREGISTEROSTRIGGERHEADER = "NoRegisterOsTriggerHeader"
-    NAVIGATIONREGISTRATIONUNIQUESCOPEALREADYSET = "NavigationRegistrationUniqueScopeAlreadySet"
+AttributionReportingIssueType = Literal["PermissionPolicyDisabled", "UntrustworthyReportingOrigin", "InsecureContext", "InvalidHeader", "InvalidRegisterTriggerHeader", "SourceAndTriggerHeaders", "SourceIgnored", "TriggerIgnored", "OsSourceIgnored", "OsTriggerIgnored", "InvalidRegisterOsSourceHeader", "InvalidRegisterOsTriggerHeader", "WebAndOsHeaders", "NoWebOrOsSupport", "NavigationRegistrationWithoutTransientUserActivation", "InvalidInfoHeader", "NoRegisterSourceHeader", "NoRegisterTriggerHeader", "NoRegisterOsSourceHeader", "NoRegisterOsTriggerHeader", "NavigationRegistrationUniqueScopeAlreadySet"]
 
 
 
-class SharedDictionaryError(Enum):
-    USEERRORCROSSORIGINNOCORSREQUEST = "UseErrorCrossOriginNoCorsRequest"
-    USEERRORDICTIONARYLOADFAILURE = "UseErrorDictionaryLoadFailure"
-    USEERRORMATCHINGDICTIONARYNOTUSED = "UseErrorMatchingDictionaryNotUsed"
-    USEERRORUNEXPECTEDCONTENTDICTIONARYHEADER = "UseErrorUnexpectedContentDictionaryHeader"
-    WRITEERRORCOSSORIGINNOCORSREQUEST = "WriteErrorCossOriginNoCorsRequest"
-    WRITEERRORDISALLOWEDBYSETTINGS = "WriteErrorDisallowedBySettings"
-    WRITEERROREXPIREDRESPONSE = "WriteErrorExpiredResponse"
-    WRITEERRORFEATUREDISABLED = "WriteErrorFeatureDisabled"
-    WRITEERRORINSUFFICIENTRESOURCES = "WriteErrorInsufficientResources"
-    WRITEERRORINVALIDMATCHFIELD = "WriteErrorInvalidMatchField"
-    WRITEERRORINVALIDSTRUCTUREDHEADER = "WriteErrorInvalidStructuredHeader"
-    WRITEERRORNAVIGATIONREQUEST = "WriteErrorNavigationRequest"
-    WRITEERRORNOMATCHFIELD = "WriteErrorNoMatchField"
-    WRITEERRORNONLISTMATCHDESTFIELD = "WriteErrorNonListMatchDestField"
-    WRITEERRORNONSECURECONTEXT = "WriteErrorNonSecureContext"
-    WRITEERRORNONSTRINGIDFIELD = "WriteErrorNonStringIdField"
-    WRITEERRORNONSTRINGINMATCHDESTLIST = "WriteErrorNonStringInMatchDestList"
-    WRITEERRORNONSTRINGMATCHFIELD = "WriteErrorNonStringMatchField"
-    WRITEERRORNONTOKENTYPEFIELD = "WriteErrorNonTokenTypeField"
-    WRITEERRORREQUESTABORTED = "WriteErrorRequestAborted"
-    WRITEERRORSHUTTINGDOWN = "WriteErrorShuttingDown"
-    WRITEERRORTOOLONGIDFIELD = "WriteErrorTooLongIdField"
-    WRITEERRORUNSUPPORTEDTYPE = "WriteErrorUnsupportedType"
+SharedDictionaryError = Literal["UseErrorCrossOriginNoCorsRequest", "UseErrorDictionaryLoadFailure", "UseErrorMatchingDictionaryNotUsed", "UseErrorUnexpectedContentDictionaryHeader", "WriteErrorCossOriginNoCorsRequest", "WriteErrorDisallowedBySettings", "WriteErrorExpiredResponse", "WriteErrorFeatureDisabled", "WriteErrorInsufficientResources", "WriteErrorInvalidMatchField", "WriteErrorInvalidStructuredHeader", "WriteErrorNavigationRequest", "WriteErrorNoMatchField", "WriteErrorNonListMatchDestField", "WriteErrorNonSecureContext", "WriteErrorNonStringIdField", "WriteErrorNonStringInMatchDestList", "WriteErrorNonStringMatchField", "WriteErrorNonTokenTypeField", "WriteErrorRequestAborted", "WriteErrorShuttingDown", "WriteErrorTooLongIdField", "WriteErrorUnsupportedType"]
 
 
 
-class SRIMessageSignatureError(Enum):
-    MISSINGSIGNATUREHEADER = "MissingSignatureHeader"
-    MISSINGSIGNATUREINPUTHEADER = "MissingSignatureInputHeader"
-    INVALIDSIGNATUREHEADER = "InvalidSignatureHeader"
-    INVALIDSIGNATUREINPUTHEADER = "InvalidSignatureInputHeader"
-    SIGNATUREHEADERVALUEISNOTBYTESEQUENCE = "SignatureHeaderValueIsNotByteSequence"
-    SIGNATUREHEADERVALUEISPARAMETERIZED = "SignatureHeaderValueIsParameterized"
-    SIGNATUREHEADERVALUEISINCORRECTLENGTH = "SignatureHeaderValueIsIncorrectLength"
-    SIGNATUREINPUTHEADERMISSINGLABEL = "SignatureInputHeaderMissingLabel"
-    SIGNATUREINPUTHEADERVALUENOTINNERLIST = "SignatureInputHeaderValueNotInnerList"
-    SIGNATUREINPUTHEADERVALUEMISSINGCOMPONENTS = "SignatureInputHeaderValueMissingComponents"
-    SIGNATUREINPUTHEADERINVALIDCOMPONENTTYPE = "SignatureInputHeaderInvalidComponentType"
-    SIGNATUREINPUTHEADERINVALIDCOMPONENTNAME = "SignatureInputHeaderInvalidComponentName"
-    SIGNATUREINPUTHEADERINVALIDHEADERCOMPONENTPARAMETER = "SignatureInputHeaderInvalidHeaderComponentParameter"
-    SIGNATUREINPUTHEADERINVALIDDERIVEDCOMPONENTPARAMETER = "SignatureInputHeaderInvalidDerivedComponentParameter"
-    SIGNATUREINPUTHEADERKEYIDLENGTH = "SignatureInputHeaderKeyIdLength"
-    SIGNATUREINPUTHEADERINVALIDPARAMETER = "SignatureInputHeaderInvalidParameter"
-    SIGNATUREINPUTHEADERMISSINGREQUIREDPARAMETERS = "SignatureInputHeaderMissingRequiredParameters"
-    VALIDATIONFAILEDSIGNATUREEXPIRED = "ValidationFailedSignatureExpired"
-    VALIDATIONFAILEDINVALIDLENGTH = "ValidationFailedInvalidLength"
-    VALIDATIONFAILEDSIGNATUREMISMATCH = "ValidationFailedSignatureMismatch"
-    VALIDATIONFAILEDINTEGRITYMISMATCH = "ValidationFailedIntegrityMismatch"
+SRIMessageSignatureError = Literal["MissingSignatureHeader", "MissingSignatureInputHeader", "InvalidSignatureHeader", "InvalidSignatureInputHeader", "SignatureHeaderValueIsNotByteSequence", "SignatureHeaderValueIsParameterized", "SignatureHeaderValueIsIncorrectLength", "SignatureInputHeaderMissingLabel", "SignatureInputHeaderValueNotInnerList", "SignatureInputHeaderValueMissingComponents", "SignatureInputHeaderInvalidComponentType", "SignatureInputHeaderInvalidComponentName", "SignatureInputHeaderInvalidHeaderComponentParameter", "SignatureInputHeaderInvalidDerivedComponentParameter", "SignatureInputHeaderKeyIdLength", "SignatureInputHeaderInvalidParameter", "SignatureInputHeaderMissingRequiredParameters", "ValidationFailedSignatureExpired", "ValidationFailedInvalidLength", "ValidationFailedSignatureMismatch", "ValidationFailedIntegrityMismatch"]
 
 
 
@@ -430,18 +281,7 @@ class SRIMessageSignatureIssueDetails(TypedDict):
 
 
 
-class GenericIssueErrorType(Enum):
-    FORMLABELFORNAMEERROR = "FormLabelForNameError"
-    FORMDUPLICATEIDFORINPUTERROR = "FormDuplicateIdForInputError"
-    FORMINPUTWITHNOLABELERROR = "FormInputWithNoLabelError"
-    FORMAUTOCOMPLETEATTRIBUTEEMPTYERROR = "FormAutocompleteAttributeEmptyError"
-    FORMEMPTYIDANDNAMEATTRIBUTESFORINPUTERROR = "FormEmptyIdAndNameAttributesForInputError"
-    FORMARIALABELLEDBYTONONEXISTINGID = "FormAriaLabelledByToNonExistingId"
-    FORMINPUTASSIGNEDAUTOCOMPLETEVALUETOIDORNAMEATTRIBUTEERROR = "FormInputAssignedAutocompleteValueToIdOrNameAttributeError"
-    FORMLABELHASNEITHERFORNORNESTEDINPUT = "FormLabelHasNeitherForNorNestedInput"
-    FORMLABELFORMATCHESNONEXISTINGIDERROR = "FormLabelForMatchesNonExistingIdError"
-    FORMINPUTHASWRONGBUTWELLINTENDEDAUTOCOMPLETEVALUEERROR = "FormInputHasWrongButWellIntendedAutocompleteValueError"
-    RESPONSEWASBLOCKEDBYORB = "ResponseWasBlockedByORB"
+GenericIssueErrorType = Literal["FormLabelForNameError", "FormDuplicateIdForInputError", "FormInputWithNoLabelError", "FormAutocompleteAttributeEmptyError", "FormEmptyIdAndNameAttributesForInputError", "FormAriaLabelledByToNonExistingId", "FormInputAssignedAutocompleteValueToIdOrNameAttributeError", "FormLabelHasNeitherForNorNestedInput", "FormLabelForMatchesNonExistingIdError", "FormInputHasWrongButWellIntendedAutocompleteValueError", "ResponseWasBlockedByORB"]
 
 
 
@@ -493,9 +333,7 @@ would be `example.test`."""
 
 
 
-class ClientHintIssueReason(Enum):
-    METATAGALLOWLISTINVALIDORIGIN = "MetaTagAllowListInvalidOrigin"
-    METATAGMODIFIEDHTML = "MetaTagModifiedHTML"
+ClientHintIssueReason = Literal["MetaTagAllowListInvalidOrigin", "MetaTagModifiedHTML"]
 
 
 
@@ -504,59 +342,11 @@ class FederatedAuthRequestIssueDetails(TypedDict):
 
 
 
-class FederatedAuthRequestIssueReason(Enum):
-    """Represents the failure reason when a federated authentication reason fails.
+FederatedAuthRequestIssueReason = Literal["ShouldEmbargo", "TooManyRequests", "WellKnownHttpNotFound", "WellKnownNoResponse", "WellKnownInvalidResponse", "WellKnownListEmpty", "WellKnownInvalidContentType", "ConfigNotInWellKnown", "WellKnownTooBig", "ConfigHttpNotFound", "ConfigNoResponse", "ConfigInvalidResponse", "ConfigInvalidContentType", "ClientMetadataHttpNotFound", "ClientMetadataNoResponse", "ClientMetadataInvalidResponse", "ClientMetadataInvalidContentType", "IdpNotPotentiallyTrustworthy", "DisabledInSettings", "DisabledInFlags", "ErrorFetchingSignin", "InvalidSigninResponse", "AccountsHttpNotFound", "AccountsNoResponse", "AccountsInvalidResponse", "AccountsListEmpty", "AccountsInvalidContentType", "IdTokenHttpNotFound", "IdTokenNoResponse", "IdTokenInvalidResponse", "IdTokenIdpErrorResponse", "IdTokenCrossSiteIdpErrorResponse", "IdTokenInvalidRequest", "IdTokenInvalidContentType", "ErrorIdToken", "Canceled", "RpPageNotVisible", "SilentMediationFailure", "ThirdPartyCookiesBlocked", "NotSignedInWithIdp", "MissingTransientUserActivation", "ReplacedByActiveMode", "InvalidFieldsSpecified", "RelyingPartyOriginIsOpaque", "TypeNotMatching", "UiDismissedNoEmbargo", "CorsError", "SuppressedBySegmentationPlatform"]
+"""Represents the failure reason when a federated authentication reason fails.
 Should be updated alongside RequestIdTokenStatus in
 third_party/blink/public/mojom/devtools/inspector_issue.mojom to include
 all cases except for success."""
-    SHOULDEMBARGO = "ShouldEmbargo"
-    TOOMANYREQUESTS = "TooManyRequests"
-    WELLKNOWNHTTPNOTFOUND = "WellKnownHttpNotFound"
-    WELLKNOWNNORESPONSE = "WellKnownNoResponse"
-    WELLKNOWNINVALIDRESPONSE = "WellKnownInvalidResponse"
-    WELLKNOWNLISTEMPTY = "WellKnownListEmpty"
-    WELLKNOWNINVALIDCONTENTTYPE = "WellKnownInvalidContentType"
-    CONFIGNOTINWELLKNOWN = "ConfigNotInWellKnown"
-    WELLKNOWNTOOBIG = "WellKnownTooBig"
-    CONFIGHTTPNOTFOUND = "ConfigHttpNotFound"
-    CONFIGNORESPONSE = "ConfigNoResponse"
-    CONFIGINVALIDRESPONSE = "ConfigInvalidResponse"
-    CONFIGINVALIDCONTENTTYPE = "ConfigInvalidContentType"
-    CLIENTMETADATAHTTPNOTFOUND = "ClientMetadataHttpNotFound"
-    CLIENTMETADATANORESPONSE = "ClientMetadataNoResponse"
-    CLIENTMETADATAINVALIDRESPONSE = "ClientMetadataInvalidResponse"
-    CLIENTMETADATAINVALIDCONTENTTYPE = "ClientMetadataInvalidContentType"
-    IDPNOTPOTENTIALLYTRUSTWORTHY = "IdpNotPotentiallyTrustworthy"
-    DISABLEDINSETTINGS = "DisabledInSettings"
-    DISABLEDINFLAGS = "DisabledInFlags"
-    ERRORFETCHINGSIGNIN = "ErrorFetchingSignin"
-    INVALIDSIGNINRESPONSE = "InvalidSigninResponse"
-    ACCOUNTSHTTPNOTFOUND = "AccountsHttpNotFound"
-    ACCOUNTSNORESPONSE = "AccountsNoResponse"
-    ACCOUNTSINVALIDRESPONSE = "AccountsInvalidResponse"
-    ACCOUNTSLISTEMPTY = "AccountsListEmpty"
-    ACCOUNTSINVALIDCONTENTTYPE = "AccountsInvalidContentType"
-    IDTOKENHTTPNOTFOUND = "IdTokenHttpNotFound"
-    IDTOKENNORESPONSE = "IdTokenNoResponse"
-    IDTOKENINVALIDRESPONSE = "IdTokenInvalidResponse"
-    IDTOKENIDPERRORRESPONSE = "IdTokenIdpErrorResponse"
-    IDTOKENCROSSSITEIDPERRORRESPONSE = "IdTokenCrossSiteIdpErrorResponse"
-    IDTOKENINVALIDREQUEST = "IdTokenInvalidRequest"
-    IDTOKENINVALIDCONTENTTYPE = "IdTokenInvalidContentType"
-    ERRORIDTOKEN = "ErrorIdToken"
-    CANCELED = "Canceled"
-    RPPAGENOTVISIBLE = "RpPageNotVisible"
-    SILENTMEDIATIONFAILURE = "SilentMediationFailure"
-    THIRDPARTYCOOKIESBLOCKED = "ThirdPartyCookiesBlocked"
-    NOTSIGNEDINWITHIDP = "NotSignedInWithIdp"
-    MISSINGTRANSIENTUSERACTIVATION = "MissingTransientUserActivation"
-    REPLACEDBYACTIVEMODE = "ReplacedByActiveMode"
-    INVALIDFIELDSSPECIFIED = "InvalidFieldsSpecified"
-    RELYINGPARTYORIGINISOPAQUE = "RelyingPartyOriginIsOpaque"
-    TYPENOTMATCHING = "TypeNotMatching"
-    UIDISMISSEDNOEMBARGO = "UiDismissedNoEmbargo"
-    CORSERROR = "CorsError"
-    SUPPRESSEDBYSEGMENTATIONPLATFORM = "SuppressedBySegmentationPlatform"
 
 
 
@@ -565,19 +355,10 @@ class FederatedAuthUserInfoRequestIssueDetails(TypedDict):
 
 
 
-class FederatedAuthUserInfoRequestIssueReason(Enum):
-    """Represents the failure reason when a getUserInfo() call fails.
+FederatedAuthUserInfoRequestIssueReason = Literal["NotSameOrigin", "NotIframe", "NotPotentiallyTrustworthy", "NoApiPermission", "NotSignedInWithIdp", "NoAccountSharingPermission", "InvalidConfigOrWellKnown", "InvalidAccountsResponse", "NoReturningUserFromFetchedAccounts"]
+"""Represents the failure reason when a getUserInfo() call fails.
 Should be updated alongside FederatedAuthUserInfoRequestResult in
 third_party/blink/public/mojom/devtools/inspector_issue.mojom."""
-    NOTSAMEORIGIN = "NotSameOrigin"
-    NOTIFRAME = "NotIframe"
-    NOTPOTENTIALLYTRUSTWORTHY = "NotPotentiallyTrustworthy"
-    NOAPIPERMISSION = "NoApiPermission"
-    NOTSIGNEDINWITHIDP = "NotSignedInWithIdp"
-    NOACCOUNTSHARINGPERMISSION = "NoAccountSharingPermission"
-    INVALIDCONFIGORWELLKNOWN = "InvalidConfigOrWellKnown"
-    INVALIDACCOUNTSRESPONSE = "InvalidAccountsResponse"
-    NORETURNINGUSERFROMFETCHEDACCOUNTS = "NoReturningUserFromFetchedAccounts"
 
 
 
@@ -599,9 +380,7 @@ class FailedRequestInfo(TypedDict):
 
 
 
-class PartitioningBlobURLInfo(Enum):
-    BLOCKEDCROSSPARTITIONFETCHING = "BlockedCrossPartitionFetching"
-    ENFORCENOOPENERFORNAVIGATION = "EnforceNoopenerForNavigation"
+PartitioningBlobURLInfo = Literal["BlockedCrossPartitionFetching", "EnforceNoopenerForNavigation"]
 
 
 
@@ -613,13 +392,7 @@ class PartitioningBlobURLIssueDetails(TypedDict):
 
 
 
-class ElementAccessibilityIssueReason(Enum):
-    DISALLOWEDSELECTCHILD = "DisallowedSelectChild"
-    DISALLOWEDOPTGROUPCHILD = "DisallowedOptGroupChild"
-    NONPHRASINGCONTENTOPTIONCHILD = "NonPhrasingContentOptionChild"
-    INTERACTIVECONTENTOPTIONCHILD = "InteractiveContentOptionChild"
-    INTERACTIVECONTENTLEGENDCHILD = "InteractiveContentLegendChild"
-    INTERACTIVECONTENTSUMMARYDESCENDANT = "InteractiveContentSummaryDescendant"
+ElementAccessibilityIssueReason = Literal["DisallowedSelectChild", "DisallowedOptGroupChild", "NonPhrasingContentOptionChild", "InteractiveContentOptionChild", "InteractiveContentLegendChild", "InteractiveContentSummaryDescendant"]
 
 
 
@@ -632,9 +405,7 @@ class ElementAccessibilityIssueDetails(TypedDict):
 
 
 
-class StyleSheetLoadingIssueReason(Enum):
-    LATEIMPORTRULE = "LateImportRule"
-    REQUESTFAILED = "RequestFailed"
+StyleSheetLoadingIssueReason = Literal["LateImportRule", "RequestFailed"]
 
 
 
@@ -650,11 +421,7 @@ class StylesheetLoadingIssueDetails(TypedDict):
 
 
 
-class PropertyRuleIssueReason(Enum):
-    INVALIDSYNTAX = "InvalidSyntax"
-    INVALIDINITIALVALUE = "InvalidInitialValue"
-    INVALIDINHERITS = "InvalidInherits"
-    INVALIDNAME = "InvalidName"
+PropertyRuleIssueReason = Literal["InvalidSyntax", "InvalidInitialValue", "InvalidInherits", "InvalidName"]
 
 
 
@@ -671,9 +438,7 @@ registrations being ignored."""
 
 
 
-class UserReidentificationIssueType(Enum):
-    BLOCKEDFRAMENAVIGATION = "BlockedFrameNavigation"
-    BLOCKEDSUBRESOURCE = "BlockedSubresource"
+UserReidentificationIssueType = Literal["BlockedFrameNavigation", "BlockedSubresource"]
 
 
 
@@ -687,35 +452,10 @@ re-identify users."""
 
 
 
-class InspectorIssueCode(Enum):
-    """A unique identifier for the type of issue. Each type may use one of the
+InspectorIssueCode = Literal["CookieIssue", "MixedContentIssue", "BlockedByResponseIssue", "HeavyAdIssue", "ContentSecurityPolicyIssue", "SharedArrayBufferIssue", "LowTextContrastIssue", "CorsIssue", "AttributionReportingIssue", "QuirksModeIssue", "PartitioningBlobURLIssue", "NavigatorUserAgentIssue", "GenericIssue", "DeprecationIssue", "ClientHintIssue", "FederatedAuthRequestIssue", "BounceTrackingIssue", "CookieDeprecationMetadataIssue", "StylesheetLoadingIssue", "FederatedAuthUserInfoRequestIssue", "PropertyRuleIssue", "SharedDictionaryIssue", "ElementAccessibilityIssue", "SRIMessageSignatureIssue", "UserReidentificationIssue"]
+"""A unique identifier for the type of issue. Each type may use one of the
 optional fields in InspectorIssueDetails to convey more specific
 information about the kind of issue."""
-    COOKIEISSUE = "CookieIssue"
-    MIXEDCONTENTISSUE = "MixedContentIssue"
-    BLOCKEDBYRESPONSEISSUE = "BlockedByResponseIssue"
-    HEAVYADISSUE = "HeavyAdIssue"
-    CONTENTSECURITYPOLICYISSUE = "ContentSecurityPolicyIssue"
-    SHAREDARRAYBUFFERISSUE = "SharedArrayBufferIssue"
-    LOWTEXTCONTRASTISSUE = "LowTextContrastIssue"
-    CORSISSUE = "CorsIssue"
-    ATTRIBUTIONREPORTINGISSUE = "AttributionReportingIssue"
-    QUIRKSMODEISSUE = "QuirksModeIssue"
-    PARTITIONINGBLOBURLISSUE = "PartitioningBlobURLIssue"
-    NAVIGATORUSERAGENTISSUE = "NavigatorUserAgentIssue"
-    GENERICISSUE = "GenericIssue"
-    DEPRECATIONISSUE = "DeprecationIssue"
-    CLIENTHINTISSUE = "ClientHintIssue"
-    FEDERATEDAUTHREQUESTISSUE = "FederatedAuthRequestIssue"
-    BOUNCETRACKINGISSUE = "BounceTrackingIssue"
-    COOKIEDEPRECATIONMETADATAISSUE = "CookieDeprecationMetadataIssue"
-    STYLESHEETLOADINGISSUE = "StylesheetLoadingIssue"
-    FEDERATEDAUTHUSERINFOREQUESTISSUE = "FederatedAuthUserInfoRequestIssue"
-    PROPERTYRULEISSUE = "PropertyRuleIssue"
-    SHAREDDICTIONARYISSUE = "SharedDictionaryIssue"
-    ELEMENTACCESSIBILITYISSUE = "ElementAccessibilityIssue"
-    SRIMESSAGESIGNATUREISSUE = "SRIMessageSignatureIssue"
-    USERREIDENTIFICATIONISSUE = "UserReidentificationIssue"
 
 
 
@@ -752,9 +492,9 @@ add a new optional field to this type."""
 
 
 
-# A unique id for a DevTools inspector issue. Allows other entities (e.g.
-# exceptions, CDP message, console messages, etc.) to reference an issue.
 IssueId = str
+"""A unique id for a DevTools inspector issue. Allows other entities (e.g.
+exceptions, CDP message, console messages, etc.) to reference an issue."""
 
 
 

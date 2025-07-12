@@ -4,46 +4,32 @@
 
 """CDP BluetoothEmulation Domain Types"""
 
-from enum import Enum
 from typing import List
+from typing_extensions import Literal
 from typing_extensions import TypedDict
 
-class CentralState(Enum):
-    """Indicates the various states of Central."""
-    ABSENT = "absent"
-    POWERED_OFF = "powered-off"
-    POWERED_ON = "powered-on"
+CentralState = Literal["absent", "powered-off", "powered-on"]
+"""Indicates the various states of Central."""
 
 
 
-class GATTOperationType(Enum):
-    """Indicates the various types of GATT event."""
-    CONNECTION = "connection"
-    DISCOVERY = "discovery"
+GATTOperationType = Literal["connection", "discovery"]
+"""Indicates the various types of GATT event."""
 
 
 
-class CharacteristicWriteType(Enum):
-    """Indicates the various types of characteristic write."""
-    WRITE_DEFAULT_DEPRECATED = "write-default-deprecated"
-    WRITE_WITH_RESPONSE = "write-with-response"
-    WRITE_WITHOUT_RESPONSE = "write-without-response"
+CharacteristicWriteType = Literal["write-default-deprecated", "write-with-response", "write-without-response"]
+"""Indicates the various types of characteristic write."""
 
 
 
-class CharacteristicOperationType(Enum):
-    """Indicates the various types of characteristic operation."""
-    READ = "read"
-    WRITE = "write"
-    SUBSCRIBE_TO_NOTIFICATIONS = "subscribe-to-notifications"
-    UNSUBSCRIBE_FROM_NOTIFICATIONS = "unsubscribe-from-notifications"
+CharacteristicOperationType = Literal["read", "write", "subscribe-to-notifications", "unsubscribe-from-notifications"]
+"""Indicates the various types of characteristic operation."""
 
 
 
-class DescriptorOperationType(Enum):
-    """Indicates the various types of descriptor operation."""
-    READ = "read"
-    WRITE = "write"
+DescriptorOperationType = Literal["read", "write"]
+"""Indicates the various types of descriptor operation."""
 
 
 
