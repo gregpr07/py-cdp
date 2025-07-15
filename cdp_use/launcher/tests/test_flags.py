@@ -86,15 +86,15 @@ class TestFlagManager:
         args = manager.format_args()
         assert "--disable-features=feature1,feature2" in args
     
-    def test_format_args_excludes_rod_flags(self):
-        """Test that rod- prefixed flags are excluded from command line."""
+    def test_format_args_excludes_bu_flags(self):
+        """Test that bu- prefixed flags are excluded from command line."""
         manager = FlagManager()
         manager.set(Flag.BIN, "/path/to/browser")
         manager.set(Flag.HEADLESS)
         
         args = manager.format_args()
         assert "--headless" in args
-        assert "--rod-bin" not in args
+        assert "--bu-bin" not in args
     
     def test_format_args_positional_arguments(self):
         """Test handling of positional arguments."""

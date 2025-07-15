@@ -1,7 +1,7 @@
 """Browser download host providers."""
 
 import platform
-from typing import Callable, Dict
+from typing import Callable, Dict, Tuple
 
 
 # Host function type - takes revision number and returns download URL
@@ -23,8 +23,8 @@ REVISION_PLAYWRIGHT = 1124
 
 def _get_host_config() -> Dict[str, str]:
     """Get host configuration for current platform."""
-    system = platform.system()
-    machine = platform.machine()
+    system: str = platform.system()
+    machine: str = platform.machine()
     
     # Normalize machine names
     if machine in ("AMD64", "x86_64"):

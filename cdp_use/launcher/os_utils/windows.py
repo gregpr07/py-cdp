@@ -40,8 +40,8 @@ class WindowsUtils(OSUtils):
         """Get the default browser download directory."""
         appdata = os.getenv("APPDATA")
         if appdata:
-            return Path(appdata) / "rod" / "browser"
-        return Path.home() / "AppData" / "Roaming" / "rod" / "browser"
+            return Path(appdata) / "bu" / "browser"
+        return Path.home() / "AppData" / "Roaming" / "bu" / "browser"
     
     def _get_common_browser_paths(self) -> List[str]:
         """Get common browser installation paths for Windows."""

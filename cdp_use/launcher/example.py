@@ -6,100 +6,133 @@ This example demonstrates various launcher configurations and usage patterns.
 """
 
 import logging
-import time
+import sys
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Import launcher components (using absolute imports for example)
-import sys
-from pathlib import Path
+# Add current directory to path for direct imports
 sys.path.insert(0, str(Path(__file__).parent))
 
+# Always import these as they don't require httpx
+from flags import Flag, FlagManager
+from hosts import HostGoogle, REVISION_DEFAULT
+
+# Try to import the full launcher functionality
+_FULL_FUNCTIONALITY_AVAILABLE = True
 try:
-    from launcher import Launcher, LauncherConfig, new, new_user_mode, new_app_mode
-    from browser import Browser, find_installed_browser
-    from flags import Flag
-    from hosts import HostGoogle, REVISION_DEFAULT
+    from launcher import Launcher as _Launcher, LauncherConfig as _LauncherConfig
+    from launcher import new as _new, new_user_mode as _new_user_mode, new_app_mode as _new_app_mode
+    from browser import Browser as _Browser, find_installed_browser as _find_installed_browser
 except ImportError:
+    _FULL_FUNCTIONALITY_AVAILABLE = False
     print("Note: This example requires httpx to be installed for full functionality.")
     print("Some imports may fail without httpx. Install with: pip install httpx")
+    print()
+
+# Define mock classes for demonstration when full functionality isn't available
+class MockLauncherConfig:
+    """Mock launcher config for demonstration purposes."""
     
-    # Fallback imports for demonstration
-    from flags import Flag, FlagManager
-    from hosts import HostGoogle, REVISION_DEFAULT
+    def __init__(self, **kwargs: Any) -> None:
+        self.headless: bool = kwargs.get('headless', True)
+        self.remote_debugging_port: int = kwargs.get('remote_debugging_port', 0)
+        self.window_size: Optional[Tuple[int, int]] = kwargs.get('window_size')
+        self.user_data_dir: Optional[str] = kwargs.get('user_data_dir')
+        self.no_sandbox: bool = kwargs.get('no_sandbox', False)
+        self.devtools: bool = kwargs.get('devtools', False)
+        self.start_url: Optional[str] = kwargs.get('start_url')
+        self.custom_flags: Dict[str, List[str]] = kwargs.get('custom_flags', {})
+
+class MockLauncher:
+    """Mock launcher for demonstration purposes."""
     
-    # Mock classes for demonstration
-    class LauncherConfig:
-        def __init__(self, **kwargs):
-            for k, v in kwargs.items():
-                setattr(self, k, v)
+    def __init__(self, config: Optional[MockLauncherConfig] = None) -> None:
+        self.config = config or MockLauncherConfig()
     
-    class Launcher:
-        def __init__(self, config=None):
-            self.config = config or LauncherConfig(headless=True, remote_debugging_port=0)
-        
-        def headless(self, enable=True):
-            self.config.headless = enable
-            return self
-        
-        def window_size(self, width, height):
-            self.config.window_size = (width, height)
-            return self
-        
-        def user_data_dir(self, path):
-            self.config.user_data_dir = path
-            return self
-        
-        def remote_debugging_port(self, port):
-            self.config.remote_debugging_port = port
-            return self
-        
-        def no_sandbox(self, enable=True):
-            self.config.no_sandbox = enable
-            return self
-        
-        def devtools(self, enable=True):
-            self.config.devtools = enable
-            return self
-        
-        def flag(self, name, *values):
-            if not hasattr(self.config, 'custom_flags'):
-                self.config.custom_flags = {}
-            self.config.custom_flags[name] = list(values)
-            return self
-        
-        def delete_flag(self, name):
-            if hasattr(self.config, 'custom_flags'):
-                self.config.custom_flags.pop(name, None)
-            return self
+    def headless(self, enable: bool = True) -> 'MockLauncher':
+        self.config.headless = enable
+        return self
     
-    def new():
-        return Launcher()
+    def window_size(self, width: int, height: int) -> 'MockLauncher':
+        self.config.window_size = (width, height)
+        return self
     
-    def new_user_mode():
-        return Launcher(LauncherConfig(headless=False, remote_debugging_port=37712))
+    def user_data_dir(self, path: str) -> 'MockLauncher':
+        self.config.user_data_dir = path
+        return self
     
-    def new_app_mode(url):
-        return Launcher(LauncherConfig(headless=False, start_url=url))
+    def remote_debugging_port(self, port: int) -> 'MockLauncher':
+        self.config.remote_debugging_port = port
+        return self
     
-    class Browser:
-        def __init__(self, revision=REVISION_DEFAULT):
-            self.revision = revision
-        
-        def get_browser_dir(self):
-            return Path.home() / ".cache" / "rod" / "browser" / f"chromium-{self.revision}"
-        
-        def get_bin_path(self):
-            return self.get_browser_dir() / "chrome"
-        
-        def exists(self):
-            return False
+    def no_sandbox(self, enable: bool = True) -> 'MockLauncher':
+        self.config.no_sandbox = enable
+        return self
     
-    def find_installed_browser():
-        return None
+    def devtools(self, enable: bool = True) -> 'MockLauncher':
+        self.config.devtools = enable
+        return self
+    
+    def flag(self, name: str, *values: str) -> 'MockLauncher':
+        self.config.custom_flags[name] = list(values)
+        return self
+    
+    def delete_flag(self, name: str) -> 'MockLauncher':
+        self.config.custom_flags.pop(name, None)
+        return self
+
+class MockBrowser:
+    """Mock browser for demonstration purposes."""
+    
+    def __init__(self, revision: int = REVISION_DEFAULT) -> None:
+        self.revision = revision
+    
+    def get_browser_dir(self) -> Path:
+        return Path.home() / ".cache" / "bu" / "browser" / f"chromium-{self.revision}"
+    
+    def get_bin_path(self) -> Path:
+        return self.get_browser_dir() / "chrome"
+    
+    def exists(self) -> bool:
+        return False
+
+def mock_new() -> MockLauncher:
+    """Create a mock launcher."""
+    return MockLauncher()
+
+def mock_new_user_mode() -> MockLauncher:
+    """Create a mock user mode launcher."""
+    return MockLauncher(MockLauncherConfig(headless=False, remote_debugging_port=37712))
+
+def mock_new_app_mode(url: str) -> MockLauncher:
+    """Create a mock app mode launcher."""
+    return MockLauncher(MockLauncherConfig(headless=False, start_url=url))
+
+def mock_find_installed_browser() -> Optional[Path]:
+    """Mock find installed browser function."""
+    return None
+
+# Define type aliases for the API
+if _FULL_FUNCTIONALITY_AVAILABLE:
+    LauncherConfig = _LauncherConfig
+    Launcher = _Launcher
+    Browser = _Browser
+    new = _new
+    new_user_mode = _new_user_mode
+    new_app_mode = _new_app_mode
+    find_installed_browser = _find_installed_browser
+else:
+    LauncherConfig = MockLauncherConfig  # type: ignore
+    Launcher = MockLauncher  # type: ignore
+    Browser = MockBrowser  # type: ignore
+    new = mock_new  # type: ignore
+    new_user_mode = mock_new_user_mode  # type: ignore
+    new_app_mode = mock_new_app_mode  # type: ignore
+    find_installed_browser = mock_find_installed_browser  # type: ignore
 
 
 def example_basic_usage():

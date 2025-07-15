@@ -8,7 +8,7 @@ import tempfile
 import zipfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 import httpx
 
@@ -219,16 +219,16 @@ class Browser:
     
     def _find_fastest_url(self, urls: List[str]) -> str:
         """Find the fastest responding URL by testing small requests."""
-        def test_url(url: str) -> tuple[str, float]:
+        def test_url(url: str) -> Tuple[str, float]:
             try:
                 import time
-                start = time.time()
+                start: float = time.time()
                 response = self._get_http_client().get(
                     url, 
                     headers={"Range": "bytes=0-1023"},  # Test with 1KB
                     timeout=10
                 )
-                elapsed = time.time() - start
+                elapsed: float = time.time() - start
                 
                 if response.status_code in (200, 206):  # OK or Partial Content
                     return url, elapsed

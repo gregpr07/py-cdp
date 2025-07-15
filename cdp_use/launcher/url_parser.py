@@ -3,7 +3,7 @@
 import asyncio
 import re
 import threading
-from typing import Optional, Union
+from typing import Optional, Union, Pattern
 from urllib.parse import urlparse
 
 import httpx
@@ -14,15 +14,15 @@ from .errors import URLParseError
 class URLParser:
     """Parses browser debug URL from stdout/stderr output."""
     
-    def __init__(self):
-        self._buffer = ""
+    def __init__(self) -> None:
+        self._buffer: str = ""
         self._url: Optional[str] = None
         self._error: Optional[str] = None
-        self._lock = threading.Lock()
-        self._url_event = threading.Event()
+        self._lock: threading.Lock = threading.Lock()
+        self._url_event: threading.Event = threading.Event()
         
         # Regex to match WebSocket debug URLs
-        self._ws_regex = re.compile(r'ws://[^\s]+/')
+        self._ws_regex: Pattern[str] = re.compile(r'ws://[^\s]+/')
     
     def write(self, data: Union[str, bytes]) -> None:
         """Write data to the parser buffer."""

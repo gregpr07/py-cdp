@@ -10,7 +10,15 @@ import threading
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from typing_extensions import Self
+else:
+    try:
+        from typing import Self
+    except ImportError:
+        from typing_extensions import Self
 
 from .browser import Browser, find_installed_browser
 from .errors import AlreadyLaunchedError, BrowserNotFoundError, LauncherError
@@ -63,7 +71,7 @@ class LauncherConfig:
         """Post-initialization setup."""
         if self.user_data_dir is None:
             # Use temporary directory by default
-            temp_base = Path(tempfile.gettempdir()) / "rod" / "user-data"
+            temp_base = Path(tempfile.gettempdir()) / "bu" / "user-data"
             self.user_data_dir = str(temp_base / f"session-{os.getpid()}")
 
 
@@ -87,109 +95,109 @@ class Launcher:
         
     # Fluent configuration methods
     
-    def bin(self, path: str) -> 'Launcher':
+    def bin(self, path: str) -> Self:
         """Set browser binary path."""
         self.config.bin_path = path
         return self
     
-    def revision(self, rev: int) -> 'Launcher':
+    def revision(self, rev: int) -> Self:
         """Set browser revision to download."""
         self.config.revision = rev
         return self
     
-    def headless(self, enable: bool = True) -> 'Launcher':
+    def headless(self, enable: bool = True) -> Self:
         """Enable/disable headless mode."""
         self.config.headless = enable
         self.config.headless_new = False  # Reset headless new
         return self
     
-    def headless_new(self, enable: bool = True) -> 'Launcher':
+    def headless_new(self, enable: bool = True) -> Self:
         """Enable/disable new headless mode (--headless=new)."""
         self.config.headless_new = enable
         if enable:
             self.config.headless = False  # Disable regular headless
         return self
     
-    def no_sandbox(self, enable: bool = True) -> 'Launcher':
+    def no_sandbox(self, enable: bool = True) -> Self:
         """Enable/disable no-sandbox mode."""
         self.config.no_sandbox = enable
         return self
     
-    def window_size(self, width: int, height: int) -> 'Launcher':
+    def window_size(self, width: int, height: int) -> Self:
         """Set browser window size."""
         self.config.window_size = (width, height)
         return self
     
-    def window_position(self, x: int, y: int) -> 'Launcher':
+    def window_position(self, x: int, y: int) -> Self:
         """Set browser window position."""
         self.config.window_position = (x, y)
         return self
     
-    def user_data_dir(self, path: str) -> 'Launcher':
+    def user_data_dir(self, path: str) -> Self:
         """Set user data directory."""
         self.config.user_data_dir = path
         return self
     
-    def profile_dir(self, path: str) -> 'Launcher':
+    def profile_dir(self, path: str) -> Self:
         """Set profile directory."""
         self.config.profile_dir = path
         return self
     
-    def remote_debugging_port(self, port: int) -> 'Launcher':
+    def remote_debugging_port(self, port: int) -> Self:
         """Set remote debugging port (0 for random)."""
         self.config.remote_debugging_port = port
         return self
     
-    def proxy(self, proxy_server: str) -> 'Launcher':
+    def proxy(self, proxy_server: str) -> Self:
         """Set proxy server."""
         self.config.proxy_server = proxy_server
         return self
     
-    def working_dir(self, path: str) -> 'Launcher':
+    def working_dir(self, path: str) -> Self:
         """Set working directory."""
         self.config.working_dir = path
         return self
     
-    def env(self, **env_vars: str) -> 'Launcher':
+    def env(self, **env_vars: str) -> Self:
         """Set environment variables."""
         if self.config.env is None:
             self.config.env = {}
         self.config.env.update(env_vars)
         return self
     
-    def leakless(self, enable: bool = True) -> 'Launcher':
+    def leakless(self, enable: bool = True) -> Self:
         """Enable/disable leakless mode (force kill on exit)."""
         self.config.leakless = enable
         return self
     
-    def xvfb(self, *args: str) -> 'Launcher':
+    def xvfb(self, *args: str) -> Self:
         """Enable XVFB with optional arguments (Unix only)."""
         self.config.xvfb = list(args) if args else []
         return self
     
-    def devtools(self, enable: bool = True) -> 'Launcher':
+    def devtools(self, enable: bool = True) -> Self:
         """Enable/disable auto-open devtools."""
         self.config.devtools = enable
         return self
     
-    def preferences(self, prefs: Union[str, dict]) -> 'Launcher':
+    def preferences(self, prefs: Union[str, dict]) -> Self:
         """Set browser preferences (JSON string or dict)."""
         if isinstance(prefs, dict):
             prefs = json.dumps(prefs)
         self.config.preferences = prefs
         return self
     
-    def start_url(self, url: str) -> 'Launcher':
+    def start_url(self, url: str) -> Self:
         """Set start URL."""
         self.config.start_url = url
         return self
     
-    def flag(self, name: str, *values: str) -> 'Launcher':
+    def flag(self, name: str, *values: str) -> Self:
         """Add custom browser flag."""
         self.config.custom_flags[name] = list(values)
         return self
     
-    def delete_flag(self, name: str) -> 'Launcher':
+    def delete_flag(self, name: str) -> Self:
         """Remove a browser flag."""
         self.config.custom_flags.pop(name, None)
         return self
@@ -285,7 +293,7 @@ class Launcher:
         
         # Clean up user data directory if it's a temporary one
         if (self.config.user_data_dir and 
-            "rod" in self.config.user_data_dir and 
+            "bu" in self.config.user_data_dir and 
             "session-" in self.config.user_data_dir):
             
             user_data_path = Path(self.config.user_data_dir)

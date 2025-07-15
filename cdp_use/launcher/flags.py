@@ -1,7 +1,15 @@
 """Browser command-line flags management."""
 
 from enum import Enum
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from typing_extensions import Self
+else:
+    try:
+        from typing import Self
+    except ImportError:
+        from typing_extensions import Self
 
 
 class Flag(str, Enum):
@@ -18,14 +26,14 @@ class Flag(str, Enum):
     WINDOW_POSITION = "window-position"
     PROFILE_DIRECTORY = "profile-directory"
     
-    # Custom rod flags (prefixed with rod-)
-    WORKING_DIR = "rod-working-dir"
-    ENV = "rod-env"
-    XVFB = "rod-xvfb"
-    PREFERENCES = "rod-preferences"
-    LEAKLESS = "rod-leakless"
-    BIN = "rod-bin"
-    KEEP_USER_DATA_DIR = "rod-keep-user-data-dir"
+    # Custom bu flags (prefixed with bu-)
+    WORKING_DIR = "bu-working-dir"
+    ENV = "bu-env"
+    XVFB = "bu-xvfb"
+    PREFERENCES = "bu-preferences"
+    LEAKLESS = "bu-leakless"
+    BIN = "bu-bin"
+    KEEP_USER_DATA_DIR = "bu-keep-user-data-dir"
     ARGUMENTS = ""  # Special case for positional arguments
     
     def normalize(self) -> str:
@@ -44,7 +52,7 @@ class FlagManager:
     def __init__(self):
         self._flags: Dict[str, List[str]] = {}
     
-    def set(self, flag: Union[Flag, str], *values: str) -> 'FlagManager':
+    def set(self, flag: Union[Flag, str], *values: str) -> Self:
         """Set a flag with one or more values."""
         if isinstance(flag, Flag):
             flag.check()
@@ -70,7 +78,7 @@ class FlagManager:
         flag_name = flag.normalize() if isinstance(flag, Flag) else str(flag).lstrip("-")
         return flag_name in self._flags
     
-    def append(self, flag: Union[Flag, str], *values: str) -> 'FlagManager':
+    def append(self, flag: Union[Flag, str], *values: str) -> Self:
         """Append values to an existing flag."""
         flag_name = flag.normalize() if isinstance(flag, Flag) else str(flag).lstrip("-")
         if flag_name not in self._flags:
@@ -78,7 +86,7 @@ class FlagManager:
         self._flags[flag_name].extend(values)
         return self
     
-    def delete(self, flag: Union[Flag, str]) -> 'FlagManager':
+    def delete(self, flag: Union[Flag, str]) -> Self:
         """Remove a flag."""
         flag_name = flag.normalize() if isinstance(flag, Flag) else str(flag).lstrip("-")
         self._flags.pop(flag_name, None)
@@ -92,7 +100,7 @@ class FlagManager:
             if flag_name == Flag.ARGUMENTS.value:  # Special case for positional args
                 continue
             
-            if flag_name.startswith("rod-"):  # Skip internal rod flags
+            if flag_name.startswith("bu-"):  # Skip internal bu flags
                 continue
             
             # Format flag
@@ -109,7 +117,7 @@ class FlagManager:
         
         return sorted(args)
     
-    def copy(self) -> 'FlagManager':
+    def copy(self) -> Self:
         """Create a copy of the flag manager."""
         new_manager = FlagManager()
         new_manager._flags = {k: v.copy() for k, v in self._flags.items()}

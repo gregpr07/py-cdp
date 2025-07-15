@@ -41,11 +41,11 @@ class UnixUtils(OSUtils):
         if os.name == "posix":
             if "darwin" in os.uname().sysname.lower():
                 # macOS
-                return home / ".cache" / "rod" / "browser"
+                return home / ".cache" / "bu" / "browser"
             else:
                 # Linux and other Unix
-                return home / ".cache" / "rod" / "browser"
-        return home / ".rod" / "browser"
+                return home / ".cache" / "bu" / "browser"
+        return home / ".bu" / "browser"
     
     def _get_common_browser_paths(self) -> List[str]:
         """Get common browser installation paths for Unix systems."""
