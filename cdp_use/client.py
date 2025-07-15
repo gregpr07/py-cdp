@@ -7,6 +7,8 @@ import websockets
 
 if TYPE_CHECKING:
     from cdp_use.cdp.library import CDPLibrary
+    from cdp_use.cdp.registration_library import CDPRegistrationLibrary
+    from cdp_use.cdp.registry import EventRegistry
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -23,8 +25,14 @@ class CDPClient:
 
         # Initialize the type-safe CDP library
         from cdp_use.cdp.library import CDPLibrary
+        from cdp_use.cdp.registration_library import CDPRegistrationLibrary
+        from cdp_use.cdp.registry import EventRegistry
 
         self.send: "CDPLibrary" = CDPLibrary(self)
+        self._event_registry: "EventRegistry" = EventRegistry()
+        self.register: "CDPRegistrationLibrary" = CDPRegistrationLibrary(
+            self._event_registry
+        )
 
     async def __aenter__(self):
         """Async context manager entry"""
@@ -97,18 +105,18 @@ class CDPClient:
                 # Handle event messages (without id, but with method)
                 elif "method" in data:
                     method = data["method"]
-                    data.get("params", {})
+                    params = data.get("params", {})
                     session_id = data.get("sessionId")
 
-                    logger.debug(f"Received event: {method} (session: {session_id})")
+                    # logger.debug(f"Received event: {method} (session: {session_id})")
 
-                    # TODO: find a nice way to register type safe event handlers (IGNORE this for now)
-                    # # Call registered event handler if available
-                    # if method in self.event_handlers:
-                    #     try:
-                    #         self.event_handlers[method](params, session_id)
-                    #     except Exception as e:
-                    #         logger.error(f"Error in event handler for {method}: {e}")
+                    # Call registered event handler if available
+                    handled = self._event_registry.handle_event(
+                        method, params, session_id
+                    )
+                    if not handled:
+                        # logger.debug(f"No handler registered for event: {method}")
+                        pass
 
                 # Handle unexpected messages
                 else:

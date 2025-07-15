@@ -59,6 +59,8 @@ from . import pwa
 from . import bluetoothemulation
 
 from .library import CDPLibrary
+from .registry import EventRegistry
+from .registration_library import CDPRegistrationLibrary
 
 __all__ = [
     "console",
@@ -115,4 +117,6 @@ __all__ = [
     "pwa",
     "bluetoothemulation",
     "CDPLibrary",
+    "EventRegistry",
+    "CDPRegistrationLibrary",
 ]
