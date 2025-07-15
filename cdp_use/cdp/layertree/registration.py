@@ -4,13 +4,13 @@
 
 """CDP LayerTree Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import LayerPaintedEvent, LayerTreeDidChangeEvent
 
 class LayerTreeRegistration:
     """Event registration interface for LayerTree domain."""
@@ -19,7 +19,7 @@ class LayerTreeRegistration:
         self._registry = registry
         self._domain = "LayerTree"
 
-    def layer_painted(
+    def layerPainted(
         self,
         callback: Callable[['LayerPaintedEvent', Optional[str]], None],
     ) -> None:
@@ -32,7 +32,7 @@ class LayerTreeRegistration:
         """
         self._registry.register("LayerTree.layerPainted", callback)
 
-    def layer_tree_did_change(
+    def layerTreeDidChange(
         self,
         callback: Callable[['LayerTreeDidChangeEvent', Optional[str]], None],
     ) -> None:

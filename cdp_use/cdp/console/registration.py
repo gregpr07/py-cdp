@@ -4,13 +4,13 @@
 
 """CDP Console Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import MessageAddedEvent
 
 class ConsoleRegistration:
     """Event registration interface for Console domain."""
@@ -19,7 +19,7 @@ class ConsoleRegistration:
         self._registry = registry
         self._domain = "Console"
 
-    def message_added(
+    def messageAdded(
         self,
         callback: Callable[['MessageAddedEvent', Optional[str]], None],
     ) -> None:

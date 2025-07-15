@@ -4,13 +4,13 @@
 
 """CDP Tethering Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import AcceptedEvent
 
 class TetheringRegistration:
     """Event registration interface for Tethering domain."""

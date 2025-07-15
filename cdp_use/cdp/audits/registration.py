@@ -4,13 +4,13 @@
 
 """CDP Audits Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import IssueAddedEvent
 
 class AuditsRegistration:
     """Event registration interface for Audits domain."""
@@ -19,7 +19,7 @@ class AuditsRegistration:
         self._registry = registry
         self._domain = "Audits"
 
-    def issue_added(
+    def issueAdded(
         self,
         callback: Callable[['IssueAddedEvent', Optional[str]], None],
     ) -> None:

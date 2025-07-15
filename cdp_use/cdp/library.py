@@ -8,59 +8,6 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..client import CDPClient
-    from .console.library import ConsoleClient
-    from .debugger.library import DebuggerClient
-    from .heapprofiler.library import HeapProfilerClient
-    from .profiler.library import ProfilerClient
-    from .runtime.library import RuntimeClient
-    from .schema.library import SchemaClient
-    from .accessibility.library import AccessibilityClient
-    from .animation.library import AnimationClient
-    from .audits.library import AuditsClient
-    from .extensions.library import ExtensionsClient
-    from .autofill.library import AutofillClient
-    from .backgroundservice.library import BackgroundServiceClient
-    from .browser.library import BrowserClient
-    from .css.library import CSSClient
-    from .cachestorage.library import CacheStorageClient
-    from .cast.library import CastClient
-    from .dom.library import DOMClient
-    from .domdebugger.library import DOMDebuggerClient
-    from .eventbreakpoints.library import EventBreakpointsClient
-    from .domsnapshot.library import DOMSnapshotClient
-    from .domstorage.library import DOMStorageClient
-    from .deviceorientation.library import DeviceOrientationClient
-    from .emulation.library import EmulationClient
-    from .headlessexperimental.library import HeadlessExperimentalClient
-    from .io.library import IOClient
-    from .filesystem.library import FileSystemClient
-    from .indexeddb.library import IndexedDBClient
-    from .input.library import InputClient
-    from .inspector.library import InspectorClient
-    from .layertree.library import LayerTreeClient
-    from .log.library import LogClient
-    from .memory.library import MemoryClient
-    from .network.library import NetworkClient
-    from .overlay.library import OverlayClient
-    from .page.library import PageClient
-    from .performance.library import PerformanceClient
-    from .performancetimeline.library import PerformanceTimelineClient
-    from .security.library import SecurityClient
-    from .serviceworker.library import ServiceWorkerClient
-    from .storage.library import StorageClient
-    from .systeminfo.library import SystemInfoClient
-    from .target.library import TargetClient
-    from .tethering.library import TetheringClient
-    from .tracing.library import TracingClient
-    from .fetch.library import FetchClient
-    from .webaudio.library import WebAudioClient
-    from .webauthn.library import WebAuthnClient
-    from .media.library import MediaClient
-    from .deviceaccess.library import DeviceAccessClient
-    from .preload.library import PreloadClient
-    from .fedcm.library import FedCmClient
-    from .pwa.library import PWAClient
-    from .bluetoothemulation.library import BluetoothEmulationClient
 
 class CDPLibrary:
     """Main CDP library with domain-specific clients."""

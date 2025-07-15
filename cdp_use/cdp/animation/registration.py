@@ -4,13 +4,13 @@
 
 """CDP Animation Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import AnimationCanceledEvent, AnimationCreatedEvent, AnimationStartedEvent, AnimationUpdatedEvent
 
 class AnimationRegistration:
     """Event registration interface for Animation domain."""
@@ -19,7 +19,7 @@ class AnimationRegistration:
         self._registry = registry
         self._domain = "Animation"
 
-    def animation_canceled(
+    def animationCanceled(
         self,
         callback: Callable[['AnimationCanceledEvent', Optional[str]], None],
     ) -> None:
@@ -34,7 +34,7 @@ class AnimationRegistration:
         """
         self._registry.register("Animation.animationCanceled", callback)
 
-    def animation_created(
+    def animationCreated(
         self,
         callback: Callable[['AnimationCreatedEvent', Optional[str]], None],
     ) -> None:
@@ -49,7 +49,7 @@ class AnimationRegistration:
         """
         self._registry.register("Animation.animationCreated", callback)
 
-    def animation_started(
+    def animationStarted(
         self,
         callback: Callable[['AnimationStartedEvent', Optional[str]], None],
     ) -> None:
@@ -64,7 +64,7 @@ class AnimationRegistration:
         """
         self._registry.register("Animation.animationStarted", callback)
 
-    def animation_updated(
+    def animationUpdated(
         self,
         callback: Callable[['AnimationUpdatedEvent', Optional[str]], None],
     ) -> None:

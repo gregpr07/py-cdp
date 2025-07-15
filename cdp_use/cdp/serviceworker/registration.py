@@ -4,13 +4,13 @@
 
 """CDP ServiceWorker Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import WorkerErrorReportedEvent, WorkerRegistrationUpdatedEvent, WorkerVersionUpdatedEvent
 
 class ServiceWorkerRegistration:
     """Event registration interface for ServiceWorker domain."""
@@ -19,7 +19,7 @@ class ServiceWorkerRegistration:
         self._registry = registry
         self._domain = "ServiceWorker"
 
-    def worker_error_reported(
+    def workerErrorReported(
         self,
         callback: Callable[['WorkerErrorReportedEvent', Optional[str]], None],
     ) -> None:
@@ -32,7 +32,7 @@ class ServiceWorkerRegistration:
         """
         self._registry.register("ServiceWorker.workerErrorReported", callback)
 
-    def worker_registration_updated(
+    def workerRegistrationUpdated(
         self,
         callback: Callable[['WorkerRegistrationUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -45,7 +45,7 @@ class ServiceWorkerRegistration:
         """
         self._registry.register("ServiceWorker.workerRegistrationUpdated", callback)
 
-    def worker_version_updated(
+    def workerVersionUpdated(
         self,
         callback: Callable[['WorkerVersionUpdatedEvent', Optional[str]], None],
     ) -> None:

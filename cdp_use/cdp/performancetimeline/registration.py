@@ -4,13 +4,13 @@
 
 """CDP PerformanceTimeline Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import TimelineEventAddedEvent
 
 class PerformanceTimelineRegistration:
     """Event registration interface for PerformanceTimeline domain."""
@@ -19,7 +19,7 @@ class PerformanceTimelineRegistration:
         self._registry = registry
         self._domain = "PerformanceTimeline"
 
-    def timeline_event_added(
+    def timelineEventAdded(
         self,
         callback: Callable[['TimelineEventAddedEvent', Optional[str]], None],
     ) -> None:

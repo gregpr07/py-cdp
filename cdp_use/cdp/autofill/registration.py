@@ -4,13 +4,13 @@
 
 """CDP Autofill Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import AddressFormFilledEvent
 
 class AutofillRegistration:
     """Event registration interface for Autofill domain."""
@@ -19,7 +19,7 @@ class AutofillRegistration:
         self._registry = registry
         self._domain = "Autofill"
 
-    def address_form_filled(
+    def addressFormFilled(
         self,
         callback: Callable[['AddressFormFilledEvent', Optional[str]], None],
     ) -> None:

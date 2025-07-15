@@ -4,13 +4,13 @@
 
 """CDP Fetch Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import AuthRequiredEvent, RequestPausedEvent
 
 class FetchRegistration:
     """Event registration interface for Fetch domain."""
@@ -19,7 +19,7 @@ class FetchRegistration:
         self._registry = registry
         self._domain = "Fetch"
 
-    def request_paused(
+    def requestPaused(
         self,
         callback: Callable[['RequestPausedEvent', Optional[str]], None],
     ) -> None:
@@ -44,7 +44,7 @@ have `redirectedRequestId` field set.
         """
         self._registry.register("Fetch.requestPaused", callback)
 
-    def auth_required(
+    def authRequired(
         self,
         callback: Callable[['AuthRequiredEvent', Optional[str]], None],
     ) -> None:

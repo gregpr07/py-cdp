@@ -4,13 +4,13 @@
 
 """CDP Browser Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import DownloadProgressEvent, DownloadWillBeginEvent
 
 class BrowserRegistration:
     """Event registration interface for Browser domain."""
@@ -19,7 +19,7 @@ class BrowserRegistration:
         self._registry = registry
         self._domain = "Browser"
 
-    def download_will_begin(
+    def downloadWillBegin(
         self,
         callback: Callable[['DownloadWillBeginEvent', Optional[str]], None],
     ) -> None:
@@ -34,7 +34,7 @@ class BrowserRegistration:
         """
         self._registry.register("Browser.downloadWillBegin", callback)
 
-    def download_progress(
+    def downloadProgress(
         self,
         callback: Callable[['DownloadProgressEvent', Optional[str]], None],
     ) -> None:

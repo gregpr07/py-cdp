@@ -4,13 +4,20 @@
 
 """CDP Preload Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import (
+    PrefetchStatusUpdatedEvent,
+    PreloadEnabledStateUpdatedEvent,
+    PreloadingAttemptSourcesUpdatedEvent,
+    PrerenderStatusUpdatedEvent,
+    RuleSetRemovedEvent,
+    RuleSetUpdatedEvent
+)
 
 class PreloadRegistration:
     """Event registration interface for Preload domain."""
@@ -19,7 +26,7 @@ class PreloadRegistration:
         self._registry = registry
         self._domain = "Preload"
 
-    def rule_set_updated(
+    def ruleSetUpdated(
         self,
         callback: Callable[['RuleSetUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -34,7 +41,7 @@ class PreloadRegistration:
         """
         self._registry.register("Preload.ruleSetUpdated", callback)
 
-    def rule_set_removed(
+    def ruleSetRemoved(
         self,
         callback: Callable[['RuleSetRemovedEvent', Optional[str]], None],
     ) -> None:
@@ -47,7 +54,7 @@ class PreloadRegistration:
         """
         self._registry.register("Preload.ruleSetRemoved", callback)
 
-    def preload_enabled_state_updated(
+    def preloadEnabledStateUpdated(
         self,
         callback: Callable[['PreloadEnabledStateUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -62,7 +69,7 @@ class PreloadRegistration:
         """
         self._registry.register("Preload.preloadEnabledStateUpdated", callback)
 
-    def prefetch_status_updated(
+    def prefetchStatusUpdated(
         self,
         callback: Callable[['PrefetchStatusUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -77,7 +84,7 @@ class PreloadRegistration:
         """
         self._registry.register("Preload.prefetchStatusUpdated", callback)
 
-    def prerender_status_updated(
+    def prerenderStatusUpdated(
         self,
         callback: Callable[['PrerenderStatusUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -92,7 +99,7 @@ class PreloadRegistration:
         """
         self._registry.register("Preload.prerenderStatusUpdated", callback)
 
-    def preloading_attempt_sources_updated(
+    def preloadingAttemptSourcesUpdated(
         self,
         callback: Callable[['PreloadingAttemptSourcesUpdatedEvent', Optional[str]], None],
     ) -> None:

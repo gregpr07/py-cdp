@@ -4,13 +4,13 @@
 
 """CDP Overlay Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import InspectModeCanceledEvent, InspectNodeRequestedEvent, NodeHighlightRequestedEvent, ScreenshotRequestedEvent
 
 class OverlayRegistration:
     """Event registration interface for Overlay domain."""
@@ -19,7 +19,7 @@ class OverlayRegistration:
         self._registry = registry
         self._domain = "Overlay"
 
-    def inspect_node_requested(
+    def inspectNodeRequested(
         self,
         callback: Callable[['InspectNodeRequestedEvent', Optional[str]], None],
     ) -> None:
@@ -35,7 +35,7 @@ user manually inspects an element.
         """
         self._registry.register("Overlay.inspectNodeRequested", callback)
 
-    def node_highlight_requested(
+    def nodeHighlightRequested(
         self,
         callback: Callable[['NodeHighlightRequestedEvent', Optional[str]], None],
     ) -> None:
@@ -50,7 +50,7 @@ user manually inspects an element.
         """
         self._registry.register("Overlay.nodeHighlightRequested", callback)
 
-    def screenshot_requested(
+    def screenshotRequested(
         self,
         callback: Callable[['ScreenshotRequestedEvent', Optional[str]], None],
     ) -> None:
@@ -65,7 +65,7 @@ user manually inspects an element.
         """
         self._registry.register("Overlay.screenshotRequested", callback)
 
-    def inspect_mode_canceled(
+    def inspectModeCanceled(
         self,
         callback: Callable[['InspectModeCanceledEvent', Optional[str]], None],
     ) -> None:

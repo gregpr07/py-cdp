@@ -4,13 +4,13 @@
 
 """CDP Tracing Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import BufferUsageEvent, DataCollectedEvent, TracingCompleteEvent
 
 class TracingRegistration:
     """Event registration interface for Tracing domain."""
@@ -19,7 +19,7 @@ class TracingRegistration:
         self._registry = registry
         self._domain = "Tracing"
 
-    def buffer_usage(
+    def bufferUsage(
         self,
         callback: Callable[['BufferUsageEvent', Optional[str]], None],
     ) -> None:
@@ -32,7 +32,7 @@ class TracingRegistration:
         """
         self._registry.register("Tracing.bufferUsage", callback)
 
-    def data_collected(
+    def dataCollected(
         self,
         callback: Callable[['DataCollectedEvent', Optional[str]], None],
     ) -> None:
@@ -48,7 +48,7 @@ sent as a sequence of dataCollected events followed by tracingComplete event.
         """
         self._registry.register("Tracing.dataCollected", callback)
 
-    def tracing_complete(
+    def tracingComplete(
         self,
         callback: Callable[['TracingCompleteEvent', Optional[str]], None],
     ) -> None:

@@ -8,45 +8,6 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .registry import EventRegistry
-    from .console.registration import ConsoleRegistration
-    from .debugger.registration import DebuggerRegistration
-    from .heapprofiler.registration import HeapProfilerRegistration
-    from .profiler.registration import ProfilerRegistration
-    from .runtime.registration import RuntimeRegistration
-    from .accessibility.registration import AccessibilityRegistration
-    from .animation.registration import AnimationRegistration
-    from .audits.registration import AuditsRegistration
-    from .autofill.registration import AutofillRegistration
-    from .backgroundservice.registration import BackgroundServiceRegistration
-    from .browser.registration import BrowserRegistration
-    from .css.registration import CSSRegistration
-    from .cast.registration import CastRegistration
-    from .dom.registration import DOMRegistration
-    from .domstorage.registration import DOMStorageRegistration
-    from .emulation.registration import EmulationRegistration
-    from .input.registration import InputRegistration
-    from .inspector.registration import InspectorRegistration
-    from .layertree.registration import LayerTreeRegistration
-    from .log.registration import LogRegistration
-    from .network.registration import NetworkRegistration
-    from .overlay.registration import OverlayRegistration
-    from .page.registration import PageRegistration
-    from .performance.registration import PerformanceRegistration
-    from .performancetimeline.registration import PerformanceTimelineRegistration
-    from .security.registration import SecurityRegistration
-    from .serviceworker.registration import ServiceWorkerRegistration
-    from .storage.registration import StorageRegistration
-    from .target.registration import TargetRegistration
-    from .tethering.registration import TetheringRegistration
-    from .tracing.registration import TracingRegistration
-    from .fetch.registration import FetchRegistration
-    from .webaudio.registration import WebAudioRegistration
-    from .webauthn.registration import WebAuthnRegistration
-    from .media.registration import MediaRegistration
-    from .deviceaccess.registration import DeviceAccessRegistration
-    from .preload.registration import PreloadRegistration
-    from .fedcm.registration import FedCmRegistration
-    from .bluetoothemulation.registration import BluetoothEmulationRegistration
 
 class CDPRegistrationLibrary:
     """Main CDP registration library with domain-specific registration interfaces."""

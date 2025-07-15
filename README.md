@@ -5,30 +5,11 @@ A **type-safe Python client generator** for the **Chrome DevTools Protocol (CDP)
 ## 🚀 Features
 
 - **🔒 Type Safety**: Full type hints with `TypedDict` classes for all CDP commands, parameters, and return types
+- **🎯 Event Registration**: Typesafe event handlers with full IDE support
 - **🏗️ Auto-Generated**: Code generated directly from official Chrome DevTools Protocol specifications
 - **🎯 IntelliSense Support**: Perfect IDE autocompletion and type checking
-- **📦 Domain Separation**: Clean organization with separate modules for each CDP domain (DOM, Network, Runtime, etc.)
+- **📦 Domain Separation**: Clean organization with separate modules for each CDP domain
 - **🔄 Always Up-to-Date**: Easy regeneration from latest protocol specs
-- **🚫 No Runtime Overhead**: Pure Python types with no validation libraries required
-
-## 📋 What Gets Generated
-
-The generator creates a complete type-safe CDP client library:
-
-```
-cdp_use/cdp/
-├── library.py              # Main CDPLibrary class
-├── dom/                     # DOM domain
-│   ├── types.py            # DOM-specific types
-│   ├── commands.py         # Command parameter/return types
-│   ├── events.py           # Event types
-│   └── library.py          # DOMClient class
-├── network/                # Network domain
-│   └── ...
-├── runtime/                # Runtime domain
-│   └── ...
-└── ... (50+ domains total)
-```
 
 ## 🛠️ Installation & Setup
 
@@ -43,7 +24,7 @@ uv sync  # or pip install -r requirements.txt
 2. **Generate the CDP client library:**
 
 ```bash
-python -m cdp_use.generator.generate
+python -m cdp_use.generator
 ```
 
 This automatically downloads the latest protocol specifications and generates all type-safe bindings.
@@ -63,39 +44,20 @@ async def main():
         targets = await cdp.send.Target.getTargets()
         print(f"Found {len(targets['targetInfos'])} targets")
 
-        # Attach to a page target
-        page_target = next(t for t in targets["targetInfos"] if t["type"] == "page")
-        session = await cdp.send.Target.attachToTarget(params={
-            "targetId": page_target["targetId"],
-            "flatten": True
-        })
-
-        # Enable DOM and get document with type safety
-        await cdp.send.DOM.enable(session_id=session["sessionId"])
-        document = await cdp.send.DOM.getDocument(
-            params={"depth": -1, "pierce": True},
-            session_id=session["sessionId"]
-        )
-
-        print(f"Root node ID: {document['root']['nodeId']}")
+        # Navigate to a page
+        await cdp.send.Page.navigate({"url": "https://example.com"})
 
 asyncio.run(main())
 ```
 
 ### Type Safety in Action
 
-The generated library provides complete type safety:
-
 ```python
 # ✅ Fully typed parameters
 await cdp.send.Runtime.evaluate(params={
     "expression": "document.title",
-    "returnByValue": True,
-    "awaitPromise": True
+    "returnByValue": True
 })
-
-# ✅ Optional parameters work correctly
-await cdp.send.Target.getTargets()  # No params needed
 
 # ✅ Return types are fully typed
 result = await cdp.send.DOM.getDocument(params={"depth": 1})
@@ -105,66 +67,153 @@ node_id: int = result["root"]["nodeId"]  # Full IntelliSense support
 await cdp.send.DOM.getDocument(params={"invalid": "param"})  # Type error!
 ```
 
-### Concurrent Operations
+## 🎧 Event Registration
+
+The library provides **typesafe event registration** with full IDE support:
+
+### Basic Event Registration
 
 ```python
-# Execute multiple CDP commands concurrently with type safety
-tasks = [
-    cdp.send.DOM.getDocument(params={"depth": -1}, session_id=session_id)
-    for _ in range(10)
-]
-results = await asyncio.gather(*tasks)
-print(f"Completed {len(results)} concurrent requests")
+import asyncio
+from cdp_use.client import CDPClient
+from cdp_use.cdp.page.events import FrameAttachedEvent, DomContentEventFiredEvent
+from cdp_use.cdp.runtime.events import ConsoleAPICalledEvent
+from typing import Optional
+
+def on_frame_attached(event: FrameAttachedEvent, session_id: Optional[str]) -> None:
+    print(f"Frame {event['frameId']} attached to {event['parentFrameId']}")
+
+def on_dom_content_loaded(event: DomContentEventFiredEvent, session_id: Optional[str]) -> None:
+    print(f"DOM content loaded at: {event['timestamp']}")
+
+def on_console_message(event: ConsoleAPICalledEvent, session_id: Optional[str]) -> None:
+    print(f"Console: {event['type']}")
+
+async def main():
+    async with CDPClient("ws://localhost:9222/devtools/page/...") as client:
+        # Register event handlers with camelCase method names (matching CDP)
+        client.register.Page.frameAttached(on_frame_attached)
+        client.register.Page.domContentEventFired(on_dom_content_loaded)
+        client.register.Runtime.consoleAPICalled(on_console_message)
+
+        # Enable domains to start receiving events
+        await client.send.Page.enable()
+        await client.send.Runtime.enable()
+
+        # Navigate and receive events
+        await client.send.Page.navigate({"url": "https://example.com"})
+        await asyncio.sleep(5)  # Keep listening for events
+```
+
+### Event Registration Features
+
+✅ **Type Safety**: Event handlers are validated at compile time  
+✅ **IDE Support**: Full autocomplete for domains and event methods  
+✅ **Parameter Validation**: Callback signatures are type-checked  
+✅ **Event Type Definitions**: Each event has its own TypedDict interface
+
+### Registration Syntax
+
+```python
+client.register.Domain.eventName(callback_function)
+```
+
+Where:
+
+- `Domain` is any CDP domain (Page, Runtime, Network, etc.)
+- `eventName` is the camelCase CDP event name (matching CDP specs)
+- `callback_function` must accept `(event_data, session_id)` parameters
+
+### Available Event Domains
+
+- **Page**: `client.register.Page.*` - Page lifecycle, navigation, frames
+- **Runtime**: `client.register.Runtime.*` - JavaScript execution, console, exceptions
+- **Network**: `client.register.Network.*` - HTTP requests, responses, WebSocket
+- **DOM**: `client.register.DOM.*` - DOM tree changes, attributes
+- **CSS**: `client.register.CSS.*` - Stylesheet changes, media queries
+- **Debugger**: `client.register.Debugger.*` - Breakpoints, script parsing
+- **Performance**: `client.register.Performance.*` - Performance metrics
+- **Security**: `client.register.Security.*` - Security state changes
+- And many more...
+
+### Type Safety Examples
+
+**✅ Correct Usage:**
+
+```python
+def handle_console(event: ConsoleAPICalledEvent, session_id: Optional[str]) -> None:
+    print(f"Console: {event['type']}")
+
+client.register.Runtime.consoleAPICalled(handle_console)
+```
+
+**❌ Type Error - Wrong signature:**
+
+```python
+def bad_handler(event):  # Missing session_id parameter
+    pass
+
+client.register.Runtime.consoleAPICalled(bad_handler)  # Type error!
+```
+
+## 📋 What Gets Generated
+
+```
+cdp_use/cdp/
+├── library.py                    # Main CDPLibrary class
+├── registry.py                   # Event registry system
+├── registration_library.py       # Event registration interface
+├── dom/                          # DOM domain
+│   ├── types.py                 # DOM-specific types
+│   ├── commands.py              # Command parameter/return types
+│   ├── events.py                # Event types
+│   ├── library.py               # DOMClient class
+│   └── registration.py          # DOM event registration
+├── page/                         # Page domain
+│   └── ...
+└── ... (50+ domains total)
 ```
 
 ## 🏛️ Architecture
 
-### Generated Structure
-
-- **Domain Libraries**: Each CDP domain (DOM, Network, Runtime, etc.) gets its own client class
-- **Type Definitions**: Complete `TypedDict` classes for all CDP types, commands, and events
-- **Main Library**: `CDPLibrary` class that combines all domain clients
-- **Type Safety**: All method signatures use quoted type annotations to avoid runtime evaluation
-
-### Key Components
+### Main Components
 
 ```python
-# Main library class
+class CDPClient:
+    def __init__(self, url: str):
+        self.send: CDPLibrary                    # Send commands
+        self.register: CDPRegistrationLibrary    # Register events
+
+# Domain-specific clients
 class CDPLibrary:
     def __init__(self, client: CDPClient):
         self.DOM = DOMClient(client)           # DOM operations
         self.Network = NetworkClient(client)   # Network monitoring
         self.Runtime = RuntimeClient(client)   # JavaScript execution
-        self.Target = TargetClient(client)     # Target management
         # ... 50+ more domains
 
-# Domain-specific client example
-class DOMClient:
-    async def getDocument(
-        self,
-        params: Optional[GetDocumentParameters] = None,
-        session_id: Optional[str] = None
-    ) -> GetDocumentReturns:
-        # Fully type-safe implementation
+# Event registration
+class CDPRegistrationLibrary:
+    def __init__(self, registry: EventRegistry):
+        self.Page = PageRegistration(registry)
+        self.Runtime = RuntimeRegistration(registry)
+        # ... all domains with events
 ```
 
 ## 🔧 Development
 
 ### Regenerating Types
 
-To update to the latest CDP specifications:
-
 ```bash
-python -m cdp_use.generator.generate
+python -m cdp_use.generator
 ```
 
 This will:
 
-1. Download the latest protocol files from the official Chrome DevTools repository
-2. Generate all Python type definitions
+1. Download the latest protocol files from Chrome DevTools repository
+2. Generate all Python type definitions and event registrations
 3. Create domain-specific client classes
-4. Format the code with `ruff`
-5. Add auto-generated file headers
+4. Format the code
 
 ### Project Structure
 
@@ -173,58 +222,18 @@ cdp-use/
 ├── cdp_use/
 │   ├── client.py              # Core CDP WebSocket client
 │   ├── generator/             # Code generation tools
-│   │   ├── generator.py       # Main generator
-│   │   ├── type_generator.py  # TypedDict generation
-│   │   ├── command_generator.py # Command type generation
-│   │   ├── event_generator.py # Event type generation
-│   │   ├── library_generator.py # Client class generation
-│   │   └── constants.py       # Protocol file URLs
 │   └── cdp/                   # Generated CDP library (auto-generated)
 ├── simple.py                  # Example usage
 └── README.md
 ```
 
-## 🎯 Type Safety Features
-
-### Quoted Type Annotations
-
-All generated code uses quoted type annotations to prevent runtime evaluation issues:
-
-```python
-async def getDocument(
-    self,
-    params: Optional["GetDocumentParameters"] = None,
-    session_id: Optional[str] = None,
-) -> "GetDocumentReturns":
-    return cast("GetDocumentReturns", await self._client.send_raw(...))
-```
-
-### Optional Parameter Handling
-
-Commands with all-optional parameters are handled correctly:
-
-```python
-# These work without type errors:
-await cdp.send.Target.getTargets()                    # No params
-await cdp.send.Target.getTargets(params=None)         # Explicit None
-await cdp.send.Target.getTargets(params={"filter": ...}) # With params
-```
-
-### Cross-Domain Type References
-
-Types are properly imported across domains using `TYPE_CHECKING` blocks to avoid circular imports.
-
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Make your changes to the generator code (not the generated `cdp_use/cdp/` directory)
-3. Run `python -m cdp_use.generator.generate` to regenerate the library
-4. Test your changes with `python simple.py`
+2. Make changes to generator code (not the generated `cdp_use/cdp/` directory)
+3. Run `python -m cdp_use.generator` to regenerate
+4. Test with `python simple.py`
 5. Submit a pull request
-
-## 📝 License
-
-[Your License Here]
 
 ## 🔗 Related
 

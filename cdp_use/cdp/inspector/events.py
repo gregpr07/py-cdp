@@ -4,8 +4,7 @@
 
 """CDP Inspector Domain Events"""
 
-from typing import Any, Dict, List, Optional, Union
-from typing_extensions import NotRequired, TypedDict
+from typing_extensions import TypedDict
 
 """Fired when remote debugging connection is about to be terminated. Contains detach reason."""
 class DetachedEvent(TypedDict):

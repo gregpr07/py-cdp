@@ -4,13 +4,13 @@
 
 """CDP HeapProfiler Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import AddHeapSnapshotChunkEvent, HeapStatsUpdateEvent, LastSeenObjectIdEvent, ReportHeapSnapshotProgressEvent, ResetProfilesEvent
 
 class HeapProfilerRegistration:
     """Event registration interface for HeapProfiler domain."""
@@ -19,7 +19,7 @@ class HeapProfilerRegistration:
         self._registry = registry
         self._domain = "HeapProfiler"
 
-    def add_heap_snapshot_chunk(
+    def addHeapSnapshotChunk(
         self,
         callback: Callable[['AddHeapSnapshotChunkEvent', Optional[str]], None],
     ) -> None:
@@ -32,7 +32,7 @@ class HeapProfilerRegistration:
         """
         self._registry.register("HeapProfiler.addHeapSnapshotChunk", callback)
 
-    def heap_stats_update(
+    def heapStatsUpdate(
         self,
         callback: Callable[['HeapStatsUpdateEvent', Optional[str]], None],
     ) -> None:
@@ -47,7 +47,7 @@ class HeapProfilerRegistration:
         """
         self._registry.register("HeapProfiler.heapStatsUpdate", callback)
 
-    def last_seen_object_id(
+    def lastSeenObjectId(
         self,
         callback: Callable[['LastSeenObjectIdEvent', Optional[str]], None],
     ) -> None:
@@ -64,7 +64,7 @@ then one or more heapStatsUpdate events will be sent before a new lastSeenObject
         """
         self._registry.register("HeapProfiler.lastSeenObjectId", callback)
 
-    def report_heap_snapshot_progress(
+    def reportHeapSnapshotProgress(
         self,
         callback: Callable[['ReportHeapSnapshotProgressEvent', Optional[str]], None],
     ) -> None:
@@ -77,7 +77,7 @@ then one or more heapStatsUpdate events will be sent before a new lastSeenObject
         """
         self._registry.register("HeapProfiler.reportHeapSnapshotProgress", callback)
 
-    def reset_profiles(
+    def resetProfiles(
         self,
         callback: Callable[['ResetProfilesEvent', Optional[str]], None],
     ) -> None:

@@ -4,13 +4,22 @@
 
 """CDP Runtime Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import (
+    BindingCalledEvent,
+    ConsoleAPICalledEvent,
+    ExceptionRevokedEvent,
+    ExceptionThrownEvent,
+    ExecutionContextCreatedEvent,
+    ExecutionContextDestroyedEvent,
+    ExecutionContextsClearedEvent,
+    InspectRequestedEvent
+)
 
 class RuntimeRegistration:
     """Event registration interface for Runtime domain."""
@@ -19,7 +28,7 @@ class RuntimeRegistration:
         self._registry = registry
         self._domain = "Runtime"
 
-    def binding_called(
+    def bindingCalled(
         self,
         callback: Callable[['BindingCalledEvent', Optional[str]], None],
     ) -> None:
@@ -34,7 +43,7 @@ class RuntimeRegistration:
         """
         self._registry.register("Runtime.bindingCalled", callback)
 
-    def console_api_called(
+    def consoleAPICalled(
         self,
         callback: Callable[['ConsoleAPICalledEvent', Optional[str]], None],
     ) -> None:
@@ -49,7 +58,7 @@ class RuntimeRegistration:
         """
         self._registry.register("Runtime.consoleAPICalled", callback)
 
-    def exception_revoked(
+    def exceptionRevoked(
         self,
         callback: Callable[['ExceptionRevokedEvent', Optional[str]], None],
     ) -> None:
@@ -64,7 +73,7 @@ class RuntimeRegistration:
         """
         self._registry.register("Runtime.exceptionRevoked", callback)
 
-    def exception_thrown(
+    def exceptionThrown(
         self,
         callback: Callable[['ExceptionThrownEvent', Optional[str]], None],
     ) -> None:
@@ -79,7 +88,7 @@ class RuntimeRegistration:
         """
         self._registry.register("Runtime.exceptionThrown", callback)
 
-    def execution_context_created(
+    def executionContextCreated(
         self,
         callback: Callable[['ExecutionContextCreatedEvent', Optional[str]], None],
     ) -> None:
@@ -94,7 +103,7 @@ class RuntimeRegistration:
         """
         self._registry.register("Runtime.executionContextCreated", callback)
 
-    def execution_context_destroyed(
+    def executionContextDestroyed(
         self,
         callback: Callable[['ExecutionContextDestroyedEvent', Optional[str]], None],
     ) -> None:
@@ -109,7 +118,7 @@ class RuntimeRegistration:
         """
         self._registry.register("Runtime.executionContextDestroyed", callback)
 
-    def execution_contexts_cleared(
+    def executionContextsCleared(
         self,
         callback: Callable[['ExecutionContextsClearedEvent', Optional[str]], None],
     ) -> None:
@@ -124,7 +133,7 @@ class RuntimeRegistration:
         """
         self._registry.register("Runtime.executionContextsCleared", callback)
 
-    def inspect_requested(
+    def inspectRequested(
         self,
         callback: Callable[['InspectRequestedEvent', Optional[str]], None],
     ) -> None:

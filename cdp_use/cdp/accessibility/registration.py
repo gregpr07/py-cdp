@@ -4,13 +4,13 @@
 
 """CDP Accessibility Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import LoadCompleteEvent, NodesUpdatedEvent
 
 class AccessibilityRegistration:
     """Event registration interface for Accessibility domain."""
@@ -19,7 +19,7 @@ class AccessibilityRegistration:
         self._registry = registry
         self._domain = "Accessibility"
 
-    def load_complete(
+    def loadComplete(
         self,
         callback: Callable[['LoadCompleteEvent', Optional[str]], None],
     ) -> None:
@@ -35,7 +35,7 @@ technology when the web page has finished loading.
         """
         self._registry.register("Accessibility.loadComplete", callback)
 
-    def nodes_updated(
+    def nodesUpdated(
         self,
         callback: Callable[['NodesUpdatedEvent', Optional[str]], None],
     ) -> None:

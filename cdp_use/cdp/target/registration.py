@@ -4,13 +4,21 @@
 
 """CDP Target Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import (
+    AttachedToTargetEvent,
+    DetachedFromTargetEvent,
+    ReceivedMessageFromTargetEvent,
+    TargetCrashedEvent,
+    TargetCreatedEvent,
+    TargetDestroyedEvent,
+    TargetInfoChangedEvent
+)
 
 class TargetRegistration:
     """Event registration interface for Target domain."""
@@ -19,7 +27,7 @@ class TargetRegistration:
         self._registry = registry
         self._domain = "Target"
 
-    def attached_to_target(
+    def attachedToTarget(
         self,
         callback: Callable[['AttachedToTargetEvent', Optional[str]], None],
     ) -> None:
@@ -34,7 +42,7 @@ class TargetRegistration:
         """
         self._registry.register("Target.attachedToTarget", callback)
 
-    def detached_from_target(
+    def detachedFromTarget(
         self,
         callback: Callable[['DetachedFromTargetEvent', Optional[str]], None],
     ) -> None:
@@ -50,7 +58,7 @@ issued multiple times per target if multiple sessions have been attached to it.
         """
         self._registry.register("Target.detachedFromTarget", callback)
 
-    def received_message_from_target(
+    def receivedMessageFromTarget(
         self,
         callback: Callable[['ReceivedMessageFromTargetEvent', Optional[str]], None],
     ) -> None:
@@ -66,7 +74,7 @@ issued multiple times per target if multiple sessions have been attached to it.
         """
         self._registry.register("Target.receivedMessageFromTarget", callback)
 
-    def target_created(
+    def targetCreated(
         self,
         callback: Callable[['TargetCreatedEvent', Optional[str]], None],
     ) -> None:
@@ -81,7 +89,7 @@ issued multiple times per target if multiple sessions have been attached to it.
         """
         self._registry.register("Target.targetCreated", callback)
 
-    def target_destroyed(
+    def targetDestroyed(
         self,
         callback: Callable[['TargetDestroyedEvent', Optional[str]], None],
     ) -> None:
@@ -96,7 +104,7 @@ issued multiple times per target if multiple sessions have been attached to it.
         """
         self._registry.register("Target.targetDestroyed", callback)
 
-    def target_crashed(
+    def targetCrashed(
         self,
         callback: Callable[['TargetCrashedEvent', Optional[str]], None],
     ) -> None:
@@ -111,7 +119,7 @@ issued multiple times per target if multiple sessions have been attached to it.
         """
         self._registry.register("Target.targetCrashed", callback)
 
-    def target_info_changed(
+    def targetInfoChanged(
         self,
         callback: Callable[['TargetInfoChangedEvent', Optional[str]], None],
     ) -> None:

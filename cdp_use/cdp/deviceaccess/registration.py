@@ -4,13 +4,13 @@
 
 """CDP DeviceAccess Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import DeviceRequestPromptedEvent
 
 class DeviceAccessRegistration:
     """Event registration interface for DeviceAccess domain."""
@@ -19,7 +19,7 @@ class DeviceAccessRegistration:
         self._registry = registry
         self._domain = "DeviceAccess"
 
-    def device_request_prompted(
+    def deviceRequestPrompted(
         self,
         callback: Callable[['DeviceRequestPromptedEvent', Optional[str]], None],
     ) -> None:

@@ -4,13 +4,13 @@
 
 """CDP Security Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import CertificateErrorEvent, SecurityStateChangedEvent, VisibleSecurityStateChangedEvent
 
 class SecurityRegistration:
     """Event registration interface for Security domain."""
@@ -19,7 +19,7 @@ class SecurityRegistration:
         self._registry = registry
         self._domain = "Security"
 
-    def certificate_error(
+    def certificateError(
         self,
         callback: Callable[['CertificateErrorEvent', Optional[str]], None],
     ) -> None:
@@ -37,7 +37,7 @@ certificate errors at the same time.
         """
         self._registry.register("Security.certificateError", callback)
 
-    def visible_security_state_changed(
+    def visibleSecurityStateChanged(
         self,
         callback: Callable[['VisibleSecurityStateChangedEvent', Optional[str]], None],
     ) -> None:
@@ -52,7 +52,7 @@ certificate errors at the same time.
         """
         self._registry.register("Security.visibleSecurityStateChanged", callback)
 
-    def security_state_changed(
+    def securityStateChanged(
         self,
         callback: Callable[['SecurityStateChangedEvent', Optional[str]], None],
     ) -> None:

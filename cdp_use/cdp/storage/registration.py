@@ -4,13 +4,29 @@
 
 """CDP Storage Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import (
+    AttributionReportingReportSentEvent,
+    AttributionReportingSourceRegisteredEvent,
+    AttributionReportingTriggerRegisteredEvent,
+    AttributionReportingVerboseDebugReportSentEvent,
+    CacheStorageContentUpdatedEvent,
+    CacheStorageListUpdatedEvent,
+    IndexedDBContentUpdatedEvent,
+    IndexedDBListUpdatedEvent,
+    InterestGroupAccessedEvent,
+    InterestGroupAuctionEventOccurredEvent,
+    InterestGroupAuctionNetworkRequestCreatedEvent,
+    SharedStorageAccessedEvent,
+    SharedStorageWorkletOperationExecutionFinishedEvent,
+    StorageBucketCreatedOrUpdatedEvent,
+    StorageBucketDeletedEvent
+)
 
 class StorageRegistration:
     """Event registration interface for Storage domain."""
@@ -19,7 +35,7 @@ class StorageRegistration:
         self._registry = registry
         self._domain = "Storage"
 
-    def cache_storage_content_updated(
+    def cacheStorageContentUpdated(
         self,
         callback: Callable[['CacheStorageContentUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -34,7 +50,7 @@ class StorageRegistration:
         """
         self._registry.register("Storage.cacheStorageContentUpdated", callback)
 
-    def cache_storage_list_updated(
+    def cacheStorageListUpdated(
         self,
         callback: Callable[['CacheStorageListUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -49,7 +65,7 @@ class StorageRegistration:
         """
         self._registry.register("Storage.cacheStorageListUpdated", callback)
 
-    def indexed_db_content_updated(
+    def indexedDBContentUpdated(
         self,
         callback: Callable[['IndexedDBContentUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -64,7 +80,7 @@ class StorageRegistration:
         """
         self._registry.register("Storage.indexedDBContentUpdated", callback)
 
-    def indexed_db_list_updated(
+    def indexedDBListUpdated(
         self,
         callback: Callable[['IndexedDBListUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -79,7 +95,7 @@ class StorageRegistration:
         """
         self._registry.register("Storage.indexedDBListUpdated", callback)
 
-    def interest_group_accessed(
+    def interestGroupAccessed(
         self,
         callback: Callable[['InterestGroupAccessedEvent', Optional[str]], None],
     ) -> None:
@@ -95,7 +111,7 @@ to all targets sharing an interest group store.
         """
         self._registry.register("Storage.interestGroupAccessed", callback)
 
-    def interest_group_auction_event_occurred(
+    def interestGroupAuctionEventOccurred(
         self,
         callback: Callable[['InterestGroupAuctionEventOccurredEvent', Optional[str]], None],
     ) -> None:
@@ -111,7 +127,7 @@ target-specific.
         """
         self._registry.register("Storage.interestGroupAuctionEventOccurred", callback)
 
-    def interest_group_auction_network_request_created(
+    def interestGroupAuctionNetworkRequestCreated(
         self,
         callback: Callable[['InterestGroupAuctionNetworkRequestCreatedEvent', Optional[str]], None],
     ) -> None:
@@ -129,7 +145,7 @@ loadingFailed).
         """
         self._registry.register("Storage.interestGroupAuctionNetworkRequestCreated", callback)
 
-    def shared_storage_accessed(
+    def sharedStorageAccessed(
         self,
         callback: Callable[['SharedStorageAccessedEvent', Optional[str]], None],
     ) -> None:
@@ -145,7 +161,7 @@ The following parameters are included in all events.
         """
         self._registry.register("Storage.sharedStorageAccessed", callback)
 
-    def shared_storage_worklet_operation_execution_finished(
+    def sharedStorageWorkletOperationExecutionFinished(
         self,
         callback: Callable[['SharedStorageWorkletOperationExecutionFinishedEvent', Optional[str]], None],
     ) -> None:
@@ -161,7 +177,7 @@ The following parameters are included in all events.
         """
         self._registry.register("Storage.sharedStorageWorkletOperationExecutionFinished", callback)
 
-    def storage_bucket_created_or_updated(
+    def storageBucketCreatedOrUpdated(
         self,
         callback: Callable[['StorageBucketCreatedOrUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -174,7 +190,7 @@ The following parameters are included in all events.
         """
         self._registry.register("Storage.storageBucketCreatedOrUpdated", callback)
 
-    def storage_bucket_deleted(
+    def storageBucketDeleted(
         self,
         callback: Callable[['StorageBucketDeletedEvent', Optional[str]], None],
     ) -> None:
@@ -187,7 +203,7 @@ The following parameters are included in all events.
         """
         self._registry.register("Storage.storageBucketDeleted", callback)
 
-    def attribution_reporting_source_registered(
+    def attributionReportingSourceRegistered(
         self,
         callback: Callable[['AttributionReportingSourceRegisteredEvent', Optional[str]], None],
     ) -> None:
@@ -200,7 +216,7 @@ The following parameters are included in all events.
         """
         self._registry.register("Storage.attributionReportingSourceRegistered", callback)
 
-    def attribution_reporting_trigger_registered(
+    def attributionReportingTriggerRegistered(
         self,
         callback: Callable[['AttributionReportingTriggerRegisteredEvent', Optional[str]], None],
     ) -> None:
@@ -213,7 +229,7 @@ The following parameters are included in all events.
         """
         self._registry.register("Storage.attributionReportingTriggerRegistered", callback)
 
-    def attribution_reporting_report_sent(
+    def attributionReportingReportSent(
         self,
         callback: Callable[['AttributionReportingReportSentEvent', Optional[str]], None],
     ) -> None:
@@ -226,7 +242,7 @@ The following parameters are included in all events.
         """
         self._registry.register("Storage.attributionReportingReportSent", callback)
 
-    def attribution_reporting_verbose_debug_report_sent(
+    def attributionReportingVerboseDebugReportSent(
         self,
         callback: Callable[['AttributionReportingVerboseDebugReportSentEvent', Optional[str]], None],
     ) -> None:

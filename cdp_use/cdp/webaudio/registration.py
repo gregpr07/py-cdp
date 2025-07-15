@@ -4,13 +4,27 @@
 
 """CDP WebAudio Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import (
+    AudioListenerCreatedEvent,
+    AudioListenerWillBeDestroyedEvent,
+    AudioNodeCreatedEvent,
+    AudioNodeWillBeDestroyedEvent,
+    AudioParamCreatedEvent,
+    AudioParamWillBeDestroyedEvent,
+    ContextChangedEvent,
+    ContextCreatedEvent,
+    ContextWillBeDestroyedEvent,
+    NodeParamConnectedEvent,
+    NodeParamDisconnectedEvent,
+    NodesConnectedEvent,
+    NodesDisconnectedEvent
+)
 
 class WebAudioRegistration:
     """Event registration interface for WebAudio domain."""
@@ -19,7 +33,7 @@ class WebAudioRegistration:
         self._registry = registry
         self._domain = "WebAudio"
 
-    def context_created(
+    def contextCreated(
         self,
         callback: Callable[['ContextCreatedEvent', Optional[str]], None],
     ) -> None:
@@ -34,7 +48,7 @@ class WebAudioRegistration:
         """
         self._registry.register("WebAudio.contextCreated", callback)
 
-    def context_will_be_destroyed(
+    def contextWillBeDestroyed(
         self,
         callback: Callable[['ContextWillBeDestroyedEvent', Optional[str]], None],
     ) -> None:
@@ -49,7 +63,7 @@ class WebAudioRegistration:
         """
         self._registry.register("WebAudio.contextWillBeDestroyed", callback)
 
-    def context_changed(
+    def contextChanged(
         self,
         callback: Callable[['ContextChangedEvent', Optional[str]], None],
     ) -> None:
@@ -64,7 +78,7 @@ class WebAudioRegistration:
         """
         self._registry.register("WebAudio.contextChanged", callback)
 
-    def audio_listener_created(
+    def audioListenerCreated(
         self,
         callback: Callable[['AudioListenerCreatedEvent', Optional[str]], None],
     ) -> None:
@@ -79,7 +93,7 @@ class WebAudioRegistration:
         """
         self._registry.register("WebAudio.audioListenerCreated", callback)
 
-    def audio_listener_will_be_destroyed(
+    def audioListenerWillBeDestroyed(
         self,
         callback: Callable[['AudioListenerWillBeDestroyedEvent', Optional[str]], None],
     ) -> None:
@@ -94,7 +108,7 @@ class WebAudioRegistration:
         """
         self._registry.register("WebAudio.audioListenerWillBeDestroyed", callback)
 
-    def audio_node_created(
+    def audioNodeCreated(
         self,
         callback: Callable[['AudioNodeCreatedEvent', Optional[str]], None],
     ) -> None:
@@ -109,7 +123,7 @@ class WebAudioRegistration:
         """
         self._registry.register("WebAudio.audioNodeCreated", callback)
 
-    def audio_node_will_be_destroyed(
+    def audioNodeWillBeDestroyed(
         self,
         callback: Callable[['AudioNodeWillBeDestroyedEvent', Optional[str]], None],
     ) -> None:
@@ -124,7 +138,7 @@ class WebAudioRegistration:
         """
         self._registry.register("WebAudio.audioNodeWillBeDestroyed", callback)
 
-    def audio_param_created(
+    def audioParamCreated(
         self,
         callback: Callable[['AudioParamCreatedEvent', Optional[str]], None],
     ) -> None:
@@ -139,7 +153,7 @@ class WebAudioRegistration:
         """
         self._registry.register("WebAudio.audioParamCreated", callback)
 
-    def audio_param_will_be_destroyed(
+    def audioParamWillBeDestroyed(
         self,
         callback: Callable[['AudioParamWillBeDestroyedEvent', Optional[str]], None],
     ) -> None:
@@ -154,7 +168,7 @@ class WebAudioRegistration:
         """
         self._registry.register("WebAudio.audioParamWillBeDestroyed", callback)
 
-    def nodes_connected(
+    def nodesConnected(
         self,
         callback: Callable[['NodesConnectedEvent', Optional[str]], None],
     ) -> None:
@@ -169,7 +183,7 @@ class WebAudioRegistration:
         """
         self._registry.register("WebAudio.nodesConnected", callback)
 
-    def nodes_disconnected(
+    def nodesDisconnected(
         self,
         callback: Callable[['NodesDisconnectedEvent', Optional[str]], None],
     ) -> None:
@@ -184,7 +198,7 @@ class WebAudioRegistration:
         """
         self._registry.register("WebAudio.nodesDisconnected", callback)
 
-    def node_param_connected(
+    def nodeParamConnected(
         self,
         callback: Callable[['NodeParamConnectedEvent', Optional[str]], None],
     ) -> None:
@@ -199,7 +213,7 @@ class WebAudioRegistration:
         """
         self._registry.register("WebAudio.nodeParamConnected", callback)
 
-    def node_param_disconnected(
+    def nodeParamDisconnected(
         self,
         callback: Callable[['NodeParamDisconnectedEvent', Optional[str]], None],
     ) -> None:

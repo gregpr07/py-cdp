@@ -4,13 +4,13 @@
 
 """CDP Media Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import PlayerErrorsRaisedEvent, PlayerEventsAddedEvent, PlayerMessagesLoggedEvent, PlayerPropertiesChangedEvent, PlayersCreatedEvent
 
 class MediaRegistration:
     """Event registration interface for Media domain."""
@@ -19,7 +19,7 @@ class MediaRegistration:
         self._registry = registry
         self._domain = "Media"
 
-    def player_properties_changed(
+    def playerPropertiesChanged(
         self,
         callback: Callable[['PlayerPropertiesChangedEvent', Optional[str]], None],
     ) -> None:
@@ -35,7 +35,7 @@ remove player properties. A null propValue indicates removal.
         """
         self._registry.register("Media.playerPropertiesChanged", callback)
 
-    def player_events_added(
+    def playerEventsAdded(
         self,
         callback: Callable[['PlayerEventsAddedEvent', Optional[str]], None],
     ) -> None:
@@ -51,7 +51,7 @@ congestion. If batched, events must ALWAYS be in chronological order.
         """
         self._registry.register("Media.playerEventsAdded", callback)
 
-    def player_messages_logged(
+    def playerMessagesLogged(
         self,
         callback: Callable[['PlayerMessagesLoggedEvent', Optional[str]], None],
     ) -> None:
@@ -66,7 +66,7 @@ congestion. If batched, events must ALWAYS be in chronological order.
         """
         self._registry.register("Media.playerMessagesLogged", callback)
 
-    def player_errors_raised(
+    def playerErrorsRaised(
         self,
         callback: Callable[['PlayerErrorsRaisedEvent', Optional[str]], None],
     ) -> None:
@@ -81,7 +81,7 @@ congestion. If batched, events must ALWAYS be in chronological order.
         """
         self._registry.register("Media.playerErrorsRaised", callback)
 
-    def players_created(
+    def playersCreated(
         self,
         callback: Callable[['PlayersCreatedEvent', Optional[str]], None],
     ) -> None:

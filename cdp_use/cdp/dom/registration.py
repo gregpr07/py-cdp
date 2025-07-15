@@ -4,13 +4,30 @@
 
 """CDP DOM Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import (
+    AttributeModifiedEvent,
+    AttributeRemovedEvent,
+    CharacterDataModifiedEvent,
+    ChildNodeCountUpdatedEvent,
+    ChildNodeInsertedEvent,
+    ChildNodeRemovedEvent,
+    DistributedNodesUpdatedEvent,
+    DocumentUpdatedEvent,
+    InlineStyleInvalidatedEvent,
+    PseudoElementAddedEvent,
+    PseudoElementRemovedEvent,
+    ScrollableFlagUpdatedEvent,
+    SetChildNodesEvent,
+    ShadowRootPoppedEvent,
+    ShadowRootPushedEvent,
+    TopLayerElementsUpdatedEvent
+)
 
 class DOMRegistration:
     """Event registration interface for DOM domain."""
@@ -19,7 +36,7 @@ class DOMRegistration:
         self._registry = registry
         self._domain = "DOM"
 
-    def attribute_modified(
+    def attributeModified(
         self,
         callback: Callable[['AttributeModifiedEvent', Optional[str]], None],
     ) -> None:
@@ -34,7 +51,7 @@ class DOMRegistration:
         """
         self._registry.register("DOM.attributeModified", callback)
 
-    def attribute_removed(
+    def attributeRemoved(
         self,
         callback: Callable[['AttributeRemovedEvent', Optional[str]], None],
     ) -> None:
@@ -49,7 +66,7 @@ class DOMRegistration:
         """
         self._registry.register("DOM.attributeRemoved", callback)
 
-    def character_data_modified(
+    def characterDataModified(
         self,
         callback: Callable[['CharacterDataModifiedEvent', Optional[str]], None],
     ) -> None:
@@ -64,7 +81,7 @@ class DOMRegistration:
         """
         self._registry.register("DOM.characterDataModified", callback)
 
-    def child_node_count_updated(
+    def childNodeCountUpdated(
         self,
         callback: Callable[['ChildNodeCountUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -79,7 +96,7 @@ class DOMRegistration:
         """
         self._registry.register("DOM.childNodeCountUpdated", callback)
 
-    def child_node_inserted(
+    def childNodeInserted(
         self,
         callback: Callable[['ChildNodeInsertedEvent', Optional[str]], None],
     ) -> None:
@@ -94,7 +111,7 @@ class DOMRegistration:
         """
         self._registry.register("DOM.childNodeInserted", callback)
 
-    def child_node_removed(
+    def childNodeRemoved(
         self,
         callback: Callable[['ChildNodeRemovedEvent', Optional[str]], None],
     ) -> None:
@@ -109,7 +126,7 @@ class DOMRegistration:
         """
         self._registry.register("DOM.childNodeRemoved", callback)
 
-    def distributed_nodes_updated(
+    def distributedNodesUpdated(
         self,
         callback: Callable[['DistributedNodesUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -124,7 +141,7 @@ class DOMRegistration:
         """
         self._registry.register("DOM.distributedNodesUpdated", callback)
 
-    def document_updated(
+    def documentUpdated(
         self,
         callback: Callable[['DocumentUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -139,7 +156,7 @@ class DOMRegistration:
         """
         self._registry.register("DOM.documentUpdated", callback)
 
-    def inline_style_invalidated(
+    def inlineStyleInvalidated(
         self,
         callback: Callable[['InlineStyleInvalidatedEvent', Optional[str]], None],
     ) -> None:
@@ -154,7 +171,7 @@ class DOMRegistration:
         """
         self._registry.register("DOM.inlineStyleInvalidated", callback)
 
-    def pseudo_element_added(
+    def pseudoElementAdded(
         self,
         callback: Callable[['PseudoElementAddedEvent', Optional[str]], None],
     ) -> None:
@@ -169,7 +186,7 @@ class DOMRegistration:
         """
         self._registry.register("DOM.pseudoElementAdded", callback)
 
-    def top_layer_elements_updated(
+    def topLayerElementsUpdated(
         self,
         callback: Callable[['TopLayerElementsUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -184,7 +201,7 @@ class DOMRegistration:
         """
         self._registry.register("DOM.topLayerElementsUpdated", callback)
 
-    def scrollable_flag_updated(
+    def scrollableFlagUpdated(
         self,
         callback: Callable[['ScrollableFlagUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -199,7 +216,7 @@ class DOMRegistration:
         """
         self._registry.register("DOM.scrollableFlagUpdated", callback)
 
-    def pseudo_element_removed(
+    def pseudoElementRemoved(
         self,
         callback: Callable[['PseudoElementRemovedEvent', Optional[str]], None],
     ) -> None:
@@ -214,7 +231,7 @@ class DOMRegistration:
         """
         self._registry.register("DOM.pseudoElementRemoved", callback)
 
-    def set_child_nodes(
+    def setChildNodes(
         self,
         callback: Callable[['SetChildNodesEvent', Optional[str]], None],
     ) -> None:
@@ -230,7 +247,7 @@ most of the calls requesting node ids.
         """
         self._registry.register("DOM.setChildNodes", callback)
 
-    def shadow_root_popped(
+    def shadowRootPopped(
         self,
         callback: Callable[['ShadowRootPoppedEvent', Optional[str]], None],
     ) -> None:
@@ -245,7 +262,7 @@ most of the calls requesting node ids.
         """
         self._registry.register("DOM.shadowRootPopped", callback)
 
-    def shadow_root_pushed(
+    def shadowRootPushed(
         self,
         callback: Callable[['ShadowRootPushedEvent', Optional[str]], None],
     ) -> None:

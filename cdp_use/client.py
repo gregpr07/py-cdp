@@ -7,8 +7,8 @@ import websockets
 
 if TYPE_CHECKING:
     from cdp_use.cdp.library import CDPLibrary
-    from cdp_use.cdp.registry import EventRegistry
     from cdp_use.cdp.registration_library import CDPRegistrationLibrary
+    from cdp_use.cdp.registry import EventRegistry
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -25,12 +25,14 @@ class CDPClient:
 
         # Initialize the type-safe CDP library
         from cdp_use.cdp.library import CDPLibrary
-        from cdp_use.cdp.registry import EventRegistry
         from cdp_use.cdp.registration_library import CDPRegistrationLibrary
+        from cdp_use.cdp.registry import EventRegistry
 
         self.send: "CDPLibrary" = CDPLibrary(self)
         self._event_registry: "EventRegistry" = EventRegistry()
-        self.register: "CDPRegistrationLibrary" = CDPRegistrationLibrary(self._event_registry)
+        self.register: "CDPRegistrationLibrary" = CDPRegistrationLibrary(
+            self._event_registry
+        )
 
     async def __aenter__(self):
         """Async context manager entry"""
@@ -106,12 +108,15 @@ class CDPClient:
                     params = data.get("params", {})
                     session_id = data.get("sessionId")
 
-                    logger.debug(f"Received event: {method} (session: {session_id})")
+                    # logger.debug(f"Received event: {method} (session: {session_id})")
 
                     # Call registered event handler if available
-                    handled = self._event_registry.handle_event(method, params, session_id)
+                    handled = self._event_registry.handle_event(
+                        method, params, session_id
+                    )
                     if not handled:
-                        logger.debug(f"No handler registered for event: {method}")
+                        # logger.debug(f"No handler registered for event: {method}")
+                        pass
 
                 # Handle unexpected messages
                 else:

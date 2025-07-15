@@ -4,8 +4,7 @@
 
 """CDP Emulation Domain Events"""
 
-from typing import Any, Dict, List, Optional, Union
-from typing_extensions import NotRequired, TypedDict
+from typing_extensions import TypedDict
 
 """Notification sent after the virtual time budget for the current VirtualTimePolicy has run out."""
 class VirtualTimeBudgetExpiredEvent(TypedDict):

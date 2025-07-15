@@ -4,13 +4,58 @@
 
 """CDP Network Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import (
+    DataReceivedEvent,
+    DirectTCPSocketAbortedEvent,
+    DirectTCPSocketChunkReceivedEvent,
+    DirectTCPSocketChunkSentEvent,
+    DirectTCPSocketClosedEvent,
+    DirectTCPSocketCreatedEvent,
+    DirectTCPSocketOpenedEvent,
+    DirectUDPSocketAbortedEvent,
+    DirectUDPSocketChunkReceivedEvent,
+    DirectUDPSocketChunkSentEvent,
+    DirectUDPSocketClosedEvent,
+    DirectUDPSocketCreatedEvent,
+    DirectUDPSocketOpenedEvent,
+    EventSourceMessageReceivedEvent,
+    LoadingFailedEvent,
+    LoadingFinishedEvent,
+    PolicyUpdatedEvent,
+    ReportingApiEndpointsChangedForOriginEvent,
+    ReportingApiReportAddedEvent,
+    ReportingApiReportUpdatedEvent,
+    RequestInterceptedEvent,
+    RequestServedFromCacheEvent,
+    RequestWillBeSentEvent,
+    RequestWillBeSentExtraInfoEvent,
+    ResourceChangedPriorityEvent,
+    ResponseReceivedEarlyHintsEvent,
+    ResponseReceivedEvent,
+    ResponseReceivedExtraInfoEvent,
+    SignedExchangeReceivedEvent,
+    SubresourceWebBundleInnerResponseErrorEvent,
+    SubresourceWebBundleInnerResponseParsedEvent,
+    SubresourceWebBundleMetadataErrorEvent,
+    SubresourceWebBundleMetadataReceivedEvent,
+    TrustTokenOperationDoneEvent,
+    WebSocketClosedEvent,
+    WebSocketCreatedEvent,
+    WebSocketFrameErrorEvent,
+    WebSocketFrameReceivedEvent,
+    WebSocketFrameSentEvent,
+    WebSocketHandshakeResponseReceivedEvent,
+    WebSocketWillSendHandshakeRequestEvent,
+    WebTransportClosedEvent,
+    WebTransportConnectionEstablishedEvent,
+    WebTransportCreatedEvent
+)
 
 class NetworkRegistration:
     """Event registration interface for Network domain."""
@@ -19,7 +64,7 @@ class NetworkRegistration:
         self._registry = registry
         self._domain = "Network"
 
-    def data_received(
+    def dataReceived(
         self,
         callback: Callable[['DataReceivedEvent', Optional[str]], None],
     ) -> None:
@@ -34,7 +79,7 @@ class NetworkRegistration:
         """
         self._registry.register("Network.dataReceived", callback)
 
-    def event_source_message_received(
+    def eventSourceMessageReceived(
         self,
         callback: Callable[['EventSourceMessageReceivedEvent', Optional[str]], None],
     ) -> None:
@@ -49,7 +94,7 @@ class NetworkRegistration:
         """
         self._registry.register("Network.eventSourceMessageReceived", callback)
 
-    def loading_failed(
+    def loadingFailed(
         self,
         callback: Callable[['LoadingFailedEvent', Optional[str]], None],
     ) -> None:
@@ -64,7 +109,7 @@ class NetworkRegistration:
         """
         self._registry.register("Network.loadingFailed", callback)
 
-    def loading_finished(
+    def loadingFinished(
         self,
         callback: Callable[['LoadingFinishedEvent', Optional[str]], None],
     ) -> None:
@@ -79,7 +124,7 @@ class NetworkRegistration:
         """
         self._registry.register("Network.loadingFinished", callback)
 
-    def request_intercepted(
+    def requestIntercepted(
         self,
         callback: Callable[['RequestInterceptedEvent', Optional[str]], None],
     ) -> None:
@@ -96,7 +141,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.requestIntercepted", callback)
 
-    def request_served_from_cache(
+    def requestServedFromCache(
         self,
         callback: Callable[['RequestServedFromCacheEvent', Optional[str]], None],
     ) -> None:
@@ -111,7 +156,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.requestServedFromCache", callback)
 
-    def request_will_be_sent(
+    def requestWillBeSent(
         self,
         callback: Callable[['RequestWillBeSentEvent', Optional[str]], None],
     ) -> None:
@@ -126,7 +171,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.requestWillBeSent", callback)
 
-    def resource_changed_priority(
+    def resourceChangedPriority(
         self,
         callback: Callable[['ResourceChangedPriorityEvent', Optional[str]], None],
     ) -> None:
@@ -141,7 +186,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.resourceChangedPriority", callback)
 
-    def signed_exchange_received(
+    def signedExchangeReceived(
         self,
         callback: Callable[['SignedExchangeReceivedEvent', Optional[str]], None],
     ) -> None:
@@ -156,7 +201,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.signedExchangeReceived", callback)
 
-    def response_received(
+    def responseReceived(
         self,
         callback: Callable[['ResponseReceivedEvent', Optional[str]], None],
     ) -> None:
@@ -171,7 +216,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.responseReceived", callback)
 
-    def web_socket_closed(
+    def webSocketClosed(
         self,
         callback: Callable[['WebSocketClosedEvent', Optional[str]], None],
     ) -> None:
@@ -186,7 +231,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.webSocketClosed", callback)
 
-    def web_socket_created(
+    def webSocketCreated(
         self,
         callback: Callable[['WebSocketCreatedEvent', Optional[str]], None],
     ) -> None:
@@ -201,7 +246,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.webSocketCreated", callback)
 
-    def web_socket_frame_error(
+    def webSocketFrameError(
         self,
         callback: Callable[['WebSocketFrameErrorEvent', Optional[str]], None],
     ) -> None:
@@ -216,7 +261,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.webSocketFrameError", callback)
 
-    def web_socket_frame_received(
+    def webSocketFrameReceived(
         self,
         callback: Callable[['WebSocketFrameReceivedEvent', Optional[str]], None],
     ) -> None:
@@ -231,7 +276,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.webSocketFrameReceived", callback)
 
-    def web_socket_frame_sent(
+    def webSocketFrameSent(
         self,
         callback: Callable[['WebSocketFrameSentEvent', Optional[str]], None],
     ) -> None:
@@ -246,7 +291,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.webSocketFrameSent", callback)
 
-    def web_socket_handshake_response_received(
+    def webSocketHandshakeResponseReceived(
         self,
         callback: Callable[['WebSocketHandshakeResponseReceivedEvent', Optional[str]], None],
     ) -> None:
@@ -261,7 +306,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.webSocketHandshakeResponseReceived", callback)
 
-    def web_socket_will_send_handshake_request(
+    def webSocketWillSendHandshakeRequest(
         self,
         callback: Callable[['WebSocketWillSendHandshakeRequestEvent', Optional[str]], None],
     ) -> None:
@@ -276,7 +321,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.webSocketWillSendHandshakeRequest", callback)
 
-    def web_transport_created(
+    def webTransportCreated(
         self,
         callback: Callable[['WebTransportCreatedEvent', Optional[str]], None],
     ) -> None:
@@ -291,7 +336,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.webTransportCreated", callback)
 
-    def web_transport_connection_established(
+    def webTransportConnectionEstablished(
         self,
         callback: Callable[['WebTransportConnectionEstablishedEvent', Optional[str]], None],
     ) -> None:
@@ -306,7 +351,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.webTransportConnectionEstablished", callback)
 
-    def web_transport_closed(
+    def webTransportClosed(
         self,
         callback: Callable[['WebTransportClosedEvent', Optional[str]], None],
     ) -> None:
@@ -321,7 +366,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.webTransportClosed", callback)
 
-    def direct_tcp_socket_created(
+    def directTCPSocketCreated(
         self,
         callback: Callable[['DirectTCPSocketCreatedEvent', Optional[str]], None],
     ) -> None:
@@ -336,7 +381,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.directTCPSocketCreated", callback)
 
-    def direct_tcp_socket_opened(
+    def directTCPSocketOpened(
         self,
         callback: Callable[['DirectTCPSocketOpenedEvent', Optional[str]], None],
     ) -> None:
@@ -351,7 +396,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.directTCPSocketOpened", callback)
 
-    def direct_tcp_socket_aborted(
+    def directTCPSocketAborted(
         self,
         callback: Callable[['DirectTCPSocketAbortedEvent', Optional[str]], None],
     ) -> None:
@@ -366,7 +411,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.directTCPSocketAborted", callback)
 
-    def direct_tcp_socket_closed(
+    def directTCPSocketClosed(
         self,
         callback: Callable[['DirectTCPSocketClosedEvent', Optional[str]], None],
     ) -> None:
@@ -381,7 +426,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.directTCPSocketClosed", callback)
 
-    def direct_tcp_socket_chunk_sent(
+    def directTCPSocketChunkSent(
         self,
         callback: Callable[['DirectTCPSocketChunkSentEvent', Optional[str]], None],
     ) -> None:
@@ -396,7 +441,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.directTCPSocketChunkSent", callback)
 
-    def direct_tcp_socket_chunk_received(
+    def directTCPSocketChunkReceived(
         self,
         callback: Callable[['DirectTCPSocketChunkReceivedEvent', Optional[str]], None],
     ) -> None:
@@ -411,7 +456,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.directTCPSocketChunkReceived", callback)
 
-    def direct_udp_socket_created(
+    def directUDPSocketCreated(
         self,
         callback: Callable[['DirectUDPSocketCreatedEvent', Optional[str]], None],
     ) -> None:
@@ -426,7 +471,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.directUDPSocketCreated", callback)
 
-    def direct_udp_socket_opened(
+    def directUDPSocketOpened(
         self,
         callback: Callable[['DirectUDPSocketOpenedEvent', Optional[str]], None],
     ) -> None:
@@ -441,7 +486,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.directUDPSocketOpened", callback)
 
-    def direct_udp_socket_aborted(
+    def directUDPSocketAborted(
         self,
         callback: Callable[['DirectUDPSocketAbortedEvent', Optional[str]], None],
     ) -> None:
@@ -456,7 +501,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.directUDPSocketAborted", callback)
 
-    def direct_udp_socket_closed(
+    def directUDPSocketClosed(
         self,
         callback: Callable[['DirectUDPSocketClosedEvent', Optional[str]], None],
     ) -> None:
@@ -471,7 +516,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.directUDPSocketClosed", callback)
 
-    def direct_udp_socket_chunk_sent(
+    def directUDPSocketChunkSent(
         self,
         callback: Callable[['DirectUDPSocketChunkSentEvent', Optional[str]], None],
     ) -> None:
@@ -486,7 +531,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.directUDPSocketChunkSent", callback)
 
-    def direct_udp_socket_chunk_received(
+    def directUDPSocketChunkReceived(
         self,
         callback: Callable[['DirectUDPSocketChunkReceivedEvent', Optional[str]], None],
     ) -> None:
@@ -501,7 +546,7 @@ Deprecated, use Fetch.requestPaused instead.
         """
         self._registry.register("Network.directUDPSocketChunkReceived", callback)
 
-    def request_will_be_sent_extra_info(
+    def requestWillBeSentExtraInfo(
         self,
         callback: Callable[['RequestWillBeSentExtraInfoEvent', Optional[str]], None],
     ) -> None:
@@ -519,7 +564,7 @@ or requestWillBeSentExtraInfo will be fired first for the same request.
         """
         self._registry.register("Network.requestWillBeSentExtraInfo", callback)
 
-    def response_received_extra_info(
+    def responseReceivedExtraInfo(
         self,
         callback: Callable[['ResponseReceivedExtraInfoEvent', Optional[str]], None],
     ) -> None:
@@ -536,7 +581,7 @@ it, and responseReceivedExtraInfo may be fired before or after responseReceived.
         """
         self._registry.register("Network.responseReceivedExtraInfo", callback)
 
-    def response_received_early_hints(
+    def responseReceivedEarlyHints(
         self,
         callback: Callable[['ResponseReceivedEarlyHintsEvent', Optional[str]], None],
     ) -> None:
@@ -553,7 +598,7 @@ Only one responseReceivedEarlyHints may be fired for eached responseReceived eve
         """
         self._registry.register("Network.responseReceivedEarlyHints", callback)
 
-    def trust_token_operation_done(
+    def trustTokenOperationDone(
         self,
         callback: Callable[['TrustTokenOperationDoneEvent', Optional[str]], None],
     ) -> None:
@@ -571,7 +616,7 @@ or after the response was received.
         """
         self._registry.register("Network.trustTokenOperationDone", callback)
 
-    def policy_updated(
+    def policyUpdated(
         self,
         callback: Callable[['PolicyUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -586,7 +631,7 @@ or after the response was received.
         """
         self._registry.register("Network.policyUpdated", callback)
 
-    def subresource_web_bundle_metadata_received(
+    def subresourceWebBundleMetadataReceived(
         self,
         callback: Callable[['SubresourceWebBundleMetadataReceivedEvent', Optional[str]], None],
     ) -> None:
@@ -602,7 +647,7 @@ The event contains the information about the web bundle contents.
         """
         self._registry.register("Network.subresourceWebBundleMetadataReceived", callback)
 
-    def subresource_web_bundle_metadata_error(
+    def subresourceWebBundleMetadataError(
         self,
         callback: Callable[['SubresourceWebBundleMetadataErrorEvent', Optional[str]], None],
     ) -> None:
@@ -617,7 +662,7 @@ The event contains the information about the web bundle contents.
         """
         self._registry.register("Network.subresourceWebBundleMetadataError", callback)
 
-    def subresource_web_bundle_inner_response_parsed(
+    def subresourceWebBundleInnerResponseParsed(
         self,
         callback: Callable[['SubresourceWebBundleInnerResponseParsedEvent', Optional[str]], None],
     ) -> None:
@@ -633,7 +678,7 @@ Note: this will only be fired for resources that are requested by the webpage.
         """
         self._registry.register("Network.subresourceWebBundleInnerResponseParsed", callback)
 
-    def subresource_web_bundle_inner_response_error(
+    def subresourceWebBundleInnerResponseError(
         self,
         callback: Callable[['SubresourceWebBundleInnerResponseErrorEvent', Optional[str]], None],
     ) -> None:
@@ -648,7 +693,7 @@ Note: this will only be fired for resources that are requested by the webpage.
         """
         self._registry.register("Network.subresourceWebBundleInnerResponseError", callback)
 
-    def reporting_api_report_added(
+    def reportingApiReportAdded(
         self,
         callback: Callable[['ReportingApiReportAddedEvent', Optional[str]], None],
     ) -> None:
@@ -664,7 +709,7 @@ And after 'enableReportingApi' for all existing reports.
         """
         self._registry.register("Network.reportingApiReportAdded", callback)
 
-    def reporting_api_report_updated(
+    def reportingApiReportUpdated(
         self,
         callback: Callable[['ReportingApiReportUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -677,7 +722,7 @@ And after 'enableReportingApi' for all existing reports.
         """
         self._registry.register("Network.reportingApiReportUpdated", callback)
 
-    def reporting_api_endpoints_changed_for_origin(
+    def reportingApiEndpointsChangedForOrigin(
         self,
         callback: Callable[['ReportingApiEndpointsChangedForOriginEvent', Optional[str]], None],
     ) -> None:

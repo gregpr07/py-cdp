@@ -4,13 +4,13 @@
 
 """CDP WebAuthn Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import CredentialAddedEvent, CredentialAssertedEvent, CredentialDeletedEvent, CredentialUpdatedEvent
 
 class WebAuthnRegistration:
     """Event registration interface for WebAuthn domain."""
@@ -19,7 +19,7 @@ class WebAuthnRegistration:
         self._registry = registry
         self._domain = "WebAuthn"
 
-    def credential_added(
+    def credentialAdded(
         self,
         callback: Callable[['CredentialAddedEvent', Optional[str]], None],
     ) -> None:
@@ -34,7 +34,7 @@ class WebAuthnRegistration:
         """
         self._registry.register("WebAuthn.credentialAdded", callback)
 
-    def credential_deleted(
+    def credentialDeleted(
         self,
         callback: Callable[['CredentialDeletedEvent', Optional[str]], None],
     ) -> None:
@@ -50,7 +50,7 @@ PublicKeyCredential.signalUnknownCredential().
         """
         self._registry.register("WebAuthn.credentialDeleted", callback)
 
-    def credential_updated(
+    def credentialUpdated(
         self,
         callback: Callable[['CredentialUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -66,7 +66,7 @@ PublicKeyCredential.signalCurrentUserDetails().
         """
         self._registry.register("WebAuthn.credentialUpdated", callback)
 
-    def credential_asserted(
+    def credentialAsserted(
         self,
         callback: Callable[['CredentialAssertedEvent', Optional[str]], None],
     ) -> None:

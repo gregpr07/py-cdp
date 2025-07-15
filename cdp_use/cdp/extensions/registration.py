@@ -4,6 +4,5 @@
 
 """CDP Extensions Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
 
 # No events defined for this domain

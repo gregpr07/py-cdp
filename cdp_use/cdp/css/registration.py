@@ -4,13 +4,20 @@
 
 """CDP CSS Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import (
+    ComputedStyleUpdatedEvent,
+    FontsUpdatedEvent,
+    MediaQueryResultChangedEvent,
+    StyleSheetAddedEvent,
+    StyleSheetChangedEvent,
+    StyleSheetRemovedEvent
+)
 
 class CSSRegistration:
     """Event registration interface for CSS domain."""
@@ -19,7 +26,7 @@ class CSSRegistration:
         self._registry = registry
         self._domain = "CSS"
 
-    def fonts_updated(
+    def fontsUpdated(
         self,
         callback: Callable[['FontsUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -35,7 +42,7 @@ web font.
         """
         self._registry.register("CSS.fontsUpdated", callback)
 
-    def media_query_result_changed(
+    def mediaQueryResultChanged(
         self,
         callback: Callable[['MediaQueryResultChangedEvent', Optional[str]], None],
     ) -> None:
@@ -51,7 +58,7 @@ resized.) The current implementation considers only viewport-dependent media fea
         """
         self._registry.register("CSS.mediaQueryResultChanged", callback)
 
-    def style_sheet_added(
+    def styleSheetAdded(
         self,
         callback: Callable[['StyleSheetAddedEvent', Optional[str]], None],
     ) -> None:
@@ -66,7 +73,7 @@ resized.) The current implementation considers only viewport-dependent media fea
         """
         self._registry.register("CSS.styleSheetAdded", callback)
 
-    def style_sheet_changed(
+    def styleSheetChanged(
         self,
         callback: Callable[['StyleSheetChangedEvent', Optional[str]], None],
     ) -> None:
@@ -81,7 +88,7 @@ resized.) The current implementation considers only viewport-dependent media fea
         """
         self._registry.register("CSS.styleSheetChanged", callback)
 
-    def style_sheet_removed(
+    def styleSheetRemoved(
         self,
         callback: Callable[['StyleSheetRemovedEvent', Optional[str]], None],
     ) -> None:
@@ -96,7 +103,7 @@ resized.) The current implementation considers only viewport-dependent media fea
         """
         self._registry.register("CSS.styleSheetRemoved", callback)
 
-    def computed_style_updated(
+    def computedStyleUpdated(
         self,
         callback: Callable[['ComputedStyleUpdatedEvent', Optional[str]], None],
     ) -> None:

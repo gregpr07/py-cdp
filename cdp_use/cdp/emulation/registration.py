@@ -4,13 +4,13 @@
 
 """CDP Emulation Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import VirtualTimeBudgetExpiredEvent
 
 class EmulationRegistration:
     """Event registration interface for Emulation domain."""
@@ -19,7 +19,7 @@ class EmulationRegistration:
         self._registry = registry
         self._domain = "Emulation"
 
-    def virtual_time_budget_expired(
+    def virtualTimeBudgetExpired(
         self,
         callback: Callable[['VirtualTimeBudgetExpiredEvent', Optional[str]], None],
     ) -> None:

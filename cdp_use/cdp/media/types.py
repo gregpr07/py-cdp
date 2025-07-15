@@ -4,8 +4,8 @@
 
 """CDP Media Domain Types"""
 
-from typing import Any, Dict, List, Optional, Union
-from typing_extensions import NotRequired, TypedDict
+from typing import Any, Dict, List
+from typing_extensions import TypedDict
 
 PlayerId = str
 """Players will get an ID that is unique within the agent context."""

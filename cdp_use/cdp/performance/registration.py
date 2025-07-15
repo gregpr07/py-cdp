@@ -4,13 +4,13 @@
 
 """CDP Performance Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import MetricsEvent
 
 class PerformanceRegistration:
     """Event registration interface for Performance domain."""

@@ -4,13 +4,13 @@
 
 """CDP DOMStorage Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import DomStorageItemAddedEvent, DomStorageItemRemovedEvent, DomStorageItemUpdatedEvent, DomStorageItemsClearedEvent
 
 class DOMStorageRegistration:
     """Event registration interface for DOMStorage domain."""
@@ -19,7 +19,7 @@ class DOMStorageRegistration:
         self._registry = registry
         self._domain = "DOMStorage"
 
-    def dom_storage_item_added(
+    def domStorageItemAdded(
         self,
         callback: Callable[['DomStorageItemAddedEvent', Optional[str]], None],
     ) -> None:
@@ -32,7 +32,7 @@ class DOMStorageRegistration:
         """
         self._registry.register("DOMStorage.domStorageItemAdded", callback)
 
-    def dom_storage_item_removed(
+    def domStorageItemRemoved(
         self,
         callback: Callable[['DomStorageItemRemovedEvent', Optional[str]], None],
     ) -> None:
@@ -45,7 +45,7 @@ class DOMStorageRegistration:
         """
         self._registry.register("DOMStorage.domStorageItemRemoved", callback)
 
-    def dom_storage_item_updated(
+    def domStorageItemUpdated(
         self,
         callback: Callable[['DomStorageItemUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -58,7 +58,7 @@ class DOMStorageRegistration:
         """
         self._registry.register("DOMStorage.domStorageItemUpdated", callback)
 
-    def dom_storage_items_cleared(
+    def domStorageItemsCleared(
         self,
         callback: Callable[['DomStorageItemsClearedEvent', Optional[str]], None],
     ) -> None:

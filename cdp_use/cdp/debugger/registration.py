@@ -4,13 +4,13 @@
 
 """CDP Debugger Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import BreakpointResolvedEvent, PausedEvent, ResumedEvent, ScriptFailedToParseEvent, ScriptParsedEvent
 
 class DebuggerRegistration:
     """Event registration interface for Debugger domain."""
@@ -19,7 +19,7 @@ class DebuggerRegistration:
         self._registry = registry
         self._domain = "Debugger"
 
-    def breakpoint_resolved(
+    def breakpointResolved(
         self,
         callback: Callable[['BreakpointResolvedEvent', Optional[str]], None],
     ) -> None:
@@ -65,7 +65,7 @@ Deprecated in favor of `resolvedBreakpoints` in the `scriptParsed` event.
         """
         self._registry.register("Debugger.resumed", callback)
 
-    def script_failed_to_parse(
+    def scriptFailedToParse(
         self,
         callback: Callable[['ScriptFailedToParseEvent', Optional[str]], None],
     ) -> None:
@@ -80,7 +80,7 @@ Deprecated in favor of `resolvedBreakpoints` in the `scriptParsed` event.
         """
         self._registry.register("Debugger.scriptFailedToParse", callback)
 
-    def script_parsed(
+    def scriptParsed(
         self,
         callback: Callable[['ScriptParsedEvent', Optional[str]], None],
     ) -> None:

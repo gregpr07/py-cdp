@@ -4,13 +4,13 @@
 
 """CDP Profiler Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import ConsoleProfileFinishedEvent, ConsoleProfileStartedEvent, PreciseCoverageDeltaUpdateEvent
 
 class ProfilerRegistration:
     """Event registration interface for Profiler domain."""
@@ -19,7 +19,7 @@ class ProfilerRegistration:
         self._registry = registry
         self._domain = "Profiler"
 
-    def console_profile_finished(
+    def consoleProfileFinished(
         self,
         callback: Callable[['ConsoleProfileFinishedEvent', Optional[str]], None],
     ) -> None:
@@ -32,7 +32,7 @@ class ProfilerRegistration:
         """
         self._registry.register("Profiler.consoleProfileFinished", callback)
 
-    def console_profile_started(
+    def consoleProfileStarted(
         self,
         callback: Callable[['ConsoleProfileStartedEvent', Optional[str]], None],
     ) -> None:
@@ -47,7 +47,7 @@ class ProfilerRegistration:
         """
         self._registry.register("Profiler.consoleProfileStarted", callback)
 
-    def precise_coverage_delta_update(
+    def preciseCoverageDeltaUpdate(
         self,
         callback: Callable[['PreciseCoverageDeltaUpdateEvent', Optional[str]], None],
     ) -> None:

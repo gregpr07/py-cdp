@@ -4,13 +4,13 @@
 
 """CDP Inspector Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import DetachedEvent, TargetCrashedEvent, TargetReloadedAfterCrashEvent
 
 class InspectorRegistration:
     """Event registration interface for Inspector domain."""
@@ -34,7 +34,7 @@ class InspectorRegistration:
         """
         self._registry.register("Inspector.detached", callback)
 
-    def target_crashed(
+    def targetCrashed(
         self,
         callback: Callable[['TargetCrashedEvent', Optional[str]], None],
     ) -> None:
@@ -49,7 +49,7 @@ class InspectorRegistration:
         """
         self._registry.register("Inspector.targetCrashed", callback)
 
-    def target_reloaded_after_crash(
+    def targetReloadedAfterCrash(
         self,
         callback: Callable[['TargetReloadedAfterCrashEvent', Optional[str]], None],
     ) -> None:

@@ -4,8 +4,6 @@
 
 """CDP IO Domain Types"""
 
-from typing import Any, Dict, List, Optional, Union
-from typing_extensions import NotRequired, TypedDict
 
 StreamHandle = str
 """This is either obtained from another method or specified as `blob:<uuid>` where

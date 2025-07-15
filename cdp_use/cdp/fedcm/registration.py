@@ -4,13 +4,13 @@
 
 """CDP FedCm Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import DialogClosedEvent, DialogShownEvent
 
 class FedCmRegistration:
     """Event registration interface for FedCm domain."""
@@ -19,7 +19,7 @@ class FedCmRegistration:
         self._registry = registry
         self._domain = "FedCm"
 
-    def dialog_shown(
+    def dialogShown(
         self,
         callback: Callable[['DialogShownEvent', Optional[str]], None],
     ) -> None:
@@ -32,7 +32,7 @@ class FedCmRegistration:
         """
         self._registry.register("FedCm.dialogShown", callback)
 
-    def dialog_closed(
+    def dialogClosed(
         self,
         callback: Callable[['DialogClosedEvent', Optional[str]], None],
     ) -> None:

@@ -4,13 +4,13 @@
 
 """CDP BackgroundService Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import BackgroundServiceEventReceivedEvent, RecordingStateChangedEvent
 
 class BackgroundServiceRegistration:
     """Event registration interface for BackgroundService domain."""
@@ -19,7 +19,7 @@ class BackgroundServiceRegistration:
         self._registry = registry
         self._domain = "BackgroundService"
 
-    def recording_state_changed(
+    def recordingStateChanged(
         self,
         callback: Callable[['RecordingStateChangedEvent', Optional[str]], None],
     ) -> None:
@@ -34,7 +34,7 @@ class BackgroundServiceRegistration:
         """
         self._registry.register("BackgroundService.recordingStateChanged", callback)
 
-    def background_service_event_received(
+    def backgroundServiceEventReceived(
         self,
         callback: Callable[['BackgroundServiceEventReceivedEvent', Optional[str]], None],
     ) -> None:

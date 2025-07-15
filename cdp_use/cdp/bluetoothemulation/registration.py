@@ -4,13 +4,13 @@
 
 """CDP BluetoothEmulation Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import CharacteristicOperationReceivedEvent, DescriptorOperationReceivedEvent, GattOperationReceivedEvent
 
 class BluetoothEmulationRegistration:
     """Event registration interface for BluetoothEmulation domain."""
@@ -19,7 +19,7 @@ class BluetoothEmulationRegistration:
         self._registry = registry
         self._domain = "BluetoothEmulation"
 
-    def gatt_operation_received(
+    def gattOperationReceived(
         self,
         callback: Callable[['GattOperationReceivedEvent', Optional[str]], None],
     ) -> None:
@@ -35,7 +35,7 @@ happened.
         """
         self._registry.register("BluetoothEmulation.gattOperationReceived", callback)
 
-    def characteristic_operation_received(
+    def characteristicOperationReceived(
         self,
         callback: Callable[['CharacteristicOperationReceivedEvent', Optional[str]], None],
     ) -> None:
@@ -52,7 +52,7 @@ expected to exist when |type| is write.
         """
         self._registry.register("BluetoothEmulation.characteristicOperationReceived", callback)
 
-    def descriptor_operation_received(
+    def descriptorOperationReceived(
         self,
         callback: Callable[['DescriptorOperationReceivedEvent', Optional[str]], None],
     ) -> None:

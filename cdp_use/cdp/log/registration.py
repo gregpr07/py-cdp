@@ -4,13 +4,13 @@
 
 """CDP Log Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import EntryAddedEvent
 
 class LogRegistration:
     """Event registration interface for Log domain."""
@@ -19,7 +19,7 @@ class LogRegistration:
         self._registry = registry
         self._domain = "Log"
 
-    def entry_added(
+    def entryAdded(
         self,
         callback: Callable[['EntryAddedEvent', Optional[str]], None],
     ) -> None:

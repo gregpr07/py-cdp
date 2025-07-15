@@ -4,13 +4,13 @@
 
 """CDP Input Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import DragInterceptedEvent
 
 class InputRegistration:
     """Event registration interface for Input domain."""
@@ -19,7 +19,7 @@ class InputRegistration:
         self._registry = registry
         self._domain = "Input"
 
-    def drag_intercepted(
+    def dragIntercepted(
         self,
         callback: Callable[['DragInterceptedEvent', Optional[str]], None],
     ) -> None:

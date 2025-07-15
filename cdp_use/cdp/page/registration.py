@@ -4,13 +4,42 @@
 
 """CDP Page Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import (
+    BackForwardCacheNotUsedEvent,
+    CompilationCacheProducedEvent,
+    DocumentOpenedEvent,
+    DomContentEventFiredEvent,
+    DownloadProgressEvent,
+    DownloadWillBeginEvent,
+    FileChooserOpenedEvent,
+    FrameAttachedEvent,
+    FrameClearedScheduledNavigationEvent,
+    FrameDetachedEvent,
+    FrameNavigatedEvent,
+    FrameRequestedNavigationEvent,
+    FrameResizedEvent,
+    FrameScheduledNavigationEvent,
+    FrameStartedLoadingEvent,
+    FrameStartedNavigatingEvent,
+    FrameStoppedLoadingEvent,
+    FrameSubtreeWillBeDetachedEvent,
+    InterstitialHiddenEvent,
+    InterstitialShownEvent,
+    JavascriptDialogClosedEvent,
+    JavascriptDialogOpeningEvent,
+    LifecycleEventEvent,
+    LoadEventFiredEvent,
+    NavigatedWithinDocumentEvent,
+    ScreencastFrameEvent,
+    ScreencastVisibilityChangedEvent,
+    WindowOpenEvent
+)
 
 class PageRegistration:
     """Event registration interface for Page domain."""
@@ -19,7 +48,7 @@ class PageRegistration:
         self._registry = registry
         self._domain = "Page"
 
-    def dom_content_event_fired(
+    def domContentEventFired(
         self,
         callback: Callable[['DomContentEventFiredEvent', Optional[str]], None],
     ) -> None:
@@ -32,7 +61,7 @@ class PageRegistration:
         """
         self._registry.register("Page.domContentEventFired", callback)
 
-    def file_chooser_opened(
+    def fileChooserOpened(
         self,
         callback: Callable[['FileChooserOpenedEvent', Optional[str]], None],
     ) -> None:
@@ -47,7 +76,7 @@ class PageRegistration:
         """
         self._registry.register("Page.fileChooserOpened", callback)
 
-    def frame_attached(
+    def frameAttached(
         self,
         callback: Callable[['FrameAttachedEvent', Optional[str]], None],
     ) -> None:
@@ -62,7 +91,7 @@ class PageRegistration:
         """
         self._registry.register("Page.frameAttached", callback)
 
-    def frame_cleared_scheduled_navigation(
+    def frameClearedScheduledNavigation(
         self,
         callback: Callable[['FrameClearedScheduledNavigationEvent', Optional[str]], None],
     ) -> None:
@@ -77,7 +106,7 @@ class PageRegistration:
         """
         self._registry.register("Page.frameClearedScheduledNavigation", callback)
 
-    def frame_detached(
+    def frameDetached(
         self,
         callback: Callable[['FrameDetachedEvent', Optional[str]], None],
     ) -> None:
@@ -92,7 +121,7 @@ class PageRegistration:
         """
         self._registry.register("Page.frameDetached", callback)
 
-    def frame_subtree_will_be_detached(
+    def frameSubtreeWillBeDetached(
         self,
         callback: Callable[['FrameSubtreeWillBeDetachedEvent', Optional[str]], None],
     ) -> None:
@@ -108,7 +137,7 @@ subtree is actually detached.
         """
         self._registry.register("Page.frameSubtreeWillBeDetached", callback)
 
-    def frame_navigated(
+    def frameNavigated(
         self,
         callback: Callable[['FrameNavigatedEvent', Optional[str]], None],
     ) -> None:
@@ -123,7 +152,7 @@ subtree is actually detached.
         """
         self._registry.register("Page.frameNavigated", callback)
 
-    def document_opened(
+    def documentOpened(
         self,
         callback: Callable[['DocumentOpenedEvent', Optional[str]], None],
     ) -> None:
@@ -138,7 +167,7 @@ subtree is actually detached.
         """
         self._registry.register("Page.documentOpened", callback)
 
-    def frame_resized(
+    def frameResized(
         self,
         callback: Callable[['FrameResizedEvent', Optional[str]], None],
     ) -> None:
@@ -151,7 +180,7 @@ subtree is actually detached.
         """
         self._registry.register("Page.frameResized", callback)
 
-    def frame_started_navigating(
+    def frameStartedNavigating(
         self,
         callback: Callable[['FrameStartedNavigatingEvent', Optional[str]], None],
     ) -> None:
@@ -172,7 +201,7 @@ frameset).
         """
         self._registry.register("Page.frameStartedNavigating", callback)
 
-    def frame_requested_navigation(
+    def frameRequestedNavigation(
         self,
         callback: Callable[['FrameRequestedNavigationEvent', Optional[str]], None],
     ) -> None:
@@ -188,7 +217,7 @@ Navigation may still be cancelled after the event is issued.
         """
         self._registry.register("Page.frameRequestedNavigation", callback)
 
-    def frame_scheduled_navigation(
+    def frameScheduledNavigation(
         self,
         callback: Callable[['FrameScheduledNavigationEvent', Optional[str]], None],
     ) -> None:
@@ -203,7 +232,7 @@ Navigation may still be cancelled after the event is issued.
         """
         self._registry.register("Page.frameScheduledNavigation", callback)
 
-    def frame_started_loading(
+    def frameStartedLoading(
         self,
         callback: Callable[['FrameStartedLoadingEvent', Optional[str]], None],
     ) -> None:
@@ -218,7 +247,7 @@ Navigation may still be cancelled after the event is issued.
         """
         self._registry.register("Page.frameStartedLoading", callback)
 
-    def frame_stopped_loading(
+    def frameStoppedLoading(
         self,
         callback: Callable[['FrameStoppedLoadingEvent', Optional[str]], None],
     ) -> None:
@@ -233,7 +262,7 @@ Navigation may still be cancelled after the event is issued.
         """
         self._registry.register("Page.frameStoppedLoading", callback)
 
-    def download_will_begin(
+    def downloadWillBegin(
         self,
         callback: Callable[['DownloadWillBeginEvent', Optional[str]], None],
     ) -> None:
@@ -249,7 +278,7 @@ Deprecated. Use Browser.downloadWillBegin instead.
         """
         self._registry.register("Page.downloadWillBegin", callback)
 
-    def download_progress(
+    def downloadProgress(
         self,
         callback: Callable[['DownloadProgressEvent', Optional[str]], None],
     ) -> None:
@@ -265,7 +294,7 @@ Deprecated. Use Browser.downloadProgress instead.
         """
         self._registry.register("Page.downloadProgress", callback)
 
-    def interstitial_hidden(
+    def interstitialHidden(
         self,
         callback: Callable[['InterstitialHiddenEvent', Optional[str]], None],
     ) -> None:
@@ -280,7 +309,7 @@ Deprecated. Use Browser.downloadProgress instead.
         """
         self._registry.register("Page.interstitialHidden", callback)
 
-    def interstitial_shown(
+    def interstitialShown(
         self,
         callback: Callable[['InterstitialShownEvent', Optional[str]], None],
     ) -> None:
@@ -295,7 +324,7 @@ Deprecated. Use Browser.downloadProgress instead.
         """
         self._registry.register("Page.interstitialShown", callback)
 
-    def javascript_dialog_closed(
+    def javascriptDialogClosed(
         self,
         callback: Callable[['JavascriptDialogClosedEvent', Optional[str]], None],
     ) -> None:
@@ -311,7 +340,7 @@ closed.
         """
         self._registry.register("Page.javascriptDialogClosed", callback)
 
-    def javascript_dialog_opening(
+    def javascriptDialogOpening(
         self,
         callback: Callable[['JavascriptDialogOpeningEvent', Optional[str]], None],
     ) -> None:
@@ -327,7 +356,7 @@ open.
         """
         self._registry.register("Page.javascriptDialogOpening", callback)
 
-    def lifecycle_event(
+    def lifecycleEvent(
         self,
         callback: Callable[['LifecycleEventEvent', Optional[str]], None],
     ) -> None:
@@ -343,7 +372,7 @@ target (including local frames).
         """
         self._registry.register("Page.lifecycleEvent", callback)
 
-    def back_forward_cache_not_used(
+    def backForwardCacheNotUsed(
         self,
         callback: Callable[['BackForwardCacheNotUsedEvent', Optional[str]], None],
     ) -> None:
@@ -361,7 +390,7 @@ when bfcache navigation fails.
         """
         self._registry.register("Page.backForwardCacheNotUsed", callback)
 
-    def load_event_fired(
+    def loadEventFired(
         self,
         callback: Callable[['LoadEventFiredEvent', Optional[str]], None],
     ) -> None:
@@ -374,7 +403,7 @@ when bfcache navigation fails.
         """
         self._registry.register("Page.loadEventFired", callback)
 
-    def navigated_within_document(
+    def navigatedWithinDocument(
         self,
         callback: Callable[['NavigatedWithinDocumentEvent', Optional[str]], None],
     ) -> None:
@@ -389,7 +418,7 @@ when bfcache navigation fails.
         """
         self._registry.register("Page.navigatedWithinDocument", callback)
 
-    def screencast_frame(
+    def screencastFrame(
         self,
         callback: Callable[['ScreencastFrameEvent', Optional[str]], None],
     ) -> None:
@@ -404,7 +433,7 @@ when bfcache navigation fails.
         """
         self._registry.register("Page.screencastFrame", callback)
 
-    def screencast_visibility_changed(
+    def screencastVisibilityChanged(
         self,
         callback: Callable[['ScreencastVisibilityChangedEvent', Optional[str]], None],
     ) -> None:
@@ -419,7 +448,7 @@ when bfcache navigation fails.
         """
         self._registry.register("Page.screencastVisibilityChanged", callback)
 
-    def window_open(
+    def windowOpen(
         self,
         callback: Callable[['WindowOpenEvent', Optional[str]], None],
     ) -> None:
@@ -435,7 +464,7 @@ etc.
         """
         self._registry.register("Page.windowOpen", callback)
 
-    def compilation_cache_produced(
+    def compilationCacheProduced(
         self,
         callback: Callable[['CompilationCacheProducedEvent', Optional[str]], None],
     ) -> None:

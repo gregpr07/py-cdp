@@ -4,13 +4,13 @@
 
 """CDP Cast Domain Event Registration"""
 
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import *
+    from .events import IssueUpdatedEvent, SinksUpdatedEvent
 
 class CastRegistration:
     """Event registration interface for Cast domain."""
@@ -19,7 +19,7 @@ class CastRegistration:
         self._registry = registry
         self._domain = "Cast"
 
-    def sinks_updated(
+    def sinksUpdated(
         self,
         callback: Callable[['SinksUpdatedEvent', Optional[str]], None],
     ) -> None:
@@ -35,7 +35,7 @@ device or a software surface that you can cast to.
         """
         self._registry.register("Cast.sinksUpdated", callback)
 
-    def issue_updated(
+    def issueUpdated(
         self,
         callback: Callable[['IssueUpdatedEvent', Optional[str]], None],
     ) -> None:
