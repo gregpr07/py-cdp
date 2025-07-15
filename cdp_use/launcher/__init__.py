@@ -15,14 +15,14 @@ from .flags import Flag
 __version__ = "0.1.0"
 __all__ = [
     "Browser",
-    "Launcher", 
+    "Launcher",
     "LauncherConfig",
     "URLParser",
     "LauncherError",
-    "AlreadyLaunchedError", 
+    "AlreadyLaunchedError",
     "BrowserNotFoundError",
     "HostGoogle",
-    "HostNPM", 
+    "HostNPM",
     "HostPlaywright",
     "Flag",
 ]

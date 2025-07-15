@@ -15,6 +15,6 @@ else:
     from .unix import UnixUtils as _OSUtilsImpl
 
 # Singleton instance
-os_utils: 'OSUtils' = _OSUtilsImpl()
+os_utils: "OSUtils" = _OSUtilsImpl()
 
 __all__ = ["os_utils"]
