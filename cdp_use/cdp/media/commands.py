@@ -4,5 +4,7 @@
 
 """CDP Media Domain Commands"""
 
+from typing import Any, Dict, List, Optional, Union
+from typing_extensions import NotRequired, TypedDict
 
 # No commands defined for this domain

@@ -4,8 +4,8 @@
 
 """CDP PerformanceTimeline Domain Commands"""
 
-from typing import List
-from typing_extensions import TypedDict
+from typing import Any, Dict, List, Optional, Union
+from typing_extensions import NotRequired, TypedDict
 
 class EnableParameters(TypedDict):
     eventTypes: "List[str]"

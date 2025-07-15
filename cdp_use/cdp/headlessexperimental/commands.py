@@ -4,7 +4,8 @@
 
 """CDP HeadlessExperimental Domain Commands"""
 
-from typing_extensions import TypedDict
+from typing import Any, Dict, List, Optional, Union
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 

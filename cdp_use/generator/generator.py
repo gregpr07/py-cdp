@@ -13,6 +13,9 @@ from typing import Any, Dict, List, Optional
 from .command_generator import CommandGenerator
 from .event_generator import EventGenerator
 from .library_generator import LibraryGenerator
+from .registration_generator import RegistrationGenerator
+from .registration_library_generator import RegistrationLibraryGenerator
+from .registry_generator import RegistryGenerator
 from .type_generator import TypeGenerator
 
 
@@ -23,6 +26,9 @@ class CDPGenerator:
         self.command_generator = CommandGenerator()
         self.event_generator = EventGenerator()
         self.library_generator = LibraryGenerator()
+        self.registration_generator = RegistrationGenerator()
+        self.registration_library_generator = RegistrationLibraryGenerator()
+        self.registry_generator = RegistryGenerator()
 
     def get_auto_generated_header(self) -> str:
         """Get the standard auto-generated file header."""
@@ -109,8 +115,18 @@ class CDPGenerator:
         for domain in domains:
             self.generate_domain_library_file(domain)
 
+        # Generate domain registration files
+        for domain in domains:
+            self.generate_domain_registration_file(domain)
+
         # Generate main library file
         self.generate_main_library_file(domains)
+
+        # Generate central event registry
+        self.generate_event_registry(domains)
+
+        # Generate main registration library
+        self.generate_main_registration_library(domains)
 
         # Generate main __init__.py
         self.generate_main_init(domains)
@@ -153,10 +169,27 @@ class CDPGenerator:
         content = self.library_generator.generate_domain_library(domain)
         self.write_file(domain_dir / "library.py", content)
 
+    def generate_domain_registration_file(self, domain: Dict[str, Any]) -> None:
+        """Generate a domain-specific registration file."""
+        domain_name = domain["domain"].lower()
+        domain_dir = self.output_dir / domain_name
+        content = self.registration_generator.generate_registration(domain)
+        self.write_file(domain_dir / "registration.py", content)
+
     def generate_main_library_file(self, domains: List[Dict[str, Any]]) -> None:
         """Generate the main library file."""
         content = self.library_generator.generate_main_library(domains)
         self.write_file(self.output_dir / "library.py", content)
+
+    def generate_event_registry(self, domains: List[Dict[str, Any]]) -> None:
+        """Generate the central event registry file."""
+        content = self.registry_generator.generate_registry(domains)
+        self.write_file(self.output_dir / "registry.py", content)
+
+    def generate_main_registration_library(self, domains: List[Dict[str, Any]]) -> None:
+        """Generate the main registration library file."""
+        content = self.registration_library_generator.generate_main_registration_library(domains)
+        self.write_file(self.output_dir / "registration_library.py", content)
 
     def generate_domain_init(self, domain: Dict[str, Any]) -> str:
         """Generate __init__.py for a domain."""
@@ -183,6 +216,8 @@ class CDPGenerator:
             content += f"from . import {domain_name}\n"
 
         content += "\nfrom .library import CDPLibrary\n"
+        content += "from .registry import EventRegistry\n"
+        content += "from .registration_library import CDPRegistrationLibrary\n"
 
         # List all domains for easy access
         content += "\n__all__ = [\n"
@@ -190,6 +225,8 @@ class CDPGenerator:
             domain_name = domain["domain"].lower()
             content += f'    "{domain_name}",\n'
         content += '    "CDPLibrary",\n'
+        content += '    "EventRegistry",\n'
+        content += '    "CDPRegistrationLibrary",\n'
         content += "]\n"
 
         self.write_file(self.output_dir / "__init__.py", content)

@@ -4,7 +4,8 @@
 
 """CDP Tethering Domain Events"""
 
-from typing_extensions import TypedDict
+from typing import Any, Dict, List, Optional, Union
+from typing_extensions import NotRequired, TypedDict
 
 """Informs that port was successfully bound and got a specified connection id."""
 class AcceptedEvent(TypedDict):
