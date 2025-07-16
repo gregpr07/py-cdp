@@ -17,7 +17,33 @@ build-backend = "hatchling.build"
 dev = [
     "build>=1.2.2.post1",
     "ruff>=0.12.2",
+    "pyright>=1.1.403",
+    "pytest>=8.3.4",
 ]
+
+[tool.pyright]
+typeCheckingMode = "standard"
+exclude = ["tests/old/", ".venv/", ".git/", "__pycache__/", "./test_*.py", "./debug_*.py", "private_example/"]
+venvPath = "."
+venv = ".venv"
+
+[tool.pytest.ini_options]
+timeout = 300
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+testpaths = [
+    "tests"
+]
+python_files = ["test_*.py", "*_test.py"]
+addopts = "-svx --strict-markers --tb=short --dist=loadscope"
+log_cli = true
+log_cli_format = "%(levelname)-8s [%(name)s] %(message)s"
+filterwarnings = [
+    "ignore::pytest.PytestDeprecationWarning",
+    "ignore::DeprecationWarning",
+]
+log_level = "DEBUG"
 
 [tool.hatch.build]
 include = [
@@ -26,3 +52,25 @@ include = [
 exclude = [
     "cdp_use/generator/*.py"
 ]
+
+
+[tool.codespell]
+ignore-words-list = "bu,wit,dont,cant,wont,re-use,re-used,re-using,re-usable,thats,doesnt,doubleclick"
+skip = "*.json"
+
+[tool.ruff]
+line-length = 140
+fix = true
+
+[tool.ruff.lint]
+select = ["ASYNC", "E", "F", "FAST", "I", "PLE"]
+ignore = ["ASYNC109", "E101", "E402", "E501", "F841", "E731", "W291"]  # TODO: determine if adding timeouts to all the unbounded async functions is needed / worth-it so we can un-ignore ASYNC109
+unfixable = ["E101", "E402", "E501", "F841", "E731"]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+line-ending = "lf"
+docstring-code-format = true
+docstring-code-line-length = 140
+skip-magic-trailing-comma = false
